@@ -1,0 +1,6 @@
+.block-faq ul li.active h3{
+  @apply mb-[45px]; 
+}
+.block-faq ul li.active h3::after{
+  @apply invisible;
+}

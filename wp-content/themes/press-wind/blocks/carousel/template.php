@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * Carousel template.
+ *
+ * @param array $block The block settings and attributes.
+ */
+
+//ACF FIELDS
+$items_selected = get_field('items_selected');
+
+// INNERBLOCKS
+$allowedBlocks = ['core/heading', 'core/paragraph'];
+$template = [
+  [
+    'core/heading',
+    [
+      "placeholder" => "Titre du bloc",
+      "level" => 2,
+      "color" => "foreground"
+    ]
+  ],
+  [
+    'core/paragraph',
+    [
+      "placeholder" => "Description ..."
+    ]
+  ]
+];
+
+//get id block
+$block_id = $block['id'];
+
+?>
+<section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1150px] mx-auto max-[1290px]:mx-[90px] max-md:mx-[15px] ']); ?>>
+  <div class="">
+    <InnerBlocks
+      class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400] "
+      template="<?php echo esc_attr(wp_json_encode($template)) ?>"
+      allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
+  </div>
+  <div class="block-carousel__items max-md:max-w-[80%]">
+    <section class="splide splidejs-<?= $block_id; ?>">
+      <div class="block-carousel__filters-controls splide__arrows">
+        <button
+          class="splide__arrow splide__arrow--prev block-carousel__filters-controls-prev !bg-transparent !border-none !cursor-pointer !-left-[60px]">
+          <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/arrow-prev-green.svg"
+            alt="Flèche droite">
+        </button>
+        <button
+          class="splide__arrow splide__arrow--next block-carousel__filters-controls-next !bg-transparent !border-none !cursor-pointer !-right-[60px]">
+          <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/arrow-next-green.svg"
+            alt="Flèche gauche">
+        </button>
+      </div>
+      <div class="splide__track">
+        <ul class="splide__list">
+          <?php foreach ($items_selected as $item):
+            $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
+            ?>
+            <li class="splide__slide max-md:min-h-[220px]">
+              <div class="image_featured min-h-[170px] md:min-h-[345px] bg-cover md:bg-[length:100%_90%]  bg-no-repeat rounded-[20px] relative"
+                style="background-image:url('<?= $image_featured ?>');">
+                <a class="absolute w-full h-full max-md:bottom-[-40px] md:top-0 left-0 flex items-end justify-start hover:no-underline no-underline "
+                  href="<?= get_permalink($item->ID); ?>">
+                  <span
+                    class="px-[20px] py-[30px] bg-bgGreen font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] text-green mt-[20px]"><?= get_the_title($item->ID); ?></span>
+                </a>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('.splidejs-<?= $block_id; ?>')
+    const arrowDisplay = (carousel.querySelectorAll('.splide__slide').lenght > 2) ? false : true;
+    console.log(arrowDisplay);
+    if (carousel) {
+      const carouselSplide = new Splide(carousel, {
+        focus: 'center',
+        perPage: 3,
+        perMove: 1,
+        gap: '40px',
+        pagination: false,
+        arrows: arrowDisplay,
+        breakpoints: {
+          768: {
+            perPage: 1,
+          }
+        }
+      })
+
+      carouselSplide.mount()
+    }
+  })
+</script>

@@ -1,0 +1,3 @@
+import type { DropdownMenuCheckboxItemProps } from './types';
+export declare const DropdownMenuCheckboxItem: import("react").ForwardRefExoticComponent<DropdownMenuCheckboxItemProps & Omit<Omit<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "ref">, "as" | keyof DropdownMenuCheckboxItemProps> & import("react").RefAttributes<HTMLDivElement>>;
+//# sourceMappingURL=checkbox-item.d.ts.map

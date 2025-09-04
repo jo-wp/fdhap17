@@ -1,0 +1,32 @@
+/** fonts are loaded from the theme.json */
+
+@import './settings/variables.css';
+
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+/** DEFAULT FOR EXAMPLE */
+@import './default.css';
+@import './button.css';
+@import './nav.css';
+@import './template-camping.css';
+ 
+/** FONT IMPORT CDN */
+@import 'https://use.typekit.net/kcm1lom.css';
+@import 'https://fonts.googleapis.com/css2?family=Marcellus&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap';
+
+/** FONT IMPORT LOCAL */
+@import '../../node_modules/@splidejs/splide/dist/css/splide.min.css';
+
+/** BLOCK */
+@import '../../blocks/hero/style.css';
+@import '../../blocks/destinations/style.css';
+@import '../../blocks/featured-blog/style.css';
+@import '../../blocks/faq/style.css';
+@import '../../blocks/presentation/style.css';
+@import '../../blocks/masonry/style.css';

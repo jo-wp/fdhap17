@@ -1,0 +1,137 @@
+body {
+  @apply bg-white;
+}
+
+a {
+  @apply no-underline hover:underline;
+}
+h2 {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
+/** header **/
+
+.site-branding {
+  @apply flex flex-col mx-6 lg:mx-10;
+}
+
+.site-branding > p {
+  @apply m-0;
+}
+
+.site-title {
+  @apply m-0 text-5xl font-display;
+}
+
+.site-title a {
+  @apply hover:no-underline;
+}
+
+.site-description {
+  @apply text-gray-500;
+}
+
+/** navigation **/
+.main-navigation {
+  @apply mx-6 my-3 lg:mx-10;
+}
+
+.main-navigation > ul,
+.main-navigation ul > li {
+  @apply p-0 m-0 list-none;
+}
+
+.main-navigation ul {
+  @apply p-0 m-0 lg:flex;
+}
+
+.main-navigation ul > li {
+  @apply p-0 lg:mx-5;
+}
+
+.main-navigation ul > li > ul {
+  @apply pl-3 ml-3;
+}
+
+.main-navigation ul > li > ul > li {
+  @apply p-0 mx-0 list-disc;
+}
+
+/** main **/
+.container-huge {
+  @apply max-w-huge mx-auto max-[1920px]:mx-[30px] max-md:mx-[15px];
+}
+
+.site-main .main-content {
+  @apply col-start-2 col-end-3;
+}
+
+.site-main .main-content .alignwide {
+  @apply -ml-1 -mr-1 xl:-ml-32 xl:-mr-32;
+}
+
+.site-main p {
+  @apply text-gray-600;
+}
+
+/** footer */
+.site-footer {
+  @apply mt-20 text-center;
+}
+
+.site-footer > p > a {
+  @apply inline-flex after:content-[''] after:ml-2 after:block after:bg-wp-performance after:bg-contain after:bg-no-repeat after:w-5 after:h-5 after:mt-1;
+}
+
+/** pattern example */
+.pattern-example {
+  @apply px-3 py-10 lg:p-10;
+}
+
+.pattern-example > p {
+  @apply max-w-2xl mx-4 my-8 lg:mx-auto;
+}
+
+/** prism */
+.wp-block-wp-performance-prism-my-code {
+  @apply max-w-[calc(100vw-2rem)];
+}
+
+/** exemple block extensions */
+@media screen and (max-width: 768px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .hide-on-tablet {
+    display: none;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .hide-on-desktop {
+    display: none;
+  }
+}
+
+section {
+  @apply mb-[100px];
+}
+
+.after-underline h2::after {
+  content: '';
+  width: 20%;
+  height: 2px;
+  bottom: -20px;
+  position: absolute;
+  background-color: #e9b237;
+}
+@media(max-width:768px){
+  .after-underline h2::after {
+    width: 150px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+  }
+}

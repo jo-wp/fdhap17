@@ -1,0 +1,191 @@
+<?php
+
+class Ctoutvert
+{
+  public static function init()
+  {
+
+  }
+
+  public static function connect_to_ctoutvert($soapCall = 'engine_returnFormInformations')
+  {
+    $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+    $username = CTOUTVERT_USERNAME;
+    $password = CTOUTVERT_PASSWORD;
+    $id_engine = CTOUTVERT_ID_ENGINE;
+    $isoLanguageCode = 'FR';
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace' => 1,
+        'exceptions' => true
+      ]);
+
+      $params = [
+        'user' => $username,
+        'password' => $password,
+        'idEngine' => $id_engine,
+        'isoLanguageCode' => $isoLanguageCode,
+      ];
+
+      var_dump($params); // Debugging line to check parameters
+
+      $result = $client->__soapCall($soapCall, [$params]);
+
+      return $result;
+    } catch (Exception $e) {
+      error_log('Erreur appel ' . $soapCall . ' : ' . $e->getMessage());
+      return null;
+    }
+  }
+
+  public static function informations_ctoutvert()
+  {
+    $soapCall = 'engine_returnFormInformations';
+    return self::connect_to_ctoutvert($soapCall);
+  }
+
+  public static function get_camping_ctoutvert($campingId = 125489)
+  {
+    $wsdl = 'https://webservices.secureholiday.net/v3/engine.asmx?wsdl';
+    $username = 'redpanda';
+    $password = 'MAf#$ma$kECQt';
+    $id_engine = 702;
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace' => 1,
+        'exceptions' => true
+      ]);
+
+      // Préparation de l’objet user
+      $user = [
+        'user' => $username,
+        'password' => $password,
+        'idEngine' => $id_engine
+      ];
+
+      // Préparation de ProductFilter
+      $productFilter = [];
+      if (!empty($product_types)) {
+        $productFilter['ProductTypes'] = $product_types; // ex: ['all'] ou ['pitch']
+      }
+      if (!empty($key_list)) {
+        $productFilter['KeyList'] = $key_list; // ex: [65258, 47895]
+      }
+
+      // Préparation de wsMoreInfoSettings
+      $settings = [
+        'Language' => 'FR',
+        'EstablishmentFilter' => ['EstablishmentKey' => $campingId], // Filtre par l'ID du camping
+      ];
+      if (!empty($productFilter)) {
+        $settings['ProductFilter'] = $productFilter;
+      }
+
+      // Construction du tableau de paramètres pour le SOAP call
+      $params = [
+        'user' => $user,
+        'settings' => $settings
+        // 'output' => ... // Tu peux ajouter ce param si besoin de filtrer la réponse
+      ];
+
+      // Appel SOAP
+      $result = $client->__soapCall('GetEstablishmentInformations', [$params]);
+
+      return $result;
+    } catch (Exception $e) {
+      error_log('Erreur appel GetEstablishmentInformations : ' . $e->getMessage());
+      return $result = $e->getMessage();
+    }
+  }
+
+
+  public static function ctoutvert_get_active_keys_from_engine()
+  {
+    $wsdl = 'https://webservices.secureholiday.net/v3/engine.asmx?wsdl';
+    $username = 'redpanda';
+    $password = 'MAf#$ma$kECQt';
+    $id_engine = 702;
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace' => 1,
+        'exceptions' => true
+      ]);
+
+      // Objet user (cf. identification)
+      $user = [
+        'user' => $username,
+        'password' => $password,
+        'idEngine' => $id_engine
+      ];
+
+      // Paramètres pour la méthode
+      $params = [
+        'user' => $user
+      ];
+
+      // Appel de la méthode
+      $result = $client->__soapCall('GetActiveKeysFromEngine', [$params]);
+
+      return $result;
+    } catch (Exception $e) {
+      error_log('Erreur appel GetActiveKeysFromEngine : ' . $e->getMessage());
+      return null;
+    }
+  }
+
+  public static function ctoutvert_search_holidays($dateFilters=[], $productTypes = [])
+  {
+    $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+    $username = CTOUTVERT_USERNAME;
+    $password = CTOUTVERT_PASSWORD;
+    $id_engine = CTOUTVERT_ID_ENGINE;
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace' => 1,
+        'exceptions' => true
+      ]);
+
+      // Préparation de l'objet dateFilters
+      if (empty($dateFilters)) {
+        $dateFilters = [
+          'startDate' => date('Y-m-d', strtotime('+1 day')),
+          'endDate' => date('Y-m-d', strtotime('+10 days'))
+        ];
+      }
+
+      $params = [
+        'user' => [
+          'user' => $username,
+          'password' => $password,
+          'idEngine' => $id_engine,
+        ],
+        'language' => 'FR',
+        // 'request' => [ ... ] 
+      ];
+
+      if($dateFilters){
+        $params['dateFilters'] = $dateFilters;
+      }
+
+
+      $result = $client->__soapCall('engine_returnAvailabilityAdvanced', [$params]);
+
+      return $result;
+    } catch (Exception $e) {
+      error_log('Erreur appel engine_returnAvailabilityAdvanced : ' . $e->getMessage());
+      return $e->getMessage();
+    }
+  }
+
+}
+// $data = Ctoutvert::get_camping_ctoutvert(14166);
+// $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
+// $data = Ctoutvert::ctoutvert_search_holidays();
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// die();

@@ -1,0 +1,44 @@
+{
+  // Exclure de la recherche
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.git": true,
+    "**/build": true,
+    "**/.cache": true
+  },
+
+  // Masquer dans l’explorateur de fichiers
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.git": true,
+    "**/build": true,
+    "**/.cache": true
+  },
+
+  // Ne pas surveiller les changements dans ces dossiers (gain de perf)
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.cache/**": true,
+    "**/.git/**": true
+  },
+
+  // Pour JS/TS (évite que le serveur d'analyse indexe tout)
+  "typescript.tsserver.exclude": [
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/.cache"
+  ],
+
+  // Pour Python (si utilisé)
+  "python.analysis.exclude": [
+    "**/__pycache__",
+    "**/migrations",
+    "**/build",
+    "**/.cache"
+  ]
+}

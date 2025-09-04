@@ -1,0 +1,21 @@
+.bloc-camping-informations__item{
+  @apply border-b border-b-[#DDDDDD] border-solid border-t-0 border-r-0 border-l-0 pb-[30px] mt-[30px];
+}
+.bloc-camping-informations__item ul{
+  @apply m-0;
+}
+.bloc-camping-informations__item h3{
+  @apply mt-0;
+}
+.bloc-camping-informations__item p{
+  @apply mb-0 pb-0;
+}
+.bloc-sidebar-informations__item{
+  @apply flex flex-row gap-[20px] p-[20px] border border-b-[#DDDDDD] border-solid border-t-0 border-r-0 border-l-0;
+}
+.bloc-sidebar-informations__item img{
+
+}
+.bloc-sidebar-informations__item p {
+    @apply m-0 font-arial text-[15px];
+}

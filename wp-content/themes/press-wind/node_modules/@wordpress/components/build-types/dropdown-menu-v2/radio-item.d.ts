@@ -1,0 +1,3 @@
+import type { DropdownMenuRadioItemProps } from './types';
+export declare const DropdownMenuRadioItem: import("react").ForwardRefExoticComponent<DropdownMenuRadioItemProps & Omit<Omit<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "ref">, "as" | keyof DropdownMenuRadioItemProps> & import("react").RefAttributes<HTMLDivElement>>;
+//# sourceMappingURL=radio-item.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"create-webrtc-connection.d.ts","sourceRoot":"","sources":["../src/create-webrtc-connection.js"],"names":[],"mappings":"AAUA,yDAAyD;AACzD,qDAAqD;AACrD,mDAAmD;AAEnD;;;;;;;;GAQG;AACH,gEAJG;IAA8B,SAAS,EAA/B,KAAK,CAAC,MAAM,CAAC;IACS,QAAQ,EAA9B,MAAM;CACd,YAiBF;yBA5Ba,OAAO,SAAS,EAAE,UAAU;uBAC5B,OAAO,SAAS,EAAE,QAAQ;sBAC1B,OAAO,SAAS,EAAE,OAAO"}

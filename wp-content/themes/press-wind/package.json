@@ -1,0 +1,68 @@
+{
+    "name": "press-wind",
+    "version": "2.0.0",
+    "description": "Wordpress theme starter with Tailwind CSS and Vite JS for FSE",
+    "main": "main.js",
+    "type": "module",
+    "author": "Faramaz Patrick<info@goodmotion.fr>",
+    "license": "ISC",
+    "scripts": {
+        "dev": "cross-env APP_ENV=development vite --host && npm run watch:editor ",
+        "build": "APP_ENV=production vite build && npm run build:editor && npm run build:admin",
+        "dev:admin": "cross-env APP_ENV=development vite --config admin/vite.config.js",
+        "build:admin": "APP_ENV=production vite build --config admin/vite.config.js",
+        "watch:editor": "APP_ENV=development IS_EDITOR=true node_modules/.bin/postcss -w --verbose --no-map assets/css/styles.css -o style-editor.css",
+        "build:editor": "NODE_ENV=production IS_EDITOR=true node_modules/.bin/postcss assets/css/styles.css -o style-editor.css",
+        "favicon": "node js-helpers/faviconGenerator.mjs",
+        "php:lint": "./vendor/bin/duster lint",
+        "php:fix": "./vendor/bin/duster fix"
+    },
+    "trustedDependencies": [
+        "sharp"
+    ],
+    "devDependencies": {
+        "@_tw/themejson": "0.2.0",
+        "@biomejs/biome": "^1.9.4",
+        "@tailwindcss/forms": "^0.5.9",
+        "@vitejs/plugin-basic-ssl": "^1.1.0",
+        "@vitejs/plugin-legacy": "5.4.3",
+        "@vitejs/plugin-react": "4.3.3",
+        "@wordpress/browserslist-config": "6.10.0",
+        "@wordpress/components": "28.10.0",
+        "@wordpress/compose": "7.10.0",
+        "@wordpress/data": "10.10.0",
+        "@wordpress/edit-post": "8.10.0",
+        "@wordpress/element": "6.10.0",
+        "@wordpress/eslint-plugin": "21.3.0",
+        "@wordpress/i18n": "5.10.0",
+        "@wordpress/icons": "10.10.0",
+        "@wordpress/plugins": "7.10.0",
+        "@wordpress/scripts": "30.3.0",
+        "@wordpress/stylelint-config": "23.2.0",
+        "autoprefixer": "^10.4.20",
+        "babel-preset-env": "^1.7.0",
+        "browserslist": "^4.24.2",
+        "classnames": "^2.5.1",
+        "cross-env": "^7.0.3",
+        "favicons": "^7.2.0",
+        "lightningcss": "^1.27.0",
+        "lightningcss-cli": "^1.27.0",
+        "postcss": "8.4.47",
+        "postcss-cli": "11.0.0",
+        "postcss-import": "^16.1.0",
+        "postcss-preset-env": "^10.0.8",
+        "postcss-url": "^10.1.3",
+        "sharp": "^0.33.5",
+        "tailwindcss": "3.4.14",
+        "terser": "5.36.0",
+        "vite": "5.4.10",
+        "vite-plugin-environment": "^1.1.3",
+        "vite-plugin-live-reload": "3.0.3"
+    },
+    "dependencies": {
+        "@splidejs/splide": "^4.1.4"
+    },
+    "browserslist": [
+        "extends @wordpress/browserslist-config"
+    ]
+}

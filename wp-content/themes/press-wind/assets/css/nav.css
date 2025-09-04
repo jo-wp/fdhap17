@@ -1,0 +1,89 @@
+nav {
+  @apply max-md:overflow-x-hidden max-md:overflow-y-hidden;
+}
+nav .submenu {
+  @apply overflow-hidden absolute opacity-0 invisible transition-opacity duration-0
+         left-[calc(-100%_-_100%)] bg-bgGreen m-0 p-0 
+         min-h-[300px] min-w-[590px] z-20 rounded-b-[200px] 
+         px-[80px] top-[92px] pt-[40px] pointer-events-none
+         max-md:left-0 max-md:top-0 
+        max-md:p-0
+        max-md:pl-[15px]
+         max-md:bg-white
+         max-md:rounded-none
+         max-md:-translate-x-[15px]
+         max-md:min-w-full
+         max-md:invisible
+        max-md:[&.active]:visible
+        max-md:opacity-0
+        max-md:[&.active]:opacity-100
+        max-md:overflow-x-hidden;
+}
+nav > ul > li:hover .submenu {
+  @apply opacity-100 visible duration-500 pointer-events-auto 
+  max-md:w-[calc(100%_+_15px)];
+}
+
+/* Items du submenu */
+nav .submenu li {
+  @apply opacity-0 translate-y-2 transition-all duration-0
+  max-md:opacity-100 max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-solid max-md:border-black/15 /* instantané hors hover */
+              max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
+            max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
+            max-md:before:right-[20px]
+            ;
+}
+nav > ul > li:hover .submenu li {
+  @apply opacity-100 translate-y-0 duration-300; /* anime uniquement à l’entrée */
+}
+
+/* Stagger uniquement à l’entrée (sur hover) */
+nav > ul > li:hover .submenu li:nth-child(1) {
+  transition-delay: 50ms;
+}
+nav > ul > li:hover .submenu li:nth-child(2) {
+  transition-delay: 100ms;
+}
+nav > ul > li:hover .submenu li:nth-child(3) {
+  transition-delay: 150ms;
+}
+nav > ul > li:hover .submenu li:nth-child(4) {
+  transition-delay: 200ms;
+}
+nav > ul > li:hover .submenu li:nth-child(5) {
+  transition-delay: 250ms;
+}
+nav > ul > li:hover .submenu li:nth-child(6) {
+  transition-delay: 300ms;
+}
+nav > ul > li:hover .submenu li:nth-child(7) {
+  transition-delay: 350ms;
+}
+nav > ul > li:hover .submenu li:nth-child(8) {
+  transition-delay: 400ms;
+}
+nav > ul > li:hover .submenu li:nth-child(9) {
+  transition-delay: 450ms;
+}
+nav > ul > li:hover .submenu li:nth-child(10) {
+  transition-delay: 500ms;
+}
+
+nav .submenu > li {
+  @apply list-none relative m-0 p-0 w-full font-arial text-[16px] font-[700] text-black mb-[45px] pb-[11px]
+  max-md:mb-[15px] ;
+}
+nav .submenu > li .submenu-child {
+  @apply list-none absolute top-0 bg-bgGreen m-0 p-0 -right-[100%] [&.active]:right-0 transition-all
+    max-md:relative max-md:bg-white
+             max-md:invisible
+        max-md:[&.active]:visible
+        max-md:opacity-0
+        max-md:[&.active]:opacity-100
+        max-md:border max-md:border-black/15 max-md:border-solid max-md:border-t max-md:border-b-0  max-md:border-l-0  max-md:border-r-0
+        max-md:mt-[15px] max-md:pt-[15px];
+}
+nav .submenu > li .submenu-child > li {
+  @apply font-arial text-[12.6px] text-black font-[400] mb-[7px]
+  max-md:border-0 max-md:before:hidden;
+}

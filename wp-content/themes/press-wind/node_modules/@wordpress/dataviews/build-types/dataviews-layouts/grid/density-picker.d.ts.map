@@ -1,0 +1,1 @@
+{"version":3,"file":"density-picker.d.ts","sourceRoot":"","sources":["../../../src/dataviews-layouts/grid/density-picker.tsx"],"names":[],"mappings":"AAyCA,MAAM,CAAC,OAAO,UAAU,aAAa,CAAE,EACtC,OAAO,EACP,UAAU,GACV,EAAE;IACF,OAAO,EAAE,MAAM,CAAC;IAChB,UAAU,EAAE,KAAK,CAAC,QAAQ,CAAE,KAAK,CAAC,cAAc,CAAE,MAAM,CAAE,CAAE,CAAC;CAC7D,sCAsDA"}

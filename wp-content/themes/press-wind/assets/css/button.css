@@ -1,0 +1,21 @@
+.button {
+  @apply inline-block py-[10px] md:py-[26px] px-[20px] md:px-[29px] bg-white font-jakarta rounded-[40px] text-[14px] md:text-[19px] font-[800]  tracking-[0.5px];
+}
+.button--primary {
+  @apply border-solid border-2 border-green text-green hover:no-underline hover:bg-green hover:text-white transition-all duration-300;
+}
+.button--bg-orange{
+  @apply border-2 border-solid border-white px-[65px] py-[10px] text-white bg-orange hover:no-underline hover:bg-white hover:text-orange hover:border-solid hover:border-2 hover:border-orange transition-all duration-300 font-body text-[16px] font-[300];
+}
+
+.button--bg-green{
+  @apply border-2 border-solid border-white px-[30px] py-[10px] text-white bg-green hover:no-underline hover:bg-white hover:text-green hover:border-solid hover:border-2 hover:border-green transition-all duration-300 font-body text-[16px] font-[300];
+}
+
+.button--grey{
+  @apply border-2 border-solid border-[#F6F6F6] px-[30px] py-[10px] text-black bg-[#F6F6F6] hover:no-underline hover:bg-green hover:text-white hover:border-solid hover:border-2 hover:border-green transition-all duration-300 font-body text-[16px] font-[300];
+}
+
+.button--white{
+  @apply table mx-auto mt-[30px] border-2 border-solid border-[#fff] px-[30px] py-[10px] text-orange bg-[#fff] hover:no-underline hover:bg-green hover:text-white hover:border-solid hover:border-2 hover:border-green transition-all duration-300 font-body text-[16px] font-[700];
+}
