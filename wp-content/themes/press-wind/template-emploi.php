@@ -1,11 +1,14 @@
 <?php
 /*
-Template Name: Liste des Partenaires
+Template Name: Liste des Offres d'emploi
 */
 get_header();
 
 $current_id = get_the_ID();
 $ref_id = wp_get_post_parent_id($current_id) ?: $current_id;
+
+$sub_title = get_field('offers_subtitle');
+$intro = get_field('offers_intro');
 
 // Récupération de la page courante pour la pagination
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -23,11 +26,22 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         </ol>
     </nav>
 
-    <h1 class="inline-block font-bold pb-4 text-green text-center text-[32px] relative after:absolute after:bottom-0 after:block after:bg-green after:h-[1px] after:-left-4 after:-right-4 after:content-['']"><?php the_title() ?></h1>
+    <h1 class="inline-block font-bold pb-4 text-orange text-center text-[32px]"><?php the_title() ?></h1>
+
+    <?php if($sub_title) { ?>
+        <span class="block text-2xl"><?php echo $sub_title ?></span>
+    <?php } ?>
+
+    <?php if($intro) { ?>
+        <div class="block mx-auto max-w-[540px]">
+            <p class="text-base font-arial mt-6"><?php echo $intro ?></p>
+        </div>
+    <?php } ?>
+
 
     <?php
     $args = array(
-        'post_type'      => 'partenaire',
+        'post_type'      => 'offre_emploi',
         'posts_per_page' => 9,          // 👉 9 éléments par page
         'orderby'        => 'title',
         'order'          => 'ASC',
@@ -37,18 +51,19 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
     if ($partenaires->have_posts()) :
         ?>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 list-none m-0 p-0">
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 list-none m-0 p-0 mt-20">
             <?php while ($partenaires->have_posts()) : $partenaires->the_post(); ?>
-                <li class="partenaire-item">
+                <li class="partenaire-item flex flex-col gap-8">
                     <div class="flex justify-center overflow-hidden items-center sm:h-[200px] lg:h-[267px]">
                         <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('full', ['class' => 'w-full h-auto object-contain']); ?>
                         <?php endif; ?>
                     </div>
 
-                    <div class="bg-bgOrange px-4 py-6">
-                        <h2 class="font-arial text-[26px] font-normal text-orangeGlow"><?php the_title(); ?></h2>
-                        <div class="text-base"><?php the_content(); ?></div>
+                    <div class="bg-bgGreen px-4 py-6 rounded-[20px]">
+                        <h2 class="font-body text-[26px] font-medium"><?php the_title(); ?></h2>
+                        <div class="text-base text-black/60"><?php the_excerpt(); ?></div>
+                        <a href="<?php the_permalink(); ?>" class="button button--bg-green !border-green mt-4">Voir l'offre en détail</a>
                     </div>
                 </li>
             <?php endwhile; ?>
@@ -70,7 +85,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         wp_reset_postdata();
     else :
         ?>
-        <p>Aucun partenaire trouvé.</p>
+        <p>Aucune offre d'emploi trouvée.</p>
     <?php
     endif;
     ?>
