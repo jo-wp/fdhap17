@@ -14,7 +14,8 @@ require_once dirname(__FILE__) . '/inc/gutenberg.php';
 require_once dirname(__FILE__) . '/inc/acf_blocks.php';
 // auto loading login assets
 require_once dirname(__FILE__) . '/inc/login_assets.php';
-
+// Custom Post Type setup
+require_once dirname(__FILE__) . '/inc/cpt.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {

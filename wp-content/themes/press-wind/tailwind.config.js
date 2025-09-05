@@ -41,6 +41,7 @@ module.exports = {
         black: '#333333',
         green:'#51AB7E',
         orange: '#E9B237',
+        orangeGlow: '#FB920F',
         primary: '#51AB7E',
         bgOrange : '#FFFAEE',
         bgGreen : '#ECF5F0'
