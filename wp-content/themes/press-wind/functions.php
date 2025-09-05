@@ -130,3 +130,17 @@ add_action('admin_head', __NAMESPACE__ . '\fix_svg');
  * Term to page mapping
  */
 require_once dirname(__FILE__) . '/config/term_to_page.php';
+
+
+/**
+ * Menus
+ */
+
+// Activer le support des menus
+add_theme_support('menus');
+
+// Déclarer tes emplacements de menu
+register_nav_menus([
+    'minisite-primary' => __('Mini site : menu principal', 'press-wind'),
+    'minisite-preheader' => __('Mini site : menu secondaire', 'press-wind'),
+]);

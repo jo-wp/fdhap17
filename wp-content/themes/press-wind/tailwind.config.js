@@ -50,6 +50,7 @@ module.exports = {
         'wp-performance': "url('/assets/media/wp-performance.png')",
         'more-icon': "url('/assets/media/more.svg')",
         'arrow-menu': "url('/assets/media/arrow-menu.svg')",
+        'arrow-menu-orange': "url('/assets/media/arrow-menu-orange.svg')",
         'arrow-menu-black': "url('/assets/media/arrow-menu-black.svg')",
         'check': "url('/assets/media/check.svg')",
         'arrow-list' : "url('/assets/media/arrow-list.svg')",

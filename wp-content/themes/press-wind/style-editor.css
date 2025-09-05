@@ -116,6 +116,34 @@
   --tw-contain-paint:  ;
   --tw-contain-style:  ;
 }
+.container{
+  width: 100%;
+}
+@media (min-width: 640px){
+  .container{
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px){
+  .container{
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px){
+  .container{
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px){
+  .container{
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px){
+  .container{
+    max-width: 1536px;
+  }
+}
 .invisible{
   visibility: hidden;
 }
@@ -205,6 +233,9 @@
 .mb-\[42px\]{
   margin-bottom: 42px;
 }
+.mb-\[4px\]{
+  margin-bottom: 4px;
+}
 .mb-\[50px\]{
   margin-bottom: 50px;
 }
@@ -265,6 +296,9 @@
 .block{
   display: block;
 }
+.inline-block{
+  display: inline-block;
+}
 .flex{
   display: flex;
 }
@@ -285,6 +319,9 @@
 }
 .h-\[22px\]{
   height: 22px;
+}
+.h-\[267px\]{
+  height: 267px;
 }
 .h-\[40vh\]{
   height: 40vh;
@@ -405,6 +442,9 @@
 }
 .max-w-\[890px\]{
   max-width: 890px;
+}
+.max-w-\[914px\]{
+  max-width: 914px;
 }
 .max-w-\[915px\]{
   max-width: 915px;
@@ -609,6 +649,9 @@
 .border-b{
   border-bottom-width: 1px;
 }
+.border-b-\[4px\]{
+  border-bottom-width: 4px;
+}
 .border-l-0{
   border-left-width: 0px;
 }
@@ -626,6 +669,10 @@
 }
 .border-none{
   border-style: none;
+}
+.border-\[\#333\]{
+  --tw-border-opacity: 1;
+  border-color: rgb(51 51 51 / var(--tw-border-opacity));
 }
 .border-\[\#DDD\]{
   --tw-border-opacity: 1;
@@ -682,6 +729,9 @@
 .bg-no-repeat{
   background-repeat: no-repeat;
 }
+.object-contain{
+  object-fit: contain;
+}
 .object-cover{
   object-fit: cover;
 }
@@ -690,6 +740,9 @@
 }
 .p-0{
   padding: 0px;
+}
+.p-4{
+  padding: 1rem;
 }
 .p-\[12px\]{
   padding: 12px;
@@ -708,6 +761,10 @@
 }
 .p-\[50px\]{
   padding: 50px;
+}
+.px-4{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .px-\[100px\]{
   padding-left: 100px;
@@ -765,6 +822,10 @@
   padding-top: 12px;
   padding-bottom: 12px;
 }
+.py-\[14px\]{
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
 .py-\[15px\]{
   padding-top: 15px;
   padding-bottom: 15px;
@@ -804,6 +865,9 @@
 .py-\[8px\]{
   padding-top: 8px;
   padding-bottom: 8px;
+}
+.pb-4{
+  padding-bottom: 1rem;
 }
 .pb-\[15px\]{
   padding-bottom: 15px;
@@ -889,6 +953,9 @@
 .text-\[24px\]{
   font-size: 24px;
 }
+.text-\[26px\]{
+  font-size: 26px;
+}
 .text-\[32px\]{
   font-size: 32px;
 }
@@ -903,6 +970,10 @@
 }
 .text-\[50px\]{
   font-size: 50px;
+}
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 .\!font-\[700\]{
   font-weight: 700 !important;
@@ -924,6 +995,9 @@
 }
 .font-bold{
   font-weight: 700;
+}
+.font-normal{
+  font-weight: 400;
 }
 .uppercase{
   text-transform: uppercase;
@@ -1021,6 +1095,8 @@
 body{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 a{
   text-decoration-line: none;
@@ -1647,6 +1723,9 @@ nav .submenu > li .submenu-child > li{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
 }
+.minisite-header {
+
+}
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
 .splide__container{box-sizing:border-box;position:relative}
@@ -2071,6 +2150,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   position: absolute;
 }
+.after\:-left-4::after{
+  content: var(--tw-content);
+  left: -1rem;
+}
+.after\:-right-4::after{
+  content: var(--tw-content);
+  right: -1rem;
+}
 .after\:-right-\[20px\]::after{
   content: var(--tw-content);
   right: -20px;
@@ -2106,6 +2193,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:h-\[17px\]::after{
   content: var(--tw-content);
   height: 17px;
+}
+.after\:h-\[1px\]::after{
+  content: var(--tw-content);
+  height: 1px;
 }
 .after\:h-\[50\%\]::after{
   content: var(--tw-content);
@@ -2148,6 +2239,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:rounded-\[20px\]::after{
   content: var(--tw-content);
   border-radius: 20px;
+}
+.after\:bg-green::after{
+  content: var(--tw-content);
+  --tw-bg-opacity: 1;
+  background-color: rgb(81 171 126 / var(--tw-bg-opacity));
 }
 .after\:bg-arrow-menu::after{
   content: var(--tw-content);
