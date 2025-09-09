@@ -14,7 +14,8 @@ require_once dirname(__FILE__) . '/inc/gutenberg.php';
 require_once dirname(__FILE__) . '/inc/acf_blocks.php';
 // auto loading login assets
 require_once dirname(__FILE__) . '/inc/login_assets.php';
-
+// Custom Post Type setup
+require_once dirname(__FILE__) . '/inc/cpt.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {
@@ -129,3 +130,17 @@ add_action('admin_head', __NAMESPACE__ . '\fix_svg');
  * Term to page mapping
  */
 require_once dirname(__FILE__) . '/config/term_to_page.php';
+
+
+/**
+ * Menus
+ */
+
+// Activer le support des menus
+add_theme_support('menus');
+
+// Déclarer tes emplacements de menu
+register_nav_menus([
+    'minisite-primary' => __('Mini site : menu principal', 'press-wind'),
+    'minisite-preheader' => __('Mini site : menu secondaire', 'press-wind'),
+]);

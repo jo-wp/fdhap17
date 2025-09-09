@@ -1,0 +1,11 @@
+.block-minisite-card h2 {
+    @apply relative block w-[200px] z-10 mx-auto mx-auto
+    before:block before:content-[""] before:h-[1px] before:w-[380px] before:bg-green before:absolute before:left-1/2 before:-ml-[525px] before:top-[20px] before:z-0
+    after:block after:content-[""] after:h-[1px] after:w-[380px] after:bg-green after:absolute after:right-1/2 after:-mr-[525px] after:top-[20px] after:z-0;
+
+
+}
+
+.block-minisite-card .style-orange h2 {
+    @apply after:bg-orange before:bg-orange;
+}

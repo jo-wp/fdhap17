@@ -14,6 +14,7 @@
 @import './nav.css';
 @import './library/instagram.css';
 @import './template-camping.css';
+@import './mini-site.css';
  
 /** FONT IMPORT CDN */
 @import 'https://use.typekit.net/kcm1lom.css';
@@ -31,3 +32,4 @@
 @import '../../blocks/faq/style.css';
 @import '../../blocks/presentation/style.css';
 @import '../../blocks/masonry/style.css';
+@import '../../blocks/minisite-cards/style.css';

@@ -1,0 +1,51 @@
+.minisite-header li {
+    @apply relative;
+}
+
+.minisite-header li a {
+    @apply no-underline;
+}
+
+.minisite-header li.current-menu-item a:after {
+    @apply block content-[''] h-[2px] bg-black w-full absolute -bottom-[14px];
+}
+
+.minisite-subheader li {
+    @apply flex gap-4 items-center after:content-[''] after:inline-block after:w-[1px] after:h-full after:bg-white;
+}
+
+.minisite-subheader li:last-child {
+    @apply after:hidden;
+}
+
+.minisite-breadcrumb li {
+    @apply flex items-center gap-4;
+}
+
+.minisite-breadcrumb li:first-child {
+        @apply relative after:content-[''] after:bg-arrow-menu-orange after:w-[12px] after:h-[7px] after:inline-block after:-rotate-90;
+}
+
+.minisite-pagination {
+    @apply flex gap-0 justify-center font-body text-base;
+}
+
+.minisite-pagination span, .minisite-pagination a {
+    @apply py-1 px-3 border-solid border-[1px] border-[#DDDDDD] border-r-0 text-green no-underline;
+}
+
+.minisite-pagination span:first-child, .minisite-pagination a:first-child {
+    @apply rounded-tl-[5px] rounded-bl-[5px] ;
+}
+
+.minisite-pagination span:last-child, .minisite-pagination a:last-child {
+    @apply rounded-tr-[5px] rounded-br-[5px] border-r;
+}
+
+.minisite-pagination span {
+    @apply bg-green text-white border-green;
+}
+
+.minisite-pagination a:hover {
+    @apply bg-[#DDDDDD];
+}
