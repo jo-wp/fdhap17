@@ -99,7 +99,9 @@ if ($type_block_presentation == 'default') {
       elseif($type_block_presentation == 'image_background'):
 
       else:
-        $block_image($image_presentation);
+        // if($block_image):
+          $block_image($image_presentation);
+        // endif;
       endif; ?>
     </div>
     <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px] md:pr-[100px]">

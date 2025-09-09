@@ -16,7 +16,7 @@
     "src": "assets/media/wp-performance.png"
   },
   "main-legacy.js": {
-    "file": "assets/main-legacy-DmnE8sBS.js",
+    "file": "assets/main-legacy-Dt2P4tGg.js",
     "name": "main",
     "src": "main-legacy.js",
     "isEntry": true,
@@ -28,7 +28,7 @@
     ]
   },
   "main.js": {
-    "file": "assets/main-DfsF4eFA.js",
+    "file": "assets/main-DnbcwE30.js",
     "name": "main",
     "src": "main.js",
     "isEntry": true,
@@ -36,14 +36,14 @@
       "assets/js/dynamic/hello.js"
     ],
     "css": [
-      "assets/main-p8gejtIS.css"
+      "assets/main-CXSHWxb9.css"
     ],
     "assets": [
       "assets/wp-performance-CuIG5My3.png"
     ]
   },
   "vite/legacy-polyfills-legacy": {
-    "file": "assets/polyfills-legacy-KQptLx8I.js",
+    "file": "assets/polyfills-legacy-DpjMpQiQ.js",
     "name": "polyfills",
     "src": "vite/legacy-polyfills-legacy",
     "isEntry": true

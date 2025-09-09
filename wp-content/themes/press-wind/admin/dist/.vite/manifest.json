@@ -1,12 +1,12 @@
 {
   "admin/main-legacy.js": {
-    "file": "assets/main-legacy-DQUXAwZF.js",
+    "file": "assets/main-legacy-CkmedkkR.js",
     "name": "main",
     "src": "admin/main-legacy.js",
     "isEntry": true
   },
   "admin/main.js": {
-    "file": "assets/main-Cw3mWr6I.js",
+    "file": "assets/main-DgiXE0t8.js",
     "name": "main",
     "src": "admin/main.js",
     "isEntry": true,
@@ -15,7 +15,7 @@
     ]
   },
   "vite/legacy-polyfills-legacy": {
-    "file": "assets/polyfills-legacy-C1EbW6C2.js",
+    "file": "assets/polyfills-legacy-ljKOejhS.js",
     "name": "polyfills",
     "src": "vite/legacy-polyfills-legacy",
     "isEntry": true
