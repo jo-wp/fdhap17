@@ -79,7 +79,7 @@ switch ($hero_type) {
     </a>
   </div>
   <div
-    class="block-hero__content container-huge max-md:mx-0  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
+    class="block-hero__content md:mx-[30px]  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
     <?= (!$disabled_background) ? 'style="background-image:url(' . esc_url($firstCarousel) . ');"' : ''; ?>>
     <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
       <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">

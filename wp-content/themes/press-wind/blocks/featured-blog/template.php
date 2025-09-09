@@ -38,12 +38,12 @@ $template = [
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
-  <div class="mt-[40px] md:mt-[87px] mb-[40px] md:mb-[63px] flex flex-row md:flex-wrap gap-[22px]
+  <div class="mt-[40px] md:mt-[87px] mb-[40px] md:w-full mx-[30px] md:mb-[63px] flex flex-row justify-center  gap-[22px]
   max-md:overflow-x-scroll max-md:max-w-full">
   <?php foreach( $associated_featured_blog as $post ): 
     $featuredImage = get_the_post_thumbnail_url($post->ID,'full');
     ?>
-    <article class=" max-md:first:ml-[15px] max-md:last:mr-[15px] post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-h-[385px] md:min-h-[625px] min-w-[340px] md:min-w-[450px] rounded-[20px] bg-cover bg-center" style="background-image: url('<?= esc_url($featuredImage); ?>');">
+    <article class=" max-md:first:ml-[15px] max-md:last:mr-[15px] post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 aspect-[2/3] min-w-[23%] rounded-[20px] bg-cover bg-center" style="background-image: url('<?= esc_url($featuredImage); ?>');">
       <a class="hover:no-underline w-full h-full flex items-end relative z-20 hover:translate-x-2 transition-all duration-300 " href="<?= esc_url(get_permalink($post->ID)); ?>">
         <h3 class="post-title m-0 p-0 font-arial text-white text-center text-[20px] font-[700] mb-[42px] ml-[36px] border border-solid border-white py-[8px] px-[19px] rounded-[40px]"><?= esc_html($post->post_title); ?></h3>
       </a>

@@ -1,6 +1,7 @@
 import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
+import instagramOverride from './instagram/main.js';
 import Splide from '@splidejs/splide'
 window.Splide = Splide
 
@@ -158,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carouselDescription()
   menuToggle()
   menuMobileToggle()
+  instagramOverride()
 
   generateSummary()
 

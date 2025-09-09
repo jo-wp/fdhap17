@@ -1,0 +1,10 @@
+
+.instagram-gallery-feed{
+  @apply !px-[15px]; 
+}
+.instagram-gallery-feed .instagram-gallery-item:nth-child(-n+4){
+  @apply rounded-t-[20px]
+}
+.instagram-gallery-feed .instagram-gallery-item:nth-last-child(-n+4){
+  @apply rounded-b-[20px]
+}

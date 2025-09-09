@@ -43,7 +43,7 @@ $template = [
           $pageThumb = get_the_post_thumbnail_url($item->ID, 'full');
           $pageLink = get_permalink($item->ID);
           ?>
-          <div class="bg-cover max-md:shadow-lg max-md:bg-top max-md:rounded-t-[20px] md:bg-center relative max-md:min-h-[200px] md:min-h-[480px] after:w-full after:h-full after:content-[''] after:top-0 after:left-0 after:absolute 
+          <div class="bg-cover max-md:shadow-lg max-md:bg-top max-md:rounded-t-[20px] md:bg-center relative aspect-square after:w-full after:h-full after:content-[''] after:top-0 after:left-0 after:absolute 
           " style="background-image: url('<?= esc_url($pageThumb); ?>');">
             <a class="relative z-10 block h-full hover:no-underline" href="<?= esc_url($pageLink); ?>">
               <h3 class="m-0 text-black  md:text-white max-md:bg-white top-0 right-0 font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
