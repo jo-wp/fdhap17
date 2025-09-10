@@ -144,9 +144,6 @@
     max-width: 1536px;
   }
 }
-.invisible{
-  visibility: hidden;
-}
 .\!absolute{
   position: absolute !important;
 }
@@ -194,6 +191,9 @@
 }
 .row-span-2{
   grid-row: span 2 / span 2;
+}
+.float-left{
+  float: left;
 }
 .-m-\[50px\]{
   margin: -50px;
@@ -305,6 +305,9 @@
 .mt-\[20px\]{
   margin-top: 20px;
 }
+.mt-\[30px\]{
+  margin-top: 30px;
+}
 .mt-\[40px\]{
   margin-top: 40px;
 }
@@ -344,14 +347,14 @@
 .hidden{
   display: none;
 }
+.aspect-\[1\/1\]{
+  aspect-ratio: 1/1;
+}
 .aspect-\[2\/3\]{
   aspect-ratio: 2/3;
 }
 .aspect-square{
   aspect-ratio: 1 / 1;
-}
-.h-0{
-  height: 0px;
 }
 .h-\[22px\]{
   height: 22px;
@@ -374,6 +377,9 @@
 .h-full{
   height: 100%;
 }
+.max-h-0{
+  max-height: 0px;
+}
 .max-h-\[1000px\]{
   max-height: 1000px;
 }
@@ -391,6 +397,9 @@
 }
 .min-h-full{
   min-height: 100%;
+}
+.w-\[100\%\]{
+  width: 100%;
 }
 .w-\[22px\]{
   width: 22px;
@@ -1152,6 +1161,12 @@
 .no-underline{
   text-decoration-line: none;
 }
+.opacity-0{
+  opacity: 0;
+}
+.opacity-100{
+  opacity: 1;
+}
 .shadow-\[1px_8px_30px_0_rgba\(186\2c 186\2c 186\2c 0\.18\)\]{
   --tw-shadow: 1px 8px 30px 0 rgba(186,186,186,0.18);
   --tw-shadow-colored: 1px 8px 30px 0 var(--tw-shadow-color);
@@ -1172,6 +1187,12 @@
 }
 .duration-300{
   transition-duration: 300ms;
+}
+.duration-500{
+  transition-duration: 500ms;
+}
+.ease-in-out{
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 /** DEFAULT FOR EXAMPLE */
 body{
@@ -2459,10 +2480,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   width: 100%;
 }
-.after\:scale-100::after{
+.after\:rotate-45::after{
   content: var(--tw-content);
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
+  --tw-rotate: 45deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .after\:rounded-\[10px\]::after{
@@ -2503,6 +2523,12 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:transition-all::after{
   content: var(--tw-content);
   transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.after\:transition-transform::after{
+  content: var(--tw-content);
+  transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -2563,12 +2589,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .hover\:after\:w-\[100\%\]:hover::after{
   content: var(--tw-content);
   width: 100%;
-}
-.hover\:after\:scale-125:hover::after{
-  content: var(--tw-content);
-  --tw-scale-x: 1.25;
-  --tw-scale-y: 1.25;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .hover\:after\:bg-orange:hover::after{
   content: var(--tw-content);
@@ -3049,11 +3069,20 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:mb-\[63px\]{
     margin-bottom: 63px;
   }
+  .md\:mb-\[80px\]{
+    margin-bottom: 80px;
+  }
+  .md\:mr-\[30px\]{
+    margin-right: 30px;
+  }
   .md\:mr-\[40px\]{
     margin-right: 40px;
   }
   .md\:mt-\[100px\]{
     margin-top: 100px;
+  }
+  .md\:mt-\[60px\]{
+    margin-top: 60px;
   }
   .md\:mt-\[77px\]{
     margin-top: 77px;
@@ -3081,6 +3110,12 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:min-h-\[720px\]{
     min-height: 720px;
+  }
+  .md\:w-1\/2{
+    width: 50%;
+  }
+  .md\:w-\[33\%\]{
+    width: 33%;
   }
   .md\:w-\[50\%\]{
     width: 50%;
@@ -3124,8 +3159,8 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:basis-\[70\%\]{
     flex-basis: 70%;
   }
-  .md\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .md\:grid-cols-1{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   .md\:grid-cols-4{
     grid-template-columns: repeat(4, minmax(0, 1fr));
