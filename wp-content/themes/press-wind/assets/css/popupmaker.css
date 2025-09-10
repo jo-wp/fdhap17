@@ -5,6 +5,12 @@
 
 .pum-container {
   background-color: rgba(0,0,0,0) !important ;
+  
+  max-width: 1190px !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
 }
 .pum-container .pum-close{
   background-image: url('../media/close-popup.svg') !important;
@@ -19,12 +25,16 @@
     top: 0;
   background-color: rgba(0, 0, 0, 0) !important;
   border: none !important;
+
 }
 .pum-container > div:first-child{
   width: 40% !important;
 }
 .pum-container > div:first-child img{
   width: 100% !important;
+  height: 100% !important;
+  border-radius: 20px 0px 0px 20px !important;
+  object-fit: cover !important;
 }
 .pum-container > div:nth-child(2){
   width: 60% !important;
@@ -41,7 +51,7 @@
   text-align: center !important;
   font-size: 32px !important;
   font-family: Arial, Helvetica, sans-serif !important;
-  margin-bottom: 0px !important;
+  margin-bottom: 30px !important;
 }
 .pum-container > div:nth-child(2) .pum-content{
   text-align: center !important;
@@ -50,6 +60,17 @@
   margin-top: 10px !important;
   margin-bottom: 20px !important;
   color: white !important;
+}
+.pum-container > div:nth-child(2) .pum-content p {
+  font-size: 20px !important;
+  line-height: 27px !important;
+  margin-top: 0px !important;
+}
+.pum-container > div:nth-child(2) .pum-content .pum-title{
+  margin-bottom: 30px !important;
+}
+.pum-container > div:nth-child(2) .pum-content .button--bg-orange{
+  border: none !important ;
 }
 
 @media(max-width: 768px){
