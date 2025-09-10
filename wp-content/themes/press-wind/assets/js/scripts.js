@@ -155,7 +155,7 @@ function carouselDescription() {
 
 document.addEventListener('DOMContentLoaded', () => {
   splideJsBlockIdea()
-  expandFAQItem()
+  // expandFAQItem()
   carouselDescription()
   menuToggle()
   menuMobileToggle()
