@@ -35,26 +35,43 @@ $size_image = '';
 $size_blocks = '';
 switch ($type_block_editorial) {
 	case 'default':
-		$size_blocks = ' md:flex-1 ';
+        $size_section = 'max-w-[1034px]';
+        $size_blocks_content = ' md:flex-1 ';
+        $size_blocks_image = ' md:flex-1 ';
 		$size_image = 'aspect-square lg:aspect-auto lg:min-w-[550px] w-full lg:min-h-[550px]';
+        $class_innerblock = 'mb-[40px] [&_h2]:mb-[50px]';
 		$class_block_editorial = 'flex flex-col md:flex-row gap-0 md:gap-[53px]';
 		break;
 	case 'image_big_right':
-		$size_blocks = 'max-md:w-full md:w-[50%] ';
+        $size_section = 'max-w-[1034px]';
+        $size_blocks_content = 'max-md:w-full md:w-[50%] ';
+        $size_blocks_image = 'max-md:w-full md:w-[50%] ';
 		$size_image = 'max-md:min-w-full md:min-w-[720px] w-full md:min-h-[720px] object-cover object-center';
+        $class_innerblock = 'mb-[40px] [&_h2]:mb-[50px]';
 		$class_block_editorial_texte = '-m-[50px] bg-white px-[73px] py-[100px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)]';
 		$class_block_editorial = 'flex max-md:flex-col md:flex-row-reverse ';
 		break;
+    case 'image_big_btn':
+        $size_section = 'max-w-[1270px]';
+        $size_blocks_content = 'max-md:w-full md:w-[52%] ';
+        $size_blocks_image = 'max-md:w-full md:w-[65%] ';
+        $class_innerblock = 'mb-0 [&_h2]:mb-[35px]';
+        $size_image = 'w-full h-full object-cover object-center';
+        $class_block_editorial_texte = '-ml-[17%] bg-white px-[45px] py-[70px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)]';
+        $class_block_editorial = 'flex max-md:flex-col md:flex-row-reverse ';
+        break;
+
 }
 
-
 ?>
-<section <?= get_block_wrapper_attributes(["class" => 'block-editorial max-w-[1034px] max-[1090px]:mx-[30px] mx-auto '.$class_block_editorial.'   justify-between items-center']); ?>>
-  <div class="<?= $size_blocks; ?> <?= $class_block_editorial_texte; ?>" >
-      <InnerBlocks class="mb-[40px] [&_p]:text-center md:[&_p]:text-inherit [&_h2]:text-center md:[&_h2]:text-inherit [&_h2_sub]:text-center md:[&_h2_sub]:text-inherit text-[14px] md:[&_p]:text-[15px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2_sub]:font-arial [&_h2_sub]:text-[24px] md:[&_h2_sub]:text-[32px] [&_h2_sub]:float-none  md:[&_h2_sub]:float-right [&_h2_sub]:font-[400] [&_h2]:font-[400] [&_h2]:mb-[50px]" template="<?php echo esc_attr(wp_json_encode($template)) ?>"
+
+
+<section <?= get_block_wrapper_attributes(["class" => 'block-editorial '.$size_section.' max-[1090px]:mx-[30px] mx-auto '.$class_block_editorial.'   justify-between items-center']); ?>>
+  <div class="<?= $size_blocks_content; ?> <?= $class_block_editorial_texte; ?>" >
+      <InnerBlocks class="<?php echo $class_innerblock; ?> [&_p]:text-center md:[&_p]:text-inherit [&_h2]:text-center md:[&_h2]:text-inherit [&_h2_sub]:text-center md:[&_h2_sub]:text-inherit text-[14px] md:[&_p]:text-[15px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2_sub]:font-arial [&_h2_sub]:text-[24px] md:[&_h2_sub]:text-[32px] [&_h2_sub]:float-none  md:[&_h2_sub]:float-right [&_h2_sub]:font-[400] [&_h2]:font-[400] " template="<?php echo esc_attr(wp_json_encode($template)) ?>"
         allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
-  <div class="<?= $size_blocks; ?>">
+  <div class="<?= $size_blocks_image; ?>">
     <?php if ($image) : ?>
       <div class="block-editorial__image">
         <img class="<?= $size_image; ?> rounded-[20px] object-cover " src="<?= esc_url($image['url']) ?>" alt="<?= esc_attr($image['alt']) ?>" />
