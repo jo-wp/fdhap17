@@ -1,58 +1,57 @@
-@media(min-width:768px){
-  
-.block-destinations .grid > div::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.91) -22.41%,
-    rgba(255, 255, 255, 0) 75.17%
-  );
-}
-.block-destinations .grid > div:nth-child(-n + 4)::after {
-  border-top-left-radius: 39px;
-  border-top-right-radius: 39px;
-}
-.block-destinations .grid > div:hover::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  background: #E9B237E8;
-}
-.block-destinations .grid > div:nth-child(-n + 4)::before{
-  border-top-left-radius: 39px;
-  border-top-right-radius: 39px;
-}
-.block-destinations .grid > div:nth-child(n + 5):nth-child(-n + 8)::before {
-  border-bottom-left-radius: 39px;
-  border-bottom-right-radius: 39px;
-}
+@media (min-width: 768px) {
+  .block-destinations .grid > div:nth-child(-n + 4)::after {
+    border-top-left-radius: 39px;
+    border-top-right-radius: 39px;
+  }
 
-.block-destinations .grid > div:hover h3{
-  display: none;
-}
-.block-destinations .grid > div:hover a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.block-destinations .grid > div p {
-  display: none;
-}
-.block-destinations .grid > div:hover p{
-  display: block;
-}
+  .card-yellow { position: relative; overflow: hidden; }
+  .card-yellow .overlay-yellow {
+    position:absolute; inset:0;
+    background: #E9B237E8; /* ta teinte */
+    transform: translateY(100%);
+    transition: transform .5s ease;
+    pointer-events:none;
+    z-index:1; /* au-dessus de l'image, sous le texte */
+  }
+  .card-yellow:hover .overlay-yellow,
+  .card-yellow.is-active .overlay-yellow {
+    transform: translateY(0);
+  }
 
-.block-destinations .grid > div:hover::after{
-  display: none;
-}
+  /* Pour le mode “tap” mobile : quand tu toggles .is-active via JS */
+  .card-yellow.is-active h3 {
+    transform: translateX(100%); opacity: 0;
+  }
+  .card-yellow.is-active p {
+    opacity: 1; transform: translateY(0);
+    
+  }
+
+  .block-destinations .grid > div:nth-child(-n + 4)::before {
+    border-top-left-radius: 39px;
+    border-top-right-radius: 39px;
+  }
+  .block-destinations .grid > div:nth-child(n + 5):nth-child(-n + 8)::before {
+    border-bottom-left-radius: 39px;
+    border-bottom-right-radius: 39px;
+  }
+
+  /* .block-destinations .grid > div:hover h3 {
+    display: none;
+  } */
+  /* .block-destinations .grid > div:hover a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+  /* .block-destinations .grid > div p {
+    display: none;
+  }
+  .block-destinations .grid > div:hover p {
+    display: block;
+  }
+
+  .block-destinations .grid > div:hover::after {
+    display: none;
+  } */
 }
