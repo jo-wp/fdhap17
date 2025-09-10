@@ -45,7 +45,7 @@ $template = [
           $pageLink = get_permalink($item->ID);
           ?>
 <div
-  class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-t-[20px] overflow-hidden"
+  class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-[20px] overflow-hidden"
   style="background-image: url('<?= esc_url($pageThumb); ?>');">
 
   <!-- Calque jaune qui monte -->
@@ -56,7 +56,8 @@ $template = [
     <h3
       class="absolute inset-x-0 top-0 m-0 text-black md:text-white font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
              transform-gpu translate-x-0 opacity-100 transition-all duration-500 ease-out
-             group-hover:translate-x-full group-hover:opacity-0">
+             group-hover:translate-x-full group-hover:opacity-0
+             max-md:absolute max-md:bottom-0 max-md:p-[20px_10px] max-md:text-center max-md:top-[inherit] max-md:bg-white max-md:rounded-b-[20px]" >
       <?= esc_html($pageTitle); ?>
     </h3>
 

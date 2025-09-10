@@ -32,7 +32,7 @@ $template = [
   ]
 ];
 ?>
-<section <?= get_block_wrapper_attributes(['class' => 'container-huge flex flex-col items-center justify-center block-faq bg-bgGreen rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px]']); ?>>
+<section <?= get_block_wrapper_attributes(['class' => 'container-huge flex flex-col items-center justify-center block-faq bg-bgGreen rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px] px-[30px]']); ?>>
   <div class="">
     <InnerBlocks
       class=" [&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
@@ -42,7 +42,7 @@ $template = [
   <div class="max-w-[1100px] w-[100%] mx-[30px] flex items-start max-md:flex-col">
     <?php if ($part1): ?>
       <ul
-        class="md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
+        class="w-full md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
         <?php foreach ($part1 as $item): ?>
           <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
             <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
@@ -62,7 +62,7 @@ $template = [
     <?php endif; ?>
     <?php if ($part2): ?>
       <ul
-        class="md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
+        class="w-full md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
         <?php foreach ($part2 as $item): ?>
           <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
             <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       a.classList.add("max-h-0", "opacity-0");
     });
     toggles.forEach(t => t.setAttribute("aria-expanded", "false"));
-    toggles.forEach(t => t.classList.remove("after:rotate-45"));
+    toggles.forEach(t => t.classList.remove("after:rotate-45","max-md:after:bottom-[-25px]"));
   }
 
   function openOne(toggle, answer) {
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // valeur large pour permettre la transition de hauteur
     answer.classList.add("max-h-[1000px]", "opacity-100","mt-[30px]");
     toggle.setAttribute("aria-expanded", "true");
-    toggle.classList.add("after:rotate-45");
+    toggle.classList.add("after:rotate-45","max-md:after:bottom-[-25px]");
   }
 
   toggles.forEach(toggle => {
