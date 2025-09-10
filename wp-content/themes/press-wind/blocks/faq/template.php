@@ -7,6 +7,11 @@
 
 //ACF FIELDS
 $items_answer = get_field('items_answer');
+$count = count($items_answer);
+$half = ceil($count / 2);
+list($part1, $part2) = array_chunk($items_answer, $half);
+
+
 
 // INNERBLOCKS
 $allowedBlocks = ['core/heading', 'core/paragraph'];
@@ -27,23 +32,103 @@ $template = [
   ]
 ];
 ?>
-<section <?= get_block_wrapper_attributes(['class' => 'container-huge flex flex-col items-center justify-center block-faq bg-bgGreen rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px]']); ?>>
+<section <?= get_block_wrapper_attributes(['class' => 'container-huge flex flex-col items-center justify-center block-faq bg-bgGreen rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px] px-[30px]']); ?>>
   <div class="">
     <InnerBlocks
       class=" [&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
-  <div class="max-w-[1100px]">
-    <?php if( $items_answer ): ?>
-      <ul class="m-0 p-0 list-none grid grid-cols-1 md:grid-cols-2 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[80px]">
-        <?php foreach( $items_answer as $item ): ?>
+  <div class="max-w-[1100px] w-[100%] mx-[30px] flex items-start max-md:flex-col">
+    <?php if ($part1): ?>
+      <ul
+        class="w-full md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
+        <?php foreach ($part1 as $item): ?>
           <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
-            <h3 class="cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px] relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px] after:transition-all after:duration-300 after:scale-100 hover:after:scale-125"><?= esc_html($item['question']); ?></h3>
-            <p  class="m-0 font-arial text-[14px] text-black h-0 invisible max-md:text-center"><?= esc_html($item['reponse']); ?></p>
+            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
+           relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
+           md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
+           after:transition-transform after:duration-300" role="button" tabindex="0" aria-expanded="false">
+              <?= esc_html($item['question']); ?>
+            </h3>
+
+            <p class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
+            m-0 font-arial text-[14px] text-black max-md:text-center">
+              <?= esc_html($item['reponse']); ?>
+            </p>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+    <?php if ($part2): ?>
+      <ul
+        class="w-full md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
+        <?php foreach ($part2 as $item): ?>
+          <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
+            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
+           relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
+           md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
+           after:transition-transform after:duration-300" role="button" tabindex="0" aria-expanded="false">
+              <?= esc_html($item['question']); ?>
+            </h3>
+
+            <p class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
+            m-0 font-arial text-[14px] text-black max-md:text-center">
+              <?= esc_html($item['reponse']); ?>
+            </p>
           </li>
         <?php endforeach; ?>
       </ul>
     <?php endif; ?>
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const root = document.querySelector(".block-faq"); // limite l'accordéon à ta section
+  if (!root) return;
+
+  const toggles = root.querySelectorAll(".faq-toggle");
+  const answers = root.querySelectorAll(".faq-answer");
+
+  // ferme tout
+  function closeAll() {
+    answers.forEach(a => {
+      a.classList.remove("max-h-[1000px]", "opacity-100","mt-[30px]");
+      a.classList.add("max-h-0", "opacity-0");
+    });
+    toggles.forEach(t => t.setAttribute("aria-expanded", "false"));
+    toggles.forEach(t => t.classList.remove("after:rotate-45","max-md:after:bottom-[-25px]"));
+  }
+
+  function openOne(toggle, answer) {
+    closeAll();
+    answer.classList.remove("max-h-0", "opacity-0");
+    // valeur large pour permettre la transition de hauteur
+    answer.classList.add("max-h-[1000px]", "opacity-100","mt-[30px]");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.classList.add("after:rotate-45","max-md:after:bottom-[-25px]");
+  }
+
+  toggles.forEach(toggle => {
+    const answer = toggle.nextElementSibling;
+
+    toggle.addEventListener("click", () => {
+      const isOpen = answer.classList.contains("max-h-[1000px]");
+      if (isOpen) {
+        closeAll();
+      } else {
+        openOne(toggle, answer);
+      }
+    });
+
+    // accessibilité clavier
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+  });
+});
+</script>

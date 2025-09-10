@@ -1,6 +1,7 @@
 import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
+import instagramOverride from './instagram/main.js';
 import Splide from '@splidejs/splide'
 window.Splide = Splide
 
@@ -90,20 +91,20 @@ function splideJsBlockIdea() {
   }
 }
 
-function expandFAQItem() {
-  const questions = document.querySelectorAll('.block-faq li h3')
+// function expandFAQItem() {
+//   const questions = document.querySelectorAll('.block-faq li h3')
 
-  questions.forEach((question) => {
-    question.addEventListener('click', () => {
-      question.parentElement.classList.toggle('active')
-      question.parentElement.querySelector('p').classList.toggle('invisible')
-      question.parentElement.querySelector('p').classList.toggle('h-0')
-    })
-  })
-  // questions.forEach(question => {
-  //   question.classList.toggle('invisible')
-  // })
-}
+//   questions.forEach((question) => {
+//     question.addEventListener('click', () => {
+//       question.parentElement.classList.toggle('active')
+//       question.parentElement.querySelector('p').classList.toggle('invisible')
+//       question.parentElement.querySelector('p').classList.toggle('h-0')
+//     })
+//   })
+//   // questions.forEach(question => {
+//   //   question.classList.toggle('invisible')
+//   // })
+// }
 
 function carouselDescription() {
   const state = {}
@@ -154,10 +155,11 @@ function carouselDescription() {
 
 document.addEventListener('DOMContentLoaded', () => {
   splideJsBlockIdea()
-  expandFAQItem()
+  // expandFAQItem()
   carouselDescription()
   menuToggle()
   menuMobileToggle()
+  instagramOverride()
 
   generateSummary()
 

@@ -9,8 +9,10 @@
 //ACF FIELDS
 $hero_type = get_field('hero_type');
 $activate_search = get_field('activate_search');
-$carousel_images = get_field('carousel_images');
-$firstCarousel = $carousel_images[0];
+$carousel_images = get_field('carousel_images') ?: []; 
+$first = $carousel_images[0] ?? [];
+$firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
+$firstText  = nl2br($first['texte'] ?? '');
 $logo = get_field('logo');
 $logo_tiny = get_field('logo_tiny');
 
@@ -78,9 +80,14 @@ switch ($hero_type) {
         alt="Icon wishlist">
     </a>
   </div>
-  <div
-    class="block-hero__content container-huge max-md:mx-0  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
-    <?= (!$disabled_background) ? 'style="background-image:url(' . esc_url($firstCarousel) . ');"' : ''; ?>>
+  <div id="hero-carousel"
+    class="block-hero__content md:mx-[30px]  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
+    
+    data-index="0">
+    <div class="bg-stack !absolute !inset-0 !z-0 md:rounded-b-[200px]">
+      <div class="bg-layer bg-layer--current !absolute inset-0 md:rounded-b-[200px]" style="background-image:url('<?= esc_url($firstImage) ?>')"></div>
+      <div class="bg-layer bg-layer--next !absolute inset-0 md:rounded-b-[200px]"></div>
+    </div>
     <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
       <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
         <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
@@ -117,14 +124,15 @@ switch ($hero_type) {
       </a>
       <nav class="flex items-center justify-center w-full">
         <ul class="flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
+        max-[1320px]:gap-0 max-[1320px]:justify-between
         max-md:flex-col max-md:justify-start max-md:items-start max-md:ml-[15px]">
-          <li class="relative leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+          <li class="relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
             max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px]">
             <a href="#"
-              class=" <?= $text_color; ?> max-md:font-[700] text-[16px] relative block font-arial hover:no-underline after:content-[''] after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Trouver
+              class=" <?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Trouver
               son camping</a>
             <ul class="max-md:submenu md:hidden absolute leading-[20px] ">
               <li class="md:hidden flex flex-row flex-wrap gap-[15px] before:!right-[initial] before:rotate-180">
@@ -147,47 +155,47 @@ switch ($hero_type) {
             class=" relative after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[4px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid">
             <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700] text-[16px] relative  block font-arial hover:no-underline after:content-[''] after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Vos
+              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Vos
               envies</a>
           </li>
-          <li class=" relative leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
             max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px]">
             <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700] text-[16px] relative  block font-arial hover:no-underline after:content-[''] after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Votre
+              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Votre
               façon de camper</a>
           </li>
-          <li class=" relative leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
             max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px]">
             <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700]  text-[16px] relative  block font-arial hover:no-underline after:content-[''] after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Explorer
+              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px]  text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Explorer
               la Charente Maritime</a>
           </li>
-          <li class=" relative leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
             max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px]">
             <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700]  text-[16px] relative  block font-arial hover:no-underline after:content-[''] after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Nos
+              class="<?= $text_color; ?> max-md:font-[700]   text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Nos
               offres spéciales</a>
           </li>
         </ul>
       </nav>
     </div>
     <?php if ($hero_type == 'full'): ?>
-      <div
-        class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-full items-start justify-center flex-col relative z-10
-							 max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
+      <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-full items-start justify-center flex-col relative z-10
+               max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
-        <InnerBlocks class="mb-[40px] max-md:[&_h1]:!text-[30px]" template="<?php echo esc_attr(wp_json_encode($template)) ?>"
-          allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
+        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line">
+          <?= apply_filters('the_content', $firstText); ?>
+        </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
           <span class="carousel-hero-button-prev cursor-pointer">
             <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
@@ -200,3 +208,126 @@ switch ($hero_type) {
     <?php endif; ?>
   </div>
 </section>
+<style>
+.bg-stack { pointer-events: none; 
+
+  border-end-end-radius: 200px;
+}
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  opacity: 0 !important;                
+  transition: opacity .45s ease !important;
+  will-change: opacity !important;
+}
+.bg-layer--current { opacity: 1 !important; z-index: 0; }  
+.bg-layer--next    { opacity: 0 !important; z-index: 1; }  
+.bg-layer--fadein  { opacity: 1 !important; }              
+
+#hero-text { transition: opacity .35s ease !important; will-change: opacity !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-layer, #hero-text { transition: none !important; }
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const slides = <?= json_encode($carousel_images ?? []) ?>;
+  if (!Array.isArray(slides) || slides.length === 0) return;
+
+  const hero = document.getElementById("hero-carousel");
+  const heroText = document.getElementById("hero-text");
+  const btnPrev = document.querySelector(".carousel-hero-button-prev");
+  const btnNext = document.querySelector(".carousel-hero-button-next");
+  const layerCurrent = hero.querySelector(".bg-layer--current");
+  const layerNext = hero.querySelector(".bg-layer--next");
+
+  const resolveUrl = (img) => {
+    if (!img) return "";
+    if (typeof img === "string") return img;
+    if (typeof img === "object" && img.url) return img.url;
+    return "";
+  };
+
+  let index = 0;
+  let isAnimating = false;
+
+  const firstUrl = resolveUrl(slides[0]?.image);
+  if (firstUrl) layerCurrent.style.backgroundImage = `url(${firstUrl})`;
+  heroText && (heroText.innerHTML = slides[0]?.texte || "");
+
+  function preload(src) {
+    return new Promise(resolve => {
+      if (!src) return resolve();
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+  }
+
+  function waitTransition(el, prop = 'opacity', timeout = 700) {
+    return new Promise(resolve => {
+      let done = false;
+      const onEnd = (e) => {
+        if (e && e.propertyName !== prop) return;
+        if (done) return;
+        done = true;
+        el.removeEventListener('transitionend', onEnd);
+        resolve();
+      };
+      el.addEventListener('transitionend', onEnd);
+      setTimeout(onEnd, timeout);
+    });
+  }
+
+async function goTo(newIndex) {
+  if (isAnimating || slides.length < 2) return;
+  const next = (newIndex + slides.length) % slides.length;
+  if (next === index) return;
+
+  isAnimating = true;
+
+  const nextUrl = resolveUrl(slides[next]?.image);
+  const nextTxt = slides[next]?.texte || "";
+
+  await preload(nextUrl);
+
+  layerNext.style.backgroundImage = `url(${nextUrl})`;
+  if (heroText) heroText.style.opacity = '0';
+
+
+  layerNext.offsetHeight;
+  layerNext.classList.add('bg-layer--fadein');
+
+  await waitTransition(layerNext);
+
+  layerCurrent.style.backgroundImage = `url(${nextUrl})`;
+  layerNext.classList.remove('bg-layer--fadein'); 
+
+  if (heroText) {
+    heroText.innerHTML = nextTxt;
+    heroText.style.opacity = '1';
+  }
+
+  index = next;
+  hero.dataset.index = String(index);
+  isAnimating = false;
+}
+
+  btnPrev?.addEventListener("click", () => goTo(index - 1));
+  btnNext?.addEventListener("click", () => goTo(index + 1));
+
+  hero.setAttribute('tabindex', '0');
+  hero.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') goTo(index - 1);
+    if (e.key === 'ArrowRight') goTo(index + 1);
+  });
+});
+</script>
+

@@ -116,7 +116,7 @@ h2 {
 }
 
 section {
-  @apply mb-[100px];
+  @apply mb-[50px] md:mb-[100px];
 }
 
 .after-underline h2::after {
