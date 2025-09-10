@@ -7,6 +7,11 @@
 
 //ACF FIELDS
 $items_answer = get_field('items_answer');
+$count = count($items_answer);
+$half = ceil($count / 2);
+list($part1, $part2) = array_chunk($items_answer, $half);
+
+
 
 // INNERBLOCKS
 $allowedBlocks = ['core/heading', 'core/paragraph'];
@@ -34,10 +39,20 @@ $template = [
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
-  <div class="max-w-[1100px]">
-    <?php if( $items_answer ): ?>
-      <ul class="m-0 p-0 list-none grid grid-cols-1 md:grid-cols-2 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[80px]">
-        <?php foreach( $items_answer as $item ): ?>
+  <div class="max-w-[1100px] mx-[30px] flex items-start max-md:flex-col">
+    <?php if( $part1 ): ?>
+      <ul class="md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
+        <?php foreach( $part1 as $item ): ?>
+          <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
+            <h3 class="cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px] relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px] after:transition-all after:duration-300 after:scale-100 hover:after:scale-125"><?= esc_html($item['question']); ?></h3>
+            <p  class="m-0 font-arial text-[14px] text-black h-0 invisible max-md:text-center"><?= esc_html($item['reponse']); ?></p>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+        <?php if( $part2 ): ?>
+      <ul class="md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
+        <?php foreach( $part2 as $item ): ?>
           <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
             <h3 class="cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px] relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px] after:transition-all after:duration-300 after:scale-100 hover:after:scale-125"><?= esc_html($item['question']); ?></h3>
             <p  class="m-0 font-arial text-[14px] text-black h-0 invisible max-md:text-center"><?= esc_html($item['reponse']); ?></p>
