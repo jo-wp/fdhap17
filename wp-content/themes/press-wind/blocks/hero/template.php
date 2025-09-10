@@ -9,10 +9,10 @@
 //ACF FIELDS
 $hero_type = get_field('hero_type');
 $activate_search = get_field('activate_search');
-$carousel_images = get_field('carousel_images') ?: []; 
+$carousel_images = get_field('carousel_images') ?: [];
 $first = $carousel_images[0] ?? [];
 $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
-$firstText  = nl2br($first['texte'] ?? '');
+$firstText = nl2br($first['texte'] ?? '');
 $logo = get_field('logo');
 $logo_tiny = get_field('logo_tiny');
 
@@ -62,11 +62,11 @@ switch ($hero_type) {
     break;
 }
 
-
+$mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
 ?>
 
-<section <?= get_block_wrapper_attributes(["class" => 'block-hero w-full ']); ?>>
+<section <?= get_block_wrapper_attributes(["class" => 'block-hero w-full ' . $mb_section]); ?>>
   <div class="max-md:hidden p-[15px] flex flex-row gap-[30px]  content-center justify-end bg-green top-bar">
     <div class="wrapper-search">
       <form action="<?= esc_url(home_url('/')) ?>">
@@ -82,10 +82,10 @@ switch ($hero_type) {
   </div>
   <div id="hero-carousel"
     class="block-hero__content md:mx-[30px]  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
-    
     data-index="0">
     <div class="bg-stack !absolute !inset-0 !z-0 md:rounded-b-[200px]">
-      <div class="bg-layer bg-layer--current !absolute inset-0 md:rounded-b-[200px]" style="background-image:url('<?= esc_url($firstImage) ?>')"></div>
+      <div class="bg-layer bg-layer--current !absolute inset-0 md:rounded-b-[200px]"
+        style="background-image:url('<?= esc_url($firstImage) ?>')"></div>
       <div class="bg-layer bg-layer--next !absolute inset-0 md:rounded-b-[200px]"></div>
     </div>
     <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
@@ -208,126 +208,153 @@ switch ($hero_type) {
     <?php endif; ?>
   </div>
 </section>
+<?php if(!is_front_page()): ?>
+<section class="mb-[80px] [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
+  <?php
+  if (function_exists('yoast_breadcrumb')) {
+    yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
+  }
+  ?>
+</section>
+<?php endif; ?>
 <style>
-.bg-stack { pointer-events: none; 
+  .bg-stack {
+    pointer-events: none;
 
-  border-end-end-radius: 200px;
-}
-.bg-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  opacity: 0 !important;                
-  transition: opacity .45s ease !important;
-  will-change: opacity !important;
-}
-.bg-layer--current { opacity: 1 !important; z-index: 0; }  
-.bg-layer--next    { opacity: 0 !important; z-index: 1; }  
-.bg-layer--fadein  { opacity: 1 !important; }              
+    border-end-end-radius: 200px;
+  }
 
-#hero-text { transition: opacity .35s ease !important; will-change: opacity !important; }
+  .bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    opacity: 0 !important;
+    transition: opacity .45s ease !important;
+    will-change: opacity !important;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .bg-layer, #hero-text { transition: none !important; }
-}
+  .bg-layer--current {
+    opacity: 1 !important;
+    z-index: 0;
+  }
 
+  .bg-layer--next {
+    opacity: 0 !important;
+    z-index: 1;
+  }
+
+  .bg-layer--fadein {
+    opacity: 1 !important;
+  }
+
+  #hero-text {
+    transition: opacity .35s ease !important;
+    will-change: opacity !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .bg-layer,
+    #hero-text {
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const slides = <?= json_encode($carousel_images ?? []) ?>;
-  if (!Array.isArray(slides) || slides.length === 0) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    const slides = <?= json_encode($carousel_images ?? []) ?>;
+    if (!Array.isArray(slides) || slides.length === 0) return;
 
-  const hero = document.getElementById("hero-carousel");
-  const heroText = document.getElementById("hero-text");
-  const btnPrev = document.querySelector(".carousel-hero-button-prev");
-  const btnNext = document.querySelector(".carousel-hero-button-next");
-  const layerCurrent = hero.querySelector(".bg-layer--current");
-  const layerNext = hero.querySelector(".bg-layer--next");
+    const hero = document.getElementById("hero-carousel");
+    const heroText = document.getElementById("hero-text");
+    const btnPrev = document.querySelector(".carousel-hero-button-prev");
+    const btnNext = document.querySelector(".carousel-hero-button-next");
+    const layerCurrent = hero.querySelector(".bg-layer--current");
+    const layerNext = hero.querySelector(".bg-layer--next");
 
-  const resolveUrl = (img) => {
-    if (!img) return "";
-    if (typeof img === "string") return img;
-    if (typeof img === "object" && img.url) return img.url;
-    return "";
-  };
+    const resolveUrl = (img) => {
+      if (!img) return "";
+      if (typeof img === "string") return img;
+      if (typeof img === "object" && img.url) return img.url;
+      return "";
+    };
 
-  let index = 0;
-  let isAnimating = false;
+    let index = 0;
+    let isAnimating = false;
 
-  const firstUrl = resolveUrl(slides[0]?.image);
-  if (firstUrl) layerCurrent.style.backgroundImage = `url(${firstUrl})`;
-  heroText && (heroText.innerHTML = slides[0]?.texte || "");
+    const firstUrl = resolveUrl(slides[0]?.image);
+    if (firstUrl) layerCurrent.style.backgroundImage = `url(${firstUrl})`;
+    heroText && (heroText.innerHTML = slides[0]?.texte || "");
 
-  function preload(src) {
-    return new Promise(resolve => {
-      if (!src) return resolve();
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-      img.src = src;
+    function preload(src) {
+      return new Promise(resolve => {
+        if (!src) return resolve();
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = src;
+      });
+    }
+
+    function waitTransition(el, prop = 'opacity', timeout = 700) {
+      return new Promise(resolve => {
+        let done = false;
+        const onEnd = (e) => {
+          if (e && e.propertyName !== prop) return;
+          if (done) return;
+          done = true;
+          el.removeEventListener('transitionend', onEnd);
+          resolve();
+        };
+        el.addEventListener('transitionend', onEnd);
+        setTimeout(onEnd, timeout);
+      });
+    }
+
+    async function goTo(newIndex) {
+      if (isAnimating || slides.length < 2) return;
+      const next = (newIndex + slides.length) % slides.length;
+      if (next === index) return;
+
+      isAnimating = true;
+
+      const nextUrl = resolveUrl(slides[next]?.image);
+      const nextTxt = slides[next]?.texte || "";
+
+      await preload(nextUrl);
+
+      layerNext.style.backgroundImage = `url(${nextUrl})`;
+      if (heroText) heroText.style.opacity = '0';
+
+
+      layerNext.offsetHeight;
+      layerNext.classList.add('bg-layer--fadein');
+
+      await waitTransition(layerNext);
+
+      layerCurrent.style.backgroundImage = `url(${nextUrl})`;
+      layerNext.classList.remove('bg-layer--fadein');
+
+      if (heroText) {
+        heroText.innerHTML = nextTxt;
+        heroText.style.opacity = '1';
+      }
+
+      index = next;
+      hero.dataset.index = String(index);
+      isAnimating = false;
+    }
+
+    btnPrev?.addEventListener("click", () => goTo(index - 1));
+    btnNext?.addEventListener("click", () => goTo(index + 1));
+
+    hero.setAttribute('tabindex', '0');
+    hero.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') goTo(index - 1);
+      if (e.key === 'ArrowRight') goTo(index + 1);
     });
-  }
-
-  function waitTransition(el, prop = 'opacity', timeout = 700) {
-    return new Promise(resolve => {
-      let done = false;
-      const onEnd = (e) => {
-        if (e && e.propertyName !== prop) return;
-        if (done) return;
-        done = true;
-        el.removeEventListener('transitionend', onEnd);
-        resolve();
-      };
-      el.addEventListener('transitionend', onEnd);
-      setTimeout(onEnd, timeout);
-    });
-  }
-
-async function goTo(newIndex) {
-  if (isAnimating || slides.length < 2) return;
-  const next = (newIndex + slides.length) % slides.length;
-  if (next === index) return;
-
-  isAnimating = true;
-
-  const nextUrl = resolveUrl(slides[next]?.image);
-  const nextTxt = slides[next]?.texte || "";
-
-  await preload(nextUrl);
-
-  layerNext.style.backgroundImage = `url(${nextUrl})`;
-  if (heroText) heroText.style.opacity = '0';
-
-
-  layerNext.offsetHeight;
-  layerNext.classList.add('bg-layer--fadein');
-
-  await waitTransition(layerNext);
-
-  layerCurrent.style.backgroundImage = `url(${nextUrl})`;
-  layerNext.classList.remove('bg-layer--fadein'); 
-
-  if (heroText) {
-    heroText.innerHTML = nextTxt;
-    heroText.style.opacity = '1';
-  }
-
-  index = next;
-  hero.dataset.index = String(index);
-  isAnimating = false;
-}
-
-  btnPrev?.addEventListener("click", () => goTo(index - 1));
-  btnNext?.addEventListener("click", () => goTo(index + 1));
-
-  hero.setAttribute('tabindex', '0');
-  hero.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') goTo(index - 1);
-    if (e.key === 'ArrowRight') goTo(index + 1);
   });
-});
 </script>
-

@@ -3897,6 +3897,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p\]\:m-0 p{
   margin: 0px;
 }
+.\[\&_p\]\:m-\[0\] p{
+  margin: 0;
+}
 .\[\&_p\]\:mt-0 p{
   margin-top: 0px;
 }
@@ -3911,6 +3914,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p\]\:font-marcellus p{
   font-family: Marcellus, serif;
+}
+.\[\&_p\]\:text-\[13\.34px\] p{
+  font-size: 13.34px;
 }
 .\[\&_p\]\:text-\[14px\] p{
   font-size: 14px;
@@ -3969,6 +3975,20 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p_a\]\:underline p a{
   text-decoration-line: underline;
+}
+.\[\&_p_span\]\:font-\[700\] p span{
+  font-weight: 700;
+}
+.\[\&_p_span\]\:text-orange p span{
+  --tw-text-opacity: 1;
+  color: rgb(233 178 55 / var(--tw-text-opacity));
+}
+.\[\&_p_span_span\]\:font-\[400\] p span span{
+  font-weight: 400;
+}
+.\[\&_p_span_span\]\:text-black p span span{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 .\[\&_ul\]\:m-0 ul{
   margin: 0px;
