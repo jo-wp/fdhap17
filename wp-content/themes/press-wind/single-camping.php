@@ -31,7 +31,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
 <div class="container-huge">
   <div class="title-stars flex max-md:flex-col md:flex-row items-center justify-start gap-[30px]">
     <div class="title ">
-      <h1 class="text-[50px] font-ivymode text-green "><?= get_the_title(); ?></h1>
+      <h1 class="max-md:text-center text-[32px]  md:text-[50px] font-ivymode text-green "><?= get_the_title(); ?></h1>
     </div>
     <div class="stars">
       <?php for ($i = 0; $i < $stars; $i++) : ?>
@@ -39,7 +39,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
       <?php endfor; ?>
     </div>
   </div>
-  <div class="commune flex flex-row items-center justify-start gap-[12px]">
+  <div class="commune flex flex-row items-center justify-center md:justify-start gap-[12px]">
     <img src="<?= get_template_directory_uri() ?>/assets/media/marker.svg" alt="Marker de la commune du camping <?= get_the_title(); ?>" />
     <p class="font-arial text-[20px] text-green"><?= $commune ?></p>
   </div>
@@ -152,7 +152,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
     </div>
     <div class="bloc-sidebar-camping max-md:w-full md:min-w-[460px]">
       <div class="bloc-sidebar-open-close mb-[30px]">
-        <p class="relative m-0 ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">Ouvert Aujourd'hui</p>
+        <p class="relative m-0 md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">Ouvert Aujourd'hui</p>
       </div>
       <div class="bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px]">
         <p class=" font-ivymode text-[36px] font-[700] m-0">-20 %</p>
