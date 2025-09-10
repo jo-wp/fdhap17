@@ -39,7 +39,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
       <?php endfor; ?>
     </div>
   </div>
-  <div class="commune flex flex-row items-center justify-center md:justify-start gap-[12px]">
+  <div class="commune flex flex-row items-center max-md:justify-center md:justify-start gap-[12px]">
     <img src="<?= get_template_directory_uri() ?>/assets/media/marker.svg" alt="Marker de la commune du camping <?= get_the_title(); ?>" />
     <p class="font-arial text-[20px] text-green"><?= $commune ?></p>
   </div>
