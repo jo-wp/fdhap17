@@ -686,6 +686,9 @@
 .overflow-hidden{
   overflow: hidden;
 }
+.whitespace-pre-line{
+  white-space: pre-line;
+}
 .rounded-\[10px\]{
   border-radius: 10px;
 }
@@ -788,12 +791,6 @@
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-.bg-arrow-menu{
-  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu.svg');
-}
-.bg-arrow-menu-black{
-  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu-black.svg');
 }
 .bg-cover{
   background-size: cover;
@@ -1952,6 +1949,15 @@ nav .submenu > li .submenu-child > li{
   --tw-bg-opacity: 1;
   background-color: rgb(221 221 221 / var(--tw-bg-opacity));
 }
+.pum-container .pum-close{
+  background-image: url('../media/close-popup.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 30px !important;
+  height: 30px !important;
+  margin: 30px !important;
+  z-index: 99999 !important;
+}
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
 .splide__container{box-sizing:border-box;position:relative}
@@ -2720,9 +2726,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:\!absolute{
     position: absolute !important;
-  }
-  .max-md\:absolute{
-    position: absolute;
   }
   .max-md\:relative{
     position: relative;

@@ -1,0 +1,9 @@
+.pum-container .pum-close{
+  background-image: url('../media/close-popup.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 30px !important;
+  height: 30px !important;
+  margin: 30px !important;
+  z-index: 99999 !important;
+}

@@ -15,7 +15,8 @@
 @import './library/instagram.css';
 @import './template-camping.css';
 @import './mini-site.css';
- 
+@import './popupmaker.css';
+
 /** FONT IMPORT CDN */
 @import 'https://use.typekit.net/kcm1lom.css';
 @import 'https://fonts.googleapis.com/css2?family=Marcellus&display=swap';

@@ -12,7 +12,7 @@ $activate_search = get_field('activate_search');
 $carousel_images = get_field('carousel_images') ?: []; 
 $first = $carousel_images[0] ?? [];
 $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
-$firstText  = $first['texte'] ?? '';
+$firstText  = nl2br($first['texte'] ?? '');
 $logo = get_field('logo');
 $logo_tiny = get_field('logo_tiny');
 
@@ -193,8 +193,8 @@ switch ($hero_type) {
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
-        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white ">
-          <?= $firstText; ?>
+        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line">
+          <?= apply_filters('the_content', $firstText); ?>
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
           <span class="carousel-hero-button-prev cursor-pointer">
