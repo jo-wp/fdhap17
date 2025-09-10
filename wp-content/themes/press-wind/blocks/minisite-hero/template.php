@@ -42,6 +42,8 @@ $disabled_background = false;
 
 ?>
 
+
+
 <section <?= get_block_wrapper_attributes(["class" => 'block-hero w-full ']); ?>>
   <div
     class="block-hero__content container-huge max-md:mx-0  relative max-h-[1000px] md:rounded-b-[200px] bg-cover"
@@ -88,3 +90,14 @@ $disabled_background = false;
 
   </div>
 </section>
+
+
+<!--<section class="splide splide-test bg-green mt-[200px] h-[100px]" aria-label="Splide Basic HTML Example">
+    <div class="splide__track">
+        <ul class="splide__list">
+            <li class="splide__slide">Slide 01</li>
+            <li class="splide__slide">Slide 02</li>
+            <li class="splide__slide">Slide 03</li>
+        </ul>
+    </div>
+</section>-->
