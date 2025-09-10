@@ -2025,6 +2025,8 @@ nav .submenu > li .submenu-child > li{
   margin-top: 10px !important;
   margin-bottom: 20px !important;
   color: white !important;
+  max-width: 487px !important;
+  margin: 0 auto !important;
 }
 .pum-container > div:nth-child(2) .pum-content p {
   font-size: 20px !important;
