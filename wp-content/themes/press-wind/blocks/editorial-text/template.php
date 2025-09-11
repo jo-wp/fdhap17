@@ -39,7 +39,7 @@ if($content_one_col) {
       <InnerBlocks class="[&_h2]:relative max-md:[&_h2]:text-center  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[20px]  md:[&_h2]:text-[30px] [&_h2]:font-[700] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400]  <?php echo $class_text ?>" template="<?php echo esc_attr(wp_json_encode($template)) ?>"
         allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
-  <div class="flex-1 max-md:[&_p]:text-center [&_p]:m-0 [&_p:not(:last-child)]:mb-[28px] [&_p]:text-[15px] [&_p]:text-black [&_p]:font-[400]">
+  <div class="flex-1 max-md:[&_p]:text-center [&_p]:m-0 [&_p:not(:last-child)]:mb-[28px] [&_p]:text-[15px] [&_p]:text-black [&_p]:font-[400] [&_a]:underline">
     <?= $content_texte_editorial; ?>
   </div>
 </section>
