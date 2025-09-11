@@ -48,7 +48,8 @@ $template = [
 ?>
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge block-idea relative md:after:rounded-[20px] md:after:bottom-[-50px] md:after:left-0 md:after:z-10 md:after:content-[""] md:after:absolute md:after:bg-bgOrange md:after:w-full md:after:h-[30%] mb-[150px]']); ?>>
   <div class="block-idea__content max-w-[1030px] mx-auto">
-    <InnerBlocks class="max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
+    <InnerBlocks
+      class="max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
@@ -61,9 +62,12 @@ $template = [
           <?php
           $data = get_taxonomy($filter);
           $taxonomy_name = $data->labels->singular_name;
+          $taxonomy_slug = $data->rewrite['slug'];
           ?>
-          <li <?= ($i === 1) ? 'class="active"' : '' ?> data-filter="<?php echo esc_attr($filter); ?>">
-            <?php echo esc_html($taxonomy_name); ?></li>
+          <li <?= ($i === 1) ? 'class="active filters__button"' : ' class="filters__button"' ?>
+            data-filter="<?php echo esc_attr($filter); ?>">
+            <?php echo esc_html($taxonomy_name); ?>
+          </li>
           <?php $i++; endforeach; ?>
       </ul>
       <div class="block-idea__filters-controls hidden md:block">
@@ -82,74 +86,136 @@ $template = [
         <section class="splide splide__carousel__block_idea">
           <div class="splide__track">
             <ul class="splide__list max-md:!grid max-md:!grid-cols-2 max-md:!gap-[10px]">
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 1
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-                           <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="service">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Service numéro 1
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="hebergement">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Hébergement numéro 1
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="service">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Service numéro 2
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="service">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Service numéro 3
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="hebergement">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Hébergement numéro 2
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
                 </div>
               </li>
-              <li class="splide__slide max-md:min-h-[200px]">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
-                  <h3 class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
-                    Piscine
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 2
                     <span class="md:hidden block text-green text-[12px]">Explorer ></span>
-                  </h3>           
+                  </h3>
+                </div>
+              </li>
+                            <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
+                <div
+                  class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 3
+                    <span class="md:hidden block text-green text-[12px]">Explorer ></span>
+                  </h3>
+                </div>
+              </li>
+                            <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
+                <div
+                  class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 4
+                    <span class="md:hidden block text-green text-[12px]">Explorer ></span>
+                  </h3>
+                </div>
+              </li>
+                            <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
+                <div
+                  class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 5
+                    <span class="md:hidden block text-green text-[12px]">Explorer ></span>
+                  </h3>
+                </div>
+              </li>
+                            <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
+                <div
+                  class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 6
+                    <span class="md:hidden block text-green text-[12px]">Explorer ></span>
+                  </h3>
+                </div>
+              </li>
+                            <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="etoile">
+                <div
+                  class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  <h3
+                    class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                    Etoile numéro 7
+                    <span class="md:hidden block text-green text-[12px]">Explorer ></span>
+                  </h3>
                 </div>
               </li>
             </ul>
@@ -159,3 +225,9 @@ $template = [
     </div>
   </div>
 </section>
+
+<style>
+  .splide__slide-item:not(.splide__slide) {
+    display: none;
+  }
+</style>
