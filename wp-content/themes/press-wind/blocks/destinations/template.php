@@ -22,6 +22,7 @@ if (!$disabled_items_associated ) {
     $linked_page_id = tp_get_linked_post_id($destination->term_id);
     if ($linked_page_id) {
       $items_destinations[] = [
+        'description' => $destination->description,
         'url_linked_page' => get_term_link($destination),
         'post_data' => get_post($linked_page_id)
       ];
@@ -90,8 +91,7 @@ $template = [
              !text-white !text-[16px] !font-arial
              opacity-0 translate-y-4 transition-all duration-500 ease-out delay-100
              group-hover:opacity-100 group-hover:translate-y-0">
-                Ville emblématique du littoral Atlantique, La Rochelle charme par son vieux port, son aquarium renommé et
-                son ambiance animée, parfaite pour un camping alliant culture et mer.
+              <?= esc_html($item['description']); ?>
               </p>
             </a>
           </div>
