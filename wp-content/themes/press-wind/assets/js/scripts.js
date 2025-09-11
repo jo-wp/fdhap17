@@ -234,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
   menuMobileToggle()
   instagramOverride()
   authorQuoteSlider()
-
   generateSummary()
 
   //Import
