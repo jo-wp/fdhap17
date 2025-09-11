@@ -3,6 +3,7 @@
  *  RÉGLAGES
  *  ======================= */
 const TP_TAXONOMIES = [
+  'category',
   'destination',
   'atout',
   'etoile',
@@ -20,6 +21,7 @@ const TP_AUTO_CREATE_ON_TERM_CREATE = true;
 // Redirection 301 de l’archive du terme vers la page liée (par taxonomie)
 // Mets true pour certaines taxos seulement si tu veux rediriger plutôt qu’injecter le contenu.
 const TP_REDIRECT_MAP = [
+  'category'    => false,
   'destination' => false,
   'atout'       => false,
   'etoile'      => false,
@@ -195,7 +197,9 @@ foreach (TP_TAXONOMIES as $tax) {
 
 // Shortcode utilisable dans un template FSE : [term_page_content]
 add_shortcode('term_page_content', function () {
-  if (!is_tax()) return '';
+  $qo = get_queried_object();
+
+  if (!$qo ) return '';
 
   $term = get_queried_object();
   if (!$term || empty($term->term_id)) return '';
