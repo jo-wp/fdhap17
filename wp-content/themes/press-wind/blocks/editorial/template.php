@@ -68,7 +68,7 @@ switch ($type_block_editorial) {
 
 <section <?= get_block_wrapper_attributes(["class" => 'block-editorial '.$size_section.' max-[1090px]:mx-[30px] mx-auto '.$class_block_editorial.'   justify-between items-center']); ?>>
   <div class="<?= $size_blocks_content; ?> <?= $class_block_editorial_texte; ?>" >
-      <InnerBlocks class="<?php echo $class_innerblock; ?> [&_p]:text-center md:[&_p]:text-inherit [&_h2]:text-center md:[&_h2]:text-inherit [&_h2_sub]:text-center md:[&_h2_sub]:text-inherit text-[14px] md:[&_p]:text-[15px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2_sub]:font-arial [&_h2_sub]:text-[24px] md:[&_h2_sub]:text-[32px] [&_h2_sub]:float-none  md:[&_h2_sub]:float-right [&_h2_sub]:font-[400] [&_h2]:font-[400] " template="<?php echo esc_attr(wp_json_encode($template)) ?>"
+      <InnerBlocks class="<?php echo $class_innerblock; ?> [&_p]:text-left md:[&_p]:text-inherit [&_h2]:text-left md:[&_h2]:text-inherit [&_h2_sub]:text-center md:[&_h2_sub]:text-inherit text-[14px] md:[&_p]:text-[15px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2_sub]:font-arial [&_h2_sub]:text-[24px] md:[&_h2_sub]:text-[32px] [&_h2_sub]:float-none  md:[&_h2_sub]:float-right [&_h2_sub]:font-[400] [&_h2]:font-[400] " template="<?php echo esc_attr(wp_json_encode($template)) ?>"
         allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
   <div class="<?= $size_blocks_image; ?>">
