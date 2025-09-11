@@ -75,10 +75,10 @@ if ($type_block_presentation == 'default') {
   };
 } elseif ($type_block_presentation == 'image_out') {
   $section_class = 'flex-col md:flex-row relative z-20 max-w-[1270px] md:max-[1270px]:mx-[30px]';
-  $block_image_class = '';
+  $block_image_class = 'max-md:px-[15px]';
   $inverse = 'max-w-full md:rounded-l-[200px] mx-auto relative max-md:before:left-0 md:before:-right-[30%] md:before:rounded-l-[20px] before:top-0 before:min-h-[100%] before:absolute before:content-[""] before:w-full before:bg-bgOrange overflow-hidden';
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-w-full rounded-[20px]" />
     <?php
   };
 } elseif ($type_block_presentation == 'image_background') {
@@ -99,7 +99,7 @@ if ($type_block_presentation == 'default') {
     "style" => 'background-image:url(\'' . $bg_url . '\')'
   ]
 ); ?>>
-  <div class="flex <?= $section_class; ?> flex-wrap md:gap-[90px]  mx-auto ">
+  <div class="flex <?= $section_class; ?> flex-wrap md:gap-[45px] lg:gap-[90px]  mx-auto ">
     <div class="  flex-1 flex justify-center items-center max-md:mb-[50px] <?= $block_image_class; ?>">
       <?php if ($type_block_presentation == 'default'):
         $block_image($carousel_images);
@@ -111,7 +111,7 @@ if ($type_block_presentation == 'default') {
         // endif;
       endif; ?>
     </div>
-    <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px] md:pr-[100px]">
+    <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px] lg:pr-[100px]">
       <InnerBlocks class="[&_h2]:leading-[36px]
         [&_h2]:mb-[50px] [&_h2]:text-black [&_li]:mt-0 max-md:[&_li]:text-[14px]
         md:[&_li]:text-[16px] [&_li]:text-[#333333] [&_li]:font-body [&_p]:mt-0 text-[14px] 
