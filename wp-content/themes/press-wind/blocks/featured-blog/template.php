@@ -6,8 +6,34 @@
  */
 
 //ACF FIELDS
+$disabled_auto_featured_blog = get_field('disabled_auto_featured_blog');
 $associated_featured_blog = get_field('associated_featured_blog');
 $button_featured_blog = get_field('button_featured_blog');
+
+if( $disabled_auto_featured_blog || empty($associated_featured_blog) ) {
+  // WP_Query arguments
+  $args = array(
+    'post_type'              => array( 'post' ),
+    'posts_per_page'         => '4',
+    'orderby'                => 'date',
+    'order'                  => 'DESC',
+    'post_status'            => array( 'publish' ),
+    'suppress_filters'       => true, // WPML
+  );
+
+  // The Query
+  $query = new WP_Query( $args );
+
+  // The Loop
+  if ( $query->have_posts() ) {
+    $associated_featured_blog = $query->posts;
+  } else {
+    // no posts found
+    $associated_featured_blog = [];
+  }
+  /* Restore original Post Data */
+  wp_reset_postdata();
+}
 
 
 
