@@ -65,9 +65,6 @@ function splideJsBlockIdea() {
 
   if (carousel) {
     const carouselSplide = new Splide(carousel, {
-      // type       : 'fade',
-      // heightRatio: 0.5,
-      // type: 'loop',
       perPage: 4,
       perMove: 1,
       gap: '40px',
@@ -88,6 +85,33 @@ function splideJsBlockIdea() {
       carouselSplide.go('<')
     })
     carouselSplide.mount()
+
+    const slides = [...document.querySelectorAll('.splide__slide-item')]
+
+    const handleFilter = (taxonomie) => {
+      slides.forEach((slide) => slide.classList.remove('splide__slide'))
+
+      slides
+        .filter((slide) => slide.dataset.taxonomie === taxonomie)
+        .forEach((slide) => slide.classList.add('splide__slide'))
+
+      carouselSplide.refresh()
+    }
+
+
+    const initFilter = () => {
+      const filterButtons = document.querySelectorAll('.filters__button')
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          filterButtons.forEach((btn) => btn.classList.remove('active'))
+          button.classList.toggle('active')
+          handleFilter(button.dataset.filter)
+        })
+      })
+    }
+
+    initFilter()
   }
 }
 
@@ -109,7 +133,9 @@ function carouselDescription() {
   const carouselList = document.querySelector('.carousel__list')
   const carouselItems = Array.from(document.querySelectorAll('.carousel__item'))
   const dotsContainer = document.querySelector('.carousel__dots')
-  const dots = dotsContainer ? Array.from(dotsContainer.querySelectorAll('.carousel__dot')) : []
+  const dots = dotsContainer
+    ? Array.from(dotsContainer.querySelectorAll('.carousel__dot'))
+    : []
 
   if (!carouselList || !carouselItems.length || !dotsContainer) return
 
@@ -127,7 +153,8 @@ function carouselDescription() {
   // Clic sur un slide
   carouselList.addEventListener('click', (event) => {
     const newActive = event.target.closest('.carousel__item')
-    if (!newActive || newActive.classList.contains('carousel__item_active')) return
+    if (!newActive || newActive.classList.contains('carousel__item_active'))
+      return
     update(newActive)
   })
 
@@ -146,14 +173,13 @@ function carouselDescription() {
     const newActivePos = newActive.dataset.pos
 
     const current = carouselItems.find((el) => el.dataset.pos == 0)
-    const prev    = carouselItems.find((el) => el.dataset.pos == -1)
-    const next    = carouselItems.find((el) => el.dataset.pos == 1)
-    const first   = carouselItems.find((el) => el.dataset.pos == -2)
-    const last    = carouselItems.find((el) => el.dataset.pos == 2)
+    const prev = carouselItems.find((el) => el.dataset.pos == -1)
+    const next = carouselItems.find((el) => el.dataset.pos == 1)
+    const first = carouselItems.find((el) => el.dataset.pos == -2)
+    const last = carouselItems.find((el) => el.dataset.pos == 2)
 
     if (current) current.classList.remove('carousel__item_active')
     newActive.classList.add('carousel__item_active')
-
     ;[current, prev, next, first, last].forEach((item) => {
       if (!item) return
       const itemPos = item.dataset.pos
