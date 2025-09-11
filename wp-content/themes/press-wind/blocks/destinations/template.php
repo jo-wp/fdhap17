@@ -64,9 +64,9 @@ $template = [
       <div
         class="grid grid-cols-2 md:grid-cols-4 max-md:gap-x-[10px] max-md:gap-y-[40px]  md:gap-[6px] mb-[60px] last:mb-0  md:[&_div:nth-child(-n+4)]:rounded-t-[39px] md:[&_div:nth-child(n+5):nth-child(-n+8)]:rounded-b-[39px]">
         <?php foreach ($items_destinations as $item):
-          $pageTitle = get_the_title($item['post_data']->ID);
-          $pageThumb = get_the_post_thumbnail_url($item['post_data']->ID, 'full');
-          $pageLink =   $item['url_linked_page'];
+          $pageTitle = (!$disabled_items_associated) ? get_the_title($item['post_data']->ID) : get_the_title($item->ID);
+          $pageThumb = (!$disabled_items_associated) ? get_the_post_thumbnail_url($item['post_data']->ID, 'full') :  get_the_post_thumbnail_url($item->ID, 'full');
+          $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : get_permalink($item->ID);
           ?>
           <div
             class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-[20px] overflow-hidden"
