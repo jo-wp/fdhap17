@@ -276,9 +276,6 @@
 .ml-\[36px\]{
   margin-left: 36px;
 }
-.ml-\[40px\]{
-  margin-left: 40px;
-}
 .ml-auto{
   margin-left: auto;
 }
@@ -359,9 +356,6 @@
 }
 .aspect-square{
   aspect-ratio: 1 / 1;
-}
-.h-0{
-  height: 0px;
 }
 .h-\[100px\]{
   height: 100px;
@@ -1972,14 +1966,91 @@ nav .submenu > li .submenu-child > li{
   --tw-bg-opacity: 1;
   background-color: rgb(221 221 221 / var(--tw-bg-opacity));
 }
+.pum-container{
+  display: flex !important;
+  flex-direction: row !important;
+  background-color: rgba(0,0,0,0) !important ;
+  
+  max-width: 1190px !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+}
 .pum-container .pum-close{
-  background-image: url('../media/close-popup.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-image: url('../media/close-popup.svg') !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
   width: 30px !important;
   height: 30px !important;
   margin: 30px !important;
   z-index: 99999 !important;
+      position: absolute;
+    right: 0;
+    top: 0;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none !important;
+
+}
+.pum-container > div:first-child{
+  width: 40% !important;
+}
+.pum-container > div:first-child img{
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 20px 0px 0px 20px !important;
+  object-fit: cover !important;
+}
+.pum-container > div:nth-child(2){
+  width: 60% !important;
+  background-color: #51AB7E !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-content: center !important;
+  justify-content: center !important  ;
+  padding: 20px 50px !important;
+  text-align: center !important;
+  border-radius: 0px 20px 20px 0px !important;
+}
+.pum-container > div:nth-child(2) .popmake-title{
+  text-align: center !important;
+  font-size: 32px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  margin-bottom: 30px !important;
+}
+.pum-container > div:nth-child(2) .pum-content{
+  text-align: center !important;
+  font-size: 16px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
+  color: white !important;
+  max-width: 487px !important;
+  margin: 0 auto !important;
+}
+.pum-container > div:nth-child(2) .pum-content p {
+  font-size: 20px !important;
+  line-height: 27px !important;
+  margin-top: 0px !important;
+}
+.pum-container > div:nth-child(2) .pum-content .pum-title{
+  margin-bottom: 30px !important;
+}
+.pum-container > div:nth-child(2) .pum-content .button--bg-orange{
+  border: none !important ;
+}
+@media(max-width: 768px){
+  .pum-container{
+    flex-direction: column !important;
+  }
+  .pum-container > div:first-child{
+    width: 100% !important;
+    border-radius: 20px 20px 0px 0px !important;
+  }
+  .pum-container > div:nth-child(2){
+    width: 100% !important;
+    border-radius: 0px 0px 20px 20px !important;
+  }
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
@@ -2065,8 +2136,8 @@ nav .submenu > li .submenu-child > li{
   bottom: 0;
   background: linear-gradient(
     -90deg,
-    rgba(255, 255, 255, 0) 80%,
-    rgba(90, 138, 129, 0.4) 100%
+    rgba(255, 255, 255, 0) 50%,
+    rgba(90, 138, 129, 0.8) 100%
   );
   z-index: 1;
   border-bottom-right-radius: 200px;
@@ -2115,7 +2186,7 @@ nav .submenu > li .submenu-child > li{
   }
   .card-yellow.is-active p {
     opacity: 1; transform: translateY(0);
-
+    
   }
 
   .block-destinations .grid > div:nth-child(-n + 4)::before {
@@ -3142,6 +3213,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:ml-\[36px\]{
     margin-left: 36px;
   }
+  .md\:ml-\[40px\]{
+    margin-left: 40px;
+  }
   .md\:mr-\[30px\]{
     margin-right: 30px;
   }
@@ -3261,6 +3335,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:items-center{
     align-items: center;
+  }
+  .md\:justify-start{
+    justify-content: flex-start;
   }
   .md\:justify-center{
     justify-content: center;
@@ -3590,6 +3667,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2\]\:font-\[700\] h2{
   font-weight: 700;
 }
+.\[\&_h2\]\:leading-\[36px\] h2{
+  line-height: 36px;
+}
 .\[\&_h2\]\:leading-\[41px\] h2{
   line-height: 41px;
 }
@@ -3645,19 +3725,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2_span\]\:font-arial h2 span{
   font-family: Arial, Helvetica, sans-serif;
 }
-.\[\&_h2_span\]\:text-\[20px\] h2 span{
-  font-size: 20px;
-}
 .\[\&_h2_span\]\:text-\[32px\] h2 span{
   font-size: 32px;
 }
 .\[\&_h2_span\]\:font-\[400\] h2 span{
   font-weight: 400;
-}
-@media (min-width: 768px){
-  .md\:\[\&_h2_span\]\:text-\[32px\] h2 span{
-    font-size: 32px;
-  }
 }
 .\[\&_h2_sub\]\:float-none h2 sub{
   float: none;
@@ -3820,8 +3892,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p\]\:m-0 p{
   margin: 0px;
 }
+.\[\&_p\]\:m-\[0\] p{
+  margin: 0;
+}
 .\[\&_p\]\:mt-0 p{
   margin-top: 0px;
+}
+.\[\&_p\]\:text-left p{
+  text-align: left;
 }
 .\[\&_p\]\:text-center p{
   text-align: center;
@@ -3834,6 +3912,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p\]\:font-marcellus p{
   font-family: Marcellus, serif;
+}
+.\[\&_p\]\:text-\[13\.34px\] p{
+  font-size: 13.34px;
 }
 .\[\&_p\]\:text-\[14px\] p{
   font-size: 14px;
@@ -3892,6 +3973,20 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p_a\]\:underline p a{
   text-decoration-line: underline;
+}
+.\[\&_p_span\]\:font-\[700\] p span{
+  font-weight: 700;
+}
+.\[\&_p_span\]\:text-orange p span{
+  --tw-text-opacity: 1;
+  color: rgb(233 178 55 / var(--tw-text-opacity));
+}
+.\[\&_p_span_span\]\:font-\[400\] p span span{
+  font-weight: 400;
+}
+.\[\&_p_span_span\]\:text-black p span span{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 .\[\&_ul\]\:m-0 ul{
   margin: 0px;
