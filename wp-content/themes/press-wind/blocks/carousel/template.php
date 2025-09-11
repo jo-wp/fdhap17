@@ -32,14 +32,14 @@ $template = [
 $block_id = $block['id'];
 
 ?>
-<section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1150px] mx-auto max-[1290px]:mx-[90px] max-md:mx-[15px] ']); ?>>
+<section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1150px] mx-[90px] xl:mx-auto']); ?>>
   <div class="">
     <InnerBlocks
-      class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400] "
+      class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative [&_h2]:text-center  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400] "
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
-  <div class="block-carousel__items max-md:max-w-[80%]">
+  <div class="block-carousel__items">
     <section class="splide splidejs-<?= $block_id; ?>">
       <div class="block-carousel__filters-controls splide__arrows">
         <button
@@ -58,13 +58,13 @@ $block_id = $block['id'];
           <?php foreach ($items_selected as $item):
             $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
             ?>
-            <li class="splide__slide max-md:min-h-[220px]">
-              <div class="image_featured min-h-[170px] md:min-h-[345px] bg-cover md:bg-[length:100%_90%]  bg-no-repeat rounded-[20px] relative"
+            <li class="splide__slide max-md:min-h-[320px]">
+              <div class="image_featured min-h-[270px] md:min-h-[345px] bg-cover md:bg-[length:100%_90%]  bg-no-repeat rounded-[20px] relative"
                 style="background-image:url('<?= $image_featured ?>');">
                 <a class="absolute w-full h-full max-md:bottom-[-40px] md:top-0 left-0 flex items-end justify-start hover:no-underline no-underline "
                   href="<?= get_permalink($item->ID); ?>">
                   <span
-                    class="px-[20px] py-[30px] bg-bgGreen font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] text-green mt-[20px]"><?= get_the_title($item->ID); ?></span>
+                    class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] text-green mt-[20px]"><?= get_the_title($item->ID); ?></span>
                 </a>
               </div>
             </li>
@@ -78,19 +78,25 @@ $block_id = $block['id'];
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const carousel = document.querySelector('.splidejs-<?= $block_id; ?>')
-    const arrowDisplay = (carousel.querySelectorAll('.splide__slide').lenght > 2) ? false : true;
+      const slidesCount = carousel.querySelectorAll('.splide__slide').length;
+      const arrowDisplay = slidesCount > 3; // flèches seulement si plus que 3 slide
     console.log(arrowDisplay);
     if (carousel) {
       const carouselSplide = new Splide(carousel, {
         focus: 'center',
         perPage: 3,
         perMove: 1,
-        gap: '40px',
+        gap: '32px',
         pagination: false,
-        arrows: arrowDisplay,
+          arrows: arrowDisplay,
         breakpoints: {
+            1200: {
+                perPage: 2,
+                arrows: slidesCount > 2 // adapte pour tablette
+            },
           768: {
             perPage: 1,
+              arrows: slidesCount > 1 // adapte pour mobile
           }
         }
       })
