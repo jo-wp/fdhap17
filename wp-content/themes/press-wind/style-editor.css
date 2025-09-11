@@ -417,6 +417,9 @@
 .min-w-full{
   min-width: 100%;
 }
+.max-w-\[1000px\]{
+  max-width: 1000px;
+}
 .max-w-\[1020px\]{
   max-width: 1020px;
 }
@@ -4094,6 +4097,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_li_a\]\:no-underline li a{
   text-decoration-line: none;
+}
+.\[\&_p\:not\(\:last-child\)\]\:mb-\[28px\] p:not(:last-child){
+  margin-bottom: 28px;
 }
 .\[\&_p\]\:m-0 p{
   margin: 0px;
