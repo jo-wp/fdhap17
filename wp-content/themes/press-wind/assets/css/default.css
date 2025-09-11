@@ -119,6 +119,17 @@ section {
   @apply mb-[50px] md:mb-[100px];
 }
 
+.splide_author-quote .splide__pagination {
+  @apply -bottom-[10px];
+}
+
+.single-author__newest article:after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 45.02%,
+    rgba(0, 0, 0, 0.63) 99.95%
+  );
+}
 .after-underline h2::after {
   content: '';
   width: 20%;
@@ -127,7 +138,7 @@ section {
   position: absolute;
   background-color: #e9b237;
 }
-@media(max-width:768px){
+@media (max-width: 768px) {
   .after-underline h2::after {
     width: 150px;
     right: 0;
