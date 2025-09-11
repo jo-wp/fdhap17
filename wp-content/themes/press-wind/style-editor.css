@@ -1920,6 +1920,9 @@ nav .submenu > li .submenu-child > li{
   --tw-content: '';
   content: var(--tw-content);
 }
+.minisite-subheader li.current-menu-item a{
+  font-weight: 700;
+}
 .minisite-subheader li:last-child::after{
   content: var(--tw-content);
   display: none;
@@ -2511,7 +2514,77 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   text-decoration-line: none;
 }
 .block-minisite-twocolsequal input[type="submit"]{
-    font-weight: bold;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  padding-left: 60px;
+  padding-right: 60px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+.block-minisite-twocolsequal input[type="text"],
+.block-minisite-twocolsequal input[type="email"],
+.block-minisite-twocolsequal textarea{
+  margin-bottom: 17px !important;
+  border-width: 0px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 245 240 / var(--tw-bg-opacity));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  font-family: Roboto;
+  font-size: 15px;
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.block-minisite-twocolsequal input[type="text"]::placeholder,
+.block-minisite-twocolsequal input[type="email"]::placeholder,
+.block-minisite-twocolsequal textarea::placeholder{
+  font-size: 15px;
+  font-weight: 300;
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.block-minisite-twocolsequal input[type="text"]:focus,
+.block-minisite-twocolsequal input[type="email"]:focus,
+.block-minisite-twocolsequal textarea:focus{
+  outline-color: #51AB7E;
+}
+.block-minisite-twocolsequal textarea{
+  height: 150px !important;
+}
+.block-minisite-twocolsequal nf-field:last-child{
+  float: left;
+  margin-left: 2.5rem;
+  margin-top: 2.25rem;
+  display: flex;
+  align-items: center;
+}
+.block-minisite-twocolsequal nf-field:nth-last-child(2){
+  float: left;
+  margin-top: 1.5rem;
+  width: 50%;
+}
+.block-minisite-twocolsequal .nf-field-container{
+  margin-bottom: 0px;
+}
+.block-minisite-twocolsequal .nf-error-msg{
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(233 178 55 / var(--tw-text-opacity));
+}
+.block-minisite-twocolsequal  nf-errors{
+  clear: both;
+  display: block;
+  padding-top: 1.5rem;
+}
+.block-minisite-twocolsequal  .nf-error .ninja-forms-field{
+  --tw-border-opacity: 1;
+  border-color: rgb(233 178 55 / var(--tw-border-opacity));
 }
 .before\:absolute::before{
   content: var(--tw-content);
@@ -3437,6 +3510,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:grid-cols-1{
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+  .md\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .md\:grid-cols-4{
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -4063,6 +4139,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p\]\:font-\[400\] p{
   font-weight: 400;
+}
+.\[\&_p\]\:font-light p{
+  font-weight: 300;
 }
 .\[\&_p\]\:text-\[\#333333\] p{
   --tw-text-opacity: 1;
