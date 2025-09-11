@@ -3722,19 +3722,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2_span\]\:font-arial h2 span{
   font-family: Arial, Helvetica, sans-serif;
 }
-.\[\&_h2_span\]\:text-\[20px\] h2 span{
-  font-size: 20px;
-}
 .\[\&_h2_span\]\:text-\[32px\] h2 span{
   font-size: 32px;
 }
 .\[\&_h2_span\]\:font-\[400\] h2 span{
   font-weight: 400;
-}
-@media (min-width: 768px){
-  .md\:\[\&_h2_span\]\:text-\[32px\] h2 span{
-    font-size: 32px;
-  }
 }
 .\[\&_h2_sub\]\:float-none h2 sub{
   float: none;
