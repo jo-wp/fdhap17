@@ -6,37 +6,28 @@
  * @param array $block The block settings and attributes.
  */
 
+$term = get_queried_object();
+$id = null;
+if($term && !empty($term->term_id)){
+  $id = tp_get_linked_post_id($term->term_id);
+}else{
+  $id = get_the_ID();
+}
+
+
 //ACF FIELDS
-$hero_type = get_field('hero_type');
-$activate_search = get_field('activate_search');
-$carousel_images = get_field('carousel_images') ?: [];
+$hero_type = get_field('hero_type', $id);
+$activate_search = get_field('activate_search', $id);
+$carousel_images = get_field('carousel_images', $id ) ?: [];
 $first = $carousel_images[0] ?? [];
 $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
 $firstText = nl2br($first['texte'] ?? '');
-$logo = get_field('logo');
-$logo_tiny = get_field('logo_tiny');
 
-// INNERBLOCKS
-$allowedBlocks = ['core/heading', 'core/paragraph'];
-$template = [
-  [
-    'core/heading',
-    [
-      "placeholder" => "Titre du bloc",
-      "level" => 2,
-      "color" => "orange",
-      "fontSize" => "normal",
-      "fontFamily" => "arial"
-    ]
-  ],
-  [
-    'core/paragraph',
-    [
-      "placeholder" => "Description ...",
-      "color" => "primary"
-    ]
-  ]
-];
+//* LOGOS *//
+$logo = get_field('logo_header_hero', 'option');
+$logo_tiny = get_field('logo_color_header_hero', 'option');
+$logo_mini_site = get_field('logo_mini_site_header_hero', 'option');
+
 
 $height_content = '';
 $disabled_background = false;
@@ -62,11 +53,12 @@ switch ($hero_type) {
     break;
 }
 
+
 $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
 ?>
 
-<section <?= get_block_wrapper_attributes(["class" => 'block-hero w-full ' . $mb_section]); ?>>
+<section class="block-hero w-full <?= $mb_section; ?>">
   <div class="max-md:hidden p-[15px] flex flex-row gap-[30px]  content-center justify-end bg-green top-bar">
     <div class="wrapper-search">
       <form action="<?= esc_url(home_url('/')) ?>">
@@ -209,7 +201,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
   </div>
 </section>
 <?php if(!is_front_page()): ?>
-<section class="mb-[80px] [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
+<section class="relative z-[9999] mb-[80px] [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
   <?php
   if (function_exists('yoast_breadcrumb')) {
     yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
