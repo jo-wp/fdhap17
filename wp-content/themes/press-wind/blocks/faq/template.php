@@ -7,6 +7,9 @@
 
 //ACF FIELDS
 $items_answer = get_field('items_answer');
+if($items_answer == null) {
+  $items_answer = [];
+}
 $count = count($items_answer);
 $half = ceil($count / 2);
 list($part1, $part2) = array_chunk($items_answer, $half);
