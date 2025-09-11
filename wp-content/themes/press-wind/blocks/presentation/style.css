@@ -5,6 +5,8 @@
     height: 100%;
     align-items: flex-start;
     font-family: Arial;
+    flex-direction: column;
+    position: relative;
   }
   .carousel__list {
     display: flex;
@@ -66,7 +68,35 @@
   }
 }
 
+.carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  bottom: -390px;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+}
+
+.carousel__dot {
+  width: 14px;
+  height: 5px;
+  border-radius: 15px;
+  border: none;
+  background: #E9B237E8;
+  cursor: pointer;
+}
+
+.carousel__dot.active {
+  width: 48px;
+  background: #E9B237E8;
+}
+
 @media (max-width: 768px) {
+  .carousel__dots{
+    display: none;
+  }
   .carousel {
     width: 100%;
   }
