@@ -1,0 +1,43 @@
+.block-minisite-twocolsequal .nf-form-fields-required,
+.block-minisite-twocolsequal .ninja-forms-req-symbol{
+    @apply hidden;
+}
+
+.block-minisite-twocolsequal input[type="submit"]{
+    @apply button button--bg-green;
+    @apply font-arial font-bold text-[20px] py-[13px] px-[60px];
+}
+
+.block-minisite-twocolsequal input[type="text"],
+.block-minisite-twocolsequal input[type="email"],
+.block-minisite-twocolsequal textarea {
+    @apply bg-bgGreen px-4 py-[19px] border-0 text-black text-[15px] placeholder:font-[300] placeholder:text-black placeholder:text-[15px] font-body !mb-[17px] focus:outline-green;
+}
+
+.block-minisite-twocolsequal textarea {
+    @apply !h-[150px]
+}
+
+.block-minisite-twocolsequal nf-field:last-child {
+    @apply flex float-left items-center ml-10 mt-9;
+}
+
+.block-minisite-twocolsequal nf-field:nth-last-child(2) {
+    @apply float-left w-1/2 mt-6;
+}
+
+.block-minisite-twocolsequal .nf-field-container {
+    @apply mb-0;
+}
+
+.block-minisite-twocolsequal .nf-error-msg {
+    @apply text-sm -mt-4 mb-4 text-orange;
+}
+
+.block-minisite-twocolsequal  nf-errors {
+    @apply block clear-both pt-6;
+}
+
+.block-minisite-twocolsequal  .nf-error .ninja-forms-field {
+    @apply border-orange;
+}
