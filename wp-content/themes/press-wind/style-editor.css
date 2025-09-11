@@ -2136,8 +2136,8 @@ nav .submenu > li .submenu-child > li{
   bottom: 0;
   background: linear-gradient(
     -90deg,
-    rgba(255, 255, 255, 0) 80%,
-    rgba(90, 138, 129, 0.4) 100%
+    rgba(255, 255, 255, 0) 50%,
+    rgba(90, 138, 129, 0.8) 100%
   );
   z-index: 1;
   border-bottom-right-radius: 200px;
@@ -3902,6 +3902,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_p\]\:mt-0 p{
   margin-top: 0px;
+}
+.\[\&_p\]\:text-left p{
+  text-align: left;
 }
 .\[\&_p\]\:text-center p{
   text-align: center;
