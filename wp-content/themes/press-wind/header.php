@@ -78,7 +78,7 @@
                         wp_nav_menu([
                             'theme_location' => 'minisite-primary', // doit correspondre à ce que tu as mis dans register_nav_menus
                             'container' => 'nav',     // balise wrapper <nav>
-                            'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 p-0 max-md:flex-col ', // classes Tailwind si tu veux
+                            'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
                         ]);
                         ?>
                         <div class="md:hidden">
