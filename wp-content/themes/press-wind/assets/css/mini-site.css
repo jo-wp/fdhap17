@@ -7,7 +7,7 @@
 }
 
 .minisite-header li.current-menu-item a:after {
-    @apply block content-[''] h-[2px] bg-black w-full absolute -bottom-[14px];
+    @apply block content-[''] h-[2px] md:bg-black w-full absolute -bottom-[14px];
 }
 
 .minisite-subheader li {
