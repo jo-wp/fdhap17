@@ -37,10 +37,11 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
     if ($partenaires->have_posts()) :
         ?>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 list-none m-0 p-0">
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 list-none m-0 p-0 ">
             <?php while ($partenaires->have_posts()) : $partenaires->the_post(); ?>
-                <li class="partenaire-item">
-                    <div class="flex justify-center overflow-hidden items-center sm:h-[200px] lg:h-[267px]">
+                <li class="partenaire-item bg-bgOrange">
+                    <a class="hover:no-underline"  href="<?php echo get_field('link') ?>" target="_blank">
+                    <div class="flex justify-center overflow-hidden items-center sm:h-[200px] lg:h-[267px] bg-white">
                         <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('full', ['class' => 'w-full h-auto object-contain']); ?>
                         <?php endif; ?>
@@ -50,6 +51,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
                         <h2 class="font-arial text-[26px] font-normal text-orangeGlow"><?php the_title(); ?></h2>
                         <div class="text-base"><?php the_content(); ?></div>
                     </div>
+                    </a>
                 </li>
             <?php endwhile; ?>
         </ul>
