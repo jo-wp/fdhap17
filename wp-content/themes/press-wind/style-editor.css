@@ -187,6 +187,9 @@
 .z-20{
   z-index: 20;
 }
+.z-\[9999\]{
+  z-index: 9999;
+}
 .col-span-1{
   grid-column: span 1 / span 1;
 }
@@ -331,6 +334,9 @@
 .mt-\[60px\]{
   margin-top: 60px;
 }
+.mt-\[67px\]{
+  margin-top: 67px;
+}
 .mt-\[77px\]{
   margin-top: 77px;
 }
@@ -444,6 +450,9 @@
 }
 .max-w-\[1150px\]{
   max-width: 1150px;
+}
+.max-w-\[1200px\]{
+  max-width: 1200px;
 }
 .max-w-\[1270px\]{
   max-width: 1270px;
@@ -1451,6 +1460,16 @@ section{
     margin-bottom: 100px;
   }
 }
+.splide_author-quote .splide__pagination{
+  bottom: -10px;
+}
+.single-author__newest article:after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 45.02%,
+    rgba(0, 0, 0, 0.63) 99.95%
+  );
+}
 .after-underline h2::after {
   content: '';
   width: 20%;
@@ -1459,7 +1478,7 @@ section{
   position: absolute;
   background-color: #e9b237;
 }
-@media(max-width:768px){
+@media (max-width: 768px) {
   .after-underline h2::after {
     width: 150px;
     right: 0;
@@ -2083,6 +2102,52 @@ nav .submenu > li .submenu-child > li{
     border-radius: 0px 0px 20px 20px !important;
   }
 }
+.block-hero .wrapper-search .search-input:focus {
+  outline: none;
+}
+.block-hero .wrapper-search .search-submit {
+  background-image: url('../../wp-content/themes/press-wind/assets/media/search.png');
+  content: '';
+  width: 27px;
+  height: 21px;
+  text-indent: -9999px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.block-hero__content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(90, 138, 129, 0.8) 100%
+  );
+  z-index: 1;
+  border-bottom-right-radius: 200px;
+  border-bottom-left-radius: 200px;
+}
+@media (max-width: 768px) {
+  .block-hero__content::before {
+
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(90, 138, 129, 0.7) 100%
+    );
+    z-index: 1;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+}
+.block-hero__content div {
+  position: relative;
+  z-index: 2;
+}
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
 .splide__container{box-sizing:border-box;position:relative}
@@ -2145,52 +2210,6 @@ nav .submenu > li .submenu-child > li{
 .splide__arrows--ttb .splide__arrow--next svg{transform:rotate(90deg)}
 .splide__pagination--ttb{bottom:0;display:flex;flex-direction:column;left:auto;padding:1em 0;right:.5em;top:0}
 /** BLOCK */
-.block-hero .wrapper-search .search-input:focus {
-  outline: none;
-}
-.block-hero .wrapper-search .search-submit {
-  background-image: url('../../wp-content/themes/press-wind/assets/media/search.png');
-  content: '';
-  width: 27px;
-  height: 21px;
-  text-indent: -9999px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-.block-hero__content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    -90deg,
-    rgba(255, 255, 255, 0) 50%,
-    rgba(90, 138, 129, 0.8) 100%
-  );
-  z-index: 1;
-  border-bottom-right-radius: 200px;
-  border-bottom-left-radius: 200px;
-}
-@media (max-width: 768px) {
-  .block-hero__content::before {
-
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(90, 138, 129, 0.7) 100%
-    );
-    z-index: 1;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-  }
-}
-.block-hero__content div {
-  position: relative;
-  z-index: 2;
-}
 @media (min-width: 768px) {
   .block-destinations .grid > div:nth-child(-n + 4)::after {
     border-top-left-radius: 39px;
@@ -3218,6 +3237,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:p-\[20px_10px\]{
     padding: 20px 10px;
   }
+  .max-md\:p-\[50px\]{
+    padding: 50px;
+  }
   .max-md\:px-\[15px\]{
     padding-left: 15px;
     padding-right: 15px;
@@ -3464,6 +3486,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:w-\[65\%\]{
     width: 65%;
   }
+  .md\:w-\[950px\]{
+    width: 950px;
+  }
   .md\:w-auto{
     width: auto;
   }
@@ -3590,6 +3615,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:bg-center{
     background-position: center;
   }
+  .md\:p-\[50px\]{
+    padding: 50px;
+  }
   .md\:p-\[55px\]{
     padding: 55px;
   }
@@ -3625,6 +3653,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:text-\[16px\]{
     font-size: 16px;
+  }
+  .md\:text-\[19px\]{
+    font-size: 19px;
   }
   .md\:text-\[20px\]{
     font-size: 20px;

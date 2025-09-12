@@ -16,6 +16,7 @@
 @import './template-camping.css';
 @import './mini-site.css';
 @import './popupmaker.css';
+@import './hero.css';
 
 /** FONT IMPORT CDN */
 @import 'https://use.typekit.net/kcm1lom.css';
@@ -27,7 +28,6 @@
 @import '../../node_modules/@splidejs/splide/dist/css/splide.min.css';
 
 /** BLOCK */
-@import '../../blocks/hero/style.css';
 @import '../../blocks/destinations/style.css';
 @import '../../blocks/featured-blog/style.css';
 @import '../../blocks/faq/style.css';

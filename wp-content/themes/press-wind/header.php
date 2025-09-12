@@ -62,8 +62,8 @@
 					?>
 				</section>
 				<?php
+			} else {
+				get_template_part('partials/hero');
 			}
 			?>
-
-
 		</header>

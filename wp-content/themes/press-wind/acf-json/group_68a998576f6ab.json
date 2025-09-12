@@ -1,0 +1,142 @@
+{
+    "key": "group_68a998576f6ab",
+    "title": "Mise en avant Blog",
+    "fields": [
+        {
+            "key": "field_68c2cbac09cda",
+            "label": "Désactiver la sélection automatique",
+            "name": "disabled_auto_featured_blog",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_68a999a6d961b",
+            "label": "Association d'articles ou pages",
+            "name": "associated_featured_blog",
+            "aria-label": "",
+            "type": "relationship",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68c2cbac09cda",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "post",
+                "camping",
+                "page"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "filters": [
+                "search"
+            ],
+            "return_format": "object",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "elements": "",
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_68a999c5d961c",
+            "label": "Bouton",
+            "name": "button_featured_blog",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_68a99a07d961d",
+                    "label": "Désactiver le bouton",
+                    "name": "disable_button",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_68a99a1cd961e",
+                    "label": "Titre & Lien du bouton",
+                    "name": "link_title_button",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "fdhpa17\/featured-blog"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1757622339
+}

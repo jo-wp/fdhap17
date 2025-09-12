@@ -7,9 +7,16 @@
 
 //ACF FIELDS
 $items_answer = get_field('items_answer');
-$count = count($items_answer);
-$half = ceil($count / 2);
-list($part1, $part2) = array_chunk($items_answer, $half);
+if ($items_answer) {
+  $count = count($items_answer);
+  $half = ceil($count / 2);
+  list($part1, $part2) = array_chunk($items_answer, $half);
+}else{
+  $part1 = [];
+  $part2 = [];
+}
+
+
 
 
 
@@ -84,51 +91,51 @@ $template = [
 </section>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const root = document.querySelector(".block-faq"); // limite l'accordéon à ta section
-  if (!root) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    const root = document.querySelector(".block-faq"); // limite l'accordéon à ta section
+    if (!root) return;
 
-  const toggles = root.querySelectorAll(".faq-toggle");
-  const answers = root.querySelectorAll(".faq-answer");
+    const toggles = root.querySelectorAll(".faq-toggle");
+    const answers = root.querySelectorAll(".faq-answer");
 
-  // ferme tout
-  function closeAll() {
-    answers.forEach(a => {
-      a.classList.remove("max-h-[1000px]", "opacity-100","mt-[30px]");
-      a.classList.add("max-h-0", "opacity-0");
-    });
-    toggles.forEach(t => t.setAttribute("aria-expanded", "false"));
-    toggles.forEach(t => t.classList.remove("after:rotate-45","max-md:after:bottom-[-25px]"));
-  }
+    // ferme tout
+    function closeAll() {
+      answers.forEach(a => {
+        a.classList.remove("max-h-[1000px]", "opacity-100", "mt-[30px]");
+        a.classList.add("max-h-0", "opacity-0");
+      });
+      toggles.forEach(t => t.setAttribute("aria-expanded", "false"));
+      toggles.forEach(t => t.classList.remove("after:rotate-45", "max-md:after:bottom-[-25px]"));
+    }
 
-  function openOne(toggle, answer) {
-    closeAll();
-    answer.classList.remove("max-h-0", "opacity-0");
-    // valeur large pour permettre la transition de hauteur
-    answer.classList.add("max-h-[1000px]", "opacity-100","mt-[30px]");
-    toggle.setAttribute("aria-expanded", "true");
-    toggle.classList.add("after:rotate-45","max-md:after:bottom-[-25px]");
-  }
+    function openOne(toggle, answer) {
+      closeAll();
+      answer.classList.remove("max-h-0", "opacity-0");
+      // valeur large pour permettre la transition de hauteur
+      answer.classList.add("max-h-[1000px]", "opacity-100", "mt-[30px]");
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.classList.add("after:rotate-45", "max-md:after:bottom-[-25px]");
+    }
 
-  toggles.forEach(toggle => {
-    const answer = toggle.nextElementSibling;
+    toggles.forEach(toggle => {
+      const answer = toggle.nextElementSibling;
 
-    toggle.addEventListener("click", () => {
-      const isOpen = answer.classList.contains("max-h-[1000px]");
-      if (isOpen) {
-        closeAll();
-      } else {
-        openOne(toggle, answer);
-      }
-    });
+      toggle.addEventListener("click", () => {
+        const isOpen = answer.classList.contains("max-h-[1000px]");
+        if (isOpen) {
+          closeAll();
+        } else {
+          openOne(toggle, answer);
+        }
+      });
 
-    // accessibilité clavier
-    toggle.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        toggle.click();
-      }
+      // accessibilité clavier
+      toggle.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle.click();
+        }
+      });
     });
   });
-});
 </script>

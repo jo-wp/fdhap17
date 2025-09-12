@@ -1,0 +1,63 @@
+{
+    "key": "group_68a6de6d0b3d5",
+    "title": "Idées de séjour",
+    "fields": [
+        {
+            "key": "field_68a6dfbd62f97",
+            "label": "Filtres à afficher",
+            "name": "display_filter",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "destination": "Destination",
+                "atout": "Atout",
+                "etoile": "Etoile",
+                "aquatique": "Aquatique",
+                "service": "Service",
+                "label": "Label",
+                "hebergement": "Hébergement",
+                "cible": "Cible",
+                "groupe": "Groupe"
+            },
+            "default_value": [
+                "etoile",
+                "service",
+                "hebergement"
+            ],
+            "return_format": "value",
+            "allow_custom": 0,
+            "allow_in_bindings": 0,
+            "layout": "vertical",
+            "toggle": 0,
+            "save_custom": 0,
+            "custom_choice_button_text": "Ajouter un nouveau choix"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "fdhpa17\/idea"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1757622335
+}

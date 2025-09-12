@@ -1,0 +1,169 @@
+{
+    "key": "group_68adcd5b0a83f",
+    "title": "Présentation",
+    "fields": [
+        {
+            "key": "field_68af1c89157bf",
+            "label": "Type de bloc",
+            "name": "type_block_presentation",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Carousel d'images",
+                "image": "Image",
+                "image_out": "Image hors container",
+                "image_background": "Image en fond"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_68b701ded1755",
+            "label": "Inverser",
+            "name": "inverse_presentation",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68af1c89157bf",
+                        "operator": "==",
+                        "value": "image"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_68adceafec19e",
+            "label": "Carousel d'image",
+            "name": "carousel_images",
+            "aria-label": "",
+            "type": "gallery",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68af1c89157bf",
+                        "operator": "==",
+                        "value": "default"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min": "",
+            "max": "",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "insert": "append",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_68af1cbe157c0",
+            "label": "Image",
+            "name": "image_presentation",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68af1c89157bf",
+                        "operator": "==",
+                        "value": "image"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_68af1c89157bf",
+                        "operator": "==",
+                        "value": "image_out"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_68af1c89157bf",
+                        "operator": "==",
+                        "value": "image_background"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "fdhpa17\/presentation"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1757622346
+}

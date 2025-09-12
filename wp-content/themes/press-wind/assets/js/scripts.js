@@ -207,7 +207,24 @@ function carouselDescription() {
   }
 }
 
-carouselDescription()
+function authorQuoteSlider() {
+  const carousel = document.querySelector('.splide_author-quote')
+  if(!carousel) return
+  const carouselSplide = new Splide(carousel, {
+    type: 'loop',
+    perPage: 1,
+    perMove: 1,
+    gap: '40px',
+    arrows: false,
+    pagination: true,
+    // heightRatio: 0.5,
+    autoplay: true,
+    interval: 5000,
+  })
+  carouselSplide.mount()
+}
+
+// carouselDescription()
 
 document.addEventListener('DOMContentLoaded', () => {
   splideJsBlockIdea()
@@ -216,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
   menuToggle()
   menuMobileToggle()
   instagramOverride()
-
+  authorQuoteSlider()
   generateSummary()
 
   //Import
