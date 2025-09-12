@@ -76,7 +76,7 @@ if ($type_block_presentation == 'default') {
 } elseif ($type_block_presentation == 'image_out') {
   $section_class = 'flex-col md:flex-row relative z-20 max-w-[1270px] md:max-[1270px]:mx-[30px]';
   $block_image_class = 'max-md:px-[15px]';
-  $inverse = 'max-w-full md:rounded-l-[200px] mx-auto relative max-md:before:left-0 md:before:-right-[30%] md:before:rounded-l-[20px] before:top-0 before:min-h-[100%] before:absolute before:content-[""] before:w-full before:bg-bgOrange overflow-hidden';
+  $inverse = 'max-w-full md:rounded-l-[200px] mx-auto relative max-md:before:left-0 md:before:-right-[30%] md:before:rounded-l-[20px] before:top-0 before:min-h-[100%] before:absolute before:content-[""] before:w-full before:bg-bgOrange overflow-hidden  max-md:!px-[0]';
   $block_image = function ($data) { ?>
     <img src="<?= $data; ?>" alt="Image mise en avant" class="max-w-full rounded-[20px]" />
     <?php
