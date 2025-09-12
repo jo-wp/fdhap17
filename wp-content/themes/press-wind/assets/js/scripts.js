@@ -34,12 +34,15 @@ function menuMobileToggle() {
   const openBtn = document.querySelector('.open-menu-mobile')
   const closeBtn = document.querySelector('.close-menu-mobile')
   const navigation = document.querySelector('.block-hero__content__navigation')
+  const navigationMiniSite = document.querySelector('.block-minisite__menu')
 
-  if (openBtn && closeBtn && navigation) {
+  const targetNav = navigation || navigationMiniSite
+
+  if (openBtn && closeBtn && targetNav) {
     // Ouvrir le menu
     openBtn.addEventListener('click', function (e) {
       e.preventDefault()
-      navigation.classList.add('active')
+      targetNav.classList.add('active')
       openBtn.classList.add('hidden')
       closeBtn.classList.remove('hidden')
     })
@@ -47,7 +50,7 @@ function menuMobileToggle() {
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
       e.preventDefault()
-      navigation.classList.remove('active')
+      targetNav.classList.remove('active')
       closeBtn.classList.add('hidden')
       openBtn.classList.remove('hidden')
     })
