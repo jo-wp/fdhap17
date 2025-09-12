@@ -32,7 +32,7 @@ $template = [
 $block_id = $block['id'];
 
 ?>
-<section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1150px] mx-[90px] xl:mx-auto']); ?>>
+<section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1260px] mx-[90px] xl:mx-auto']); ?>>
   <div class="">
     <InnerBlocks
       class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative [&_h2]:text-center  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400] "
@@ -58,10 +58,10 @@ $block_id = $block['id'];
           <?php foreach ($items_selected as $item):
             $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
             ?>
-            <li class="splide__slide max-md:min-h-[320px]">
-              <div class="image_featured min-h-[270px] md:min-h-[345px] bg-cover md:bg-[length:100%_90%]  bg-no-repeat rounded-[20px] relative"
+            <li class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px]">
+              <div class="image_featured min-h-[calc(100%-40px)] bg-cover  bg-no-repeat rounded-[20px] relative"
                 style="background-image:url('<?= $image_featured ?>');">
-                <a class="absolute w-full h-full max-md:bottom-[-40px] md:top-0 left-0 flex items-end justify-start hover:no-underline no-underline "
+                <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
                   href="<?= get_permalink($item->ID); ?>">
                   <span
                     class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] text-green mt-[20px]"><?= get_the_title($item->ID); ?></span>
