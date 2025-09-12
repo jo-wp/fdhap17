@@ -53,7 +53,7 @@ switch ($type_block_editorial) {
 		$class_block_editorial = 'flex max-md:flex-col md:flex-row-reverse ';
 		break;
     case 'image_big_btn':
-        $size_section = 'max-w-[1270px] max-xl:mx-[15px] ';
+        $size_section = 'max-w-[1260px] max-md:mx-[15px] max-xl:mx-[30px] ';
         $size_blocks_content = 'max-md:w-full md:w-[52%] ';
         $size_blocks_image = 'max-md:w-full md:w-[65%] ';
         $class_innerblock = '[&_p]:text-center [&_h2]:text-center [&_a]:underline mb-0 [&_h2]:mb-[35px]';
