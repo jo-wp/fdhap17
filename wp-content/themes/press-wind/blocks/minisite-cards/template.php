@@ -26,17 +26,17 @@ $template = [
   ],
 ];
 ?>
-<section class="block-minisite-card relative md:after:rounded-[20px] lg:after:bottom-[-100px] md:after:left-0 md:after:z-10 md:after:content-[''] md:after:absolute  after-bg<?php echo $styleM ?> md:after:w-full md:after:h-[70%] lg:mb-[200px] mx-[15px] lg:mx-[30px]">
-  <div class="max-w-[1615px] mx-auto style-<?php echo $style ?>">
+<section class="block-minisite-card relative md:after:rounded-[20px] md:after:bottom-[-100px] md:after:left-0 md:after:z-10 md:after:content-[''] md:after:absolute  after-bg<?php echo $styleM ?> md:after:w-full md:after:h-[70%] lg:mb-[200px] mx-[15px] lg:mx-[30px]">
+  <div class="max-w-[1640px] mx-auto style-<?php echo $style ?>">
     <InnerBlocks class="[&_h2]:text-<?php echo $style ?> [&_h2]:text-center [&_h2]:text-[32px]"
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
-  <div class="lg:mt-[77px] max-w-[1615px] md:mx-[30px] relative z-20">
+  <div class="lg:mt-[77px] md:max-w-[1640px] md:mx-[30px] min-[1700px]:mx-auto relative z-20">
     <div class="mt-[48px]">
         <section>
             <?php if( have_rows('item') ): ?>
-                <ul class="grid grid-cols-2 lg:grid-cols-4 gap-[10px] md:gap-[30px] list-none p-0">
+                <ul class="grid grid-cols-2 lg:grid-cols-4 justify-center gap-[10px] md:gap-[30px] list-none p-0">
 
                     <?php while( have_rows('item') ): the_row();
                         $title = get_sub_field('title');
