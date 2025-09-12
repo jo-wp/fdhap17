@@ -47,24 +47,26 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         'order'          => 'ASC',
         'paged'          => $paged     // 👉 nécessaire pour la pagination
     );
-    $partenaires = new WP_Query($args);
+    $offers = new WP_Query($args);
 
-    if ($partenaires->have_posts()) :
+    if ($offers->have_posts()) :
         ?>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 list-none m-0 p-0 mt-20">
-            <?php while ($partenaires->have_posts()) : $partenaires->the_post(); ?>
-                <li class="partenaire-item flex flex-col gap-8">
-                    <div class="flex justify-center overflow-hidden items-center sm:h-[200px] lg:h-[267px]">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <?php the_post_thumbnail('full', ['class' => 'w-full h-auto object-contain']); ?>
-                        <?php endif; ?>
-                    </div>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 list-none m-0 p-0 mt-20">
+            <?php while ($offers->have_posts()) : $offers->the_post(); ?>
+                <li class="partenaire-item">
+                    <a class=" flex flex-col gap-4 md:gap-8 hover:no-underline"  href="<?php echo get_field('link') ?>" target="_blank">
+                        <div class="flex justify-center overflow-hidden items-center h-[60vw] lg:h-[50vw] md:max-h-[267px]  rounded-[20px]">
+                            <?php if (has_post_thumbnail()) : ?>
+                                <?php the_post_thumbnail('full', ['class' => 'w-full h-auto object-contain']); ?>
+                            <?php endif; ?>
+                        </div>
 
-                    <div class="bg-bgGreen px-4 py-6 rounded-[20px]">
-                        <h2 class="font-body text-[26px] font-medium"><?php the_title(); ?></h2>
-                        <div class="text-base text-black/60"><?php the_excerpt(); ?></div>
-                        <a href="<?php the_permalink(); ?>" class="button button--bg-green !border-green mt-4">Voir l'offre en détail</a>
-                    </div>
+                        <div class="bg-bgGreen px-4 py-6 rounded-[20px] ">
+                            <h2 class="font-body text-[26px] font-medium"><?php the_title(); ?></h2>
+                            <div class="text-base text-black/60 min-h-[50px]"><?php the_excerpt(); ?></div>
+                            <span  class="button button--bg-green !border-green mt-4">Voir l'offre en détail</span>
+                        </div>
+                    </a>
                 </li>
             <?php endwhile; ?>
         </ul>
@@ -73,7 +75,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         <div class="minisite-pagination mt-10">
             <?php
             echo paginate_links(array(
-                'total'   => $partenaires->max_num_pages,
+                'total'   => $offers->max_num_pages,
                 'current' => $paged,
                 'prev_text' => __('&laquo;'),
                 'next_text' => __('&raquo;'),
