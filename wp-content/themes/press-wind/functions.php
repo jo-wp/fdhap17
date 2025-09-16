@@ -16,6 +16,8 @@ require_once dirname(__FILE__) . '/inc/acf_blocks.php';
 require_once dirname(__FILE__) . '/inc/login_assets.php';
 // Custom Post Type setup
 require_once dirname(__FILE__) . '/inc/cpt.php';
+// Shortcodes Type setup
+require_once dirname(__FILE__) . '/inc/shortcodes.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {
