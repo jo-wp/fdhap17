@@ -18,7 +18,6 @@
             },
             "post_type": [
                 "post",
-                "camping",
                 "page",
                 "term_page"
             ],
@@ -54,5 +53,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1757622318
+    "modified": 1758034928
 }
