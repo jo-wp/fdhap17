@@ -40,6 +40,7 @@ $block_id = $block['id'];
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
   <div class="block-carousel__items">
+    <?php if($items_selected): ?>
     <section class="splide splidejs-<?= $block_id; ?>">
       <div class="block-carousel__filters-controls splide__arrows">
         <button
@@ -72,6 +73,9 @@ $block_id = $block['id'];
         </ul>
       </div>
     </section>
+    <?php else: ?>
+      <h2>Aucune relations selectionnées</h2>
+    <?php endif; ?>
   </div>
 </section>
 
