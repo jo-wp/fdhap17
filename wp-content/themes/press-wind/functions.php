@@ -154,4 +154,5 @@ add_filter('template_include', function($template) {
         }
     }
     return $template;
-}, 1000); // priorité élevée
+}, 1000);
+

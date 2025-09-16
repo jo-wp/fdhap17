@@ -38,7 +38,7 @@ $template = [
         <?php endif; ?>
 
         <div class="py-[10px]">
-            <InnerBlocks class="[&_h2]:text-[32px] [&_h2]:mb-[35px] [&_p]:text-[15px] [&_p]:font-light"
+            <InnerBlocks class="[&_h2]:text-[32px] [&_h2]:mb-[35px] [&_p]:text-[15px] [&_p]:font-light [&_a]:underline"
                          template="<?php echo esc_attr(wp_json_encode($template)) ?>"
                          allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
         </div>
