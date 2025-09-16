@@ -78,6 +78,13 @@
                 "operator": "==",
                 "value": "fdhpa17\/faq"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "camping"
+            }
         ]
     ],
     "menu_order": 0,
@@ -89,5 +96,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1757622324
+    "modified": 1758033728
 }

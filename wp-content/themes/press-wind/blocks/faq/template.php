@@ -11,14 +11,23 @@ if ($items_answer) {
   $count = count($items_answer);
   $half = ceil($count / 2);
   list($part1, $part2) = array_chunk($items_answer, $half);
-}else{
+} else {
   $part1 = [];
   $part2 = [];
 }
 
+$is_block = isset($block) && is_array($block);
 
 
-
+$attributes = '';
+$defaultClass = 'container-huge flex flex-col items-center justify-center block-faq  rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px] px-[30px]';
+if (isset($block)) {
+  $background_bg = ' bg-bgGreen';
+  $attributes = get_block_wrapper_attributes(['class' => $defaultClass.$background_bg]);
+} else {
+  $background_bg = ' bg-bgOrange';
+  $attributes = 'class="' . $defaultClass . ' '.$background_bg.'"';
+}
 
 // INNERBLOCKS
 $allowedBlocks = ['core/heading', 'core/paragraph'];
@@ -39,12 +48,32 @@ $template = [
   ]
 ];
 ?>
-<section <?= get_block_wrapper_attributes(['class' => 'container-huge flex flex-col items-center justify-center block-faq bg-bgGreen rounded-t-[20px] pt-[75px] pb-[54px] max-md:px-[15px] max-md:py-[50px] px-[30px]']); ?>>
+<section <?= $attributes; ?>>
   <div class="">
-    <InnerBlocks
-      class=" [&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
-      template="<?= htmlspecialchars(json_encode($template)); ?>"
-      allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
+    <?php if (isset($block)):
+      get_template_part('blocks/faq/innerblocks/innerblocks', null, array('template' => $allowedBlocks, 'allowedBlocks' => $allowedBlocks));
+    else:
+      //get first term in taxonomy destination 
+      $term_name = '';
+      $terms = get_the_terms(get_the_ID(), 'destination');
+
+      if ($terms && !is_wp_error($terms)) {
+        $first = array_shift($terms);
+        // si tu veux le nom du terme :
+        $term_name = $first->name;
+
+        // si tu as un champ ACF sur le terme (ex: 'destination'), remplace la ligne précédente par :
+        // $term_name = get_field('destination', 'term_' . $first->term_id) ?: $first->name;
+      }
+
+      ?>
+      <div
+        class="[&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:text-center [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode">
+        <h2>Préparez votre séjour</h2>
+        <p>en camping à <?= esc_html($term_name); ?></p>
+      </div>
+      <?php
+    endif; ?>
   </div>
   <div class="max-w-[1100px] w-[100%] mx-[30px] flex items-start max-md:flex-col">
     <?php if ($part1): ?>
