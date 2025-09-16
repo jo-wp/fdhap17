@@ -78,9 +78,9 @@ $template = [
   </div>
   <?php if(!$button_featured_blog['disable_button']): ?>
   <div class="text-center max-md:mx-auto">
-    <?php if($button_featured_blog['link_title_button']['url']): ?>
+    <?php if($button_featured_blog['link_title_button']): ?>
     <a href="<?= esc_url($button_featured_blog['link_title_button']['url']); ?>" class="button button--primary">
-      <?php if($button_featured_blog['link_title_button']['title']): ?>
+      <?php if($button_featured_blog['link_title_button']): ?>
       <?= esc_html($button_featured_blog['link_title_button']['title']); ?>
       <?php endif; ?>
     </a>
