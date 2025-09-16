@@ -30,12 +30,11 @@ $template = [
 $campings_count = 0;
 
 if ($term && isset($term->term_id, $term->taxonomy)) {
-  // OPTION A : compter uniquement les posts du CPT "camping" dans ce terme
   $q = new WP_Query([
-    'post_type'      => 'camping',          // <-- adapte si ton CPT a un autre slug
+    'post_type'      => 'camping',          
     'post_status'    => 'publish',
-    'posts_per_page' => 1,                  // on ne récupère rien, on lit juste found_posts
-    'no_found_rows'  => false,              // nécessaire pour remplir found_posts
+    'posts_per_page' => 1,                  
+    'no_found_rows'  => false,             
     'tax_query'      => [[
       'taxonomy'         => $term->taxonomy,
       'field'            => 'term_id',
@@ -48,8 +47,6 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
   $campings_count = (int) $q->found_posts;
   wp_reset_postdata();
 
-  // OPTION B (alternative rapide) : si la taxo n'est *que* pour "camping"
-  // $campings_count = (int) $term->count;
 }
 ?>
 <section <?= get_block_wrapper_attributes(["class" => 'block-cards']); ?>>

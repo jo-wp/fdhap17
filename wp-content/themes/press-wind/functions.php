@@ -18,6 +18,8 @@ require_once dirname(__FILE__) . '/inc/login_assets.php';
 require_once dirname(__FILE__) . '/inc/cpt.php';
 // Shortcodes Type setup
 require_once dirname(__FILE__) . '/inc/shortcodes.php';
+// YoastSEO Vars setup
+require_once dirname(__FILE__) . '/inc/vars_yoast.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {
