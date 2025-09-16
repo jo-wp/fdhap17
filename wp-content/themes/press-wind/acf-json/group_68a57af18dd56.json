@@ -131,9 +131,9 @@
     "location": [
         [
             {
-                "param": "block",
+                "param": "post_type",
                 "operator": "==",
-                "value": "all"
+                "value": "camping"
             }
         ],
         [
@@ -148,13 +148,6 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "page"
-            }
-        ],
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "camping"
             }
         ],
         [
@@ -181,5 +174,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1757622333
+    "modified": 1758025872
 }
