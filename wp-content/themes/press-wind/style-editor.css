@@ -4193,11 +4193,21 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2_sub\]\:font-arial h2 sub{
   font-family: Arial, Helvetica, sans-serif;
 }
+.\[\&_h2_sub\]\:text-\[20px\] h2 sub{
+  font-size: 20px;
+}
 .\[\&_h2_sub\]\:text-\[24px\] h2 sub{
   font-size: 24px;
 }
 .\[\&_h2_sub\]\:font-\[400\] h2 sub{
   font-weight: 400;
+}
+.\[\&_h2_sub\]\:font-\[700\] h2 sub{
+  font-weight: 700;
+}
+.\[\&_h2_sub\]\:text-black h2 sub{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 @media (min-width: 768px){
   .md\:\[\&_h2_sub\]\:float-right h2 sub{
@@ -4205,6 +4215,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:\[\&_h2_sub\]\:text-\[32px\] h2 sub{
     font-size: 32px;
+  }
+  .md\:\[\&_h2_sub\]\:text-\[36px\] h2 sub{
+    font-size: 36px;
   }
   .md\:\[\&_h2_sub\]\:text-inherit h2 sub{
     color: inherit;
