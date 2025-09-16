@@ -35,7 +35,7 @@ $block_id = $block['id'];
 <section <?= get_block_wrapper_attributes(["class" => 'block-carousel  max-w-[1260px] mx-[90px] xl:mx-auto']); ?>>
   <div class="">
     <InnerBlocks
-      class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative [&_h2]:text-center  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_span]:font-arial [&_h2_span]:text-[32px] [&_h2_span]:font-[400] "
+      class="mb-[40px] [&_p]:text-[15px] [&_h2]:relative [&_h2]:text-center  [&_h2::after]:block [&_h2]:text-orange [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2_sub]:font-arial [&_h2_sub]:text-[32px] [&_h2_sub]:font-[400] "
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
