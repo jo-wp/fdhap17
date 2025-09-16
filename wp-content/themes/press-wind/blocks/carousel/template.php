@@ -66,7 +66,7 @@ $block_id = $block['id'];
                 <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
                   href="<?= get_permalink($item->ID); ?>">
                   <span
-                    class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] text-green mt-[20px]"><?= get_the_title($item->ID); ?></span>
+                    class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]"><?= get_the_title($item->ID); ?></span>
                 </a>
               </div>
             </li>
