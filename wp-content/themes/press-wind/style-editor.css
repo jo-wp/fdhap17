@@ -4373,9 +4373,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p\]\:font-body p{
   font-family: Roboto;
 }
-.\[\&_p\]\:font-marcellus p{
-  font-family: Marcellus, serif;
-}
 .\[\&_p\]\:text-\[13\.34px\] p{
   font-size: 13.34px;
 }
