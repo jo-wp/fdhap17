@@ -237,14 +237,8 @@
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--ivymode)",
           "fontWeight": "600",
-          "lineHeight": "var(--wp--custom--typography--line-height--tiny)",
-          "fontSize": "var(--wp--custom--typography--font-size--big)"
-        },
-        "spacing": {
-          "margin": {
-            "top": "0",
-            "bottom": "0"
-          }
+          "lineHeight": "var(--wp--custom--typography--line-height--small)",
+          "fontSize": "var(--wp--custom--typography--font-size--gigantic)"
         }
       },
       "h2": {

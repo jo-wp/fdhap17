@@ -4003,9 +4003,64 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     border-bottom-left-radius: 39px;
   }
 }
+.\[\&_h1\]\:mb-\[35px\] h1{
+  margin-bottom: 35px;
+}
+.\[\&_h1\]\:mb-\[50px\] h1{
+  margin-bottom: 50px;
+}
+.\[\&_h1\]\:text-left h1{
+  text-align: left;
+}
+.\[\&_h1\]\:text-center h1{
+  text-align: center;
+}
+.\[\&_h1\]\:text-\[24px\] h1{
+  font-size: 24px;
+}
+.\[\&_h1\]\:font-\[400\] h1{
+  font-weight: 400;
+}
+.\[\&_h1\]\:font-\[600\] h1{
+  font-weight: 600;
+}
 @media not all and (min-width: 768px){
   .max-md\:\[\&_h1\]\:\!text-\[30px\] h1{
     font-size: 30px !important;
+  }
+}
+@media (min-width: 768px){
+  .md\:\[\&_h1\]\:text-\[32px\] h1{
+    font-size: 32px;
+  }
+  .md\:\[\&_h1\]\:text-inherit h1{
+    color: inherit;
+  }
+}
+.\[\&_h1_sub\]\:float-none h1 sub{
+  float: none;
+}
+.\[\&_h1_sub\]\:text-center h1 sub{
+  text-align: center;
+}
+.\[\&_h1_sub\]\:font-arial h1 sub{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.\[\&_h1_sub\]\:text-\[24px\] h1 sub{
+  font-size: 24px;
+}
+.\[\&_h1_sub\]\:font-\[400\] h1 sub{
+  font-weight: 400;
+}
+@media (min-width: 768px){
+  .md\:\[\&_h1_sub\]\:float-right h1 sub{
+    float: right;
+  }
+  .md\:\[\&_h1_sub\]\:text-\[32px\] h1 sub{
+    font-size: 32px;
+  }
+  .md\:\[\&_h1_sub\]\:text-inherit h1 sub{
+    color: inherit;
   }
 }
 .\[\&_h2\:\:after\]\:block h2::after{
