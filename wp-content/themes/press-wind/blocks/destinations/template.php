@@ -56,7 +56,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge flex flex-col items-center justify-center block-destinations']); ?>>
   <div class="max-w-[915px] mx-auto ">
     <InnerBlocks
-      class="[&_h2]:mb-[50px] [&_h2]:text-orange [&_p]:mt-0 [&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-body [&_h2]:text-[20px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2]:font-ivymode"
+      class="[&_h2]:mb-[50px] [&_h2]:text-orange [&_p]:mt-0 [&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_h2]:text-[20px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>

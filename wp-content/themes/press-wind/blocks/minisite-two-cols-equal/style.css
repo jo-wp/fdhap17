@@ -11,7 +11,7 @@
 .block-minisite-twocolsequal input[type="text"],
 .block-minisite-twocolsequal input[type="email"],
 .block-minisite-twocolsequal textarea {
-    @apply bg-bgGreen px-4 py-[19px] border-0 text-black text-[15px] placeholder:font-[300] placeholder:text-black placeholder:text-[15px] font-body !mb-[17px] focus:outline-green;
+    @apply bg-bgGreen px-4 py-[19px] border-0 text-black text-[15px] placeholder:font-[300] placeholder:text-black placeholder:text-[15px] font-arial !mb-[17px] focus:outline-green;
 }
 
 .block-minisite-twocolsequal textarea {
