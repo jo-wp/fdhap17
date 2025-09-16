@@ -12,10 +12,20 @@ $presentation_auteur = get_field('presentation_auteur', 'user_' . $author_id);
 $expertises_auteur = get_field('expertises_auteur', 'user_' . $author_id);
 $temoignages_items = get_field('temoignages_items', 'user_' . $author_id);
 
-$articles = get_posts(array(
-  'author' => $author_id,
-  'numberposts' => 4,
-));
+$paged = max( 1, get_query_var('paged') ); // sur une archive, c'est bien 'paged'
+$author_id = get_queried_object_id();
+
+
+$all_args = array(
+  'author'         => $author_id,
+  'post_type'      => 'post',
+  'posts_per_page' => 9,
+  'paged'          => $paged,
+  'orderby'        => 'date',
+  'order'          => 'DESC',
+);
+
+$all_posts = new WP_Query($all_args);
 
 
 
@@ -120,20 +130,42 @@ get_header();
       <?= __('Publications récentes', 'fdhpa17'); ?>
     </h2>
     <div class="mt-[40px] md:mt-[87px] mb-[40px]  md:mb-[63px] flex flex-row justify-center gap-[22px]
-  max-md:overflow-x-scroll max-md:max-w-full max-md:justify-start">
-      <?php if ($articles): ?>
-        <?php foreach ($articles as $article): ?>
-          <?php $image_featured = get_the_post_thumbnail_url($article->ID,'full'); ?>
+  max-md:overflow-x-scroll max-md:max-w-full max-md:justify-start relative">
+      <?php if ($all_posts->have_posts()): ?>
+        <?php while ($all_posts->have_posts()):
+          $all_posts->the_post(); ?>
+          <?php $image_featured = get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>
           <article
             class=" max-md:first:ml-[15px] max-md:last:mr-[15px] post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-w-[250px] md:aspect-[2/3] max-md:min-h-[250px] md:min-w-[23%] rounded-[20px] bg-cover bg-center"
             style="background-image: url('<?= $image_featured; ?>');">
             <a class="hover:no-underline w-full h-full flex items-end relative z-20 hover:translate-x-2 transition-all duration-300 max-md:justify-center"
-              href="<?= get_permalink($article->ID); ?>">
+              href="<?= get_permalink(); ?>">
               <h3
-                class="post-title m-0 p-0 font-arial text-white text-left text-[14px] md:text-[19px] font-[700] mb-[42px] py-[8px] px-[19px] rounded-[40px]"><?= get_the_title($article->ID); ?></h3>
+                class="post-title m-0 p-0 font-arial text-white text-left text-[14px] md:text-[19px] font-[700] mb-[42px] py-[8px] px-[19px] rounded-[40px]">
+                <?= get_the_title(); ?>
+              </h3>
             </a>
           </article>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
+
+        <?php
+        $base = trailingslashit(get_author_posts_url($author_id)) . '%_%';
+        $format = user_trailingslashit('page/%#%/', 'paged');
+
+        echo '<nav class="mt-[30px] absolute -bottom-10 gap-[10px] flex flex-row pagination font-arial text-[14px]">';
+        echo paginate_links(array(
+          'base' => $base,
+          'format' => $format,
+          'current' => $paged,
+          'total' => $all_posts->max_num_pages,
+          'mid_size' => 2,
+          'prev_text' => '«',
+          'next_text' => '»',
+          // 'type' => 'list',
+        ));
+        echo '</nav>';
+        ?>
+
       <?php endif; ?>
     </div>
   </div>

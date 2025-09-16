@@ -160,3 +160,21 @@ add_filter('template_include', function($template) {
     return $template;
 }, 1000);
 
+add_action('pre_get_posts', function( $q ){
+  if ( is_admin() || ! $q->is_main_query() ) return;
+  if ( $q->is_author() ) {
+    $q->set('posts_per_page', 9);
+    $q->set('orderby', 'date');
+    $q->set('order', 'DESC');
+  }
+});
+
+add_filter('wpseo_canonical', function( $canonical ){
+  if ( is_author() && is_paged() ) {
+    $author = get_queried_object();
+    if ( $author && isset($author->ID) ) {
+      return get_author_posts_url( $author->ID );
+    }
+  }
+  return $canonical;
+});

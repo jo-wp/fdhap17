@@ -169,6 +169,9 @@
 .\!-right-\[60px\]{
   right: -60px !important;
 }
+.-bottom-10{
+  bottom: -2.5rem;
+}
 .-bottom-\[30px\]{
   bottom: -30px;
 }
