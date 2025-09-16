@@ -201,7 +201,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
   </div>
 </section>
 <?php if(!is_front_page()): ?>
-<section class="relative z-[9999] mb-[80px] [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
+<section class="relative z-[9999] mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
   <?php
   if (function_exists('yoast_breadcrumb')) {
     yoast_breadcrumb('<p id="breadcrumbs">', '</p>');

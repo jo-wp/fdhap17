@@ -142,68 +142,9 @@
           "slug": "arial"
         },
         {
-          "fontFamily": "\"Marcellus\", serif",
-          "name": "Marcellus",
-          "slug": "marcellus"
-        },
-        {
           "fontFamily": "\"ivymode\", sans-serif",
           "name": "Ivymode",
           "slug": "ivymode"
-        },
-        {
-          "fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell,\"Helvetica Neue\",sans-serif",
-          "name": "System Font",
-          "slug": "system-font"
-        },
-        {
-          "fontFamily": "\"PlayfairDisplay\", serif",
-          "name": "PlayfairDisplay",
-          "slug": "PlayfairDisplay",
-          "fontFace": [
-            {
-              "fontFamily": "PlayfairDisplay",
-              "fontWeight": "600",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./assets/fonts/PlayfairDisplay-Bold.woff2"]
-            }
-          ]
-        },
-        {
-          "fontFamily": "\"Roboto\", sans-serif",
-          "name": "Roboto",
-          "slug": "Roboto",
-          "fontFace": [
-            {
-              "fontFamily": "Roboto",
-              "fontWeight": "300",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./assets/fonts/roboto-v27-latin-300.woff2"]
-            },
-            {
-              "fontFamily": "Roboto",
-              "fontWeight": "400",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./assets/fonts/roboto-v27-latin-regular.woff2"]
-            },
-            {
-              "fontFamily": "Roboto",
-              "fontWeight": "300",
-              "fontStyle": "italic",
-              "fontStretch": "normal",
-              "src": ["file:./assets/fonts/roboto-v27-latin-italic.woff2"]
-            },
-            {
-              "fontFamily": "Roboto",
-              "fontWeight": "700",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./assets/fonts/roboto-v27-latin-700.woff2"]
-            }
-          ]
         }
       ],
       "fontSizes": [
