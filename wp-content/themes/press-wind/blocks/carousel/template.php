@@ -74,7 +74,7 @@ $block_id = $block['id'];
       </div>
     </section>
     <?php else: ?>
-      <h2>Aucune relations selectionnées</h2>
+      <p class=" text-center">Aucune relations selectionnées</p>
     <?php endif; ?>
   </div>
 </section>
