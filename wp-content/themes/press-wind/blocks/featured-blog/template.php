@@ -10,7 +10,7 @@ $disabled_auto_featured_blog = get_field('disabled_auto_featured_blog');
 $associated_featured_blog = get_field('associated_featured_blog');
 $button_featured_blog = get_field('button_featured_blog');
 
-if( $disabled_auto_featured_blog  ) {
+if( !$disabled_auto_featured_blog  ) {
   // WP_Query arguments
   $args = array(
     'post_type'              => array( 'post' ),
