@@ -17,6 +17,9 @@ $articles = get_posts(array(
   'numberposts' => 4,
 ));
 
+
+
+
 get_header();
 ?>
 <div class="max-w-[1280px] mx-auto max-[1340px]:mx-[30px]">
@@ -54,7 +57,8 @@ get_header();
       <div class="single-author__about__items__item text-center max-md:mb-[20px]">
         <img class="md:mb-[30px]" src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-speciality.svg"
           alt="Icon Vit à">
-        <p class="font-arial text-[20px] font-[700] text-black uppercase m-0 mb-[10px] "><?= __('Vit à', 'fdhpa17') ?>
+        <p class="font-arial text-[20px] font-[700] text-black uppercase m-0 mb-[10px] ">
+          <?= __('Spécialité', 'fdhpa17') ?>
         </p>
         <p class="m-0  text-[16px] text-black font-body font-[300] max-w-[200px]"><?= $specialite_auteur; ?></p>
       </div>
@@ -77,12 +81,12 @@ get_header();
     <div class="flex-1">
       <h2 class="text-[32px] text-black mb-[30px]"><?= __('Mon expertise', 'fdhpa17'); ?></h2>
       <div class="single-author__expetise__items gap-[40px] flex flex-col">
-      <?php foreach ($expertises_auteur as $expertise) : ?>
-        <div class="single-author__expetise__items__item flex flex-row gap-[15px] items-center justify-start">
-          <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/big-star.png" alt="Icon">
-          <p class="m-0 text-[15px] font-[700]"><?= $expertise['texte'] ?></p>
-        </div>
-      <?php endforeach; ?>
+        <?php foreach ($expertises_auteur as $expertise): ?>
+          <div class="single-author__expetise__items__item flex flex-row gap-[15px] items-center justify-start">
+            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/big-star.png" alt="Icon">
+            <p class="m-0 text-[15px] font-[700]"><?= $expertise['texte'] ?></p>
+          </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>
@@ -95,15 +99,15 @@ get_header();
       <section class="splide splide_author-quote" aria-label="Témoignages de lecteurs">
         <div class="splide__track">
           <ul class="splide__list mb-[30px]">
-            <?php foreach ($temoignages_items as $temoignage) : ?>
-            <li class="splide__slide">
-              <div class="single-author__quote__items__item">
-                <p class="text-white text-[20px] font-arial text-center mb-[50px]"><?= $temoignage['temoignage']; ?></p>
-                <p class="text-white text-[16px] font-arial text-center font-[700] mb-0">– <?= $temoignage['nom'] ?></p>
-                <p class="text-white text-[16px] font-arial text-center mt-0"><?= $temoignage['description'] ?></p>
-              </div>
-            </li>
-           <?php endforeach; ?>
+            <?php foreach ($temoignages_items as $temoignage): ?>
+              <li class="splide__slide">
+                <div class="single-author__quote__items__item">
+                  <p class="text-white text-[20px] font-arial text-center mb-[50px]"><?= $temoignage['temoignage']; ?></p>
+                  <p class="text-white text-[16px] font-arial text-center font-[700] mb-0">– <?= $temoignage['nom'] ?></p>
+                  <p class="text-white text-[16px] font-arial text-center mt-0"><?= $temoignage['description'] ?></p>
+                </div>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </div>
       </section>
@@ -117,16 +121,20 @@ get_header();
     </h2>
     <div class="mt-[40px] md:mt-[87px] mb-[40px]  md:mb-[63px] flex flex-row justify-center gap-[22px]
   max-md:overflow-x-scroll max-md:max-w-full max-md:justify-start">
-      <article
-        class=" max-md:first:ml-[15px] max-md:last:mr-[15px] post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-w-[250px] md:aspect-[2/3] max-md:min-h-[250px] md:min-w-[23%] rounded-[20px] bg-cover bg-center"
-        style="background-image: url('');">
-        <a class="hover:no-underline w-full h-full flex items-end relative z-20 hover:translate-x-2 transition-all duration-300 max-md:justify-center"
-          href="">
-          <h3
-            class="post-title m-0 p-0 font-arial text-white text-left text-[14px] md:text-[19px] font-[700] mb-[42px] py-[8px] px-[19px] rounded-[40px]">
-            Vivez Châtelaillon-Plage à vélo</h3>
-        </a>
-      </article>
+      <?php if ($articles): ?>
+        <?php foreach ($articles as $article): ?>
+          <?php $image_featured = get_the_post_thumbnail_url($article->ID,'full'); ?>
+          <article
+            class=" max-md:first:ml-[15px] max-md:last:mr-[15px] post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-w-[250px] md:aspect-[2/3] max-md:min-h-[250px] md:min-w-[23%] rounded-[20px] bg-cover bg-center"
+            style="background-image: url('<?= $image_featured; ?>');">
+            <a class="hover:no-underline w-full h-full flex items-end relative z-20 hover:translate-x-2 transition-all duration-300 max-md:justify-center"
+              href="<?= get_permalink($article->ID); ?>">
+              <h3
+                class="post-title m-0 p-0 font-arial text-white text-left text-[14px] md:text-[19px] font-[700] mb-[42px] py-[8px] px-[19px] rounded-[40px]"><?= get_the_title($article->ID); ?></h3>
+            </a>
+          </article>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </div>
   </div>
 

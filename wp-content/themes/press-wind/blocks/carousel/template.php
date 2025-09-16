@@ -8,7 +8,7 @@
 
 //ACF FIELDS
 $items_selected = get_field('items_selected');
-$type_color = (get_field('type_color')==='default') ? 'text-green' : 'text-orange';
+$type_color = (get_field('type_color')=='default') ? 'text-green' : 'text-orange';
 
 // INNERBLOCKS
 $allowedBlocks = ['core/heading', 'core/paragraph'];
