@@ -3,6 +3,35 @@
     "title": "Carousel",
     "fields": [
         {
+            "key": "field_68c97f3f51746",
+            "label": "Couleur",
+            "name": "type_color",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Vert",
+                "orange": "Orange"
+            },
+            "default_value": false,
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
             "key": "field_68b098ebeb425",
             "label": "Sélection de pages, campings, articles",
             "name": "items_selected",
@@ -53,5 +82,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758034928
+    "modified": 1758035475
 }
