@@ -318,7 +318,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
       <?= _e('Les campings à proximité', 'fdhpa17') ?></h2>
     <div
       class="bloc-camping-associated__items flex justify-center flex-row flex-wrap gap-[40px] max-md:overflow-x-scroll">
-      <?php if()
+
       <div class="bloc-camping-associated__items__item ">
         <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
           style="background-image:url('<?= $image_featured_url; ?>');">
