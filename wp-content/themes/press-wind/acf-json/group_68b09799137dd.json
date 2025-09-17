@@ -32,6 +32,27 @@
             "save_options": 0
         },
         {
+            "key": "field_68cab3ba2ecf4",
+            "label": "Désactiver Automatisation (articles de la catégorie)",
+            "name": "disabled_auto_carousel",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_68b098ebeb425",
             "label": "Sélection de pages articles",
             "name": "items_selected",
@@ -83,5 +104,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758114062
+    "modified": 1758114449
 }
