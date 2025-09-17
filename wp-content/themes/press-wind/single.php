@@ -1,5 +1,6 @@
 <?php
 get_header();
+$under_title = get_field('sous_titre');
 ?>
 <div class="single-header mb-[50px] mx-[30px]">
   <div class="single-header__timeline flex flex-row flex-wrap gap-[60px] items-center justify-center md:mb-[50px]">
@@ -13,8 +14,7 @@ get_header();
     </div>
   </div>
   <div class="single-header__title">
-    <h1 class=" text-black font-ivymode text-[43.5px] font-[600] leading-[55px] tracking-[0.25px] text-center"><?= get_the_title($post->ID) ?></h1>
-    <p class="text-black font-arial m-0 mb-[50px] text-[32px] font-[600] leading-[55px] tracking-[0.25px] text-center">Lieu mythique souligné par les deux tours</p>
+    <h1 class=" text-black font-ivymode text-[43.5px] font-[600] leading-[55px] tracking-[0.25px] text-center"><?= get_the_title($post->ID) ?> <?php if($under_title): ?><span class="text-black font-arial m-0 mb-[50px] text-[32px] font-[600] leading-[55px] tracking-[0.25px] text-center block"><?= $under_title; ?></span><?php endif; ?></h1>
     <hr class="max-w-[420px]  ">  
   </div>
 </div>

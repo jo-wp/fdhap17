@@ -3,6 +3,27 @@
     "title": "Articles",
     "fields": [
         {
+            "key": "field_68caa2ac29a24",
+            "label": "Sous titre H1",
+            "name": "sous_titre",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_68c98095986bf",
             "label": "Sélectionnez les campings associés",
             "name": "campings_associated_article",
@@ -51,5 +72,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758035875
+    "modified": 1758110059
 }
