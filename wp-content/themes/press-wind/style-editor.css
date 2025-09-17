@@ -153,6 +153,9 @@
 .relative{
   position: relative;
 }
+.sticky{
+  position: sticky;
+}
 .\!inset-0{
   inset: 0px !important;
 }
@@ -180,6 +183,9 @@
 }
 .top-0{
   top: 0px;
+}
+.top-4{
+  top: 1rem;
 }
 .\!z-0{
   z-index: 0 !important;
@@ -399,6 +405,9 @@
 .h-\[50vw\]{
   height: 50vw;
 }
+.h-\[600px\]{
+  height: 600px;
+}
 .h-\[60px\]{
   height: 60px;
 }
@@ -428,6 +437,9 @@
 }
 .max-h-\[480px\]{
   max-height: 480px;
+}
+.min-h-\[100\%\]{
+  min-height: 100%;
 }
 .min-h-\[290px\]{
   min-height: 290px;
@@ -459,11 +471,17 @@
 .w-full{
   width: 100%;
 }
+.min-w-\[100\%\]{
+  min-width: 100%;
+}
 .min-w-\[20\%\]{
   min-width: 20%;
 }
 .min-w-\[250px\]{
   min-width: 250px;
+}
+.min-w-\[30\%\]{
+  min-width: 30%;
 }
 .min-w-\[70\%\]{
   min-width: 70%;
@@ -704,6 +722,9 @@
 .gap-\[40px\]{
   gap: 40px;
 }
+.gap-\[45px\]{
+  gap: 45px;
+}
 .gap-\[5\%\]{
   gap: 5%;
 }
@@ -751,6 +772,9 @@
 }
 .rounded-\[10px\]{
   border-radius: 10px;
+}
+.rounded-\[16px\]{
+  border-radius: 16px;
 }
 .rounded-\[20px\]{
   border-radius: 20px;
@@ -2233,6 +2257,38 @@ nav .submenu > li .submenu-child > li{
 }
 .block-campings .facetwp-template > div{
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 30px;
+  row-gap: 50px;
+}
+.block-search .facetwp-checkbox{
+  background-image: url('/wp-content/themes/press-wind/assets/media/checkbox-filter.png');
+  background-size: 16px 16px;
+  padding-left: 20px;
+}
+.block-search .facetwp-checkbox.checked{
+  background-image: url('/wp-content/themes/press-wind/assets/media/checkbox-filter-checked.png');
+}
+.block-search .facet-block{
+  margin-bottom: 20px;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(117 117 117 / var(--tw-border-opacity));
+  padding-bottom: 20px;
+}
+.block-search .facetwp-facet{
+  margin-bottom: 0px;
+}
+.block-search .facetwp-template .image-featured{
+  aspect-ratio: 3/2;
+  max-height: 290px;
+  min-width: auto;
+}
+.block-search .facetwp-template > div{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 30px;
   row-gap: 50px;
 }
