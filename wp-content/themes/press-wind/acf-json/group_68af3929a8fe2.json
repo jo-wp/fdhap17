@@ -3,6 +3,61 @@
     "title": "Masonry",
     "fields": [
         {
+            "key": "field_68cac27408559",
+            "label": "Désactiver en automatique",
+            "name": "disabled_auto_mansory",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_68cac2c2a3591",
+            "label": "Sélectionner la catégorie d'article",
+            "name": "select_cat_mansory",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68cac27408559",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "category",
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "checkbox",
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "allow_null": 0,
+            "bidirectional_target": []
+        },
+        {
             "key": "field_68af3a7d1fc46",
             "label": "Page à lier",
             "name": "items_associated",
@@ -10,7 +65,15 @@
             "type": "relationship",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68cac27408559",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -51,5 +114,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758030003
+    "modified": 1758118312
 }
