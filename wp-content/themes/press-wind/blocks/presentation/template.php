@@ -112,7 +112,7 @@ if ($type_block_presentation == 'default') {
       endif; ?>
     </div>
     <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px] lg:pr-[100px]">
-      <InnerBlocks class="[&_h2]:leading-[36px] [&_h1]:leading-[36px]
+      <InnerBlocks class="animateFade fadeOutAnimation [&_h2]:leading-[36px] [&_h1]:leading-[36px]
         [&_h2]:mb-[50px] [&_h1]:mb-[50px] [&_h2]:text-black [&_h1]:text-black [&_li]:mt-0 max-md:[&_li]:text-[14px]
         md:[&_li]:text-[16px] [&_li]:text-[#333333] [&_li]:font-arial [&_p]:mt-0 text-[14px] 
         md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_p_a]:underline md:[&_h2]:text-[36px] md:[&_h1]:text-[36px] 

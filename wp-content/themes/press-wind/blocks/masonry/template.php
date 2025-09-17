@@ -59,7 +59,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'block-mansonry max-w-[1100px] mx-auto ']); ?>>
   <div>
     <InnerBlocks
-      class=" [&_h2]:text-black [&_h2]:mb-[67px] [&_h2]:text-left [&_h2]:pl-[38px] [&_p]:m-0 [&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
+      class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-[67px] [&_h2]:text-left [&_h2]:pl-[38px] [&_p]:m-0 [&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
@@ -69,7 +69,7 @@ $template = [
       $featuredImage = get_the_post_thumbnail_url($post->ID, 'full');
       ?>
       <article
-        class="post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-h-[430px] rounded-[20px] bg-cover bg-center max-md:min-w-[340px]"
+        class="animateFade fadeOutAnimation post relative after:rounded-[20px] after:z-10 after:w-full after:h-full after:absolute after:content-[''] after:top-0 after:left-0 min-h-[430px] rounded-[20px] bg-cover bg-center max-md:min-w-[340px]"
         style="background-image: url('<?= esc_url($featuredImage); ?>');">
         <a class="hover:no-underline w-full h-full flex items-end relative z-20 hover:translate-x-2 transition-all duration-300 "
           href="<?= esc_url(get_permalink($post->ID)); ?>">

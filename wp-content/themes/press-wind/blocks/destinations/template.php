@@ -56,7 +56,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge flex flex-col items-center justify-center block-destinations']); ?>>
   <div class="max-w-[915px] mx-auto ">
     <InnerBlocks
-      class="[&_h2]:mb-[50px] [&_h2]:text-orange [&_p]:mt-0 [&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_h2]:text-[20px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2]:font-ivymode"
+      class="animateFade fadeOutAnimation [&_h2]:mb-[50px] [&_h2]:text-orange [&_p]:mt-0 [&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_h2]:text-[20px] md:[&_h2]:text-[32px] [&_h2]:font-[600] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
@@ -78,7 +78,7 @@ $template = [
             <a class="relative z-10 block h-full hover:no-underline" href="<?= esc_url($pageLink); ?>">
 
               <span
-                class="absolute inset-x-0 top-0 m-0 text-black md:text-white font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
+                class="animateFade fadeOutAnimation absolute inset-x-0 top-0 m-0 text-black md:text-white font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
              transform-gpu translate-x-0 opacity-100 transition-all duration-500 ease-out
              group-hover:translate-x-full group-hover:opacity-0
              max-md:absolute max-md:bottom-0 max-md:p-[20px_10px] max-md:text-center max-md:top-[inherit] max-md:bg-white max-md:rounded-b-[20px]">

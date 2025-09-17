@@ -207,7 +207,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
-        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line">
+        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line animateFade fadeOutAnimation">
           <?= $firstText ?>
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">

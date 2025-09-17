@@ -2,7 +2,7 @@ import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
-import { ensureMap,rebuildMarkers,initFacetwpLeaflet  } from './facetwp/map.js'
+import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import Splide from '@splidejs/splide'
 window.Splide = Splide
 
@@ -227,6 +227,28 @@ function authorQuoteSlider() {
   carouselSplide.mount()
 }
 
+function animationBlock() {
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.2,
+  }
+
+  function observerCallback(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.replace('fadeOutAnimation', 'fadeInAnimation')
+      }
+      // else {
+      // 	entry.target.classList.replace('fadeIn', 'fadeOut');
+      // }
+    })
+  }
+  const observer = new IntersectionObserver(observerCallback, observerOptions)
+  const fadeElms = document.querySelectorAll('.animateFade')
+  fadeElms.forEach((el) => observer.observe(el))
+}
+
 // carouselDescription()
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -241,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ensureMap()
   rebuildMarkers()
   initFacetwpLeaflet()
+  animationBlock()
 
   //Import
   const map = document.querySelector('#map')

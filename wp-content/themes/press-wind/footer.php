@@ -20,7 +20,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 			<div
 				class="footer-logos max-md:grid max-md:grid-cols-2 md:flex flex-row max-md:gap-[10px] md:gap-[42px] justify-center items-center ">
 				<?php foreach ($logos_footer as $logo): ?>
-					<div class="footer-logo hover:-translate-y-1 transition-all duration-300">
+					<div class="animateFade fadeOutAnimation footer-logo hover:-translate-y-1 transition-all duration-300">
 						<a href="<?= $logo['url']['url'] ?>">
 							<img class="max-md:max-w-[70px]" src="<?php echo esc_url($logo['image']); ?>" />
 						</a>
@@ -37,7 +37,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 			</a>
 			<div>
 				<div>
-					<form class="js-cm-form" id="subForm" action="https://www.createsend.com/t/subscribeerror?description="
+					<form class="js-cm-form animateFade fadeOutAnimation " id="subForm" action="https://www.createsend.com/t/subscribeerror?description="
 						method="post"
 						data-id="A61C50BEC994754B1D79C5819EC1255CC3873E6F8B51876DCB5E2826F19E413141CE16AE237389AD09A628D12E1B8D3C0F461238AA3FD2E00BA0E01193774A16">
 						<div>
@@ -63,11 +63,11 @@ $copyrights_items = get_field('copyrights_items', 'option');
 		</div>
 		<?php if ($menu_footer): ?>
 			<div class="menu-footer max-md:mx-auto">
-				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-left  mb-[22px]">
+				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-left  mb-[22px] animateFade fadeOutAnimation ">
 					<?= $menu_footer['titre']; ?></div>
 				<ul class=" list-none m-0 p-0 ">
 					<?php foreach ($menu_footer['menu'] as $item): ?>
-						<li class="text-left md:leading-[50px] hover:translate-x-2 transition-all duration-300 max-md:text-center"><a
+						<li class="animateFade fadeOutAnimation text-left md:leading-[50px] hover:translate-x-2 transition-all duration-300 max-md:text-center"><a
 								class="font-arial text-[16px] md:text-[24px] font-[400] text-white hover:no-underline"
 								href="<?= $item['lien']['url'] ?>"><?= $item['lien']['title']; ?></a></li>
 					<?php endforeach; ?>
@@ -76,11 +76,11 @@ $copyrights_items = get_field('copyrights_items', 'option');
 		<?php endif; ?>
 		<?php if ($social_network): ?>
 			<div class="social-network max-md:mx-auto">
-				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-center md:text-left mb-[22px]">
+				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-center md:text-left mb-[22px] animateFade fadeOutAnimation ">
 					<?= $social_network['titre']; ?></div>
 				<ul class="list-none m-0 p-0 flex flex-row gap-[26px] items-center justify-center">
 					<?php foreach ($social_network['items'] as $item): ?>
-						<li class="text-left hover:-translate-y-1 transition-all duration-300"><a
+						<li class="animateFade fadeOutAnimation text-left hover:-translate-y-1 transition-all duration-300"><a
 								class="font-arial text-[24px] font-[400] text-white hover:no-underline" href="<?= $item['lien']['url'] ?>">
 								<img src="<?= $item['icon'] ?>" alt="Icon">
 							</a></li>
@@ -91,7 +91,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 	</div>
 	<div class="copyrights flex max-md:flex-col md:flex-row items-center justify-start gap-[30px] md:pl-[200px]">
 		<?php foreach ($copyrights_items as $item): ?>
-			<a class="text-white font-arial text-[16px] font-[400]"
+			<a class="text-white font-arial text-[16px] font-[400] animateFade fadeOutAnimation "
 				href="<?= $item['lien']['url']; ?>"><?= $item['lien']['title'] ?></a>
 		<?php endforeach; ?>
 	</div>

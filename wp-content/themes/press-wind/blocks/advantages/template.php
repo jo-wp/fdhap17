@@ -34,17 +34,17 @@ $template = [
 $display_item_advantages = function ($i, $item, $type_advantages,$number_color) { ?>
   <div class="item flex flex-col justify-start items-start">
     <?php if ($type_advantages == 'default'): ?>
-      <div class=" font-arial text-[20px] text-black font-[700] mb-[15px]"><span class="font-arial text-[20px] text-<?= $number_color; ?> font-[700] mr-[7px]"><?= sprintf("%02d", $i); ?></span><?= $item['title'] ?></div>
-      <div class="font-arial text-[14px] text-black font-[400] "><?= $item['description'] ?></div>
+      <div class="animateFade fadeOutAnimation font-arial text-[20px] text-black font-[700] mb-[15px]"><span class="font-arial text-[20px] text-<?= $number_color; ?> font-[700] mr-[7px]"><?= sprintf("%02d", $i); ?></span><?= $item['title'] ?></div>
+      <div class="animateFade fadeOutAnimation font-arial text-[14px] text-black font-[400] "><?= $item['description'] ?></div>
     <?php elseif ($type_advantages == 'order'): ?>
-      <div class="font-arial text-[15px] text-black font-[400] relative before:absolute before:top-0 before:-left-[15px] before:content-[''] before:bg-arrow-list before:w-[12px] before:h-[24px] before:bg-contain"><?= $item['description'] ?></div>
+      <div class="animateFade fadeOutAnimation font-arial text-[15px] text-black font-[400] relative before:absolute before:top-0 before:-left-[15px] before:content-[''] before:bg-arrow-list before:w-[12px] before:h-[24px] before:bg-contain"><?= $item['description'] ?></div>
     <?php endif; ?>
   </div>
 <?php };
 
 $display_icon_advantages = function ($i, $item, $type_advantages) { ?>
   <?php if ($type_advantages == 'default'): ?>
-    <div class="item flex flex-col justify-center items-center">
+    <div class="animateFade fadeOutAnimation item flex flex-col justify-center items-center">
       <img src="<?= $item['icon'] ?>" alt="Icon " />
     </div>
   <?php endif; ?>
@@ -56,7 +56,7 @@ $class_section = ($type_advantages == 'default') ? '': 'justify-between' ;
 <section <?= get_block_wrapper_attributes(["class" => 'block-advantages max-w-[1020px] mx-auto max-[1020px]:mx-[30px] flex max-md:flex-col md:flex-row flex-wrap '.$class_section.' max-md:gap-[40px] md:gap-[80px]']); ?>>
   <div class="flex-1">
     <InnerBlocks
-      class=" [&_h2]:text-black [&_h2]:mb-[30px] md:[&_h2]:mb-[67px] md:[&_h2]:text-left [&_p]:m-0 max-md:[&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial max-md:[&_h2]:text-[24px] md:[&_h2]:text-[36px] max-md:text-center [&_h2]:font-[700] [&_h2]:font-ivymode"
+      class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-[30px] md:[&_h2]:mb-[67px] md:[&_h2]:text-left [&_p]:m-0 max-md:[&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial max-md:[&_h2]:text-[24px] md:[&_h2]:text-[36px] max-md:text-center [&_h2]:font-[700] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
@@ -76,7 +76,7 @@ $class_section = ($type_advantages == 'default') ? '': 'justify-between' ;
     } ?>
   </div>
   <?php if($type_advantages=='default') : ?>
-  <div class="mt-[40px] font-arial max-md:text-[14px] md:text-[16px] text-black font-[400]">
+  <div class="animateFade fadeOutAnimation mt-[40px] font-arial max-md:text-[14px] md:text-[16px] text-black font-[400]">
     <?= $footer_description_advantages; ?>
   </div>
   <?php endif; ?>

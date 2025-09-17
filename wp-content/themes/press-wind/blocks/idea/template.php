@@ -45,7 +45,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge block-idea relative md:after:rounded-[20px] md:after:bottom-[-50px] md:after:left-0 md:after:z-10 md:after:content-[""] md:after:absolute md:after:bg-bgOrange md:after:w-full md:after:h-[30%] mb-[150px]']); ?>>
   <div class="block-idea__content max-w-[1030px] mx-auto">
     <InnerBlocks
-      class="max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
+      class="animateFade fadeOutAnimation max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
@@ -59,7 +59,7 @@ $template = [
           <?php
             $slug = sanitize_title($filter['title']);
           ?>
-          <li <?= ($i === 1) ? 'class=" filters__button"' : ' class="filters__button"' ?>
+          <li <?= ($i === 1) ? 'class=" filters__button animateFade fadeOutAnimation "' : ' class="filters__button animateFade fadeOutAnimation"' ?>
             data-filter="<?php echo esc_attr ($slug); ?>">
             <?php echo esc_html($filter['title']); ?>
           </li>
@@ -84,7 +84,7 @@ $template = [
               <?php foreach($outputItems as $item):
                 $backgroundImage = get_the_post_thumbnail_url($item['article']->ID,'full');
                 ?>
-              <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="<?= $item['filter-title']; ?>">
+              <li class="splide__slide splide__slide-item max-md:min-h-[200px] animateFade fadeOutAnimation" data-taxonomie="<?= $item['filter-title']; ?>">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                   style="background-image: url('<?= $backgroundImage; ?>')">

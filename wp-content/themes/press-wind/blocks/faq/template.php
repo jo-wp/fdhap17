@@ -63,7 +63,7 @@ $template = [
 
       ?>
       <div
-        class="[&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:text-center [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode">
+        class="animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:text-center [&_p]:font-arial max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode">
         <h2>Préparez votre séjour</h2>
         <p>en camping à <?= esc_html($term_name); ?></p>
       </div>
@@ -75,7 +75,7 @@ $template = [
       <ul
         class="w-full md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
         <?php foreach ($part1 as $item): ?>
-          <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
+          <li class="animateFade fadeOutAnimation py-[36px] px-[24px] bg-white rounded-[20px]">
             <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
            relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
            md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
@@ -95,7 +95,7 @@ $template = [
       <ul
         class="w-full md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
         <?php foreach ($part2 as $item): ?>
-          <li class="py-[36px] px-[24px] bg-white rounded-[20px]">
+          <li class="animateFade fadeOutAnimation py-[36px] px-[24px] bg-white rounded-[20px]">
             <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
            relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
            md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
