@@ -23,17 +23,12 @@
 	<?php wp_body_open(); ?>
 	<div id="page" class="site">
 		<header id="masthead" class="site-header">
-
-
 			<?php
 
-			// HEADER : mini site
-			
 			$current_id = get_the_ID();
 			$ref_id = wp_get_post_parent_id($current_id) ?: $current_id;
 			$mini_site = get_field('mini_site', $ref_id);
 			$logo = get_field('mini_site_logo', $ref_id);
-
 
 			if ($mini_site) {
 				?>
@@ -58,39 +53,39 @@
 
 
 
-                    <a href="#" class="md:hidden open-menu-mobile block">
-                        <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
-                             alt="button mobile menu">
-                    </a>
-                    <a href="#" class="close-menu-mobile hidden ">
-                        <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
-                             alt="button mobile menu ">
-                    </a>
+					<a href="#" class="md:hidden open-menu-mobile block">
+						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
+							alt="button mobile menu">
+					</a>
+					<a href="#" class="close-menu-mobile hidden ">
+						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
+							alt="button mobile menu ">
+					</a>
 
-                    <div class="block-minisite__menu
-                    max-md:p-[15px] max-md:shadow-md max-md:absolute max-md:top-[104px] max-md:left-0 max-md:right-0 max-md:z-[100] max-md:bg-white max-md:border-t-2 max-md:border-solid max-md:border-l-0 max-md:border-r-0 max-md:border-b-0 max-md:border-[#ddd]
+					<div class="block-minisite__menu
+										max-md:p-[15px] max-md:shadow-md max-md:absolute max-md:top-[104px] max-md:left-0 max-md:right-0 max-md:z-[100] max-md:bg-white max-md:border-t-2 max-md:border-solid max-md:border-l-0 max-md:border-r-0 max-md:border-b-0 max-md:border-[#ddd]
 
-                    max-md:-translate-x-full
-                    max-md:[&.active]:translate-x-0
-                    max-md:transition-transform max-md:duration-300 max-md:ease-in-out
-                    ">
-                        <?php
-                        wp_nav_menu([
-                            'theme_location' => 'minisite-primary', // doit correspondre à ce que tu as mis dans register_nav_menus
-                            'container' => 'nav',     // balise wrapper <nav>
-                            'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
-                        ]);
-                        ?>
-                        <div class="md:hidden">
-                                <?php
-                                wp_nav_menu([
-                                    'theme_location' => 'minisite-preheader',
-                                    'container' => 'nav',
-                                    'menu_class' => 'flex justify-end md:gap-4  py-[14px] list-none m-0 p-0 md:px-4 text-orange max-md:font-bold md:text-white text-[15px] font-montserrat max-md:flex-col',
-                                ]);
-                                ?>
-                        </div>
-                    </div>
+										max-md:-translate-x-full
+										max-md:[&.active]:translate-x-0
+										max-md:transition-transform max-md:duration-300 max-md:ease-in-out
+										">
+						<?php
+						wp_nav_menu([
+							'theme_location' => 'minisite-primary', // doit correspondre à ce que tu as mis dans register_nav_menus
+							'container' => 'nav',     // balise wrapper <nav>
+							'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
+						]);
+						?>
+						<div class="md:hidden">
+							<?php
+							wp_nav_menu([
+								'theme_location' => 'minisite-preheader',
+								'container' => 'nav',
+								'menu_class' => 'flex justify-end md:gap-4  py-[14px] list-none m-0 p-0 md:px-4 text-orange max-md:font-bold md:text-white text-[15px] font-montserrat max-md:flex-col',
+							]);
+							?>
+						</div>
+					</div>
 
 
 				</section>

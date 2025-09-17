@@ -20,6 +20,8 @@ require_once dirname(__FILE__) . '/inc/cpt.php';
 require_once dirname(__FILE__) . '/inc/shortcodes.php';
 // YoastSEO Vars setup
 require_once dirname(__FILE__) . '/inc/vars_yoast.php';
+// Facetwp setup
+require_once dirname(__FILE__) . '/inc/facetwp.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {
@@ -150,58 +152,60 @@ register_nav_menus([
 ]);
 
 // Custom template popup maker
-add_filter('template_include', function($template) {
-    if (is_singular('popup')) {
-        $custom = get_stylesheet_directory() . '/templates/popup.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
+add_filter('template_include', function ($template) {
+	if (is_singular('popup')) {
+		$custom = get_stylesheet_directory() . '/templates/popup.php';
+		if (file_exists($custom)) {
+			return $custom;
+		}
+	}
+	return $template;
 }, 1000);
 
-add_action('pre_get_posts', function( $q ){
-  if ( is_admin() || ! $q->is_main_query() ) return;
-  if ( $q->is_author() ) {
-    $q->set('posts_per_page', 9);
-    $q->set('orderby', 'date');
-    $q->set('order', 'DESC');
-  }
+add_action('pre_get_posts', function ($q) {
+	if (is_admin() || !$q->is_main_query())
+		return;
+	if ($q->is_author()) {
+		$q->set('posts_per_page', 9);
+		$q->set('orderby', 'date');
+		$q->set('order', 'DESC');
+	}
 });
 
-add_filter('wpseo_canonical', function( $canonical ){
-  if ( is_author() && is_paged() ) {
-    $author = get_queried_object();
-    if ( $author && isset($author->ID) ) {
-      return get_author_posts_url( $author->ID );
-    }
-  }
-  return $canonical;
+add_filter('wpseo_canonical', function ($canonical) {
+	if (is_author() && is_paged()) {
+		$author = get_queried_object();
+		if ($author && isset($author->ID)) {
+			return get_author_posts_url($author->ID);
+		}
+	}
+	return $canonical;
 });
 
 
 
-add_filter( 'facetwp_query_args', function( $args, $class ) {
-    if ( isset( $class->ajax_params['extras']['destination_term_id'] ) ) {
-        $term_id = (int) $class->ajax_params['extras']['destination_term_id'];
-        if ( $term_id > 0 ) {
-            $args['tax_query'][] = [
-                'taxonomy' => 'destination',
-                'field'    => 'term_id',
-                'terms'    => [ $term_id ],
-                'include_children' => false,
-            ];
-        }
-    }
-    return $args;
-}, 10, 2 );
+add_filter('facetwp_query_args', function ($args, $class) {
+	if (isset($class->ajax_params['extras']['destination_term_id'])) {
+		$term_id = (int) $class->ajax_params['extras']['destination_term_id'];
+		if ($term_id > 0) {
+			$args['tax_query'][] = [
+				'taxonomy' => 'destination',
+				'field' => 'term_id',
+				'terms' => [$term_id],
+				'include_children' => false,
+			];
+		}
+	}
+	return $args;
+}, 10, 2);
 
-	add_action( 'wp_footer', function() {
-  if ( is_tax() ) : ?>
-    <script>
-      document.addEventListener('facetwp-refresh', function() {
-        FWP.extras.destination_term_id = <?php echo (int)get_queried_object_id() ?>;
-      });
-    </script>
-  <?php endif;
-}, 100 );
+add_action('wp_footer', function () {
+	if (is_tax()): ?>
+		<script>
+			document.addEventListener('facetwp-refresh', function () {
+				FWP.extras.destination_term_id = <?php echo (int) get_queried_object_id() ?>;
+			});
+		</script>
+	<?php endif;
+}, 100);
+

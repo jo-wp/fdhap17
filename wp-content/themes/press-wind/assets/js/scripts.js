@@ -2,6 +2,7 @@ import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
+import { ensureMap,rebuildMarkers,initFacetwpLeaflet  } from './facetwp/map.js'
 import Splide from '@splidejs/splide'
 window.Splide = Splide
 
@@ -100,7 +101,6 @@ function splideJsBlockIdea() {
 
       carouselSplide.refresh()
     }
-
 
     const initFilter = () => {
       const filterButtons = document.querySelectorAll('.filters__button')
@@ -212,7 +212,7 @@ function carouselDescription() {
 
 function authorQuoteSlider() {
   const carousel = document.querySelector('.splide_author-quote')
-  if(!carousel) return
+  if (!carousel) return
   const carouselSplide = new Splide(carousel, {
     type: 'loop',
     perPage: 1,
@@ -238,6 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
   instagramOverride()
   authorQuoteSlider()
   generateSummary()
+  ensureMap()
+  rebuildMarkers()
+  initFacetwpLeaflet()
 
   //Import
   const map = document.querySelector('#map')
