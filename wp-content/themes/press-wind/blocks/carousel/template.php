@@ -11,7 +11,8 @@ $disabled_auto_carousel = get_field('disabled_auto_carousel');
 $items_selected = '';
 $type_color = (get_field('type_color') == 'default') ? 'text-green' : 'text-orange';
 
-if ($disabled_auto_carousel) {
+
+if (!$disabled_auto_carousel) {
   $term = get_queried_object();
   $items_selected = [];
 
@@ -47,6 +48,7 @@ if ($disabled_auto_carousel) {
 } else {
   $items_selected = get_field('items_selected');
 }
+
 
 
 // INNERBLOCKS
