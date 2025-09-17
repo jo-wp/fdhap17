@@ -387,6 +387,9 @@
 .h-\[100px\]{
   height: 100px;
 }
+.h-\[200px\]{
+  height: 200px;
+}
 .h-\[22px\]{
   height: 22px;
 }
@@ -428,6 +431,9 @@
 }
 .min-h-\[290px\]{
   min-height: 290px;
+}
+.min-h-\[300px\]{
+  min-height: 300px;
 }
 .min-h-\[430px\]{
   min-height: 430px;
@@ -1118,6 +1124,9 @@
 }
 .text-\[26px\]{
   font-size: 26px;
+}
+.text-\[30px\]{
+  font-size: 30px;
 }
 .text-\[32px\]{
   font-size: 32px;
@@ -2818,6 +2827,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .before\:content-\[\'\'\]::before{
   --tw-content: '';
+  content: var(--tw-content);
+}
+.before\:content-\[\\\'\\\'\]::before{
+  --tw-content: \'\';
   content: var(--tw-content);
 }
 .after\:absolute::after{

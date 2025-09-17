@@ -8,9 +8,9 @@
 
 $term = get_queried_object();
 $id = null;
-if($term && !empty($term->term_id)){
+if ($term && !empty($term->term_id)) {
   $id = tp_get_linked_post_id($term->term_id);
-}else{
+} else {
   $id = get_the_ID();
 }
 
@@ -18,7 +18,7 @@ if($term && !empty($term->term_id)){
 //ACF FIELDS
 $hero_type = get_field('hero_type', $id);
 $activate_search = get_field('activate_search', $id);
-$carousel_images = get_field('carousel_images', $id ) ?: [];
+$carousel_images = get_field('carousel_images', $id) ?: [];
 $first = $carousel_images[0] ?? [];
 $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
 $firstText = nl2br($first['texte'] ?? '');
@@ -34,6 +34,7 @@ $disabled_background = false;
 $text_color = 'text-black md:text-white';
 $disabled_gradient = '';
 $border_color = 'border-[#ffffff36]';
+$gradient_full = '';
 switch ($hero_type) {
   case 'full':
     $height_content = 'h-[90vh]';
@@ -43,6 +44,10 @@ switch ($hero_type) {
     break;
   case 'little':
     $height_content = 'h-[40vh]';
+    break;
+  case 'search':
+    $gradient_full = 'before:content-[\'\'] bg-bgGreen';
+    $height_content = 'min-h-[300px]';
     break;
   case 'tiny':
     $disabled_gradient = 'before:!hidden';
@@ -73,7 +78,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     </a>
   </div>
   <div id="hero-carousel"
-    class="block-hero__content md:mx-[30px]  relative <?= $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
+    class="block-hero__content md:mx-[30px]  relative <?= $gradient_full . ' ' . $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
     data-index="0">
     <div class="bg-stack !absolute !inset-0 !z-0 md:rounded-b-[200px]">
       <div class="bg-layer bg-layer--current !absolute inset-0 md:rounded-b-[200px]"
@@ -112,7 +117,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
   max-md:[&.active]:translate-x-0                
   max-md:transition-transform max-md:duration-300 max-md:ease-in-out">
       <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
-        <img src="<?= ($hero_type != 'tiny') ? $logo : $logo_tiny; ?>" alt="Logo" class="max-w-full" />
+        <img src="<?= ($hero_type != 'tiny' && $hero_type != 'search') ? $logo : $logo_tiny; ?>" alt="Logo"
+          class="max-w-full" />
       </a>
       <nav class="flex items-center justify-center w-full">
         <ul class="flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
@@ -180,6 +186,22 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         </ul>
       </nav>
     </div>
+    <?php if ($hero_type == 'search'): ?>
+      <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
+               max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
+          gap-[30px] 
+        ">
+        <h1 class="m-0 text-center text-green text-[30px] md:text-[50px]"><?= get_the_title() ?></h1>
+        <section
+          class="mb-0 relativez-[9999] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
+          <?php
+          if (function_exists('yoast_breadcrumb')) {
+            yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
+          }
+          ?>
+        </section>
+      </div>
+    <?php endif; ?>
     <?php if ($hero_type == 'full'): ?>
       <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-full items-center md:items-start justify-center flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
@@ -200,14 +222,15 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     <?php endif; ?>
   </div>
 </section>
-<?php if(!is_front_page() && !is_singular('camping') && !is_author()): ?>
-<section class="relative z-[9999] mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center" >
-  <?php
-  if (function_exists('yoast_breadcrumb')) {
-    yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
-  }
-  ?>
-</section>
+<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search'): ?>
+  <section
+    class="relative z-[9999] mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
+    <?php
+    if (function_exists('yoast_breadcrumb')) {
+      yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
+    }
+    ?>
+  </section>
 <?php endif; ?>
 <style>
   .bg-stack {

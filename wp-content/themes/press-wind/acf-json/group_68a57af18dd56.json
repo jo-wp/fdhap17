@@ -20,6 +20,8 @@
                 "full": "Grand + Carousel",
                 "middle": "Moyen",
                 "little": "Petit",
+                "search": "Système de recherche",
+                "minisite": "Mini site",
                 "tiny": "Sans Image"
             },
             "default_value": "full",
@@ -174,5 +176,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758025872
+    "modified": 1758126262
 }
