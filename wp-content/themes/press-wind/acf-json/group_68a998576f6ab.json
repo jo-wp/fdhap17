@@ -47,12 +47,15 @@
             },
             "post_type": [
                 "term_page",
-                "page"
+                "page",
+                "camping",
+                "post"
             ],
             "post_status": "",
             "taxonomy": "",
             "filters": [
-                "search"
+                "search",
+                "taxonomy"
             ],
             "return_format": "object",
             "min": "",
@@ -137,5 +140,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758025833
+    "modified": 1758117977
 }
