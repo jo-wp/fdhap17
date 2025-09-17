@@ -56,7 +56,9 @@ module.exports = {
         'arrow-menu-black': "url('/assets/media/arrow-menu-black.svg')",
         'check': "url('/assets/media/check.svg')",
         'arrow-list' : "url('/assets/media/arrow-list.svg')",
-        'arrow-menu-mobile' : "url('/assets/media/arrow-menu-mobile.svg')"
+        'arrow-menu-mobile' : "url('/assets/media/arrow-menu-mobile.svg')",
+        'checkbox' : "url('/assets/media/checkbox-filter.png')",
+        'checkbox-checked' : "url('/assets/media/checkbox-filter-checked.png')",
       }),
     },
   },

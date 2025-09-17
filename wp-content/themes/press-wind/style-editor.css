@@ -450,8 +450,14 @@
 .w-full{
   width: 100%;
 }
+.min-w-\[20\%\]{
+  min-width: 20%;
+}
 .min-w-\[250px\]{
   min-width: 250px;
+}
+.min-w-\[70\%\]{
+  min-width: 70%;
 }
 .min-w-full{
   min-width: 100%;
@@ -650,6 +656,9 @@
 .gap-\[12px\]{
   gap: 12px;
 }
+.gap-\[150px\]{
+  gap: 150px;
+}
 .gap-\[15px\]{
   gap: 15px;
 }
@@ -727,6 +736,9 @@
 }
 .whitespace-pre-line{
   white-space: pre-line;
+}
+.rounded-\[100px\]{
+  border-radius: 100px;
 }
 .rounded-\[10px\]{
   border-radius: 10px;
@@ -851,6 +863,9 @@
 }
 .p-0{
   padding: 0px;
+}
+.p-\[100px\]{
+  padding: 100px;
 }
 .p-\[12px\]{
   padding: 12px;
@@ -1502,6 +1517,10 @@ section{
     left: 0;
     margin: 0 auto;
   }
+}
+.little-padding-x{
+  padding-left: 30px !important;
+  padding-right: 30px !important;
 }
 .button{
   display: inline-block;
@@ -2168,6 +2187,42 @@ nav .submenu > li .submenu-child > li{
 .block-hero__content div {
   position: relative;
   z-index: 2;
+}
+.block-campings .fwpl-layout{
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+.block-campings .facetwp-checkbox{
+  background-image: url('/wp-content/themes/press-wind/assets/media/checkbox-filter.png');
+  background-size: 16px 16px;
+  padding-left: 20px;
+}
+.block-campings .facetwp-checkbox.checked{
+  background-image: url('/wp-content/themes/press-wind/assets/media/checkbox-filter-checked.png');
+}
+.block-campings .facet-block{
+  margin-bottom: 20px;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(117 117 117 / var(--tw-border-opacity));
+  padding-bottom: 20px;
+}
+.block-campings .facetwp-facet{
+  margin-bottom: 0px;
+}
+.block-campings .facetwp-template .image-featured{
+  aspect-ratio: 3/2;
+  max-height: 290px;
+  min-width: auto;
+}
+.block-campings .facetwp-template > div{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 30px;
+  row-gap: 50px;
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
@@ -4503,6 +4558,16 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p_span_span\]\:text-black p span span{
   --tw-text-opacity: 1;
   color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.\[\&_span\]\:font-arial span{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.\[\&_span\]\:text-\[13px\] span{
+  font-size: 13px;
+}
+.\[\&_span\]\:text-\[\#7F7F7F\] span{
+  --tw-text-opacity: 1;
+  color: rgb(127 127 127 / var(--tw-text-opacity));
 }
 .\[\&_ul\]\:m-0 ul{
   margin: 0px;

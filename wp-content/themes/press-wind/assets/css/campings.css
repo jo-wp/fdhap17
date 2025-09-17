@@ -1,0 +1,21 @@
+.block-campings .fwpl-layout{
+  @apply !grid !grid-cols-3; 
+}
+.block-campings .facetwp-checkbox{
+  @apply bg-checkbox bg-[length:16px_16px] pl-[20px] ;
+}
+.block-campings .facetwp-checkbox.checked{
+  @apply bg-checkbox-checked;
+}
+.block-campings .facet-block{
+  @apply pb-[20px] border-t-0 border-l-0 border-r-0 border-b border-solid border-[#757575] mb-[20px];
+}
+.block-campings .facetwp-facet{
+  @apply mb-0;
+}
+.block-campings .facetwp-template .image-featured{
+  @apply max-h-[290px] min-w-[auto] aspect-[3/2];
+}
+.block-campings .facetwp-template > div{
+  @apply grid-cols-3 gap-x-[30px] gap-y-[50px];
+}

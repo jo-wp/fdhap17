@@ -146,3 +146,8 @@ section {
     margin: 0 auto;
   }
 }
+
+.little-padding-x{
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+} 
