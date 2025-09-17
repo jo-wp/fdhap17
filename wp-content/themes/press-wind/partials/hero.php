@@ -186,7 +186,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
         ">
         <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line">
-          <?= apply_filters('the_content', $firstText); ?>
+          <?= $firstText ?>
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
           <span class="carousel-hero-button-prev cursor-pointer">
