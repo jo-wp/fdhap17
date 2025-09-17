@@ -33,7 +33,7 @@
         },
         {
             "key": "field_68b098ebeb425",
-            "label": "Sélection de pages, campings, articles",
+            "label": "Sélection de pages articles",
             "name": "items_selected",
             "aria-label": "",
             "type": "relationship",
@@ -46,14 +46,15 @@
                 "id": ""
             },
             "post_type": [
+                "term_page",
                 "post",
-                "page",
-                "term_page"
+                "camping"
             ],
             "post_status": "",
             "taxonomy": "",
             "filters": [
-                "search"
+                "search",
+                "taxonomy"
             ],
             "return_format": "object",
             "min": "",
@@ -82,5 +83,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758035475
+    "modified": 1758114062
 }
