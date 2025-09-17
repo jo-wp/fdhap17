@@ -55,6 +55,7 @@
             "taxonomy": "",
             "filters": [
                 "search",
+                "post_type",
                 "taxonomy"
             ],
             "return_format": "object",
@@ -140,5 +141,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758117977
+    "modified": 1758119749
 }

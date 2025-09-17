@@ -68,6 +68,68 @@ function tp_set_linked_post_id($term_id, $post_id) {
 function tp_tax_should_redirect($taxonomy) {
   return !empty(TP_REDIRECT_MAP[$taxonomy]);
 }
+function tp_get_term_by_term_page( $post_id ) {
+  $post_id = (int) $post_id;
+  if ( $post_id <= 0 ) return null;
+
+  foreach ( TP_TAXONOMIES as $tax ) {
+    $terms = get_terms([
+      'taxonomy'   => $tax,
+      'hide_empty' => false,
+      'number'     => 1,
+      'fields'     => 'all',
+      'meta_query' => [[
+        'key'     => TP_META_KEY,
+        'value'   => $post_id,
+        'compare' => '=',
+      ]],
+    ]);
+
+    if ( ! is_wp_error($terms) && ! empty($terms) ) {
+      return $terms[0]; // Premier match (il ne devrait y en avoir qu’un)
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Retourne l'URL de l'archive du terme lié à une term_page donnée.
+ * @param int $post_id ID du post term_page
+ * @return string|null URL ou null si aucun terme lié
+ */
+function tp_get_term_url_by_term_page( $post_id ) {
+  $post_id = (int) $post_id;
+  if ( $post_id <= 0 ) return null;
+
+  foreach ( TP_TAXONOMIES as $tax ) {
+    $terms = get_terms([
+      'taxonomy'   => $tax,
+      'hide_empty' => false,
+      'number'     => 1,
+      'fields'     => 'all',
+      'meta_query' => [[
+        'key'     => TP_META_KEY,
+        'value'   => $post_id,
+        'compare' => '=',
+      ]],
+    ]);
+
+    if ( ! is_wp_error($terms) && ! empty($terms) ) {
+      $term = $terms[0];
+      $link = get_term_link($term);
+      if ( ! is_wp_error($link) ) return $link;
+    }
+  }
+
+  return null;
+}
+
+
+function tp_get_taxonomy_by_term_page( $post_id ) {
+  $term = tp_get_term_by_term_page( $post_id );
+  return $term ? $term->taxonomy : null;
+}
 
 
 /** =======================
@@ -252,3 +314,4 @@ add_action('loop_start', function ($q) {
   echo apply_filters('the_content', $content);
   echo '</section>';
 });
+
