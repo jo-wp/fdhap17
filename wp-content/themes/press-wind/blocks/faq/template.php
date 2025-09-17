@@ -53,17 +53,12 @@ $template = [
     <?php if (isset($block)):
       get_template_part('blocks/faq/innerblocks/innerblocks', null, array('template' => $allowedBlocks, 'allowedBlocks' => $allowedBlocks));
     else:
-      //get first term in taxonomy destination 
       $term_name = '';
       $terms = get_the_terms(get_the_ID(), 'destination');
 
       if ($terms && !is_wp_error($terms)) {
         $first = array_shift($terms);
-        // si tu veux le nom du terme :
         $term_name = $first->name;
-
-        // si tu as un champ ACF sur le terme (ex: 'destination'), remplace la ligne précédente par :
-        // $term_name = get_field('destination', 'term_' . $first->term_id) ?: $first->name;
       }
 
       ?>
