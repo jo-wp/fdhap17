@@ -82,7 +82,7 @@ $template = [
           <div class="splide__track">
             <ul class="splide__list max-md:!grid max-md:!grid-cols-2 max-md:!gap-[10px]">
               <?php foreach($outputItems as $item):
-                $backgroundImage = get_the_post_thumbnail_url($item['article']->ID);
+                $backgroundImage = get_the_post_thumbnail_url($item['article']->ID,'full');
                 ?>
               <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="<?= $item['filter-title']; ?>">
                 <div
