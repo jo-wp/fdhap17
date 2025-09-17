@@ -59,6 +59,7 @@ module.exports = {
         'arrow-menu-mobile' : "url('/assets/media/arrow-menu-mobile.svg')",
         'checkbox' : "url('/assets/media/checkbox-filter.png')",
         'checkbox-checked' : "url('/assets/media/checkbox-filter-checked.png')",
+        'zoom' : "url('/assets/media/loupe.svg')",
       }),
     },
   },

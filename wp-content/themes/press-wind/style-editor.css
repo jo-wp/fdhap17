@@ -405,11 +405,17 @@
 .h-\[50vw\]{
   height: 50vw;
 }
+.h-\[56px\]{
+  height: 56px;
+}
 .h-\[600px\]{
   height: 600px;
 }
 .h-\[60px\]{
   height: 60px;
+}
+.h-\[60vh\]{
+  height: 60vh;
 }
 .h-\[60vw\]{
   height: 60vw;
@@ -468,6 +474,9 @@
 .w-\[22px\]{
   width: 22px;
 }
+.w-\[56px\]{
+  width: 56px;
+}
 .w-full{
   width: 100%;
 }
@@ -522,6 +531,9 @@
 .max-w-\[1280px\]{
   max-width: 1280px;
 }
+.max-w-\[1300px\]{
+  max-width: 1300px;
+}
 .max-w-\[13px\]{
   max-width: 13px;
 }
@@ -551,6 +563,9 @@
 }
 .max-w-\[200px\]{
   max-width: 200px;
+}
+.max-w-\[230px\]{
+  max-width: 230px;
 }
 .max-w-\[260px\]{
   max-width: 260px;
@@ -785,6 +800,9 @@
 .rounded-\[40px\]{
   border-radius: 40px;
 }
+.rounded-\[50\%\]{
+  border-radius: 50%;
+}
 .rounded-\[50px\]{
   border-radius: 50px;
 }
@@ -794,6 +812,14 @@
 .rounded-b-\[200px\]{
   border-bottom-right-radius: 200px;
   border-bottom-left-radius: 200px;
+}
+.rounded-l-\[40px\]{
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+.rounded-r-\[40px\]{
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
 }
 .rounded-t-\[20px\]{
   border-top-left-radius: 20px;
@@ -856,6 +882,10 @@
 .\!bg-transparent{
   background-color: transparent !important;
 }
+.bg-\[\#F6F6F6\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(246 246 246 / var(--tw-bg-opacity));
+}
 .bg-bgGreen{
   --tw-bg-opacity: 1;
   background-color: rgb(236 245 240 / var(--tw-bg-opacity));
@@ -879,8 +909,17 @@
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
+.bg-none{
+  background-image: none;
+}
+.bg-zoom{
+  background-image: url('/wp-content/themes/press-wind/assets/media/loupe.svg');
+}
 .bg-cover{
   background-size: cover;
+}
+.bg-\[20px_20px\]{
+  background-position: 20px 20px;
 }
 .bg-center{
   background-position: center;
@@ -920,6 +959,9 @@
 }
 .p-\[50px\]{
   padding: 50px;
+}
+.p-\[6px\]{
+  padding: 6px;
 }
 .\!px-5{
   padding-left: 1.25rem !important;
@@ -1252,6 +1294,14 @@
 .text-\[\#000\]{
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+.text-\[\#333333\]{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.text-\[\#757575\]{
+  --tw-text-opacity: 1;
+  color: rgb(117 117 117 / var(--tw-text-opacity));
 }
 .text-\[\#777777\]{
   --tw-text-opacity: 1;
