@@ -474,6 +474,9 @@
 .min-w-\[100\%\]{
   min-width: 100%;
 }
+.min-w-\[15\%\]{
+  min-width: 15%;
+}
 .min-w-\[20\%\]{
   min-width: 20%;
 }

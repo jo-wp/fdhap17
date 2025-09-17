@@ -4,8 +4,8 @@ Template Name: Recherche
 */
 get_header();
 ?>
-<div class="container-huge block-search flex flex-row gap-[45px]">
-  <div class="min-w-[20%]">
+<div class="container-huge block-search flex flex-row gap-[45px] justify-center">
+  <div class="min-w-[15%]">
     <div class="sticky top-4">
       <?php
       $facets = FWP()->helper->get_facets();
@@ -31,6 +31,9 @@ get_header();
   <div class="min-w-[30%] min-h-[100%]">
     <div id="campings-map" class="min-w-[100%] h-[600px] rounded-[16px] sticky top-4"></div>
   </div>
+</div>
+<div class="flex flew-col items-center justify-center mt-[50px]">
+  <?= do_shortcode('[facetwp facet="pagination"]') ?>
 </div>
 <?php
 get_footer();

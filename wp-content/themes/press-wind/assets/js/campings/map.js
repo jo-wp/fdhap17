@@ -6,13 +6,10 @@ function displayCardMapCamping() {
   const POINTS = [
     { lat: latitudeMap, lng: longitudeMap, label: 'test' },
   ]
-  // ————————————————————————————————————————————————
 
-  // Crée la carte (vue initiale provisoire sur le 1er point)
 const start = POINTS[0];
 const map = L.map('map', { zoomControl: true }).setView([start.lat, start.lng], 13);
 
-  // Tuiles OpenStreetMap (gratuites)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     minZoom: 3,
@@ -44,7 +41,6 @@ const map = L.map('map', { zoomControl: true }).setView([start.lat, start.lng], 
     popupAnchor: [0, -44],
   })
 
-  // Ajoute les 2 marqueurs
   const markers = POINTS.map((p) => {
     const m = L.marker([p.lat, p.lng], { icon: customIcon }).addTo(map)
     m.bindPopup(p.label || `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`)
