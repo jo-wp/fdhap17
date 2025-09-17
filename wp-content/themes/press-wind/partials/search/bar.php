@@ -1,5 +1,5 @@
 <div class="">
-  <form class="bg-white flex flex-row justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] gap-[40px]">
+  <form action="/tous-les-campings-de-charente-maritime" method="GET" class="bg-white flex flex-row justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] gap-[40px]">
     <div class="items-search-bar max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>
       <select class="bg-[#F6F6F6] border-0 w-full" name="tax-destination" id="#">
