@@ -1,6 +1,6 @@
 <?php
-$prev_post = get_adjacent_post(false, '', true);
-$next_post = get_adjacent_post(false, '', false);
+$prev_post = get_adjacent_post(true, '', true);
+$next_post = get_adjacent_post(true, '', false);
 
 ?>
 <div class="single-article__navigation max-w-[485px] mx-auto flex flex-row flex-wrap items-center justify-between mt-[100px]">

@@ -1,7 +1,5 @@
 <?php
-$camping = get_post(272);
 $campings_associated_article = get_field('campings_associated_article');
-
 ?>
 
 <?php if ($campings_associated_article): ?>
