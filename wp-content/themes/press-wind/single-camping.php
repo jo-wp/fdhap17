@@ -355,6 +355,12 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
       </div>
     </div>
   </div>
+  <?php $items_answer = get_field('items_answer');
+  if($items_answer): 
+  ?>
+  <div class="mt-[50px] md:mt-[100px]">
   <?= get_template_part('blocks/faq/template'); ?>
+  </div>
+  <?php endif; ?>
 </div>
 <?php get_footer(); ?>

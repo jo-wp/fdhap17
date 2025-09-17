@@ -12,17 +12,17 @@ $presentation_auteur = get_field('presentation_auteur', 'user_' . $author_id);
 $expertises_auteur = get_field('expertises_auteur', 'user_' . $author_id);
 $temoignages_items = get_field('temoignages_items', 'user_' . $author_id);
 
-$paged = max( 1, get_query_var('paged') ); // sur une archive, c'est bien 'paged'
+$paged = max(1, get_query_var('paged')); // sur une archive, c'est bien 'paged'
 $author_id = get_queried_object_id();
 
 
 $all_args = array(
-  'author'         => $author_id,
-  'post_type'      => 'post',
+  'author' => $author_id,
+  'post_type' => 'post',
   'posts_per_page' => 9,
-  'paged'          => $paged,
-  'orderby'        => 'date',
-  'order'          => 'DESC',
+  'paged' => $paged,
+  'orderby' => 'date',
+  'order' => 'DESC',
 );
 
 $all_posts = new WP_Query($all_args);
@@ -85,8 +85,8 @@ get_header();
   </div>
   <div class="single-author__expetise flex flex-col md:flex-row flex-wrap gap-[30px] mb-[100px]">
     <div class="flex-1">
-      <img class="w-full md:w-auto" src="<?= get_bloginfo('url') ?>/wp-content/uploads/2025/09/Image-15.png"
-        alt="Photo de <?= $first_name . ' ' . $last_name; ?>">
+      <img class="w-full md:w-auto rounded-[20px] object-cover aspect-square"
+        src="<?= get_field('image_featured_author', 'option'); ?>" alt="Photo de <?= $first_name . ' ' . $last_name; ?>">
     </div>
     <div class="flex-1">
       <h2 class="text-[32px] text-black mb-[30px]"><?= __('Mon expertise', 'fdhpa17'); ?></h2>
@@ -129,7 +129,7 @@ get_header();
     <h2 class="text-[32px] text-black mb-[50px] text-left font-ivymode max-md:p-[50px]">
       <?= __('Publications récentes', 'fdhpa17'); ?>
     </h2>
-    <div class="mt-[40px] md:mt-[87px] mb-[40px]  md:mb-[63px] flex flex-row justify-center gap-[22px]
+    <div class="mt-[40px] md:mt-[87px] mb-[40px]  md:mb-[63px] flex flex-row  md:grid md:grid-cols-3  gap-[22px]
   max-md:overflow-x-scroll max-md:max-w-full max-md:justify-start relative">
       <?php if ($all_posts->have_posts()): ?>
         <?php while ($all_posts->have_posts()):
