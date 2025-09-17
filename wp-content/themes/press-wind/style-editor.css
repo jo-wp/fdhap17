@@ -4169,6 +4169,29 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     color: rgb(51 51 51 / var(--tw-text-opacity));
   }
 }
+.\[\&_\.facetwp-page\.active\]\:bg-green .facetwp-page.active{
+  --tw-bg-opacity: 1;
+  background-color: rgb(81 171 126 / var(--tw-bg-opacity));
+}
+.\[\&_\.facetwp-page\.active\]\:text-white .facetwp-page.active{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.\[\&_\.facetwp-page\]\:rounded-\[50px\] .facetwp-page{
+  border-radius: 50px;
+}
+.\[\&_\.facetwp-page\]\:px-\[15px\] .facetwp-page{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.\[\&_\.facetwp-page\]\:py-\[5px\] .facetwp-page{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.\[\&_\.facetwp-page\]\:text-green .facetwp-page{
+  --tw-text-opacity: 1;
+  color: rgb(81 171 126 / var(--tw-text-opacity));
+}
 .\[\&_\.page-numbers\.current\]\:bg-white .page-numbers.current{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));

@@ -32,7 +32,7 @@ get_header();
     <div id="campings-map" class="min-w-[100%] h-[600px] rounded-[16px] sticky top-4"></div>
   </div>
 </div>
-<div class="flex flew-col items-center justify-center mt-[50px]">
+<div class="flex flew-col items-center justify-center mt-[50px] [&_.facetwp-page]:text-green [&_.facetwp-page.active]:text-white [&_.facetwp-page.active]:bg-green [&_.facetwp-page]:rounded-[50px]  [&_.facetwp-page]:py-[5px] [&_.facetwp-page]:px-[15px] ">
   <?= do_shortcode('[facetwp facet="pagination"]') ?>
 </div>
 <?php
