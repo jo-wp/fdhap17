@@ -1,13 +1,15 @@
 <?php
 $camping = get_post(272);
 $campings_associated_article = get_field('campings_associated_article');
+
 ?>
-<div class="bloc-camping-associated flex flex-col flex-wrap">
-  <h2 class="text-center mt-[100px] !text-orange text-[50px] font-[600] leading-[57px] mb-[40px]">
-    <?= _e('Les campings à proximité', 'fdhpa17') ?>
-  </h2>
-  <div class="flex flex-row gap-[20px]">
-    <?php if ($campings_associated_article): ?>
+
+<?php if ($campings_associated_article): ?>
+  <div class="bloc-camping-associated flex flex-col flex-wrap">
+    <h2 class="text-center mt-[100px] !text-orange text-[50px] font-[600] leading-[57px] mb-[40px]">
+      <?= _e('Les campings à proximité', 'fdhpa17') ?>
+    </h2>
+    <div class="flex flex-row gap-[20px]">
       <?php foreach ($campings_associated_article as $item): ?>
         <div class="bloc-camping-associated__items flex flex-row gap-[15px] md:gap-[40px] max-md:overflow-x-scroll ">
           <?php
@@ -19,7 +21,7 @@ $campings_associated_article = get_field('campings_associated_article');
               style="background-image:url('<?= $image_featured_url; ?>');">
               <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
                 <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">À partir de
-                  </span>
+                </span>
                 <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
                     alt="icon ajouter aux favoris"></a>
               </div>
@@ -51,6 +53,6 @@ $campings_associated_article = get_field('campings_associated_article');
           </div>
         </div>
       <?php endforeach; ?>
-    <?php endif; ?>
+    </div>
   </div>
-</div>
+<?php endif; ?>
