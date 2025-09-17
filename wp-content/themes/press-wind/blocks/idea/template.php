@@ -81,11 +81,13 @@ $template = [
         <section class="splide splide__carousel__block_idea">
           <div class="splide__track">
             <ul class="splide__list max-md:!grid max-md:!grid-cols-2 max-md:!gap-[10px]">
-              <?php foreach($outputItems as $item): ?>
+              <?php foreach($outputItems as $item):
+                $backgroundImage = get_the_post_thumbnail_url($item['article']->ID);
+                ?>
               <li class="splide__slide splide__slide-item max-md:min-h-[200px]" data-taxonomie="<?= $item['filter-title']; ?>">
                 <div
                   class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
-                  style="background-image: url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/default.jpg')">
+                  style="background-image: url('<?= $backgroundImage; ?>')">
                   <h3
                     class="text-white text-[20px] font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
                     <?= $item['article']->post_title; ?>
