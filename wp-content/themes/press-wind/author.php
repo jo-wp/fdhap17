@@ -152,7 +152,13 @@ get_header();
         $base = trailingslashit(get_author_posts_url($author_id)) . '%_%';
         $format = user_trailingslashit('page/%#%/', 'paged');
 
-        echo '<nav class="mt-[30px] absolute -bottom-10 gap-[10px] flex flex-row pagination font-arial text-[14px]">';
+        echo '<nav class="mt-[30px] absolute -bottom-20 gap-[10px] flex flex-row pagination
+        w-[100%] items-center justify-center
+        font-arial text-[14px]
+        [&_.page-numbers]:bg-green [&_.page-numbers]:text-white [&_.page-numbers]:px-[14px] [&_.page-numbers]:py-[7px]
+        [&_.page-numbers]:rounded-[50%]
+        [&_.page-numbers.current]:bg-white [&_.page-numbers.current]:text-green
+        ">';
         echo paginate_links(array(
           'base' => $base,
           'format' => $format,

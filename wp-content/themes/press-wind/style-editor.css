@@ -169,8 +169,8 @@
 .\!-right-\[60px\]{
   right: -60px !important;
 }
-.-bottom-10{
-  bottom: -2.5rem;
+.-bottom-20{
+  bottom: -5rem;
 }
 .-bottom-\[30px\]{
   bottom: -30px;
@@ -4043,6 +4043,33 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     --tw-text-opacity: 1;
     color: rgb(51 51 51 / var(--tw-text-opacity));
   }
+}
+.\[\&_\.page-numbers\.current\]\:bg-white .page-numbers.current{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.\[\&_\.page-numbers\.current\]\:text-green .page-numbers.current{
+  --tw-text-opacity: 1;
+  color: rgb(81 171 126 / var(--tw-text-opacity));
+}
+.\[\&_\.page-numbers\]\:rounded-\[50\%\] .page-numbers{
+  border-radius: 50%;
+}
+.\[\&_\.page-numbers\]\:bg-green .page-numbers{
+  --tw-bg-opacity: 1;
+  background-color: rgb(81 171 126 / var(--tw-bg-opacity));
+}
+.\[\&_\.page-numbers\]\:px-\[14px\] .page-numbers{
+  padding-left: 14px;
+  padding-right: 14px;
+}
+.\[\&_\.page-numbers\]\:py-\[7px\] .page-numbers{
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.\[\&_\.page-numbers\]\:text-white .page-numbers{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .\[\&_a\]\:font-arial a{
   font-family: Arial, Helvetica, sans-serif;
