@@ -300,6 +300,9 @@
 .ml-auto{
   margin-left: auto;
 }
+.mr-\[15px\]{
+  margin-right: 15px;
+}
 .mr-\[7px\]{
   margin-right: 7px;
 }
