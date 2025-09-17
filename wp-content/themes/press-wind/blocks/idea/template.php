@@ -10,6 +10,7 @@ $filters = get_field('display_filter');
 $select_idea = get_field('select_idea');
 
 $outputItems = [];
+if($select_idea):
 foreach($select_idea as $items){
   foreach($items['items'] as $article){
     $outputItems[] = [
@@ -19,6 +20,7 @@ foreach($select_idea as $items){
   }
 }
 shuffle($outputItems);
+endif;
 
 
 // INNERBLOCKS
@@ -47,6 +49,7 @@ $template = [
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>
+  <?php if($outputItems): ?>
   <div class="mt-[77px] md:mx-[100px] relative z-20">
     <div class="block-idea__filters flex flex-row items-center justify-center md:justify-between">
       <ul
@@ -97,6 +100,7 @@ $template = [
       </div>
     </div>
   </div>
+  <?php endif; ?>
 </section>
 
 <style>
