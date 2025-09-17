@@ -7,7 +7,7 @@ $allowedBlocks = $args['allowedBlocks'];
   [&_h2]:text-black [&_h2]:mt-0 [&_h2]:mb-0 [&_h2]:text-center
   max-md:[&_h2]:text-[24px] [&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode
      [&_h2_sub]:mt-0 [&_h2_sub]:mb-0 [&_h2_sub]:text-center
-  max-md:[&_h2_sub]:text-[24px] [&_h2_sub]:text-[36px] [&_h2_sub]:font-[700] [&_h2_sub]:font-arial
+  max-md:[&_h2_sub]:text-[24px] [&_h2_sub]:text-[36px] [&_h2_sub]:font-[400] [&_h2_sub]:font-arial
   [&_h2_sub]:block [&_h2_sub]:text-green
   "
   template="<?= htmlspecialchars(json_encode($template)); ?>"

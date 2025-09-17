@@ -16,7 +16,7 @@
     "src": "assets/media/wp-performance.png"
   },
   "main-legacy.js": {
-    "file": "assets/main-legacy-CRdecbcj.js",
+    "file": "assets/main-legacy-CorH_viN.js",
     "name": "main",
     "src": "main-legacy.js",
     "isEntry": true,
@@ -28,7 +28,7 @@
     ]
   },
   "main.js": {
-    "file": "assets/main-5YZ6-Yg2.js",
+    "file": "assets/main-BCzg6K3K.js",
     "name": "main",
     "src": "main.js",
     "isEntry": true,
@@ -36,7 +36,7 @@
       "assets/js/dynamic/hello.js"
     ],
     "css": [
-      "assets/main-FwV9MU3O.css"
+      "assets/main-2XxbAqvj.css"
     ],
     "assets": [
       "assets/wp-performance-CuIG5My3.png"
