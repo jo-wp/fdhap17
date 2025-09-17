@@ -63,8 +63,8 @@ $copyrights_items = get_field('copyrights_items', 'option');
 		</div>
 		<?php if ($menu_footer): ?>
 			<div class="menu-footer max-md:mx-auto">
-				<h2 class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-left  mb-[22px]">
-					<?= $menu_footer['titre']; ?></h2>
+				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-left  mb-[22px]">
+					<?= $menu_footer['titre']; ?></div>
 				<ul class=" list-none m-0 p-0 ">
 					<?php foreach ($menu_footer['menu'] as $item): ?>
 						<li class="text-left md:leading-[50px] hover:translate-x-2 transition-all duration-300 max-md:text-center"><a
@@ -76,8 +76,8 @@ $copyrights_items = get_field('copyrights_items', 'option');
 		<?php endif; ?>
 		<?php if ($social_network): ?>
 			<div class="social-network max-md:mx-auto">
-				<h2 class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-center md:text-left mb-[22px]">
-					<?= $social_network['titre']; ?></h2>
+				<div class="text-white font-ivymode text-[20px] md:text-[32px] font-[600] text-center md:text-left mb-[22px]">
+					<?= $social_network['titre']; ?></div>
 				<ul class="list-none m-0 p-0 flex flex-row gap-[26px] items-center justify-center">
 					<?php foreach ($social_network['items'] as $item): ?>
 						<li class="text-left hover:-translate-y-1 transition-all duration-300"><a
