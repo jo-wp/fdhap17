@@ -120,85 +120,26 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         <img src="<?= ($hero_type != 'tiny' && $hero_type != 'search') ? $logo : $logo_tiny; ?>" alt="Logo"
           class="max-w-full" />
       </a>
+
       <nav class="flex items-center justify-center w-full">
-        <ul class="flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
+        <?php
+        wp_nav_menu([
+          'theme_location' => 'primary',
+          'container' => false,
+          // On impose tes classes EXACTES sur le <ul> racine :
+          'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
         max-[1320px]:gap-0 max-[1320px]:justify-between
-        max-md:flex-col max-md:justify-start max-md:items-start max-md:ml-[15px]">
-          <li class="relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
-            max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
-            max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
-            max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
-            max-md:before:right-[20px]">
-            <a href="#"
-              class=" <?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Trouver
-              son camping</a>
-            <ul class="submenu  absolute leading-[20px] ">
-              <li class="md:hidden flex flex-row flex-wrap gap-[15px] before:!right-[initial] before:rotate-180">
-                <a href="#" class="button-back-mobile pl-[20px] font-[400]">Retour</a>
-                <div class="text-green">Trouver votre camping</div>
-              </li>
-              <li class=" md:active [&.active]:text-green max-md:[&.active]:text-black "><a href="#"
-                  class=" no-underline">Destination</a>
-                <ul class="submenu-child active">
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                </ul>
-              </li>
-              <li class="  [&.active]:text-green "><a href="#">S'inspirer</a>
-                              <ul class="submenu-child ">
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-                </ul>
-              </li>
-              <li class="[&.active]:text-green ">Voir tous les campings</li>
-            </ul>
-          </li>
-          <li
-            class=" relative after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[4px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
-            max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid">
-            <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Vos
-              envies</a>
-          </li>
-          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
-            max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
-            max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
-            max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
-            max-md:before:right-[20px]">
-            <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Votre
-              façon de camper</a>
-          </li>
-          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
-            max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
-            max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
-            max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
-            max-md:before:right-[20px]">
-            <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px]  text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Explorer
-              la Charente Maritime</a>
-          </li>
-          <li class=" relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
-            max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
-            max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
-            max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
-            max-md:before:right-[20px]">
-            <a href="#"
-              class="<?= $text_color; ?> max-md:font-[700]   text-[16px] relative  block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Nos
-              offres spéciales</a>
-          </li>
-        </ul>
+        max-md:flex-col max-md:justify-start max-md:items-start max-md:ml-[15px]',
+          // On force le wrapper pour ne pas avoir d'ID automatique
+          'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+          // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises
+          'walker' => new CM17_Menu_Walker($text_color),
+          // Profondeur 3 pour gérer .submenu > .submenu-child
+          'depth' => 3,
+        ]);
+        ?>
       </nav>
+
     </div>
     <?php if ($hero_type == 'search'): ?>
       <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10

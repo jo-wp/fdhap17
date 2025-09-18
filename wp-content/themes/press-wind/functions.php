@@ -22,6 +22,8 @@ require_once dirname(__FILE__) . '/inc/shortcodes.php';
 require_once dirname(__FILE__) . '/inc/vars_yoast.php';
 // Facetwp setup
 require_once dirname(__FILE__) . '/inc/facetwp.php';
+// Menu setup
+require_once dirname(__FILE__) . '/inc/menu.php';
 
 // pwa icons
 if (file_exists(dirname(__FILE__) . '/inc/pwa_head.php')) {
