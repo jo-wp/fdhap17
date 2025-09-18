@@ -132,7 +132,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
             <a href="#"
               class=" <?= $text_color; ?> max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ">Trouver
               son camping</a>
-            <ul class="max-md:submenu md:hidden absolute leading-[20px] ">
+            <ul class="submenu  absolute leading-[20px] ">
               <li class="md:hidden flex flex-row flex-wrap gap-[15px] before:!right-[initial] before:rotate-180">
                 <a href="#" class="button-back-mobile pl-[20px] font-[400]">Retour</a>
                 <div class="text-green">Trouver votre camping</div>
@@ -207,7 +207,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
-        <h1 id="hero-text" class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line animateFade fadeOutAnimation">
+        <h1 id="hero-text"
+          class="mb-[40px] max-md:!text-[30px] text-white whitespace-pre-line animateFade fadeOutAnimation">
           <?= $firstText ?>
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
@@ -220,11 +221,13 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         </div>
       </div>
     <?php endif; ?>
-    <?php if($activate_search): ?>
-    <?php get_template_part('partials/search/bar'); ?>
+    <?php if ($activate_search): ?>
+      <?php get_template_part('partials/search/bar'); ?>
     <?php endif; ?>
   </div>
 </section>
+
+
 <?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && !is_404()): ?>
   <section
     class="relative z-[9999] mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
