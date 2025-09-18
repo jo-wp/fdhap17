@@ -110,8 +110,10 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
       flex flex-row gap-[1%] md:items-center md:justify-center
 
       max-md:fixed max-md:top-0 max-md:-left-[30px]       
-      max-md:bg-white max-md:h-screen max-md:w-full   
-      max-md:items-start max-md:overflow-y-auto       
+      max-md:bg-white max-md:h-[40vh] max-md:w-full   
+      max-md:items-start max-md:overflow-y-auto      
+      
+      
 
       max-md:-translate-x-full                        
       max-md:[&.active]:translate-x-0                
