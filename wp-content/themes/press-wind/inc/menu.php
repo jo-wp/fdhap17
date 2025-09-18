@@ -62,7 +62,7 @@ class CM17_Menu_Walker extends Walker_Nav_Menu {
       $this->parent_title_for_mobile = $item->title;
     }
 
-    // Classes <li> par niveau
+    // Classes <li> par niveau 
     if ($depth === 0) {
       $li_class = $has_children ? $li_classes_top_with_children : $li_classes_top_no_children;
     } elseif ($depth === 1) {
