@@ -4,9 +4,9 @@ $destinations = get_terms([
   'hide_empty' => false,           // true = exclut les termes sans campings
 ]);
 ?>
-<div class="">
+<div class="md:mx-[30px]">
   <form action="/tous-les-campings-de-charente-maritime" method="GET"
-    class="bg-white flex flex-row justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] gap-[40px]">
+    class="bg-white flex flex-row justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
     <div class="items-search-bar max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>
       <?php if (!is_wp_error($destinations) && !empty($destinations)): ?>
@@ -39,7 +39,7 @@ $destinations = get_terms([
       </select>
     </div>
     <div
-      class="items-search-bar max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination px-[30px] py-[5px]">
+      class="items-search-bar max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[30px] py-[5px]">
       <input type="checkbox" name="online-reservation" id="" />
       <p class="font-arial text-[#757575] text-[14px] font-[400] m-0 p-0">
         <?= __('Réservable sur Campings.online', 'fdhpa17'); ?>

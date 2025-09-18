@@ -141,12 +141,26 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
                   class=" no-underline">Destination</a>
                 <ul class="submenu-child active">
                   <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
-
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
                 </ul>
               </li>
               <li class="  [&.active]:text-green "><a href="#">S'inspirer</a>
+                              <ul class="submenu-child ">
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                  <li><a href="/camping/camping-des-deux-plages/">Campings à La Rochelle</a></li>
+                </ul>
               </li>
-              <li>Voir tous les campings</li>
+              <li class="[&.active]:text-green ">Voir tous les campings</li>
             </ul>
           </li>
           <li
