@@ -1973,7 +1973,7 @@ nav .submenu > li > a{
 nav .submenu > li .submenu-child{
   position: absolute;
   top: 0px;
-  right: -1000%;
+  right: -100%;
   margin: 0px;
   list-style-type: none;
   --tw-bg-opacity: 1;
@@ -2001,13 +2001,20 @@ nav .submenu > li .submenu-child{
     opacity: 0;
   }
 }
-nav .submenu > li .submenu-child.active{
-  right: -100%;
+@media (min-width: 768px){
+  nav .submenu > li .submenu-child{
+    right: -1000%;
+  }
 }
 @media not all and (min-width: 768px){
   nav .submenu > li .submenu-child.active{
     visibility: visible;
     opacity: 1;
+  }
+}
+@media (min-width: 768px){
+  nav .submenu > li .submenu-child.active{
+    right: -100%;
   }
 }
 nav .submenu > li .submenu-child > li{

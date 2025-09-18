@@ -81,7 +81,7 @@ nav .submenu > li > a{
   @apply no-underline;
 }
 nav .submenu > li .submenu-child {
-  @apply list-none absolute top-0 bg-bgGreen m-0 p-0 -right-[1000%] [&.active]:-right-[100%] transition-all
+  @apply list-none absolute top-0 bg-bgGreen m-0 p-0 -right-[100%] md:-right-[1000%] md:[&.active]:-right-[100%] transition-all
     max-md:relative max-md:bg-white
              max-md:invisible
         max-md:[&.active]:visible
