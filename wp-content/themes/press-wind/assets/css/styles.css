@@ -9,7 +9,7 @@
 @import 'tailwindcss/utilities';
 
 /** ANIMATION CSS **/
-@import './animation.css';
+/* @import './animation.css'; */
 
 /** DEFAULT FOR EXAMPLE */
 @import './default.css';
