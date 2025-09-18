@@ -11,6 +11,7 @@ module.exports = {
     './blocks/**/*.php',
     './partials/**/**/*.php',
     './partials/**/*.php',
+    './inc/**/*.php',
     '*.php',
     './assets/*.{js,jsx,ts,tsx,vue}',
   ],
