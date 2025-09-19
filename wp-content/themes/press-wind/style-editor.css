@@ -3716,11 +3716,23 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media (min-width: 768px){
+  .md\:absolute{
+    position: absolute;
+  }
   .md\:sticky{
     position: sticky;
   }
   .md\:-bottom-\[43px\]{
     bottom: -43px;
+  }
+  .md\:bottom-\[50px\]{
+    bottom: 50px;
+  }
+  .md\:left-0{
+    left: 0px;
+  }
+  .md\:right-0{
+    right: 0px;
   }
   .md\:top-\[20px\]{
     top: 20px;
@@ -3732,6 +3744,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:mx-\[30px\]{
     margin-left: 30px;
     margin-right: 30px;
+  }
+  .md\:mx-auto{
+    margin-left: auto;
+    margin-right: auto;
   }
   .md\:-ml-\[17\%\]{
     margin-left: -17%;
