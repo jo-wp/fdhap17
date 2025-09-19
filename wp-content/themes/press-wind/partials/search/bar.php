@@ -4,7 +4,7 @@ $destinations = get_terms([
   'hide_empty' => false,           
 ]);
 ?>
-<div class="md:absolute md:bottom-[50px] md:left-0 md:right-0 md:mx-auto">
+<div class="md:!absolute md:bottom-[50px] md:left-0 md:right-0 md:mx-auto">
   <form action="/tous-les-campings-de-charente-maritime" method="GET"
     class="md:bg-white flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
     <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
