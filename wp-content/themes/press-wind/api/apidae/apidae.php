@@ -340,7 +340,18 @@ class APIDAE
 
 APIDAE::init();
 
+// $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752595',[
+//   'responseFields' => 'id,illustrations,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
+//   'locales' => 'fr'
+// ]);
+
+// echo'<pre>';
+// var_dump($result);
+// echo'</pre>';
+// die();
+
 // // APIDAE::delete_import_apidae_camping();
+
 
 // $result = APIDAE::connect_to_apidae(
 //   '/recherche/list-objets-touristiques',
@@ -372,6 +383,10 @@ APIDAE::init();
 //   'GET',
 //   true
 // );
+// echo '<pre>';
+// var_dump($result);
+// echo '</pre>';
+// die();
 
 // $seenIds = [];
 // $duplicates = [];

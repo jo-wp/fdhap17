@@ -53,7 +53,10 @@ $display_icon_advantages = function ($i, $item, $type_advantages) { ?>
 $class_section = ($type_advantages == 'default') ? '': 'justify-between' ;
 
 ?>
-<section <?= get_block_wrapper_attributes(["class" => 'block-advantages max-w-[1020px] mx-auto max-[1020px]:mx-[30px] flex max-md:flex-col md:flex-row flex-wrap '.$class_section.' max-md:gap-[40px] md:gap-[80px]']); ?>>
+<section <?= get_block_wrapper_attributes(["class" => 'block-advantages max-w-[1020px] mx-auto max-[1020px]:mx-[30px] max-md:flex max-md:flex-col grid grid-cols-2 grid-rows-2 gap-0
+         [&>*:nth-child(1)]:col-start-1 [&>*:nth-child(1)]:row-start-1
+         [&>*:nth-child(2)]:col-start-2 [&>*:nth-child(2)]:row-start-1
+         [&>*:nth-child(3)]:row-start-2 [&>*:nth-child(3)]:col-start-1 [&>*:nth-child(3)]:col-span-2 gap-0 '.$class_section.' max-md:gap-[40px] md:gap-[80px]']); ?>>
   <div class="flex-1">
     <InnerBlocks
       class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-[30px] md:[&_h2]:mb-[67px] md:[&_h2]:text-left [&_p]:m-0 max-md:[&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial max-md:[&_h2]:text-[24px] md:[&_h2]:text-[36px] max-md:text-center [&_h2]:font-[700] [&_h2]:font-ivymode"
