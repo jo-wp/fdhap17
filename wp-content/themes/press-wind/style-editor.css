@@ -2792,6 +2792,31 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   --tw-bg-opacity: 1;
   background-color: rgb(236 245 240 / var(--tw-bg-opacity));
 }
+.block-minisite-card li a:after{
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  display: block;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+  --tw-content: "";
+  content: var(--tw-content);
+}
+.block-minisite-card li a h3{
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+.block-minisite-card li a:hover:after{
+  opacity: 1;
+}
+.block-minisite-card li a:hover h3{
+  margin-bottom: 0.5rem;
+}
 .block-minisite-twocolsequal .nf-form-fields-required,
 .block-minisite-twocolsequal .ninja-forms-req-symbol{
   display: none;

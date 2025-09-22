@@ -17,3 +17,20 @@
 .block-minisite-card.after-bgGreen:after {
     @apply bg-bgGreen;
 }
+
+.block-minisite-card li a:after {
+    @apply content-[""] block absolute left-0 bottom-0 w-full h-full transition-all duration-500 opacity-0;
+}
+
+.block-minisite-card li a h3 {
+    @apply transition-all duration-300;
+}
+
+
+.block-minisite-card li a:hover:after {
+    @apply opacity-100;
+}
+
+.block-minisite-card li a:hover h3 {
+    @apply mb-2;
+}

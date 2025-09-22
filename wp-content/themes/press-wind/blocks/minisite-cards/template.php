@@ -49,7 +49,7 @@ $template = [
                         ?>
                         <li>
                             <a href="<?php echo $link ?>" <?php if($link_e) { ?>target="_blank" <?php } ?>
-                                    class="hover-zoom hover:no-underline relative max-md:shadow-md h-[50vw] lg:h-[25vw] max-h-[480px] bg-cover box-border after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
+                                    class="hover:no-underline relative max-md:shadow-md h-[50vw] lg:h-[25vw] max-h-[480px] bg-cover box-border after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 md:pb-5"
                                     style="background-image: url('<?php echo $image["url"]; ?>)">
                                 <div class="m-0 relative z-10 mb-[10px] max-lg:rounded-b-[10px] max-lg:flex max-md:flex-col max-md:items-center max-md:justify-center max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
                                     <h3 class="text-black md:text-white text-[16px] md:text-[20px] font-[400] md:font-bold font-arial my-0"><?php echo $title ?></h3>
