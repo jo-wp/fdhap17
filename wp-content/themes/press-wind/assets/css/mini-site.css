@@ -6,8 +6,24 @@
     @apply no-underline;
 }
 
+.minisite-header-fix {
+    border-color: rgba(255, 255, 255, 0.37);
+}
+
+.minisite-header-fix li a {
+    @apply md:text-white;
+}
+
+.minisite-header-fix .block-minisite__menu {
+    @apply max-md:top-[58px];
+}
+
 .minisite-header li.current-menu-item a:after {
     @apply block content-[''] h-[2px] md:bg-black w-full absolute -bottom-[14px];
+}
+
+.minisite-header-fix li.current-menu-item a:after {
+    @apply md:bg-white;
 }
 
 .minisite-subheader li {
@@ -52,4 +68,13 @@
 
 .minisite-pagination a:hover {
     @apply bg-[#DDDDDD];
+}
+
+
+.block-hero.minisite .block-hero__content::before {
+        background: linear-gradient(
+                -90deg,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(97, 97, 97, 1) 100%
+        );
 }
