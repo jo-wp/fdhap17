@@ -19,9 +19,15 @@ if ($term && !empty($term->term_id)) {
 $hero_type = get_field('hero_type', $id);
 $activate_search = get_field('activate_search', $id);
 $carousel_images = get_field('carousel_images', $id) ?: [];
+$count_carousel_images = count($carousel_images);
 $first = $carousel_images[0] ?? [];
 $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['image']['url'] ?? '');
 $firstText = nl2br($first['texte'] ?? '');
+$description = nl2br($first['description'] ?? '');
+$link = nl2br($first['link'] ?? '');
+$center = get_field('center_hero', $id);
+
+
 
 //* LOGOS *//
 $logo = get_field('logo_header_hero', 'option');
@@ -35,6 +41,7 @@ $text_color = 'text-black md:text-white';
 $disabled_gradient = '';
 $border_color = 'border-[#ffffff36]';
 $gradient_full = '';
+
 switch ($hero_type) {
   case 'full':
     $height_content = 'h-[90vh]';
@@ -56,14 +63,20 @@ switch ($hero_type) {
     $disabled_background = true;
     $height_content = 'h-auto';
     break;
+  case 'minisite':
+    $height_content = 'h-[600px] md:h-[800px] max-h-[80vh]';
+    break;
 }
 
 
 $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
+
 ?>
 
-<section class="block-hero w-full <?= $mb_section; ?>">
+<section class="block-hero w-full <?= $mb_section; ?> <?= $hero_type ?>">
+
+  <?php if($hero_type != 'minisite') { ?>
   <div class="max-md:hidden p-[15px] flex flex-row gap-[30px]  content-center justify-end bg-green top-bar">
     <div class="wrapper-search">
       <form action="<?= esc_url(home_url('/')) ?>">
@@ -77,6 +90,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         alt="Icon wishlist">
     </a>
   </div>
+  <?php } ?>
   <div id="hero-carousel"
     class="block-hero__content md:mx-[30px]  relative <?= $gradient_full . ' ' . $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
     data-index="0">
@@ -85,6 +99,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         style="background-image:url('<?= esc_url($firstImage) ?>')"></div>
       <div class="bg-layer bg-layer--next !absolute inset-0 md:rounded-b-[200px]"></div>
     </div>
+
+      <?php if($hero_type != 'minisite'): ?>
     <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
       <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
         <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
@@ -104,6 +120,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         </a>
       </div>
     </div>
+      <?php endif; ?>
+      <?php if($hero_type != 'minisite'): ?>
     <div class="block-hero__content__navigation
       relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
       border-b <?= $border_color; ?> border-solid border-t-0 border-l-0 border-r-0
@@ -119,7 +137,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
       max-md:[&.active]:translate-x-0                
       max-md:transition-transform max-md:duration-300 max-md:ease-in-out">
       <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
-        <img src="<?= ($hero_type != 'tiny' && $hero_type != 'search') ? $logo : $logo_tiny; ?>" alt="Logo"
+        <img src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>" alt="Logo"
           class="max-w-full" />
       </a>
 
@@ -143,6 +161,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
       </nav>
 
     </div>
+      <?php endif; ?>
+
     <?php if ($hero_type == 'search'): ?>
       <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
@@ -178,6 +198,38 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         </div>
       </div>
     <?php endif; ?>
+      <?php if ($hero_type == 'minisite'): ?>
+          <div class="block-hero__content__text max-w-[1440px] mx-[30px] lg:mx-[100px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
+               max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
+
+        ">
+              <div class="mb-[40px] <?php if($center) { ?> mx-auto <?php } ?>">
+              <h1 id="hero-text"
+                  class="max-md:!text-[30px] lg:text-[55px] text-white whitespace-pre-line animateFade fadeOutAnimation <?php if($center) { ?> text-center <?php } ?>">
+                  <?= $firstText ?>
+              </h1>
+
+              <?php if($description): ?>
+              <p id="hero-description" class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto <?php if($center) { ?> text-center <?php } ?>"><?= $description ?></p>
+                  <?php endif; ?>
+              </div>
+
+              <?php if($link) : ?>
+              <a id="hero-link" href="<?php echo $link ?>" class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
+              <?php endif; ?>
+
+              <?php if($count_carousel_images > 1 ) : ?>
+              <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
+                  <span class="carousel-hero-button-prev cursor-pointer">
+                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
+                  </span>
+                          <span class="carousel-hero-button-next cursor-pointer">
+                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
+                  </span>
+              </div>
+              <?php endif; ?>
+          </div>
+      <?php endif; ?>
     <?php if ($activate_search): ?>
       <?php get_template_part('partials/search/bar'); ?>
     <?php endif; ?>
@@ -227,7 +279,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     opacity: 1 !important;
   }
 
-  #hero-text {
+  #hero-text, #hero-description, #hero-link {
     transition: opacity .35s ease !important;
     will-change: opacity !important;
   }
@@ -235,7 +287,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
   @media (prefers-reduced-motion: reduce) {
 
     .bg-layer,
-    #hero-text {
+    #hero-text,  #hero-description, #hero-link {
       transition: none !important;
     }
   }
@@ -248,6 +300,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
     const hero = document.getElementById("hero-carousel");
     const heroText = document.getElementById("hero-text");
+    const heroDesc = document.getElementById("hero-description");
+    const heroLink = document.getElementById("hero-link");
     const btnPrev = document.querySelector(".carousel-hero-button-prev");
     const btnNext = document.querySelector(".carousel-hero-button-next");
     const layerCurrent = hero.querySelector(".bg-layer--current");
@@ -266,6 +320,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     const firstUrl = resolveUrl(slides[0]?.image);
     if (firstUrl) layerCurrent.style.backgroundImage = `url(${firstUrl})`;
     heroText && (heroText.innerHTML = slides[0]?.texte || "");
+    heroDesc && (heroDesc.innerHTML = slides[0]?.description || "");
+    heroLink && (heroLink.href = slides[0]?.link || "");
 
     function preload(src) {
       return new Promise(resolve => {
@@ -301,12 +357,15 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
       const nextUrl = resolveUrl(slides[next]?.image);
       const nextTxt = slides[next]?.texte || "";
+      const nextDesc = slides[next]?.description || "";
+      const nextLink = slides[next]?.link || "";
 
       await preload(nextUrl);
 
       layerNext.style.backgroundImage = `url(${nextUrl})`;
       if (heroText) heroText.style.opacity = '0';
-
+      if (heroDesc) heroDesc.style.opacity = '0';
+      if (heroLink) heroLink.style.opacity = '0';
 
       layerNext.offsetHeight;
       layerNext.classList.add('bg-layer--fadein');
@@ -320,6 +379,16 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         heroText.innerHTML = nextTxt;
         heroText.style.opacity = '1';
       }
+        if (heroDesc) {
+            heroDesc.innerHTML = nextDesc;
+            heroDesc.style.opacity = '1';
+        }
+        if (heroLink) {
+            heroLink.href = nextLink;
+            heroLink.style.opacity = '1';
+        }
+
+
 
       index = next;
       hero.dataset.index = String(index);

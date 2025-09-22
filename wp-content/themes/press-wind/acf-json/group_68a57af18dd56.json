@@ -22,7 +22,8 @@
                 "little": "Petit",
                 "search": "Système de recherche",
                 "minisite": "Mini site",
-                "tiny": "Sans Image"
+                "tiny": "Sans Image",
+                "none": "Aucun"
             },
             "default_value": "full",
             "return_format": "value",
@@ -126,8 +127,98 @@
                     "placeholder": "",
                     "new_lines": "",
                     "parent_repeater": "field_68c04ef98c42f"
+                },
+                {
+                    "key": "field_68d11fd1c40a9",
+                    "label": "Description",
+                    "name": "description",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_68a57cda72d5b",
+                                "operator": "==",
+                                "value": "minisite"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "rows": "",
+                    "placeholder": "",
+                    "new_lines": "",
+                    "parent_repeater": "field_68c04ef98c42f"
+                },
+                {
+                    "key": "field_68d11b45bbfd4",
+                    "label": "Lien",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "page_link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_68a57cda72d5b",
+                                "operator": "==",
+                                "value": "minisite"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": "",
+                    "post_status": "",
+                    "taxonomy": "",
+                    "allow_archives": 1,
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_68c04ef98c42f"
                 }
             ]
+        },
+        {
+            "key": "field_68d12471ef0a5",
+            "label": "Centrer le contenu",
+            "name": "center_hero",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_68a57cda72d5b",
+                        "operator": "==",
+                        "value": "minisite"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
         }
     ],
     "location": [
@@ -176,5 +267,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758126262
+    "modified": 1758536918
 }
