@@ -1,4 +1,8 @@
 <?php
+
+/** IMPORTS DES CPTS & DATAS & METABOXES **/
+include ('cpt/camping.php');
+
 // Création du Custom Post Type "Offre d'emploi"
 function cpt_offre_emploi() {
 

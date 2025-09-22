@@ -1,7 +1,25 @@
 <?php
 get_header();
+
+$allowed_slugs = ['1-etoile', '2-etoiles', '3-etoiles', '4-etoiles'];
+
 $terms = get_the_terms(get_the_ID(), 'etoile');
-$stars = intval($terms[0]->name);
+$star_term = null;
+
+if ($terms && !is_wp_error($terms)) {
+  foreach ($terms as $term) {
+    if (in_array($term->slug, $allowed_slugs, true)) {
+      $star_term = $term;
+      break; // on prend le premier match
+    }
+  }
+}
+
+if ($star_term) {
+  // Affiche le nombre d’étoiles (par ex. "★★★")
+  $stars = intval($star_term->name); // si "3 étoiles" → intval = 3
+}
+
 $commune = get_post_meta($post->ID, 'commune', true);
 
 $image_featured_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
@@ -28,6 +46,7 @@ if (!empty($image_featured_url) && !empty($galerie_photo_camping)) {
 
 $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
 
+
 ?>
 <div class="container-huge">
   <div class="title-stars flex max-md:flex-col md:flex-row items-center justify-start gap-[30px]">
@@ -51,7 +70,7 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
     foreach ($photos as $photo): ?>
       <img data-featherlight="<?= $photo['url']; ?>" src="<?= $photo['url']; ?>" alt="<?= $photo['caption']; ?>"
         class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?>">
-      <?php $i++;
+    <?php $i++;
     endforeach; ?>
   </div>
   <div class="blocs flex max-md:flex-col-reverse md:flex-row items-start justify-between gap-[70px]">
@@ -75,12 +94,14 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
             questions</a>
         </div>
       </div>
-      <?php if ($texte_seo_camping): ?>
-        <div
-          class="bloc-camping-description py-[40px] px-[60px] bg-bgOrange rounded-[20px] [&_p]:font-arial [&_p]:text-[15px] mb-[50px]">
+      <div
+        class="bloc-camping-description py-[40px] px-[60px] bg-bgOrange rounded-[20px] [&_p]:font-arial [&_p]:text-[15px] mb-[50px]">
+        <?php if ($texte_seo_camping): ?>
           <?= $texte_seo_camping; ?>
-        </div>
-      <?php endif; ?>
+        <?php else: ?>
+          <?= apply_filters('the_content',get_the_content()); ?>
+        <?php endif; ?>
+      </div>
       <div
         class="bloc-camping-informations md:gap-[115px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-row">
@@ -93,60 +114,59 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
                 APIDAE waiting</li>
             </ul>
           </div>
+           <?php
+              //get terms from taxonomy confort 
+              $confort_terms = get_the_terms(get_the_ID(), 'confort');
+              if ($confort_terms && !is_wp_error($confort_terms)):
+            ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Confort</h3>
             <ul
               class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+              <?php foreach($confort_terms as $confort_term) : ?>
               <li
                 class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
+                <?= $confort_term->name; ?>
+              </li>
+              <?php endforeach; ?>
             </ul>
           </div>
+          <?php endif;  ?>
+          <?php
+              //get terms from taxonomy confort 
+              $confort_terms = get_the_terms(get_the_ID(), 'equipement');
+              if ($confort_terms && !is_wp_error($confort_terms)):
+            ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Équipements</h3>
             <ul
               class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+              <?php foreach($confort_terms as $confort_term) : ?>
               <li
                 class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
+                <?= $confort_term->name; ?></li>
+              <?php endforeach; ?>
             </ul>
           </div>
+          <?php endif; ?>
+          
+           <?php
+              //get terms from taxonomy confort 
+              $confort_terms = get_the_terms(get_the_ID(), 'service');
+              if ($confort_terms && !is_wp_error($confort_terms)):
+            ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Services</h3>
             <ul
               class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+              <?php foreach($confort_terms as $confort_term) : ?>
               <li
                 class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
+                <?= $confort_term->name; ?></li>
+              <?php endforeach; ?>
             </ul>
           </div>
+          <?php endif; ?>
         </div>
         <div class="flex-1 flex flex-wrap flex-col">
           <div class="bloc-camping-informations__item">
@@ -160,12 +180,20 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
               </p>
             </div>
           </div>
+          <?php
+              //get terms from taxonomy confort 
+              $confort_terms = get_the_terms(get_the_ID(), 'atout');
+              if ($confort_terms && !is_wp_error($confort_terms)):
+            ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Environnement</h3>
             <div class="bloc-camping-informations__item__content">
-              <p>En ville</p>
+              <?php foreach($confort_terms as $confort_term) : ?>
+              <p><?= $confort_term->name; ?></p>
+              <?php endforeach; ?>
             </div>
           </div>
+          <?php endif; ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Capacité</h3>
             <div class="bloc-camping-informations__item__content">
@@ -356,11 +384,11 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
     </div>
   </div>
   <?php $items_answer = get_field('items_answer');
-  if($items_answer): 
+  if ($items_answer):
   ?>
-  <div class="mt-[50px] md:mt-[100px]">
-  <?= get_template_part('blocks/faq/template'); ?>
-  </div>
+    <div class="mt-[50px] md:mt-[100px]">
+      <?= get_template_part('blocks/faq/template'); ?>
+    </div>
   <?php endif; ?>
 </div>
 <?php get_footer(); ?>

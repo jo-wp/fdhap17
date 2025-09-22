@@ -1,59 +1,6 @@
 <?php
 class APIDAE
 {
-  public static function init()
-  {
-    add_action('init', [__CLASS__, 'register_post_types']);
-    add_action('init', [__CLASS__, 'register_taxonomies']);
-    add_action('add_meta_boxes', function () {
-      add_meta_box('apidae_infos', 'Informations Apidae', [__CLASS__, 'render_apidae_metabox'], 'camping', 'normal', 'high');
-    });
-    add_action('save_post_camping', [__CLASS__, 'save_apidae_metabox']);
-  }
-
-  public static function register_post_types()
-  {
-    // register custom post camping 
-    register_post_type('camping', [
-      'labels' => [
-        'name' => __('Campings', 'fdhpa17'),
-        'singular_name' => __('Camping', 'fdhpa17'),
-      ],
-      'public' => true,
-      'has_archive' => true,
-      'supports' => ['title', 'editor', 'thumbnail'],
-      'rewrite' => ['slug' => 'camping'],
-    ]);
-  }
-
-  public static function register_taxonomies()
-  {
-    // Register custom taxonomies here : /atout/, /etoile/, /aquatique/, /service/,  /label/, /hebergement/, /cible/, /groupe/
-    $taxonomies = [
-      'destination',
-      'atout',
-      'etoile',
-      'aquatique',
-      'service',
-      'label',
-      'hebergement',
-      'cible',
-      'groupe',
-    ];
-
-    foreach ($taxonomies as $taxonomy) {
-      register_taxonomy($taxonomy, 'camping', [
-        'labels' => [
-          'name' => __(ucfirst($taxonomy) . 's', 'fdhpa17'),
-          'singular_name' => __(ucfirst($taxonomy), 'fdhpa17'),
-        ],
-        'public' => true,
-        'hierarchical' => true,
-        'rewrite' => ['slug' => $taxonomy],
-      ]);
-    }
-  }
-
   public static function connect_to_apidae($endpoint, $params = [], $method = 'GET', $json = false)
   {
     $config = [
@@ -234,123 +181,146 @@ class APIDAE
   public static function delete_import_apidae_camping()
   {
     $posts = get_posts([
-      'post_type' => 'campings', // mauvais post type
+      'post_type' => 'camping', // mauvais post type
       'numberposts' => -1,
       'post_status' => 'any',
       'fields' => 'ids'
     ]);
 
+    var_dump($posts);
+
     foreach ($posts as $post_id) {
-      wp_delete_post($post_id, true); // true = suppression définitive
+      wp_delete_post($post_id, true); 
     }
 
     wp_die('✅ Tous les posts de type "campings" ont été définitivement supprimés.');
   }
 
-  public static function render_apidae_metabox($post)
+  public static function update_illustrations_apidae_camping($item)
   {
-    $fields = [
-      'apidae_id' => 'ID Apidae',
-      'apidae_identifier' => 'Identifiant Apidae',
-      'adresse' => 'Adresse',
-      'commune' => 'Commune',
-      'code_postal' => 'Code Postal',
-      'pays' => 'Pays',
-      'latitude' => 'Latitude',
-      'longitude' => 'Longitude',
-      'telephone' => 'Téléphone',
-      'email' => 'Email',
-      'site_web' => 'Site Web',
-      'hotellerie_type' => 'Type d’hôtellerie',
-      'numero_classement' => 'Numéro de classement',
-      'date_classement' => 'Date de classement',
-      'classement' => 'Classement',
-      'chaines' => 'Chaînes',
-      'type' => 'Type',
-      'presentation_complement' => 'Complément de localisation'
-    ];
+    // Vérifier si le camping existe déjà
 
-    // Capacités dynamiques
-    $capacites = get_post_meta($post->ID);
+    $existing = get_posts([
+      'post_type' => 'camping',
+      'meta_key' => 'apidae_id',
+      'meta_value' => $item['id'],
+      'posts_per_page' => 1,
+      'fields' => 'ids',
+    ]);
 
-    echo '<table class="form-table">';
-    foreach ($fields as $key => $label) {
-      $value = esc_attr(get_post_meta($post->ID, $key, true));
-      echo "<tr>
-                <th><label for='{$key}'>{$label}</label></th>
-                <td><input type='text' id='{$key}' name='{$key}' value='{$value}' class='regular-text' /></td>
-              </tr>";
-    }
 
-    // Champs de capacité
-    foreach ($capacites as $key => $value) {
-      if (strpos($key, 'capacite_') === 0) {
-        $label = ucfirst(str_replace('_', ' ', $key));
-        echo "<tr>
-                    <th><label for='{$key}'>{$label}</label></th>
-                    <td><input type='text' id='{$key}' name='{$key}' value='" . esc_attr($value[0]) . "' class='regular-text' /></td>
-                  </tr>";
+    if ($existing) {
+      $post_id = $existing[0];
+
+      //update IMAGES
+      $images = $item['illustrations'];
+      $sources = [];
+      foreach ($images as $image) {
+        $sources[] = $image['traductionFichiers'][0]['url'];
       }
-    }
+      if ($sources) {
+        APIDAE::add_images_to_acf_gallery($post_id, 'galerie_photo_camping', $sources,'url');
+      }
+      //END update IMAGES
 
-    echo '</table>';
+    }
   }
-  public static function save_apidae_metabox($post_id)
-  {
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-      return;
 
-    $fields = [
-      'apidae_id',
-      'apidae_identifier',
-      'adresse',
-      'commune',
-      'code_postal',
-      'pays',
-      'latitude',
-      'longitude',
-      'telephone',
-      'email',
-      'site_web',
-      'hotellerie_type',
-      'numero_classement',
-      'date_classement',
-      'classement',
-      'chaines',
-      'type',
-      'presentation_complement'
+
+  public static function add_images_to_acf_gallery(int $post_id, string $field, array $sources, string $mode = 'id')
+  {
+    if (empty($sources)) {
+      return new WP_Error('no_sources', 'Aucune image fournie.');
+    }
+
+    // On veut manipuler la valeur brute (array d’IDs), pas la valeur formatée ACF.
+    $existing_ids = get_field($field, $post_id, false);
+    if (! is_array($existing_ids)) {
+      $existing_ids = [];
+    }
+
+    $new_ids = [];
+
+    // Assure que les fonctions d’upload sont dispo (utile en front ou CRON).
+    if (in_array($mode, ['url', 'path'], true)) {
+      require_once ABSPATH . 'wp-admin/includes/file.php';
+      require_once ABSPATH . 'wp-admin/includes/media.php';
+      require_once ABSPATH . 'wp-admin/includes/image.php';
+    }
+
+
+
+    foreach ($sources as $item) {
+      $attachment_id = 0;
+
+      if ('id' === $mode) {
+        $attachment_id = absint($item);
+      } elseif ('url' === $mode) {
+        $attachment_id = APIDAE::_acf_gallery_import_from_url($item, $post_id);
+      }
+
+
+      if (is_wp_error($attachment_id)) {
+        // À vous de logger si besoin: error_log( $attachment_id->get_error_message() );
+        continue;
+      }
+
+      if ($attachment_id && 'attachment' === get_post_type($attachment_id)) {
+        $new_ids[] = $attachment_id;
+      }
+    }
+
+    // Fusion + dédoublonnage, en conservant l’ordre existant puis les nouveaux.
+    $final_ids = array_values(array_unique(array_merge($existing_ids, $new_ids)));
+
+    // Met à jour la galerie (utiliser la clé de champ "field_xxx" évite les collisions).
+    $ok = update_field($field, $final_ids, $post_id);
+    if (! $ok) {
+      return new WP_Error('update_failed', 'La mise à jour du champ ACF a échoué.');
+    }
+
+    return $final_ids;
+  }
+
+
+  public static function _acf_gallery_import_from_url(string $url, int $parent_post_id = 0)
+  {
+    // Télécharge dans un fichier temporaire
+    $tmp = download_url($url);
+    if (is_wp_error($tmp)) {
+      return $tmp;
+    }
+
+    $filename = basename(parse_url($url, PHP_URL_PATH) ?: 'image');
+    // Construit le tableau attendu par media_handle_sideload
+    $file = [
+      'name'     => $filename,
+      'tmp_name' => $tmp,
     ];
 
-    foreach ($fields as $field) {
-      if (isset($_POST[$field])) {
-        update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
-      }
+    $id = media_handle_sideload($file, $parent_post_id);
+
+    if (is_wp_error($id)) {
+      @unlink($tmp);
+      return $id;
     }
 
-    // Sauvegarde des capacités dynamiques
-    foreach ($_POST as $key => $value) {
-      if (strpos($key, 'capacite_') === 0) {
-        update_post_meta($post_id, $key, sanitize_text_field($value));
-      }
-    }
+    return $id;
   }
 }
 
+// APIDAE::delete_import_apidae_camping();
 
-
-APIDAE::init();
-
-// $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752595',[
+// $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752637',[
 //   'responseFields' => 'id,illustrations,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
 //   'locales' => 'fr'
 // ]);
 
 // echo'<pre>';
-// var_dump($result);
+// print_r($result['data']['reservation']['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']);
 // echo'</pre>';
 // die();
 
-// // APIDAE::delete_import_apidae_camping();
 
 
 // $result = APIDAE::connect_to_apidae(
@@ -383,9 +353,19 @@ APIDAE::init();
 //   'GET',
 //   true
 // );
-// echo '<pre>';
-// var_dump($result);
-// echo '</pre>';
+// foreach ($result['data']['objetsTouristiques'] as $item) {
+//   if (!$item) {
+//   } else {
+
+//     // APIDAE::update_illustrations_apidae_camping($item);
+
+//     // if ($images) {
+//     //   foreach ($images as $image) {
+//     //     // APIDAE::add_images_to_acf_gallery($id_camping, 'galerie_photo_camping', [$image['traductionFichiers'][0]['url']]);
+//     //   }
+//     // }
+//   }
+// }
 // die();
 
 // $seenIds = [];
