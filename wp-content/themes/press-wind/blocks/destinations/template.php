@@ -16,6 +16,7 @@ if (!$disabled_items_associated) {
     'post_type' => 'camping',
     'taxonomy' => 'destination',
     'hide_empty' => false,
+    'number' => 8,
   ]);
 
 
