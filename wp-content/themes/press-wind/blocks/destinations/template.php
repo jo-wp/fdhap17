@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Destinations template.
  *
@@ -28,7 +29,6 @@ if (!$disabled_items_associated) {
       ];
     }
   }
-
 }
 
 
@@ -65,36 +65,41 @@ $template = [
       <div
         class="grid grid-cols-2 md:grid-cols-4 max-md:gap-x-[10px] max-md:gap-y-[40px]  md:gap-[6px] mb-[60px] last:mb-0  md:[&_div:nth-child(-n+4)]:rounded-t-[39px] md:[&_div:nth-child(n+5):nth-child(-n+8)]:rounded-b-[39px]">
         <?php foreach ($items_destinations as $item):
-          $pageTitle = (!$disabled_items_associated) ? get_the_title($item['post_data']->ID) : get_the_title($item->ID);
-          $pageThumb = (!$disabled_items_associated) ? get_the_post_thumbnail_url($item['post_data']->ID, 'full') : get_the_post_thumbnail_url($item->ID, 'full');
-          $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : get_permalink($item->ID);
-          ?>
-          <div
-            class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-[20px] overflow-hidden"
-            style="background-image: url('<?= esc_url($pageThumb); ?>');">
+          if (isset($item->ID) || isset($item['post_data']->ID)) {
+            $pageTitle = (!$disabled_items_associated) ? get_the_title($item['post_data']->ID) : get_the_title($item->ID);
+            $pageThumb = (!$disabled_items_associated) ? get_the_post_thumbnail_url($item['post_data']->ID, 'full') : get_the_post_thumbnail_url($item->ID, 'full');
+            $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : get_permalink($item->ID);
+        ?>
+            <div
+              class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-[20px] overflow-hidden"
+              style="background-image: url('<?= esc_url($pageThumb); ?>');">
 
-            <span aria-hidden="true" class="overlay-yellow"></span>
+              <span aria-hidden="true" class="overlay-yellow"></span>
 
-            <a class="relative z-10 block h-full hover:no-underline" href="<?= esc_url($pageLink); ?>">
+              <a class="relative z-10 block h-full hover:no-underline" href="<?= esc_url($pageLink); ?>">
 
-              <span
-                class="animateFade fadeOutAnimation absolute inset-x-0 top-0 m-0 text-black md:text-white font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
+                <span
+                  class="animateFade fadeOutAnimation absolute inset-x-0 top-0 m-0 text-black md:text-white font-arial max-md:text-[16px] md:text-[26px] font-bold text-right px-[37px] py-[66px]
              transform-gpu translate-x-0 opacity-100 transition-all duration-500 ease-out
              group-hover:translate-x-full group-hover:opacity-0
              max-md:absolute max-md:bottom-0 max-md:p-[20px_10px] max-md:text-center max-md:top-[inherit] max-md:bg-white max-md:rounded-b-[20px]">
-                <?= esc_html($pageTitle); ?>
-        </span>
-
-
-              <p class="absolute inset-0 flex items-center justify-center text-center px-[69px]
+                  <?= esc_html($pageTitle); ?>
+                </span>
+                <p class="absolute inset-0 flex items-center justify-center text-center px-[69px]
              !text-white !text-[16px] !font-arial
              opacity-0 translate-y-4 transition-all duration-500 ease-out delay-100
              group-hover:opacity-100 group-hover:translate-y-0">
-                <?= esc_html($item['description']); ?>
-              </p>
-            </a>
-          </div>
-        <?php endforeach; ?>
+                  <?= esc_html($item['description']); ?>
+                </p>
+              </a>
+            </div>
+          <?php
+          } else {
+
+
+          ?>
+        <?php }
+        endforeach; ?>
       </div>
     <?php endif; ?>
   </div>
