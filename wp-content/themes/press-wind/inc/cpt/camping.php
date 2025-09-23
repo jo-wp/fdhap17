@@ -100,10 +100,20 @@ class CPT_CAMPING
       'ouverture' => 'Ouverture',
       'fermeture' => 'Fermeture',
       'id_reservation_direct' => 'ID de réservation Direct',
+      'url_reservation_direct' => 'URL de réservation Direct',
+      'langues' => 'Langues parlées',
+      'periodes_date_debut' => 'Date de début',
+      'periodes_date_fin' => 'Date de fin',
+      'periodes_type' => 'Type d\'ouverture',
+      'price_mini' => 'Prix mini',
+      'price_max' => 'Prix max',
+      'price_mini_mobilhomes' => 'Prix mini mobilhome',
+      'price_max_mobilhomes' => 'Prix max mobilhome'
     ];
 
     $capacites = get_post_meta($post->ID);
 
+    wp_nonce_field('save_apidae_meta', 'apidae_meta_nonce');
     echo '<table class="form-table">';
     foreach ($fields as $key => $label) {
       $value = esc_attr(get_post_meta($post->ID, $key, true));
@@ -129,6 +139,10 @@ class CPT_CAMPING
   public static function save_apidae_metabox($post_id)
   {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+    // ⚠️ (Optionnel mais recommandé) vérifs de sécurité :
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (!isset($_POST['apidae_meta_nonce']) || !wp_verify_nonce($_POST['apidae_meta_nonce'], 'save_apidae_meta')) return;
 
     $fields = [
       'apidae_id',
@@ -160,17 +174,27 @@ class CPT_CAMPING
       'ouverture' => 'Ouverture',
       'fermeture' => 'Fermeture',
       'id_reservation_direct' => 'ID de réservation Direct',
+      'url_reservation_direct' => 'URL de réservation Direct',
+      'langues' => 'Langues parlées',
+      'periodes_date_debut' => 'Date de début',
+      'periodes_date_fin' => 'Date de fin',
+      'periodes_type' => 'Type d\'ouverture',
+      'price_mini' => 'Prix mini',
+      'price_max' => 'Prix max',
+      'price_mini_mobilhomes' => 'Prix mini mobilhome',
+      'price_max_mobilhomes' => 'Prix max mobilhome'
     ];
 
-    foreach ($fields as $field) {
-      if (isset($_POST[$field])) {
-        update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
+    foreach ($fields as $key => $label_or_key) {
+      $name = is_string($key) ? $key : $label_or_key; // ← clé si associative, sinon valeur
+      if (isset($_POST[$name])) {
+        update_post_meta($post_id, $name, sanitize_text_field(wp_unslash($_POST[$name])));
       }
     }
 
     foreach ($_POST as $key => $value) {
       if (strpos($key, 'capacite_') === 0) {
-        update_post_meta($post_id, $key, sanitize_text_field($value));
+        update_post_meta($post_id, $key, sanitize_text_field(wp_unslash($value)));
       }
     }
   }

@@ -2,6 +2,12 @@
 
 /** IMPORTS DES CPTS & DATAS & METABOXES **/
 include ('cpt/camping.php');
+add_filter( 'use_block_editor_for_post_type', function( $use_block_editor, $post_type ) {
+    if ( $post_type === 'camping' ) {
+        return false; // Désactive Gutenberg pour le CPT camping
+    }
+    return $use_block_editor;
+}, 10, 2 );
 
 // Création du Custom Post Type "Offre d'emploi"
 function cpt_offre_emploi() {

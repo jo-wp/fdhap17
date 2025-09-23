@@ -26,6 +26,9 @@ $image_featured_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
 $image_featured_caption = get_the_post_thumbnail_caption(get_the_ID());
 $galerie_photo_camping = get_field('galerie_photo_camping', get_the_ID());
 
+$id_reservation_direct = get_post_meta($post->ID, 'id_reservation_direct', true);
+$url_reservation_direct = get_post_meta($post->ID, 'url_reservation_direct', true);
+
 
 
 $photos = [];
@@ -45,6 +48,21 @@ if (!empty($image_featured_url) && !empty($galerie_photo_camping)) {
 }
 
 $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
+
+$langues = get_post_meta($post->ID, 'langues', true);
+$tabLangues = array_map(
+  function ($item) {
+    return sanitize_title(trim($item));
+  },
+  explode(",", $langues)
+);
+
+$periodes_dateDebut = get_post_meta($post->ID, 'periodes_dateDebut', true);
+$periodes_dateFin =  get_post_meta($post->ID, 'periodes_dateFin', true);
+$periodes_type =  get_post_meta($post->ID, 'periodes_type', true);
+
+$price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true);
+
 
 
 ?>
@@ -94,14 +112,52 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
             questions</a>
         </div>
       </div>
+
       <div
         class="bloc-camping-description py-[40px] px-[60px] bg-bgOrange rounded-[20px] [&_p]:font-arial [&_p]:text-[15px] mb-[50px]">
         <?php if ($texte_seo_camping): ?>
           <?= $texte_seo_camping; ?>
         <?php else: ?>
-          <?= apply_filters('the_content',get_the_content()); ?>
+          <?= apply_filters('the_content', get_the_content()); ?>
         <?php endif; ?>
       </div>
+      <?php if ($id_reservation_direct): ?>
+        <div>
+
+          <script>
+            setTimeout(function() {
+              document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability></ctv-availability>"
+            });
+          </script>
+          <div id="ctv-gp1xa2z0ihv1rc5hog1yrs"></div>
+
+          <script>
+            window.ctoutvert = {
+              id: <?= $id_reservation_direct; ?>,
+              lang: 'auto',
+              url: 'https://bookingpremium.secureholiday.net/widgets/'
+            };
+
+            (function(w, d, s, ctv, r, js, fjs) {
+              r = new XMLHttpRequest();
+              r.open('GET', w[ctv].url + 'js/src.json');
+              r.responseType = 'json';
+              r.json = true;
+              r.send();
+              r.onload = function() {
+                w[ctv].src = r.responseType == 'json' ? r.response : JSON.parse(r.response);
+                js.src = w[ctv].src[0];
+                fjs.parentNode.insertBefore(js, fjs);
+              }
+              js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
+              js.id = 'ctvwidget';
+              js.async = 1;
+            }(window, document, 'script', 'ctoutvert'));
+          </script>
+
+
+        </div>
+      <?php endif; ?>
       <div
         class="bloc-camping-informations md:gap-[115px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-row">
@@ -114,58 +170,58 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
                 APIDAE waiting</li>
             </ul>
           </div>
-           <?php
-              //get terms from taxonomy confort 
-              $confort_terms = get_the_terms(get_the_ID(), 'confort');
-              if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
-          <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Confort</h3>
-            <ul
-              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
-              <?php foreach($confort_terms as $confort_term) : ?>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                <?= $confort_term->name; ?>
-              </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
+          <?php
+          //get terms from taxonomy confort 
+          $confort_terms = get_the_terms(get_the_ID(), 'confort');
+          if ($confort_terms && !is_wp_error($confort_terms)):
+          ?>
+            <div class="bloc-camping-informations__item">
+              <h3 class="font-arial text-[23px] text-black">Confort</h3>
+              <ul
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                <?php foreach ($confort_terms as $confort_term) : ?>
+                  <li
+                    class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
+                    <?= $confort_term->name; ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
           <?php endif;  ?>
           <?php
-              //get terms from taxonomy confort 
-              $confort_terms = get_the_terms(get_the_ID(), 'equipement');
-              if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
-          <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Équipements</h3>
-            <ul
-              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
-              <?php foreach($confort_terms as $confort_term) : ?>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                <?= $confort_term->name; ?></li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
+          //get terms from taxonomy confort 
+          $confort_terms = get_the_terms(get_the_ID(), 'equipement');
+          if ($confort_terms && !is_wp_error($confort_terms)):
+          ?>
+            <div class="bloc-camping-informations__item">
+              <h3 class="font-arial text-[23px] text-black">Équipements</h3>
+              <ul
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                <?php foreach ($confort_terms as $confort_term) : ?>
+                  <li
+                    class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
+                    <?= $confort_term->name; ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
           <?php endif; ?>
-          
-           <?php
-              //get terms from taxonomy confort 
-              $confort_terms = get_the_terms(get_the_ID(), 'service');
-              if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
-          <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Services</h3>
-            <ul
-              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
-              <?php foreach($confort_terms as $confort_term) : ?>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                <?= $confort_term->name; ?></li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
+
+          <?php
+          //get terms from taxonomy confort 
+          $confort_terms = get_the_terms(get_the_ID(), 'service');
+          if ($confort_terms && !is_wp_error($confort_terms)):
+          ?>
+            <div class="bloc-camping-informations__item">
+              <h3 class="font-arial text-[23px] text-black">Services</h3>
+              <ul
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                <?php foreach ($confort_terms as $confort_term) : ?>
+                  <li
+                    class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
+                    <?= $confort_term->name; ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
           <?php endif; ?>
         </div>
         <div class="flex-1 flex flex-wrap flex-col">
@@ -173,26 +229,39 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
             <h3 class="font-arial text-[23px] text-black">Périodes d'ouverture</h3>
             <div class="bloc-camping-informations__item__content">
               <p>
-                Du 4 avril 2025 au 28 septembre 2025<br>
+                <?php if ($periodes_dateDebut && $periodes_dateFin):  ?>
+                  <?php
+                  $dstart = new DateTime($periodes_dateDebut);
+                  $dend = new DateTime($periodes_dateFin);
+
+                  // Formatter en français
+                  $formatter = new IntlDateFormatter(
+                    'fr_FR',
+                    IntlDateFormatter::LONG,
+                    IntlDateFormatter::NONE
+                  );
+                  ?>
+                  Du <?= $formatter->format($dstart); ?> au <?= $formatter->format($dend); ?>
+                <?php endif; ?><br>
+                <?php if($periodes_type=='OUVERTURE_TOUS_LES_JOURS'): ?>
                 Ouvert Tous les jours<br>
-                <br>
-                Accueil ouvert de 08h à 19h
+                <?php endif; ?>
               </p>
             </div>
           </div>
           <?php
-              //get terms from taxonomy confort 
-              $confort_terms = get_the_terms(get_the_ID(), 'atout');
-              if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
-          <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Environnement</h3>
-            <div class="bloc-camping-informations__item__content">
-              <?php foreach($confort_terms as $confort_term) : ?>
-              <p><?= $confort_term->name; ?></p>
-              <?php endforeach; ?>
+          //get terms from taxonomy confort 
+          $confort_terms = get_the_terms(get_the_ID(), 'atout');
+          if ($confort_terms && !is_wp_error($confort_terms)):
+          ?>
+            <div class="bloc-camping-informations__item">
+              <h3 class="font-arial text-[23px] text-black">Environnement</h3>
+              <div class="bloc-camping-informations__item__content">
+                <?php foreach ($confort_terms as $confort_term) : ?>
+                  <p><?= $confort_term->name; ?></p>
+                <?php endforeach; ?>
+              </div>
             </div>
-          </div>
           <?php endif; ?>
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Capacité</h3>
@@ -204,9 +273,9 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
             <h3 class="font-arial text-[23px] text-black">Langues parlées</h3>
             <div class="bloc-camping-informations__item__content">
               <ul class="list-none m-0 p-0 flex flex-row gap-[17px]">
-                <li><img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-fr.svg"></li>
-                <li><img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-en.svg"></li>
-                <li><img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-es.svg"></li>
+                <?php foreach ($tabLangues as $item): ?>
+                  <li><img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-<?= $item; ?>.svg"></li>
+                <?php endforeach; ?>
               </ul>
             </div>
           </div>
@@ -259,13 +328,19 @@ $texte_seo_camping = get_field('texte_seo_camping', get_the_ID());
       </div>
       <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
+          <?php if($price_mini_mobilhomes): ?>
           <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]">À partir
-            de : <span class="font-arial text-[50px] font-[700] text-green">320<sup
+            de : <span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
                 class="font-arial text-[37px] font-[700] text-green">€</span></p>
           <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">Location Mobil-Home / semaine</p>
+          <?php endif; ?>
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-            <a href="" class="button button--bg-green">Voir tous les tarifs</a>
-            <a href="" class="button button--bg-orange">Réserver</a>
+            <?php if($url_reservation_direct): ?>
+            <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
+            <?php endif; ?>
+            <?php if($url_reservation_direct): ?>
+            <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
+            <?php endif; ?>
           </div>
         </div>
       </div>

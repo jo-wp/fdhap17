@@ -2,10 +2,7 @@
 
 class Ctoutvert
 {
-  public static function init()
-  {
-
-  }
+  public static function init() {}
 
   public static function connect_to_ctoutvert($soapCall = 'engine_returnFormInformations')
   {
@@ -136,7 +133,7 @@ class Ctoutvert
     }
   }
 
-  public static function ctoutvert_search_holidays($dateFilters=[], $productTypes = [])
+  public static function ctoutvert_search_holidays($dateFilters = [], $productTypes = [])
   {
     $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
     $username = CTOUTVERT_USERNAME;
@@ -167,7 +164,7 @@ class Ctoutvert
         // 'request' => [ ... ] 
       ];
 
-      if($dateFilters){
+      if ($dateFilters) {
         $params['dateFilters'] = $dateFilters;
       }
 
@@ -181,11 +178,57 @@ class Ctoutvert
     }
   }
 
+
+  public static function ctoutvert_get_specialoffer($campingId)
+  {
+    $wsdl      = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+    $username  = CTOUTVERT_USERNAME;
+    $password  = CTOUTVERT_PASSWORD;
+    $id_engine = (int) CTOUTVERT_ID_ENGINE;
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace'              => 1,
+        'exceptions'         => true,
+        'cache_wsdl'         => WSDL_CACHE_NONE,   // mets BOTH en prod
+        'connection_timeout' => 15,
+        'soap_version'       => SOAP_1_1,          // .asmx -> 1.1 en général
+        'features'           => SOAP_SINGLE_ELEMENT_ARRAYS, // force les arrays 1 élément
+      ]);
+
+      // IMPORTANT : adapter la structure aux balises de ta REQUÊTE
+      $params = [
+        'user'             => $username,          // <web:user>XXX</web:user>
+        'password'         => $password,          // <web:password>XXXXX</web:password>
+        'idEstablishment'  => ['int' => [(int) $campingId]], // <web:idEstablishment><web:int>3200</web:int></web:idEstablishment>
+        'idEngine'         => $id_engine,         // <web:idEngine>702</web:idEngine>
+        'isoLanguageCode'  => 'FR',               // <web:isoLanguageCode>FR</web:isoLanguageCode>
+      ];
+
+      $response = $client->__soapCall('establishment_returnSpecialOffers', [$params]);
+
+      return $response;
+    } catch (SoapFault $e) {
+      error_log('SoapFault establishment_returnSpecialOffers : ' . $e->faultcode . ' - ' . $e->getMessage());
+      // Debug rapide (décommente si besoin)
+      // error_log('LAST REQUEST: ' . $client->__getLastRequest());
+      // error_log('LAST RESPONSE: ' . $client->__getLastResponse());
+      return false;
+    } catch (Exception $e) {
+      error_log('Erreur appel establishment_returnSpecialOffers : ' . $e->getMessage());
+      return false;
+    }
+  }
 }
-// $data = Ctoutvert::get_camping_ctoutvert(14166);
-// $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
-// $data = Ctoutvert::ctoutvert_search_holidays();
-// echo '<pre>';
-// print_r($data);
-// echo '</pre>';
-// die();
+
+
+if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
+
+  // $data = Ctoutvert::get_camping_ctoutvert(14166);
+  // $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
+  // $data = Ctoutvert::ctoutvert_search_holidays();
+  // echo '<pre>';
+  // print_r($data);
+  // echo '</pre>';
+  // die();
+}

@@ -192,7 +192,7 @@ class APIDAE
     foreach ($posts as $post_id) {
       wp_delete_post($post_id, true); 
     }
-
+ 
     wp_die('✅ Tous les posts de type "campings" ont été définitivement supprimés.');
   }
 
@@ -307,17 +307,17 @@ class APIDAE
 
     return $id;
   }
-}
+} 
 
 // APIDAE::delete_import_apidae_camping();
 
-// $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752637',[
-//   'responseFields' => 'id,illustrations,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
+// $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752954',[
+//   'responseFields' => 'id,illustrations,descriptionTarif.periodes,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
 //   'locales' => 'fr'
 // ]);
 
 // echo'<pre>';
-// print_r($result['data']['reservation']['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']);
+// print_r($result['data']['descriptionTarif']['periodes'][0]['tarifs']);
 // echo'</pre>';
 // die();
 
