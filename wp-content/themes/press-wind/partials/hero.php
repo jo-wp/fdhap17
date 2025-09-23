@@ -199,7 +199,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
       </div>
     <?php endif; ?>
       <?php if ($hero_type == 'minisite'): ?>
-          <div class="block-hero__content__text max-w-[1440px] mx-[30px] lg:mx-[100px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
+          <div class="block-hero__content__text max-w-[1440px] mx-[30px] md:mx-[100px] lg:mx-auto flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
@@ -210,7 +210,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
               </h1>
 
               <?php if($description): ?>
-              <p id="hero-description" class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto <?php if($center) { ?> text-center <?php } ?>"><?= $description ?></p>
+              <p id="hero-description" class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto leading-[38px] <?php if($center) { ?> text-center <?php } ?>"><?= $description ?></p>
                   <?php endif; ?>
               </div>
 
@@ -237,9 +237,9 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 </section>
 
 
-<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && !is_404()): ?>
+<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search'  && !is_404()): ?>
   <section
-    class="relative z-[9999] mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
+    class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
     <?php
     if (function_exists('yoast_breadcrumb')) {
       yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
