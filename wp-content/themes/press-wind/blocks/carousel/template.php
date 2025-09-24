@@ -39,12 +39,20 @@ if (!$disabled_auto_carousel) {
       ],
     ]);
 
+
+
     if ($q->have_posts()) {
-      $items_selected = $q->posts; 
+      $items_selected = array_map(function ($post) {
+        $linked_page_id = function_exists('tp_get_linked_post_id') ? tp_get_linked_post_id($post->ID) : 0;
+
+        return [
+          'url_linked_page' => get_permalink($post),
+          'post_data'       => $linked_page_id ? get_post($linked_page_id) : $post
+        ];
+      }, $q->posts);
     }
     wp_reset_postdata();
   }
-
 } else {
   $items_selected = get_field('items_selected');
 }
@@ -99,19 +107,24 @@ $block_id = $block['id'];
         <div class="splide__track">
           <ul class="splide__list">
             <?php foreach ($items_selected as $item):
-              $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
-              ?>
-              <li class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px]">
-                <div class="image_featured min-h-[calc(100%-40px)] bg-cover  bg-no-repeat rounded-[20px] relative"
-                  style="background-image:url('<?= $image_featured ?>');">
-                  <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
-                    href="<?= get_permalink($item->ID); ?>">
-                    <span
-                      class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]"><?= get_the_title($item->ID); ?></span>
-                  </a>
-                </div>
-              </li>
-            <?php endforeach; ?>
+              if (isset($item->ID) || isset($item['post_data']->ID)) {
+                $pageTitle = (!$disabled_items_associated) ? get_the_title($item['post_data']->ID) : get_the_title($item->ID);
+                $image_featured = (!$disabled_items_associated) ? get_the_post_thumbnail_url($item['post_data']->ID, 'full') : get_the_post_thumbnail_url($item->ID, 'full');
+                $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : get_permalink($item->ID);
+
+            ?>
+                <li class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px]">
+                  <div class="image_featured min-h-[calc(100%-40px)] bg-cover  bg-no-repeat rounded-[20px] relative"
+                    style="background-image:url('<?= $image_featured ?>');">
+                    <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
+                      href="<?= $pageLink; ?>">
+                      <span
+                        class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]"><?= $pageTitle; ?></span>
+                    </a>
+                  </div>
+                </li>
+            <?php }
+            endforeach; ?>
           </ul>
         </div>
       </section>
