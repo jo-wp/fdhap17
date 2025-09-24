@@ -144,6 +144,9 @@
     max-width: 1536px;
   }
 }
+.static{
+  position: static;
+}
 .\!absolute{
   position: absolute !important;
 }
@@ -387,6 +390,9 @@
 .inline-flex{
   display: inline-flex;
 }
+.table{
+  display: table;
+}
 .grid{
   display: grid;
 }
@@ -489,6 +495,9 @@
 .w-\[100\%\]{
   width: 100%;
 }
+.w-\[15\%\]{
+  width: 15%;
+}
 .w-\[22px\]{
   width: 22px;
 }
@@ -500,9 +509,6 @@
 }
 .min-w-\[100\%\]{
   min-width: 100%;
-}
-.min-w-\[15\%\]{
-  min-width: 15%;
 }
 .min-w-\[20\%\]{
   min-width: 20%;
