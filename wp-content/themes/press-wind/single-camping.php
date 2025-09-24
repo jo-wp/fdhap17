@@ -294,7 +294,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
             <h3 class="font-arial text-[23px] text-black">Capacité</h3>
             <div class="bloc-camping-informations__item__content">
             <p>
-            <strong>Superficie :</strong> <?php if($superficie): echo $superficie; ?> m2  <br/><?php endif; ?>
+            <?php if($superficie): ?> <strong><?= __('Superficie :') ?></strong><?php endif; ?> <?php if($superficie): echo $superficie; ?> m2  <br/><?php endif; ?>
             <?php if($nb_mobilhomes): echo __('Mobil-homes : ','fdhpa17').$nb_mobilhomes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?>
             <?php if($nb_bungalows): echo __('Bungalows : ','fdhpa17').$nb_bungalows; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
             <?php if($empl_campingcars): echo __('Campingcars : ').$empl_campingcars; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
