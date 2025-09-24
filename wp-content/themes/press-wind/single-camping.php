@@ -309,7 +309,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           class="relative m-0 md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
           Ouvert Aujourd'hui</p>
       </div>
-      <div class="bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px]">
+      <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
         <p class=" font-ivymode text-[36px] font-[700] m-0">-20 %</p>
         <p class="font-arial text-[16px] font-[700]">-20% : Offre spéciale Août Durée minimale de séjour : 3 La
           réduction s'applique sur : Forfait uniquement</p>
@@ -317,7 +317,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           2025</div>
       </div>
       <div
-        class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px]">
+        class="hidden bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px]  flex-row items-start justify-center gap-[25px]">
         <div class="flex flex-col">
           <div class=" border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
             n°3AE7FE21</div>
