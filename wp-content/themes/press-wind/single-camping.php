@@ -6,6 +6,7 @@ $allowed_slugs = ['1-etoile', '2-etoiles', '3-etoiles', '4-etoiles'];
 $terms = get_the_terms(get_the_ID(), 'etoile');
 $star_term = null;
 
+
 if ($terms && !is_wp_error($terms)) {
   foreach ($terms as $term) {
     if (in_array($term->slug, $allowed_slugs, true)) {
@@ -14,7 +15,7 @@ if ($terms && !is_wp_error($terms)) {
     }
   }
 }
-
+$stars = 0;
 if ($star_term) {
   // Affiche le nombre d’étoiles (par ex. "★★★")
   $stars = intval($star_term->name); // si "3 étoiles" → intval = 3
@@ -32,18 +33,23 @@ $url_reservation_direct = get_post_meta($post->ID, 'url_reservation_direct', tru
 
 
 $photos = [];
-if (!empty($image_featured_url) && !empty($galerie_photo_camping)) {
-  $photos[] = [
-    'url' => $image_featured_url,
-    'caption' => $image_featured_caption,
-    'type' => 'featured'
-  ];
+if (!empty($galerie_photo_camping)) {
+  // $photos[] = [
+  //   'url' => $image_featured_url,
+  //   'caption' => $image_featured_caption,
+  //   'type' => 'featured'
+  // ];
+  $i = 0;
   foreach ($galerie_photo_camping as $photo) {
     $photos[] = [
       'url' => $photo['url'],
       'caption' => $photo['title'],
       'type' => 'photo'
     ];
+    $i++;
+    if ($i >= 5) {
+      break;
+    }
   }
 }
 
@@ -78,10 +84,19 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
       <?php endfor; ?>
     </div>
   </div>
-  <div class="commune flex flex-row items-center max-md:justify-center md:justify-start gap-[12px]">
-    <img src="<?= get_template_directory_uri() ?>/assets/media/marker.svg"
-      alt="Marker de la commune du camping <?= get_the_title(); ?>" />
-    <p class="font-arial text-[20px] text-green"><?= $commune ?></p>
+  <div class="commune flex flex-col md:flex-row items-center max-md:justify-center md:justify-between">
+    <div class="flex flex-row items-center max-md:justify-center md:justify-start gap-[12px]">
+      <img src="<?= get_template_directory_uri() ?>/assets/media/marker.svg"
+        alt="Marker de la commune du camping <?= get_the_title(); ?>" />
+      <p class="font-arial text-[20px] text-green"><?= $commune ?></p>
+    </div>
+    <div class="font-arial text-[14px] [&_a]:text-[14px] [&_span]:text-orange [&_span_span]:text-black">
+      <?php
+      if (function_exists('yoast_breadcrumb')) {
+        yoast_breadcrumb('<p id="breadcrumbs ">', '</p>');
+      }
+      ?>
+    </div>
   </div>
   <div class="galerie-photo grid grid-cols-[2fr_1fr_1fr] grid-rows-2 gap-[15px] mb-[50px]">
     <?php $i = 0;
@@ -243,8 +258,8 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
                   ?>
                   Du <?= $formatter->format($dstart); ?> au <?= $formatter->format($dend); ?>
                 <?php endif; ?><br>
-                <?php if($periodes_type=='OUVERTURE_TOUS_LES_JOURS'): ?>
-                Ouvert Tous les jours<br>
+                <?php if ($periodes_type == 'OUVERTURE_TOUS_LES_JOURS'): ?>
+                  Ouvert Tous les jours<br>
                 <?php endif; ?>
               </p>
             </div>
@@ -328,18 +343,18 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
       </div>
       <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
-          <?php if($price_mini_mobilhomes): ?>
-          <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]">À partir
-            de : <span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
-                class="font-arial text-[37px] font-[700] text-green">€</span></p>
-          <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">Location Mobil-Home / semaine</p>
+          <?php if ($price_mini_mobilhomes): ?>
+            <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]">À partir
+              de : <span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
+                  class="font-arial text-[37px] font-[700] text-green">€</span></p>
+            <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">Location Mobil-Home / semaine</p>
           <?php endif; ?>
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-            <?php if($url_reservation_direct): ?>
-            <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
+            <?php if ($url_reservation_direct): ?>
+              <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
             <?php endif; ?>
-            <?php if($url_reservation_direct): ?>
-            <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
+            <?php if ($url_reservation_direct): ?>
+              <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
             <?php endif; ?>
           </div>
         </div>
