@@ -111,7 +111,18 @@ class APIDAE_Service
   protected static function extract_term_labels($vals): array
   {
     if ($vals === null) return [];
-    if (!is_array($vals)) $vals = [$vals];
+
+    // Normalise en liste :
+    if (!is_array($vals)) {
+      $vals = [$vals];
+    } else {
+      // Si $vals est un tableau associatif (pas une liste), on le traite comme un seul item
+      // Compat < PHP 8.1 (array_is_list)
+      $isAssoc = $vals !== [] && array_keys($vals) !== range(0, count($vals) - 1);
+      if ($isAssoc) {
+        $vals = [$vals];
+      }
+    }
 
     $out = [];
     foreach ($vals as $v) {
@@ -121,12 +132,17 @@ class APIDAE_Service
       } else {
         $name = (string) $v;
       }
-      $name = trim(wp_strip_all_tags((string)$name));
-      if ($name !== '') $out[] = $name;
+
+      $name = trim(wp_strip_all_tags((string) $name));
+      if ($name !== '') {
+        $out[] = $name;
+      }
     }
+
     // unique + reindex
     return array_values(array_unique($out));
   }
+
 
 
   /**
@@ -177,6 +193,23 @@ class APIDAE_Service
     }
   }
 
+  //**Function extract id from secureholiday */
+
+  private static function extractSecureHolidayId($url)
+  {
+    // Vérifie le domaine
+    if (strpos($url, "secureholiday.net") === false) {
+      return null;
+    }
+
+    // Regex pour trouver les nombres précédés d'un /
+    if (preg_match_all('/\/(\d+)(?=\/|\?|$)/', $url, $matches)) {
+      // Retourne le dernier ID trouvé
+      return end($matches[1]);
+    }
+
+    return null;
+  }
 
   /**
    * Import ou MAJ d’un camping (idempotent par apidae_id).
@@ -201,7 +234,7 @@ class APIDAE_Service
     ]);
 
     $title       = $item['nom']['libelleFr'] ?? 'Camping sans nom';
-    $description = $item['presentation']['descriptifCourt']['libelleFr'] ?? '';
+    $description = (!empty($item['presentation']['descriptifDetaille']['libelleFr']))? $item['presentation']['descriptifDetaille']['libelleFr'] : $item['presentation']['descriptifCourt']['libelleFr'];
 
     if ($existing) {
       if ($mode === 'create-only') {
@@ -275,13 +308,13 @@ class APIDAE_Service
       update_post_meta($post_id, 'numero_classement', $info['numeroClassement'] ?? '');
       update_post_meta($post_id, 'date_classement',   $info['dateClassement'] ?? '');
       update_post_meta($post_id, 'classement',        $info['classement']['libelleFr'] ?? '');
-      update_post_meta($post_id, 'nb_real', $info['capacite']['nombreEmplacementsDeclares']?? '' );
-      update_post_meta($post_id, 'nb_mobilhomes', $info['capacite']['nombreLocationMobilhomes']?? '' );
-      update_post_meta($post_id, 'nb_bungalows', $info['capacite']['nombreLocationBungalows']?? '' );
-      update_post_meta($post_id, 'nb_insolites', $info['capacite']['nombreHebergementsInsolites']?? '' );
-      update_post_meta($post_id, 'empl_campingcars', $info['capacite']['nombreEmplacementsCampingCars']?? '' );
-      update_post_meta($post_id, 'empl_caravanes', $info['capacite']['nombreEmplacementsCaravanes']?? '' );
-      update_post_meta($post_id, 'superficie', $info['capacite']['superficie']?? '' );
+      update_post_meta($post_id, 'nb_real', $info['capacite']['nombreEmplacementsDeclares'] ?? '');
+      update_post_meta($post_id, 'nb_mobilhomes', $info['capacite']['nombreLocationMobilhomes'] ?? '');
+      update_post_meta($post_id, 'nb_bungalows', $info['capacite']['nombreLocationBungalows'] ?? '');
+      update_post_meta($post_id, 'nb_insolites', $info['capacite']['nombreHebergementsInsolites'] ?? '');
+      update_post_meta($post_id, 'empl_campingcars', $info['capacite']['nombreEmplacementsCampingCars'] ?? '');
+      update_post_meta($post_id, 'empl_caravanes', $info['capacite']['nombreEmplacementsCaravanes'] ?? '');
+      update_post_meta($post_id, 'superficie', $info['capacite']['superficie'] ?? '');
 
       if (!empty($info['chaines'])) {
         $chaines = wp_list_pluck($info['chaines'], 'libelleFr');
@@ -296,15 +329,16 @@ class APIDAE_Service
 
     // Tarifs
     if (!empty($item['descriptionTarif'])) {
-      
     }
 
     // Reservation
     if (!empty($item['reservation'])) {
       $reservation = $item['reservation'];
-
-      var_dump($reservation);
-      update_post_meta($post_id, 'id_reservation_direct', $reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']?? '');
+      if ($reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']) {
+        $id_reservation_direct = self::extractSecureHolidayId($reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']);
+        update_post_meta($post_id, 'id_reservation_direct', $id_reservation_direct  ?? '');
+        update_post_meta($post_id, 'url_reservation_direct', $reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr'] ?? '');
+      }
     }
 
     // 🖼️ Images (featured + galerie simple)
@@ -335,6 +369,51 @@ class APIDAE_Service
       'presentation_complement',
       $item['localisation']['geolocalisation']['complement']['libelleFr'] ?? ''
     );
+
+    // Langages : ['prestations']['languesParlees']
+    if (!empty($item['prestations']['languesParlees'])) {
+      $langues = wp_list_pluck($item['prestations']['languesParlees'], 'libelleFr');
+      update_post_meta($post_id, 'langues', implode(', ', $langues));
+    }
+
+    // Ouvertures : ouverture.periodesOuvertures
+    if (!empty($item['ouverture']['periodesOuvertures'])) {
+      $periodes = $item['ouverture']['periodesOuvertures'];
+      foreach ($periodes as $periode) {
+        $periodes_dateDebut = $periode['dateDebut'] ?? '';
+        $periodes_dateFin = $periode['dateFin'] ?? '';
+        $periodes_type = $periode['type'] ?? '';
+      }
+      update_post_meta($post_id, 'periodes_date_debut', $periodes_dateDebut);
+      update_post_meta($post_id, 'periodes_date_fin', $periodes_dateFin);
+      update_post_meta($post_id, 'periodes_type', $periodes_type);
+    }
+
+    //Periodes price : descriptionTarif.periodes 
+    if (!empty($item['descriptionTarif']['periodes'])) {
+      $periodes = $item['descriptionTarif']['periodes'][0]['tarifs'];
+      if ($periodes) {
+        $min = null;
+        $max = null;
+
+        foreach ($periodes as $item) {
+          if (
+            isset($item['type']['elementReferenceType'], $item['type']['id']) &&
+            $item['type']['elementReferenceType'] === 'TarifType' &&
+            $item['type']['id'] === 1455
+          ) {
+            $min = $item['minimum'];
+            $max = $item['maximum'];
+            break; // on arrête dès qu’on a trouvé
+          }
+        }
+
+        update_post_meta($post_id, 'price_mini', $min);
+        update_post_meta($post_id, 'price_max', $max);
+        update_post_meta($post_id, 'price_mini_mobilhomes', $min);
+        update_post_meta($post_id, 'price_max_mobilhomes', $max);
+      }
+    }
 
     // Update Taxonomy 
     /**
@@ -661,7 +740,7 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --id manquant.');
       }
 
-      $fields = 'id,nom,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
+      $fields = 'id,nom,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
         'responseFields' => $fields,
         'locales'        => 'fr',
@@ -713,7 +792,9 @@ if (defined('WP_CLI') && WP_CLI) {
         'prestations.languesParlees',
         'informationsHotelleriePleinAir.capacite.nombreEmplacementsDeclares',
         'prestations.conforts',
-        'reservation.organismes'
+        'reservation.organismes',
+        'ouverture.periodesOuvertures',
+        'descriptionTarif.periodes'
       ]);
 
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . (int)$item['id'], [
@@ -750,62 +831,87 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --selection-ids manquant ou vide.');
       }
 
-      $count  = (int)($assoc_args['count'] ?? 999);
-      $limit  = isset($assoc_args['limit']) ? (int)$assoc_args['limit'] : null;
-      $offset = (int)($assoc_args['offset'] ?? 0);
-      $mode   = $assoc_args['mode'] ?? 'upsert';
-      $sleep  = (int)($assoc_args['sleep'] ?? 0);
-      $dry    = isset($assoc_args['dry-run']);
+      // count demandé par l’utilisateur (plafonné à 200 par l’API)
+      $requestedCount = (int)($assoc_args['count'] ?? 200);
+      $pageCount      = max(0, min($requestedCount, 200)); // <= 200 sinon l’API le plafonne
+      if ($pageCount === 0) $pageCount = 200; // doc: défaut 20, mais on choisit 200 pour efficacité
 
-      $res = APIDAE_Service::connect_to_apidae(
-        '/recherche/list-objets-touristiques',
-        ['selectionIds' => $selection_ids, 'count' => $count],
-        'GET',
-        true
-      );
-      if (! $res['success']) {
-        WP_CLI::error('APIDAE error: ' . $res['message']);
+      // bornes
+      $cliOffset = (int)($assoc_args['offset'] ?? 0); // décalage global demandé
+      $cliLimit  = isset($assoc_args['limit']) ? (int)$assoc_args['limit'] : null; // max d’items à traiter
+      $mode      = $assoc_args['mode'] ?? 'upsert';
+      $sleep     = (int)($assoc_args['sleep'] ?? 0);
+      $dry       = isset($assoc_args['dry-run']);
+
+      // 1er appel pour connaître numFound
+      $params = ['selectionIds' => $selection_ids, 'count' => $pageCount, 'first' => $cliOffset];
+      $res = APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
+      if (!$res['success']) WP_CLI::error('APIDAE error: ' . $res['message']);
+
+      $numFound = (int)($res['data']['numFound'] ?? 0);
+      if ($numFound === 0) {
+        WP_CLI::log('Aucun résultat.');
+        return;
       }
 
-      $items = $res['data']['objetsTouristiques'] ?? [];
-      $total = count($items);
-      if ($offset) {
-        $items = array_slice($items, $offset);
-      }
-      if ($limit !== null) {
-        $items = array_slice($items, 0, $limit);
+      // combien on va traiter au total (respecte limit si fournie)
+      $remainingToProcess = $cliLimit !== null ? min($cliLimit, $numFound - $cliOffset) : ($numFound - $cliOffset);
+      if ($remainingToProcess <= 0) {
+        WP_CLI::log("Rien à traiter (offset dépasse numFound).");
+        return;
       }
 
-      WP_CLI::log("Trouvé: {$total} items — traite " . count($items) . " (offset=$offset, limit=" . ($limit ?? '∞') . ")");
+      WP_CLI::log("numFound={$numFound} — offset={$cliOffset} — limit=" . ($cliLimit ?? '∞') . " — pageCount={$pageCount}");
 
-      $done = 0;
-      $created = 0;
-      $updated = 0;
-      $skipped = 0;
-      $errors = 0;
+      $done = $created = $updated = $skipped = $errors = 0;
 
-      foreach ($items as $item) {
-        if (!$item) continue;
-        $item = self::ensure_full_item($item);   // ✅ complète si besoin
-        $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
+      // On réutilise la 1ère page si elle existe déjà
+      $first = $cliOffset;
+      $processPage = function ($data) use (&$done, &$created, &$updated, &$skipped, &$errors, $mode, $dry, $sleep, &$remainingToProcess) {
+        $items = $data['objetsTouristiques'] ?? [];
+        foreach ($items as $item) {
+          if ($remainingToProcess <= 0) break;
+          if (!$item) continue;
 
-        $done++;
-        if (! $r['ok']) {
-          $errors++;
-          WP_CLI::warning("ID {$item['id']}: " . ($r['error'] ?? $r['reason'] ?? 'failed'));
-        } else {
-          if (isset($r['skipped'])) {
-            $skipped++;
-          } elseif (($r['action'] ?? '') === 'created') {
-            $created++;
+          $item = self::ensure_full_item($item);
+          $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
+
+          $done++;
+          $remainingToProcess--;
+
+          if (!$r['ok']) {
+            $errors++;
+            WP_CLI::warning("ID {$item['id']}: " . ($r['error'] ?? $r['reason'] ?? 'failed'));
           } else {
-            $updated++;
+            if (isset($r['skipped'])) {
+              $skipped++;
+            } elseif (($r['action'] ?? '') === 'created') {
+              $created++;
+            } else {
+              $updated++;
+            }
+            WP_CLI::log(sprintf("[%d] %s — %s", $done, $item['id'], $r['action'] ?? ($r['skipped'] ?? 'ok')));
           }
-          WP_CLI::log(sprintf("[%d/%d] %s — %s", $done, count($items), $item['id'], $r['action'] ?? ($r['skipped'] ?? 'ok')));
+
+          if ($sleep) sleep($sleep);
         }
-        if ($sleep) {
-          sleep($sleep);
+      };
+
+      // Traite la première réponse
+      $processPage($res['data']);
+      $first += $pageCount;
+
+      // Boucle de pagination tant qu’il reste à traiter
+      while ($remainingToProcess > 0 && $first < $numFound) {
+        $batchCount = min($pageCount, $remainingToProcess); // on peut réduire la dernière page
+        $params = ['selectionIds' => $selection_ids, 'count' => $batchCount, 'first' => $first];
+        $res = APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
+        if (!$res['success']) {
+          WP_CLI::warning('APIDAE error en pagination: ' . $res['message']);
+          break;
         }
+        $processPage($res['data']);
+        $first += $batchCount;
       }
 
       WP_CLI::success("Terminé. created=$created updated=$updated skipped=$skipped errors=$errors");
@@ -939,6 +1045,7 @@ if (defined('WP_CLI') && WP_CLI) {
         // présentation
         'presentation.descriptifCourt.libelleFr',
         'presentation.descriptifDetaille.libelleFr',
+
       ]);
 
 
@@ -1080,7 +1187,6 @@ if (defined('WP_CLI') && WP_CLI) {
       $set_featured = isset($assoc_args['set-featured']); // ➕ NEW
 
 
-      // Récupère tous les posts (par lots si besoin)
       $query = [
         'post_type'      => 'camping',
         'posts_per_page' => -1,

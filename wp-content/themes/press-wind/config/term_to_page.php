@@ -181,6 +181,12 @@ foreach (TP_TAXONOMIES as $tax) {
 
   // Sauvegarde (création)
   add_action('created_' . $tax, function ($term_id) use ($tax) {
+
+    // Ne rien faire si on est en CLI
+     if (defined('WP_CLI') && WP_CLI) {
+        return;
+    }
+    
     if (isset($_POST['linked_term_page_id'])) {
       tp_set_linked_post_id($term_id, (int) $_POST['linked_term_page_id']);
       return;

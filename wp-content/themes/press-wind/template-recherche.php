@@ -5,13 +5,13 @@ Template Name: Recherche
 get_header();
 ?>
 <div class="container-huge block-search flex flex-row gap-[45px] justify-center">
-  <div class="min-w-[15%]">
+  <div class="w-[15%]">
     <div class="sticky top-4">
       <?php
       $facets = FWP()->helper->get_facets();
       if (!empty($facets)) {
         foreach ($facets as $facet) {
-          if ('pager' === $facet['type']) {
+          if ('pager' === $facet['type'] || 'date_range' === $facet['type'] || 'destination' == $facet['name']) {
             continue;
           }
           echo '<div class="facet-block">';
