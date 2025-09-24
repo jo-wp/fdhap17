@@ -55,6 +55,7 @@ class CPT_CAMPING
     ];
 
     foreach ($taxonomies as $taxonomy) {
+
       register_taxonomy($taxonomy, 'camping', [
         'labels' => [
           'name' => __(ucfirst($taxonomy) . 's', 'fdhpa17'),
@@ -62,7 +63,11 @@ class CPT_CAMPING
         ],
         'public' => true,
         'hierarchical' => true,
-        'rewrite' => ['slug' => $taxonomy],
+        'rewrite'      => [
+          'slug'         => $taxonomy,
+          'hierarchical' => true, // <<< clé magique pour l’URL
+          'with_front'   => false,
+        ],
         'show_in_rest' => true,
       ]);
     }
