@@ -30,6 +30,13 @@ $galerie_photo_camping = get_field('galerie_photo_camping', get_the_ID());
 $id_reservation_direct = get_post_meta($post->ID, 'id_reservation_direct', true);
 $url_reservation_direct = get_post_meta($post->ID, 'url_reservation_direct', true);
 
+$nb_real = get_post_meta($post->ID, 'nb_real', true);
+$nb_mobilhomes = get_post_meta($post->ID, 'nb_mobilhomes', true);
+$nb_bungalows = get_post_meta($post->ID, 'nb_bungalows', true);
+$empl_campingcars = get_post_meta($post->ID, 'empl_campingcars', true);
+$empl_caravanes = get_post_meta($post->ID, 'empl_caravanes', true);
+$empl_tentes = get_post_meta($post->ID, 'empl_tentes', true);
+$superficie = get_post_meta($post->ID, 'superficie', true);
 
 
 $photos = [];
@@ -281,7 +288,14 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black">Capacité</h3>
             <div class="bloc-camping-informations__item__content">
-              <p><strong>Emplacements : </strong><br /> 147 Emplacement(s) • Superficie : 30000 m2</p>
+            <p><strong>Emplacements : </strong><br />
+            Superficie : <?php if($superficie): echo $superficie; ?> m2  <br/><?php endif; ?>
+            <?php if($nb_mobilhomes): echo $nb_mobilhomes; ?> emplacements mobil-homes <br/><?php endif; ?>
+            <?php if($nb_bungalows): echo $nb_bungalows; ?> emplacements bungalows<br/><?php endif; ?> 
+            <?php if($empl_campingcars): echo $empl_campingcars; ?> emplacements camping cars<br/><?php endif; ?> 
+            <?php if($empl_caravanes): echo $empl_caravanes; ?> emplacements caravanes<br/><?php endif; ?> 
+            <?php if($empl_tentes): echo $empl_tentes; ?> emplacements tentes<br/><?php endif; ?> 
+            </p>
             </div>
           </div>
           <div class="bloc-camping-informations__item">
