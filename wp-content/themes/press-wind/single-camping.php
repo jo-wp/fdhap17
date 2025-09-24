@@ -341,24 +341,24 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           </div>
         </div>
       </div>
-      <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
-        <div>
-          <?php if ($price_mini_mobilhomes): ?>
+      <?php if ($price_mini_mobilhomes || $url_reservation_direct ): ?>
+        <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
+          <div>
             <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]">À partir
               de : <span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
                   class="font-arial text-[37px] font-[700] text-green">€</span></p>
             <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">Location Mobil-Home / semaine</p>
-          <?php endif; ?>
-          <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-            <?php if ($url_reservation_direct): ?>
-              <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
-            <?php endif; ?>
-            <?php if ($url_reservation_direct): ?>
-              <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
-            <?php endif; ?>
+            <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
+              <?php if ($url_reservation_direct): ?>
+                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
+              <?php endif; ?>
+              <?php if ($url_reservation_direct): ?>
+                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
+              <?php endif; ?>
+            </div>
           </div>
         </div>
-      </div>
+      <?php endif; ?>
       <div class="bloc-sidebar-contact px-[40px] py-[12px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
           <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]">Contactez
