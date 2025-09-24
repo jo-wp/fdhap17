@@ -45,7 +45,7 @@ if (!$disabled_auto_carousel) {
       $items_selected = array_map(function ($post) {
         $linked_page_id = function_exists('tp_get_linked_post_id') ? tp_get_linked_post_id($post->ID) : 0;
 
-        $items_selected[] = [
+        return [
           'url_linked_page' => get_permalink($post),
           'post_data'       => $linked_page_id ? get_post($linked_page_id) : $post
         ];
