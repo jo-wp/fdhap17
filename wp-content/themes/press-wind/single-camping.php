@@ -38,6 +38,9 @@ $empl_caravanes = get_post_meta($post->ID, 'empl_caravanes', true);
 $empl_tentes = get_post_meta($post->ID, 'empl_tentes', true);
 $superficie = get_post_meta($post->ID, 'superficie', true);
 
+$capacite_nombreLocationMobilhomes = get_post_meta($post->ID, 'capacite_nombreLocationMobilhomes', true);
+
+
 
 $photos = [];
 if (!empty($galerie_photo_camping)) {
@@ -187,9 +190,11 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
             <h3 class="font-arial text-[23px] text-black">Disposition</h3>
             <ul
               class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+              <?php if($capacite_nombreLocationMobilhomes) : ?>
               <li
                 class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                APIDAE waiting</li>
+                <?= $capacite_nombreLocationMobilhomes ?> Mobil homes</li>
+                <?php endif; ?>
             </ul>
           </div>
           <?php
