@@ -290,11 +290,11 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
             <div class="bloc-camping-informations__item__content">
             <p>
             <strong>Superficie :</strong> <?php if($superficie): echo $superficie; ?> m2  <br/><?php endif; ?>
-            <?php if($nb_mobilhomes): echo __('Mobil-homes : ','fdhpa17').$nb_mobilhomes; ?> <?= __('emplacements','fdhpa17') ?></strong> <br/><?php endif; ?>
-            <?php if($nb_bungalows): echo __('Bungalows : ','fdhpa17').$nb_bungalows; ?> <strong><?= __('emplacements','fdhpa17') ?></strong><br/><?php endif; ?> 
-            <?php if($empl_campingcars): echo __('Campingcars : ').$empl_campingcars; ?> <strong><?= __('emplacements','fdhpa17') ?></strong><br/><?php endif; ?> 
-            <?php if($empl_caravanes): echo __('Caravanes : ').$empl_caravanes; ?> <strong><?= __('emplacements','fdhpa17') ?></strong><br/><?php endif; ?> 
-            <?php if($empl_tentes): echo __('Tentes : ').$empl_tentes; ?> <strong><?= __('emplacements','fdhpa17') ?></strong><br/><?php endif; ?> 
+            <?php if($nb_mobilhomes): echo __('Mobil-homes : ','fdhpa17').$nb_mobilhomes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?>
+            <?php if($nb_bungalows): echo __('Bungalows : ','fdhpa17').$nb_bungalows; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
+            <?php if($empl_campingcars): echo __('Campingcars : ').$empl_campingcars; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
+            <?php if($empl_caravanes): echo __('Caravanes : ').$empl_caravanes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
+            <?php if($empl_tentes): echo __('Tentes : ').$empl_tentes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
             </p>
             </div>
           </div>
