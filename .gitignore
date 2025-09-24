@@ -1,3 +1,6 @@
 node_modules/
 wp-config.php
 .idea
+old_blocks
+plugins
+wp-content/uploads/
