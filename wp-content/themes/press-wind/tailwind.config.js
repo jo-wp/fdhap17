@@ -61,6 +61,7 @@ module.exports = {
         'checkbox' : "url('/assets/media/checkbox-filter.png')",
         'checkbox-checked' : "url('/assets/media/checkbox-filter-checked.png')",
         'zoom' : "url('/assets/media/loupe.svg')",
+        'bg-carousel-block-camping':"url('/assets/media/button-carousel-block.svg')"
       }),
     },
   },
