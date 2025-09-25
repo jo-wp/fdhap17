@@ -3,6 +3,7 @@ import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
+import blockSearch from './facetwp/block.js'
 import Splide from '@splidejs/splide'
 window.Splide = Splide
 
@@ -264,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
   rebuildMarkers()
   initFacetwpLeaflet()
   animationBlock()
+  blockSearch()
 
   //Import
   const map = document.querySelector('#map')
