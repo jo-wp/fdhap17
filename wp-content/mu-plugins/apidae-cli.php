@@ -217,6 +217,7 @@ class APIDAE_Service
    */
   public static function import_apidae_camping(array $item, $mode = 'upsert', $dry_run = false)
   {
+
     $apidae_id = $item['id'] ?? null;
     if (! $apidae_id) {
       return ['ok' => false, 'reason' => 'no_apidae_id'];
@@ -232,6 +233,8 @@ class APIDAE_Service
       'suppress_filters' => true,
       'no_found_rows'  => true,
     ]);
+
+    
 
     $title       = $item['nom']['libelleFr'] ?? 'Camping sans nom';
     $description = (!empty($item['presentation']['descriptifDetaille']['libelleFr']))? $item['presentation']['descriptifDetaille']['libelleFr'] : $item['presentation']['descriptifCourt']['libelleFr'];
@@ -289,6 +292,7 @@ class APIDAE_Service
     update_post_meta($post_id, 'latitude', $lat);
     update_post_meta($post_id, 'longitude', $lng);
 
+
     // 📞 Contacts
     if (!empty($item['informations']['moyensCommunication'])) {
       foreach ($item['informations']['moyensCommunication'] as $moyen) {
@@ -300,6 +304,7 @@ class APIDAE_Service
       }
     }
 
+    
 
     // 🏕️ HPA
     if (!empty($item['informationsHotelleriePleinAir'])) {
@@ -326,6 +331,8 @@ class APIDAE_Service
         }
       }
     }
+    
+    
 
     // Tarifs
     if (!empty($item['descriptionTarif'])) {
@@ -340,27 +347,28 @@ class APIDAE_Service
         update_post_meta($post_id, 'url_reservation_direct', $reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr'] ?? '');
       }
     }
+    
 
     // 🖼️ Images (featured + galerie simple)
-    // $gallery_ids = [];
-    // if (!empty($item['illustrations'])) {
-    //   foreach ($item['illustrations'] as $index => $illustration) {
-    //     $image_url = $illustration['traductionFichiers'][0]['url'] ?? '';
-    //     if ($image_url) {
-    //       $image_id = media_sideload_image($image_url, $post_id, null, 'id');
-    //       if (!is_wp_error($image_id)) {
-    //         if ($index === 0) {
-    //           set_post_thumbnail($post_id, $image_id);
-    //         } else {
-    //           $gallery_ids[] = $image_id;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // if (!empty($gallery_ids)) {
-    //   update_post_meta($post_id, 'gallery', $gallery_ids);
-    // }
+    $gallery_ids = [];
+    if (!empty($item['illustrations'])) {
+      foreach ($item['illustrations'] as $index => $illustration) {
+        $image_url = $illustration['traductionFichiers'][0]['url'] ?? '';
+        if ($image_url) {
+          $image_id = media_sideload_image($image_url, $post_id, null, 'id');
+          if (!is_wp_error($image_id)) {
+            if ($index === 0) {
+              set_post_thumbnail($post_id, $image_id);
+            } else {
+              // $gallery_ids[] = $image_id;
+            }
+          }
+        }
+      }
+    }
+    if (!empty($gallery_ids)) {
+      // update_post_meta($post_id, 'gallery', $gallery_ids);
+    }
 
     // ✅ Type + compléments
     update_post_meta($post_id, 'type', $item['type'] ?? '');
@@ -370,12 +378,16 @@ class APIDAE_Service
       $item['localisation']['geolocalisation']['complement']['libelleFr'] ?? ''
     );
 
+    
+
     // Langages : ['prestations']['languesParlees']
     if (!empty($item['prestations']['languesParlees'])) {
       $langues = wp_list_pluck($item['prestations']['languesParlees'], 'libelleFr');
       update_post_meta($post_id, 'langues', implode(', ', $langues));
     }
 
+
+    
     // Ouvertures : ouverture.periodesOuvertures
     if (!empty($item['ouverture']['periodesOuvertures'])) {
       $periodes = $item['ouverture']['periodesOuvertures'];
@@ -392,18 +404,19 @@ class APIDAE_Service
     //Periodes price : descriptionTarif.periodes 
     if (!empty($item['descriptionTarif']['periodes'])) {
       $periodes = $item['descriptionTarif']['periodes'][0]['tarifs'];
+      
       if ($periodes) {
         $min = null;
         $max = null;
 
-        foreach ($periodes as $item) {
+        foreach ($periodes as $currentItem) {
           if (
-            isset($item['type']['elementReferenceType'], $item['type']['id']) &&
-            $item['type']['elementReferenceType'] === 'TarifType' &&
-            $item['type']['id'] === 1455
+            isset($currentItem['type']['elementReferenceType'], $currentItem['type']['id']) &&
+            $currentItem['type']['elementReferenceType'] === 'TarifType' &&
+            $currentItem['type']['id'] === 1455
           ) {
-            $min = $item['minimum'];
-            $max = $item['maximum'];
+            $min = $currentItem['minimum'];
+            $max = $currentItem['maximum'];
             break; // on arrête dès qu’on a trouvé
           }
         }
@@ -413,7 +426,10 @@ class APIDAE_Service
         update_post_meta($post_id, 'price_mini_mobilhomes', $min);
         update_post_meta($post_id, 'price_max_mobilhomes', $max);
       }
+      
     }
+
+    
 
     // Update Taxonomy 
     /**
@@ -427,6 +443,7 @@ class APIDAE_Service
      * cible,
      * groupe,
      */
+
 
     // ---------- Update Taxonomy ----------
     $tax_inputs = [
@@ -740,7 +757,7 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --id manquant.');
       }
 
-      $fields = 'id,nom,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
+      $fields = 'id,nom,localisation.adresse,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
         'responseFields' => $fields,
         'locales'        => 'fr',
@@ -753,6 +770,9 @@ if (defined('WP_CLI') && WP_CLI) {
       if (! $item) {
         WP_CLI::error('Objet introuvable.');
       }
+
+      
+      var_dump('Before : '.$item['localisation']['adresse']['commune']['nom']);
 
       $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
       if (! $r['ok']) {
@@ -772,11 +792,19 @@ if (defined('WP_CLI') && WP_CLI) {
         || empty($item['prestations']['services'])
         || empty($item['prestations']['equipements'])
         || empty($item['informationsHotelleriePleinAir']['classement'])
-        || empty($item['informationsHotelleriePleinAir']['hotelleriePleinAirType']);
+        || empty($item['informationsHotelleriePleinAir']['hotelleriePleinAirType'])
+        || empty($item['informationsHotelleriePleinAir']['labels'])
+        || empty($item['prestations']['languesParlees'])
+        || empty($item['informationsHotelleriePleinAir']['capacite']['nombreEmplacementsDeclares'])
+        || empty($item['prestations']['conforts'])
+        || empty($item['reservation']['organismes'])
+        || empty($item['ouverture']['periodesOuvertures'])
+        || empty($item['descriptionTarif']['periodes']);
 
       if (!$need) {
         return $item;
       }
+
 
       $fields = implode(',', [
         'id',
@@ -801,6 +829,9 @@ if (defined('WP_CLI') && WP_CLI) {
         'responseFields' => $fields,
         'locales'        => 'fr',
       ]);
+
+      // var_dump($res['data']);
+
       if ($res['success'] && !empty($res['data'])) {
         // on fusionne, les sous-clés manquantes sont complétées
         $item = array_replace_recursive($item, $res['data']);
