@@ -9,7 +9,7 @@ $destinations = get_terms([
 ]);
 ?>
 <div class=" md:bottom-[50px] md:left-0 md:right-0 md:mx-auto <?= $margin_css; ?>">
-  <form action="#" method="GET"
+  <form action="/tous-les-campings-de-charente-maritime" method="GET"
     class="<?= $bg_css; ?> flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
     <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>
