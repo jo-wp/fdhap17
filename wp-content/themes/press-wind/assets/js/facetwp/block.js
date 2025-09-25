@@ -12,7 +12,7 @@ export default function blockSearch() {
           gap: '1rem',
           pagination: false,
           arrows: true,
-
+          perMove:1,
           breakpoints: {
             1024: { perPage: 2 },
             640: { perPage: 1 },

@@ -41,7 +41,7 @@ $template = [
     <div class="mx-[30px] md:mx-[130px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
       <div class="filters flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[30px]">
         <?= do_shortcode('[facetwp facet="classement_block"]'); ?>
-        <div data-button="" class="button-map cursor-pointer flex flex-row flex-wrap justify-center hover:bg-green transition-all items-center gap-2 bg-orange rounded-[50px] px-[27px] py-[15px]">
+        <div data-button="map" class="button-map cursor-pointer flex flex-row flex-wrap justify-center hover:bg-green transition-all items-center gap-2 bg-orange rounded-[50px] px-[27px] py-[15px]">
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-map.svg" alt="Icon map">
           <span class="font-arial text-[14px] font-[700] text-white">Voir sur la carte</span>
         </div>
