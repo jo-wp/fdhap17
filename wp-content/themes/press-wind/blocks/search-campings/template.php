@@ -38,7 +38,7 @@ $template = [
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
   <div class="max-w-full">
-    <div class="mx-[130px] min-h-[230px]">
+    <div class="mx-[130px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
       <?= do_shortcode('[facetwp facet="classement_block"]'); ?>
       <?= do_shortcode('[facetwp template="block_search"]'); ?>
     </div>
