@@ -90,7 +90,9 @@ $template = [
              !text-white !text-[16px] !font-arial
              opacity-0 translate-y-4 transition-all duration-500 ease-out delay-100
              group-hover:opacity-100 group-hover:translate-y-0">
-                  <?= esc_html($item['description']); ?>
+                  <?php if ($item['description']): ?>
+                    <?= esc_html($item['description']); ?>
+                  <?php endif; ?>
                 </p>
               </a>
             </div>
