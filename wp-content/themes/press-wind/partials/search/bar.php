@@ -1,18 +1,24 @@
 <?php
+
+$position_css = (!is_front_page())? 'relative' : 'md:!absolute' ;
+$bg_css = (!is_front_page())? 'md:bg-[#F6F6F6]' : 'md:bg-white';
+$margin_css = (!is_front_page())? 'mb-[60px]' : '' ; 
 $destinations = get_terms([
   'taxonomy' => 'destination',   
   'hide_empty' => false,           
 ]);
 ?>
-<div class="md:!absolute md:bottom-[50px] md:left-0 md:right-0 md:mx-auto">
-  <form action="/tous-les-campings-de-charente-maritime" method="GET"
-    class="md:bg-white flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
+<div class=" md:bottom-[50px] md:left-0 md:right-0 md:mx-auto <?= $margin_css; ?>">
+  <form action="#" method="GET"
+    class="<?= $bg_css; ?> flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
     <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>
       <?php if (!is_wp_error($destinations) && !empty($destinations)): ?>
-        <select class="bg-[#F6F6F6] border-0 w-full" name="tax-destination" id="#">
+        <select class="bg-[#F6F6F6] border-0 w-full" name="_destination" id="#">
+          <option>Toutes</option>
           <?php foreach ($destinations as $destination): ?>
-            <option value="<?= esc_attr($destination->slug); ?>">
+            <option value="<?= esc_attr($destination->slug); ?>" <?php if(isset($_GET['_destination'])): 
+               ($_GET['_destination']==$destination->slug)? 'selected="selected"' : ''; endif; ?>>
               <?= esc_html($destination->name); ?>
             </option>
           <?php endforeach; ?>
@@ -36,6 +42,16 @@ $destinations = get_terms([
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Voyageurs', 'fdhpa17'); ?></p>
       <select class="bg-[#F6F6F6] border-0 w-full" name="tax-destination" id="#">
         <option class="bg-none text-[#333333]">Ajoutez des voyageurs</option>
+        <option class="bg-none text-[#333333]" value="1">1 voyageur</option>
+        <option class="bg-none text-[#333333]" value="2">2 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="3">3 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="4">4 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="5">5 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="6">6 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="7">7 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="8">8 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="9">9 voyageurs</option>
+        <option class="bg-none text-[#333333]" value="10">10 voyageurs</option>
       </select>
     </div>
     <div
@@ -46,7 +62,7 @@ $destinations = get_terms([
       </p>
     </div>
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
-      <input type="submit" name="online-reservation" id="" value="Rechercher" class="bg-orange border-0 w-[56px] h-[56px]
+      <input type="submit" name="online-reservation" id="" value="" class="bg-orange border-0 w-[56px] h-[56px]
       rounded-[50%] bg-zoom bg-[20px_20px] bg-no-repeat
       cursor-pointer hover:bg-green transition-all
       max-md:w-full max-md:rounded-[10px]
@@ -56,3 +72,4 @@ $destinations = get_terms([
     </div>
   </form>
 </div>
+

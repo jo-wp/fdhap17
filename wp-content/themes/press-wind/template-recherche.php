@@ -4,14 +4,19 @@ Template Name: Recherche
 */
 get_header();
 ?>
+<?= get_template_part('partials/search/bar'); ?>
 <div class="container-huge block-search flex flex-row gap-[45px] justify-center">
   <div class="w-[15%]">
     <div class="sticky top-4">
+      <p>
+        <?=  facetwp_display( 'counts' ); ?>
+      </p>
+      <p class="font-arial text-[16px] text-black font-[700]">Affinez la recherche</p>
       <?php
       $facets = FWP()->helper->get_facets();
       if (!empty($facets)) {
         foreach ($facets as $facet) {
-          if ('pager' === $facet['type'] || 'date_range' === $facet['type'] || 'destination' == $facet['name']) {
+          if ('pager' === $facet['type'] || 'date_range' === $facet['type'] ) {
             continue;
           }
           echo '<div class="facet-block">';

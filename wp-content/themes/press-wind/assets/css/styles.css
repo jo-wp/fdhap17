@@ -22,6 +22,7 @@
 @import './hero.css';
 @import './campings.css';
 @import './single.css';
+@import './facewp.css';
 
 /** FONT IMPORT CDN */
 @import 'https://use.typekit.net/kcm1lom.css';

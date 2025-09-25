@@ -11,14 +11,13 @@ if ($terms && !is_wp_error($terms)) {
   foreach ($terms as $term) {
     if (in_array($term->slug, $allowed_slugs, true)) {
       $star_term = $term;
-      break; // on prend le premier match
+      break;
     }
   }
 }
 $stars = 0;
 if ($star_term) {
-  // Affiche le nombre d’étoiles (par ex. "★★★")
-  $stars = intval($star_term->name); // si "3 étoiles" → intval = 3
+  $stars = intval($star_term->name);
 }
 
 $commune = get_post_meta($post->ID, 'commune', true);
@@ -44,11 +43,6 @@ $capacite_nombreLocationMobilhomes = get_post_meta($post->ID, 'capacite_nombreLo
 
 $photos = [];
 if (!empty($galerie_photo_camping)) {
-  // $photos[] = [
-  //   'url' => $image_featured_url,
-  //   'caption' => $image_featured_caption,
-  //   'type' => 'featured'
-  // ];
   $i = 0;
   foreach ($galerie_photo_camping as $photo) {
     $photos[] = [
@@ -79,7 +73,20 @@ $periodes_type =  get_post_meta($post->ID, 'periodes_type', true);
 
 $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true);
 
+$post_id = get_the_ID();
+$tax     = 'destination';
 
+$selected = get_the_terms($post_id, $tax);
+
+$destination = '';
+$destination_parent = '';
+foreach ($selected as $select):
+  $destination = $select->name;
+  if ($select->parent) {
+    $parent = get_term($select->parent);
+    $destination_parent = $parent->name;
+  }
+endforeach;
 
 ?>
 <div class="container-huge">
@@ -184,17 +191,17 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
         </div>
       <?php endif; ?>
       <div
-        class="bloc-camping-informations md:gap-[115px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
+        class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-row">
           <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Disposition</h3>
+            <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
             <ul
-              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
-              <?php if($capacite_nombreLocationMobilhomes) : ?>
-              <li
-                class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                <?= $capacite_nombreLocationMobilhomes ?> Mobil homes</li>
-                <?php endif; ?>
+              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
+              <?php if ($capacite_nombreLocationMobilhomes) : ?>
+                <li
+                  class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
+                  <?= $capacite_nombreLocationMobilhomes ?> Mobil homes</li>
+              <?php endif; ?>
             </ul>
           </div>
           <?php
@@ -203,9 +210,9 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           if ($confort_terms && !is_wp_error($confort_terms)):
           ?>
             <div class="bloc-camping-informations__item">
-              <h3 class="font-arial text-[23px] text-black">Confort</h3>
+              <h3 class="font-arial text-[23px] text-black"><?= __('Confort', 'fdhpa17'); ?></h3>
               <ul
-                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
                 <?php foreach ($confort_terms as $confort_term) : ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
@@ -221,9 +228,9 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           if ($confort_terms && !is_wp_error($confort_terms)):
           ?>
             <div class="bloc-camping-informations__item">
-              <h3 class="font-arial text-[23px] text-black">Équipements</h3>
+              <h3 class="font-arial text-[23px] text-black"><?= __('Equipements', 'fdhpa17'); ?></h3>
               <ul
-                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
                 <?php foreach ($confort_terms as $confort_term) : ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
@@ -239,9 +246,9 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           if ($confort_terms && !is_wp_error($confort_terms)):
           ?>
             <div class="bloc-camping-informations__item">
-              <h3 class="font-arial text-[23px] text-black">Services</h3>
+              <h3 class="font-arial text-[23px] text-black"><?= __('Services', 'fdhpa17'); ?></h3>
               <ul
-                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[155px] ">
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
                 <?php foreach ($confort_terms as $confort_term) : ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
@@ -253,7 +260,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
         </div>
         <div class="flex-1 flex flex-wrap flex-col">
           <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Périodes d'ouverture</h3>
+            <h3 class="font-arial text-[23px] text-black"><?= __('Périodes d\'ouverture', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
               <p>
                 <?php if ($periodes_dateDebut && $periodes_dateFin):  ?>
@@ -282,7 +289,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           if ($confort_terms && !is_wp_error($confort_terms)):
           ?>
             <div class="bloc-camping-informations__item">
-              <h3 class="font-arial text-[23px] text-black">Environnement</h3>
+              <h3 class="font-arial text-[23px] text-black"><?= __('Environnement', 'fdhpa17'); ?></h3>
               <div class="bloc-camping-informations__item__content">
                 <?php foreach ($confort_terms as $confort_term) : ?>
                   <p><?= $confort_term->name; ?></p>
@@ -291,20 +298,20 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
             </div>
           <?php endif; ?>
           <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Capacité</h3>
+            <h3 class="font-arial text-[23px] text-black"><?= __('Capacité', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
-            <p>
-            <?php if($superficie): ?> <strong><?= __('Superficie :') ?></strong><?php endif; ?> <?php if($superficie): echo $superficie; ?> m2  <br/><?php endif; ?>
-            <?php if($nb_mobilhomes): echo __('Mobil-homes : ','fdhpa17').$nb_mobilhomes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?>
-            <?php if($nb_bungalows): echo __('Bungalows : ','fdhpa17').$nb_bungalows; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
-            <?php if($empl_campingcars): echo __('Campingcars : ').$empl_campingcars; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
-            <?php if($empl_caravanes): echo __('Caravanes : ').$empl_caravanes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
-            <?php if($empl_tentes): echo __('Tentes : ').$empl_tentes; ?> <?= __('emplacements','fdhpa17') ?><br/><?php endif; ?> 
-            </p>
+              <p>
+                <?php if ($superficie): ?> <strong><?= __('Superficie :') ?></strong><?php endif; ?> <?php if ($superficie): echo $superficie; ?> m2 <br /><?php endif; ?>
+                <?php if ($nb_mobilhomes): echo __('Mobil-homes : ', 'fdhpa17') . $nb_mobilhomes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($nb_bungalows): echo __('Bungalows : ', 'fdhpa17') . $nb_bungalows; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_campingcars): echo __('Campingcars : ') . $empl_campingcars; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_caravanes): echo __('Caravanes : ') . $empl_caravanes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_tentes): echo __('Tentes : ') . $empl_tentes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+              </p>
             </div>
           </div>
           <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Langues parlées</h3>
+            <h3 class="font-arial text-[23px] text-black"><?= __('Langues parlées', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
               <ul class="list-none m-0 p-0 flex flex-row gap-[17px]">
                 <?php foreach ($tabLangues as $item): ?>
@@ -314,7 +321,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
             </div>
           </div>
           <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black">Moyens de paiement</h3>
+            <h3 class="font-arial text-[23px] text-black"><?= __('Moyens de paiement', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
 
             </div>
@@ -326,7 +333,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
       <div class="bloc-sidebar-open-close mb-[30px]">
         <p
           class="relative m-0 md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
-          Ouvert Aujourd'hui</p>
+          <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?></p>
       </div>
       <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
         <p class=" font-ivymode text-[36px] font-[700] m-0">-20 %</p>
@@ -360,21 +367,21 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           </div>
         </div>
       </div>
-      <?php if ($price_mini_mobilhomes || $url_reservation_direct ): ?>
+      <?php if ($price_mini_mobilhomes || $url_reservation_direct): ?>
         <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
           <div>
-            <?php if($price_mini_mobilhomes): ?>
-            <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]">À partir
-              de : <span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
-                  class="font-arial text-[37px] font-[700] text-green">€</span></p>
-            <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">Location Mobil-Home / semaine</p>
+            <?php if ($price_mini_mobilhomes): ?>
+              <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]"><?= __('À partir
+              de : ', 'fdhpa17'); ?><span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
+                    class="font-arial text-[37px] font-[700] text-green">€</span></p>
+              <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]"><?= __('Location Mobil-Home / semaine', 'fdhpa17') ?></p>
             <?php endif; ?>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <?php if ($url_reservation_direct): ?>
-                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green">Voir tous les tarifs</a>
+                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
               <?php endif; ?>
               <?php if ($url_reservation_direct): ?>
-                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange">Réserver</a>
+                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange"><?= __('Réserver', 'fdhpa17'); ?></a>
               <?php endif; ?>
             </div>
           </div>
@@ -382,7 +389,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
       <?php endif; ?>
       <div class="bloc-sidebar-contact px-[40px] py-[12px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
-          <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]">Contactez
+          <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]"><?= __('Contactez', 'fdhpa17'); ?>
           </p>
           <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
@@ -443,7 +450,7 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
           <div>
             <img src="<?= get_bloginfo('template_directory') ?>/assets/media/apidae.svg" alt="Icon" />
           </div>
-          <p class="text-center !font-body !text-[13px]">Mis à jour le
+          <p class="text-center !font-body !text-[13px]"><?= __('Mis à jour le ', 'fdhpa17'); ?>
             <?= get_the_modified_date('r', $post->ID); ?><br />
             par Fédération de l'Hôtellerie de Plein Air de Charente<br />
             Maritime<br />
@@ -456,42 +463,119 @@ $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true)
     <h2 class="text-center text-green text-[24px] md:text-[50px] font-[600] leading-[57px] mb-[80px]">
       <?= _e('Les campings à proximité', 'fdhpa17') ?></h2>
     <div
-      class="bloc-camping-associated__items flex justify-center flex-row flex-wrap gap-[40px] max-md:overflow-x-scroll">
+      class="bloc-camping-associated__items grid grid-cols-4 max-md:flex justify-center flex-row flex-wrap gap-[40px] max-md:overflow-x-scroll">
+      <?php
+      $current_id = get_the_ID();
 
-      <div class="bloc-camping-associated__items__item ">
-        <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
-          style="background-image:url('<?= $image_featured_url; ?>');">
-          <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
-            <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">À partir de
-              120€/nuits</span>
-            <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-                alt="icon ajouter aux favoris"></a>
-          </div>
-        </div>
-        <div class="informations mt-[20px]">
-          <h3 class=" font-arial text-[22px] font-[700] text-black m-0 mb-[5px]"><?= get_the_title($post->ID) ?></h3>
-          <div class="stars">
-            <?php for ($i = 0; $i < $stars; $i++): ?>
-              <img class="max-w-[13px]" src="<?= get_template_directory_uri() ?>/assets/media/star.svg"
-                alt="Etoile du camping <?= get_the_title(); ?>" />
-            <?php endfor; ?>
-          </div>
-          <div class="location flex flex-row justify-between mb-[30px] items-center">
-            <div class="flex flex-row gap-[8px]">
-              <img src="<?= esc_url(get_theme_file_uri('/assets/media/marker-v2.svg')) ?>" alt="icon localisation">
-              <p class="text-[#000] font-arial text-[14px]"><?= get_post_meta($post->ID, 'commune', true); ?> -
-                <?= get_post_meta($post->ID, 'code_postal', true); ?></p>
+      $terms = wp_get_post_terms($current_id, 'destination', array('fields' => 'ids'));
+
+      if (!empty($terms) && !is_wp_error($terms)) {
+        $args = array(
+          'post_type'      => 'camping',
+          'posts_per_page' => 4,
+          'post__not_in'   => array($current_id),
+          'tax_query'      => array(
+            array(
+              'taxonomy' => 'destination',
+              'field'    => 'term_id',
+              'terms'    => $terms,
+            ),
+          ),
+        );
+
+        $query = new WP_Query($args);
+
+        if ($query->have_posts()) {
+          while ($query->have_posts()) {
+            $query->the_post();
+
+            $lat = get_post_meta(get_the_ID(), 'latitude', true);   // ou get_field('latitude')
+            $lng = get_post_meta(get_the_ID(), 'longitude', true);  // ou get_field('longitude')
+            $url = get_permalink();
+            $title = get_the_title();
+            $prix_mini = get_post_meta(get_the_ID(), 'price_mini', true);
+
+            $tax     = 'destination';
+
+            $selected = get_the_terms(get_the_ID(), $tax);
+
+            $destination = '';
+            $destination_parent = '';
+            foreach ($selected as $select):
+              $destination = $select->name;
+              //parent : 
+              if ($select->parent) {
+                $parent = get_term($select->parent);
+                $destination_parent = $parent->name;
+              }
+            endforeach;
+
+            $allowed_slugs = ['1-etoile', '2-etoiles', '3-etoiles', '4-etoiles'];
+
+            $terms = get_the_terms(get_the_ID(), 'etoile');
+            $star_term = null;
+
+
+            if ($terms && !is_wp_error($terms)) {
+              foreach ($terms as $term) {
+                if (in_array($term->slug, $allowed_slugs, true)) {
+                  $star_term = $term;
+                  break; // on prend le premier match
+                }
+              }
+            }
+            $stars = 0;
+            if ($star_term) {
+              // Affiche le nombre d’étoiles (par ex. "★★★")
+              $stars = intval($star_term->name); // si "3 étoiles" → intval = 3
+            }
+
+            $image_featured_item = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
+      ?>
+            <div class="bloc-camping-associated__items__item ">
+              <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
+                style="background-image:url('<?= $image_featured_item; ?>');">
+                <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
+                    <?php if($prix_mini): ?>
+                  <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">
+                    <?= __('À partir de', 'fdhpa17'); ?> <?=$prix_mini?>€/<?= __('nuits','fdhpa17'); ?>
+                  </span> 
+                  <?php endif; ?>
+                  <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
+                      alt="icon ajouter aux favoris"></a>
+                </div>
+              </div>
+              <div class="informations mt-[20px]">
+                <h3 class=" font-arial text-[22px] font-[700] text-black m-0 mb-[5px]"><?= get_the_title($post->ID) ?></h3>
+                <div class="stars">
+                  <?php for ($i = 0; $i < $stars; $i++): ?>
+                    <img class="max-w-[13px]" src="<?= get_template_directory_uri() ?>/assets/media/star.svg"
+                      alt="Etoile du camping <?= get_the_title(); ?>" />
+                  <?php endfor; ?>
+                </div>
+                <div class="location flex flex-row justify-between mb-[30px] items-center">
+                  <div class="flex flex-row gap-[8px]">
+                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/marker-v2.svg')) ?>" alt="icon localisation">
+                    <p class="text-[#000] font-arial text-[14px]"><?= get_post_meta($post->ID, 'commune', true); ?> -
+                      <?= get_post_meta($post->ID, 'code_postal', true); ?></p>
+                  </div>
+                  <div>
+                    <p class="text-black font-arial text-[12px]"><?= $destination_parent; ?></p>
+                  </div>
+                </div>
+                <div class="">
+                  <a href="<?= get_permalink($post->ID); ?>"
+                    class="button button--grey"><?= _e('Voir le camping', 'fdhpa17'); ?></a>
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="text-black font-arial text-[12px]">La nouvelle aquitaine</p>
-            </div>
-          </div>
-          <div class="">
-            <a href="<?= get_permalink($post->ID); ?>"
-              class="button button--grey"><?= _e('Voir le camping', 'fdhpa17'); ?></a>
-          </div>
-        </div>
-      </div>
+      <?php
+          }
+        }
+
+        wp_reset_postdata();
+      }
+      ?>
     </div>
   </div>
   <?php $items_answer = get_field('items_answer');

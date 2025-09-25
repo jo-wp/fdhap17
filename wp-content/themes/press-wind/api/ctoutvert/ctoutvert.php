@@ -226,7 +226,11 @@ if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
 
   // $data = Ctoutvert::get_camping_ctoutvert(14166);
   // $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
-  // $data = Ctoutvert::ctoutvert_search_holidays();
+  // $dateFilters = [
+  //   'startDate' => '2026-01-05',
+  //   'endDate' => '2026-01-10'
+  // ];
+  // $data = Ctoutvert::ctoutvert_search_holidays( $dateFilters);
   // echo '<pre>';
   // print_r($data);
   // echo '</pre>';
