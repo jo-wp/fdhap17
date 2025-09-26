@@ -181,6 +181,9 @@
 .-bottom-\[30px\]{
   bottom: -30px;
 }
+.-left-\[110\%\]{
+  left: -110%;
+}
 .left-0{
   left: 0px;
 }
@@ -501,9 +504,6 @@
 .w-\[100\%\]{
   width: 100%;
 }
-.w-\[15\%\]{
-  width: 15%;
-}
 .w-\[22px\]{
   width: 22px;
 }
@@ -521,9 +521,6 @@
 }
 .min-w-\[250px\]{
   min-width: 250px;
-}
-.min-w-\[30\%\]{
-  min-width: 30%;
 }
 .min-w-\[70\%\]{
   min-width: 70%;
@@ -3511,8 +3508,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:top-\[104px\]{
     top: 104px;
   }
+  .max-md\:top-\[60px\]{
+    top: 60px;
+  }
   .max-md\:top-\[inherit\]{
     top: inherit;
+  }
+  .max-md\:z-10{
+    z-index: 10;
   }
   .max-md\:z-\[100\]{
     z-index: 100;
@@ -3552,6 +3555,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:mt-\[30px\]{
     margin-top: 30px;
   }
+  .max-md\:block{
+    display: block;
+  }
   .max-md\:flex{
     display: flex;
   }
@@ -3564,11 +3570,17 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:hidden{
     display: none;
   }
+  .max-md\:h-\[100vh\]{
+    height: 100vh;
+  }
   .max-md\:h-\[40vh\]{
     height: 40vh;
   }
   .max-md\:h-\[65px\]{
     height: 65px;
+  }
+  .max-md\:max-h-\[90vh\]{
+    max-height: 90vh;
   }
   .max-md\:min-h-\[200px\]{
     min-height: 200px;
@@ -3658,6 +3670,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:overflow-x-scroll{
     overflow-x: scroll;
   }
+  .max-md\:overflow-y-scroll{
+    overflow-y: scroll;
+  }
   .max-md\:rounded-\[10px\]{
     border-radius: 10px;
   }
@@ -3713,6 +3728,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:p-0{
     padding: 0px;
+  }
+  .max-md\:p-4{
+    padding: 1rem;
   }
   .max-md\:p-\[15px\]{
     padding: 15px;
@@ -4000,6 +4018,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:w-1\/2{
     width: 50%;
   }
+  .md\:w-\[15\%\]{
+    width: 15%;
+  }
   .md\:w-\[32\%\]{
     width: 32%;
   }
@@ -4026,6 +4047,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:min-w-\[23\%\]{
     min-width: 23%;
+  }
+  .md\:min-w-\[30\%\]{
+    min-width: 30%;
   }
   .md\:min-w-\[300px\]{
     min-width: 300px;
@@ -4443,6 +4467,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
 @media not all and (min-width: 768px){
+  .max-md\:\[\&\.active\]\:-left-0.active{
+    left: -0px;
+  }
   .max-md\:\[\&\.active\]\:translate-x-0.active{
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -4861,6 +4888,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_input\]\:bg-\[\#F6F6F6\] input{
   --tw-bg-opacity: 1;
   background-color: rgb(246 246 246 / var(--tw-bg-opacity));
+}
+@media not all and (min-width: 768px){
+  .max-md\:\[\&_input\]\:w-full input{
+    width: 100%;
+  }
 }
 .\[\&_li\.active\]\:bg-orange li.active{
   --tw-bg-opacity: 1;

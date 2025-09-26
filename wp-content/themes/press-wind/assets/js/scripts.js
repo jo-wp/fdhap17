@@ -2,6 +2,7 @@ import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
+import filtreMobile from './facetwp/mobile.js';
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
 import Splide from '@splidejs/splide'
@@ -266,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFacetwpLeaflet()
   animationBlock()
   blockSearch()
+  filtreMobile()
 
   //Import
   const map = document.querySelector('#map')
