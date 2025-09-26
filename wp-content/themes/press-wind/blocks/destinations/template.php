@@ -67,8 +67,8 @@ $template = [
           if (isset($item->ID) || isset($item['post_data']->ID)) {
             $pageTitle = (!$disabled_items_associated) ? get_the_title($item['post_data']->ID) : get_the_title($item->ID);
             $pageThumb = (!$disabled_items_associated) ? get_the_post_thumbnail_url($item['post_data']->ID, 'full') : get_the_post_thumbnail_url($item->ID, 'full');
-            $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : get_permalink($item->ID);
-            $pageDescription = (!$disabled_items_associated) ? $item['description'] : $item->post_content ;
+            $pageLink = (!$disabled_items_associated) ? $item['url_linked_page'] : tp_get_term_url_by_term_page($item->ID);
+            $pageDescription = (!$disabled_items_associated) ? $item['description'] : tp_get_term_by_term_page($item->ID)->description ;
         ?>
             <div
               class="card-yellow group relative aspect-square bg-cover md:bg-center max-md:bg-top max-md:shadow-lg max-md:rounded-[20px] overflow-hidden"
