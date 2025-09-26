@@ -4027,14 +4027,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:w-1\/2{
     width: 50%;
   }
-  .md\:w-\[15\%\]{
-    width: 15%;
-  }
   .md\:w-\[32\%\]{
     width: 32%;
   }
   .md\:w-\[33\%\]{
     width: 33%;
+  }
+  .md\:w-\[40\%\]{
+    width: 40%;
   }
   .md\:w-\[50\%\]{
     width: 50%;
@@ -4054,17 +4054,20 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:w-full{
     width: 100%;
   }
+  .md\:min-w-\[20\%\]{
+    min-width: 20%;
+  }
   .md\:min-w-\[23\%\]{
     min-width: 23%;
-  }
-  .md\:min-w-\[30\%\]{
-    min-width: 30%;
   }
   .md\:min-w-\[300px\]{
     min-width: 300px;
   }
   .md\:min-w-\[460px\]{
     min-width: 460px;
+  }
+  .md\:min-w-\[50\%\]{
+    min-width: 50%;
   }
   .md\:min-w-\[570px\]{
     min-width: 570px;

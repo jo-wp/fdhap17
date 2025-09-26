@@ -9,12 +9,10 @@ get_header();
   <div data-button="filters" class="max-md:block md:hidden text-center">
     <span class="bg-orange text-white text-[16px] px-[25px] py-[15px] rounded-full cursor-pointer"><?= __('Afficher les filtres','fdhpa17'); ?></span>
   </div>
-  <div class="wrapper-filters -left-[110%] w-full md:w-[15%]
+  <div class="wrapper-filters -left-[110%] w-full md:w-[40%]
       max-md:fixed max-md:top-[60px] max-md:z-10 max-md:bg-white max-md:p-4
       max-md:h-[100vh]
       max-md:[&.active]:-left-0
-      
-      
       ">
     <div class="md:sticky top-4 max-md:overflow-y-scroll max-md:max-h-[90vh]">
       <p>
@@ -43,10 +41,10 @@ get_header();
       <p class="bg-orange text-white text-[16px] px-[25px] py-[15px] rounded-full cursor-pointer text-center md:hidden" data-button="filters"><?= __('Appliquer et fermer','fdhpa17') ?></p>
     </div>
   </div>
-  <div class="max-md:w-full ">
+  <div class="max-md:w-full md:min-w-[50%]">
     <?= do_shortcode('[facetwp template="search"]') ?>
   </div>
-  <div class="w-full md:min-w-[30%] min-h-[100%]">
+  <div class="w-full md:min-w-[20%] min-h-[100%]">
     <div id="campings-map" class="min-w-[100%] h-[600px] rounded-[16px] sticky top-4"></div>
   </div>
 </div>
