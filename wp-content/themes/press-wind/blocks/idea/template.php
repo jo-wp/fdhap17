@@ -10,6 +10,7 @@
 $filters = get_field('display_filter');
 $select_idea = get_field('select_idea');
 
+
 $outputItems = [];
 if ($select_idea):
   foreach ($select_idea as $items) {
@@ -85,9 +86,10 @@ $template = [
               <ul class="splide__list max-md:!grid max-md:!grid-cols-2 max-md:!gap-[10px]">
                 <?php foreach ($outputItems as $item):
                   $backgroundImage = get_the_post_thumbnail_url($item['article']->ID, 'full');
+                   $url= tp_get_term_url_by_term_page($item['article']->ID);
                 ?>
                   <li class="splide__slide splide__slide-item max-md:min-h-[200px] animateFade fadeOutAnimation" data-taxonomie="<?= $item['filter-title']; ?>">
-                    <a href="<?= get_permalink($item['article']->ID); ?>" class="hover:no-underline">
+                    <a href="<?=  $url; ?>" class="hover:no-underline">
                       <div
                         class=" max-md:shadow-md min-h-full bg-cover  after:content-[''] after:rounded-[10px] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[50%] after:bg-gradient-to-b after:from-transparent after:to-[#00000066] rounded-[10px] flex flex-row justify-start items-end md:pl-5 "
                         style="background-image: url('<?= $backgroundImage; ?>')">

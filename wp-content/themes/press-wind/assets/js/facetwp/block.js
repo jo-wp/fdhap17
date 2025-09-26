@@ -7,7 +7,6 @@ export default function blockSearch() {
     try {
       return Object.assign(
         {
-          type: 'loop',
           perPage: 4,
           gap: '1rem',
           pagination: false,
@@ -21,7 +20,7 @@ export default function blockSearch() {
         JSON.parse(el.getAttribute('data-splide') || '{}'),
       )
     } catch (e) {
-      return { type: 'loop', perPage: 4, gap: '1rem' }
+      return { perPage: 4, gap: '1rem' }
     }
   }
 
