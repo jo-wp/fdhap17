@@ -2,12 +2,12 @@
   @apply font-arial text-[#7F7F7F] text-[13px];
 }
 .splide-carousel-block-search-camping .splide__arrow--prev{
-  @apply -left-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] rotate-180;
+  @apply -left-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] rotate-180 max-md:hidden;
 }
 .splide-carousel-block-search-camping .splide__arrow--prev svg,
 .splide-carousel-block-search-camping .splide__arrow--next svg{
   @apply hidden;
 }
 .splide-carousel-block-search-camping .splide__arrow--next{
-  @apply -right-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] ;
+  @apply -right-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] max-md:hidden ;
 }
