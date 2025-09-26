@@ -46,7 +46,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge block-idea relative md:after:rounded-[20px] md:after:bottom-[-50px] md:after:left-0 md:after:z-10 md:after:content-[""] md:after:absolute md:after:bg-bgOrange md:after:w-full md:after:h-[30%] mb-[150px]']); ?>>
   <div class="block-idea__content max-w-[1030px] mx-auto">
     <InnerBlocks
-      class="animateFade fadeOutAnimation max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
+      class="animateFade fadeOutAnimation [&_p]:text-black max-md:[&_h2]:mb-[35px] [&_h2]:font-[600] [&_h2]:text-[24px] md:[&_h2]:text-[32px] [&_p]:text-[14px] md:[&_p]:text-[15px]"
       template="<?php echo esc_attr(wp_json_encode($template)) ?>"
       allowedBlocks="<?php echo esc_attr(wp_json_encode($allowedBlocks)) ?>" templateLock="all" />
   </div>

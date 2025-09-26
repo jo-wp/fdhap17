@@ -47,8 +47,9 @@ $destinations = get_terms([
         <?= __('Réservable sur Campings.online', 'fdhpa17'); ?>
       </p>
     </div>
-    <?php if(!is_page('tous-les-campings-de-charente-maritime')): ?>
+    <?php if(!is_page('tous-les-campings-de-charente-maritime') && !is_front_page()): ?>
     <div style="display:none"><?php echo facetwp_display( 'template', 'listing' ); ?></div>
+    <?php endif; ?>
     
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
       <input type="submit" data-href="/tous-les-campings-de-charente-maritime/" name="online-reservation" id="" value="" class="!bg-orange border-0 w-[56px] h-[56px]
@@ -60,7 +61,6 @@ $destinations = get_terms([
       max-md:text-white
       max-md:bg-orange " />
     </div>
-    <?php endif; ?>
 </div>
 </div>
 
