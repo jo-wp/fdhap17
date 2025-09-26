@@ -84,7 +84,7 @@ if ('pager' === $facet['type']
       <?= do_shortcode('[facetwp template="full"]'); ?>
     </div>
   </div>
-  <div class="flex flew-col">
+  <div class="flex flew-col justify-center items-center mt-[50px]">
     <?= do_shortcode('[facetwp facet="pagination"]') ?>
   </div>
 </section>
