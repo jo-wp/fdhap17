@@ -7,9 +7,12 @@ add_action('wpseo_register_extra_replacements', function () {
 
     // Compte les campings pour un term + taxonomy donnés
     $count_campings = function ($term_id, $taxonomy, $post_type = 'camping') {
+
+
         if (empty($term_id) || empty($taxonomy)) {
             return 0;
         }
+
 
         // On fait une requête très légère uniquement pour obtenir le total
         $q = new WP_Query([
@@ -19,7 +22,7 @@ add_action('wpseo_register_extra_replacements', function () {
                 'taxonomy' => $taxonomy,
                 'terms'    => (int) $term_id,
                 'field'    => 'term_id',
-                'include_children' => false,
+                'include_children' => true,
             ]],
             'fields'         => 'ids',
             'posts_per_page' => 1,      // minimal
@@ -29,6 +32,7 @@ add_action('wpseo_register_extra_replacements', function () {
             'ignore_sticky_posts'    => true,
         ]);
 
+
         return (int) $q->found_posts;
     };
 
@@ -37,7 +41,9 @@ add_action('wpseo_register_extra_replacements', function () {
         // Front: page d’archive de taxonomie
         if (function_exists('is_tax') && (is_tax() || is_category() || is_tag())) {
             $obj = get_queried_object();
+ 
             if ($obj && !empty($obj->term_id) && !empty($obj->taxonomy)) {
+       
                 return [$obj->term_id, $obj->taxonomy];
             }
         }
@@ -61,11 +67,14 @@ add_action('wpseo_register_extra_replacements', function () {
         function () use ($resolve_current_term, $count_campings) {
             list($term_id, $taxonomy) = $resolve_current_term();
 
+      
+
             // ⚙️ Si ta taxonomie n’est pas attachée qu’au CPT "camping",
             // on force le post_type ici.
             $post_type = 'camping';
 
             $count = $count_campings($term_id, $taxonomy, $post_type);
+
             return (string) $count;
         },
         'advanced',

@@ -1,6 +1,6 @@
 <?php
 
-$position_css = (!is_front_page())? 'relative' : 'md:!absolute' ;
+$position_css = (is_front_page())? 'relative' : 'md:!absolute' ;
 $bg_css = (!is_front_page())? 'md:bg-[#F6F6F6]' : 'md:bg-white';
 $margin_css = (!is_front_page())? 'mb-[60px]' : '' ; 
 $destinations = get_terms([
@@ -8,7 +8,7 @@ $destinations = get_terms([
   'hide_empty' => false,           
 ]);
 ?>
-<div class=" md:bottom-[50px] md:left-0 md:right-0 md:mx-auto <?= $margin_css; ?>">
+<div class="<?= $position_css ?> md:bottom-[50px] md:left-0 md:right-0 md:mx-auto <?= $margin_css; ?>">
   <div class="<?= $bg_css; ?> [&_input]:bg-[#F6F6F6] [&_input]:border-0  [&_select]:bg-[#F6F6F6] [&_select]:border-0 [&_select]:w-full text-[#333333] [&_.facetwp-facet]:mb-0 flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
     <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[15px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>

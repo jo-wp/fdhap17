@@ -29,6 +29,7 @@ $template = [
 
 $campings_count = 0;
 
+
 if ($term && isset($term->term_id, $term->taxonomy)) {
   $q = new WP_Query([
     'post_type' => 'camping',
@@ -58,9 +59,12 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
       $facets = FWP()->helper->get_facets(); 
       if (!empty($facets)) {
         foreach ($facets as $facet) {
-          if ( 'pager' === $facet['type'] ) {
+if ('pager' === $facet['type']
+          || 'date_range' === $facet['type']
+          || 'classement_block' === $facet['name']
+          || 'destination' === $facet['name'] ) {
             continue;
-        }
+          }
           echo '<div class="facet-block">';
             echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($facet['label']) . '</p>';
             echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px]">';
@@ -72,8 +76,9 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
       ?>
     </div>
     <div class="min-w-[70%]">
-      <h2 class="text-center text-[36px] leading-0">Notre sélection <span class="font-arial text-[16px] block">de
-          camping à La rochelle</span></h2>
+      <h2 class="text-center text-[36px] leading-0"><?= __('Notre sélection','fdhpa17'); ?> <span class="font-arial text-[16px] block">de
+  
+      <?= __('camping à','fdhpa17'); ?> <?= $term->name ?></span></h2>
       <p class=" text-center"><?= esc_html($campings_count); ?> camping<?= $campings_count > 1 ? 's' : '' ?>
         trouvé<?= $campings_count > 1 ? 's' : '' ?>.</p>
       <?= do_shortcode('[facetwp template="full"]'); ?>
