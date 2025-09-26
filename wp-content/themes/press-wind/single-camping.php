@@ -374,7 +374,8 @@ $items_answer = get_field('items_answer');
           </div>
         </div>
       </div>
-      <?php if ($price_mini_mobilhomes || $url_reservation_direct): ?>
+      <?php $website = get_post_meta($post->ID, 'site_web', true);?>
+      <?php if ($price_mini_mobilhomes || $url_reservation_direct || $website): ?>
         <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
           <div>
             <?php if ($price_mini_mobilhomes): ?>
@@ -384,8 +385,8 @@ $items_answer = get_field('items_answer');
               <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]"><?= __('Location Mobil-Home / semaine', 'fdhpa17') ?></p>
             <?php endif; ?>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-              <?php if ($url_reservation_direct): ?>
-                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
+              <?php if ($website): ?>
+                <a href="<?= $website; ?>" target="_blank" class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
               <?php endif; ?>
               <?php if ($url_reservation_direct): ?>
                 <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange"><?= __('Réserver', 'fdhpa17'); ?></a>

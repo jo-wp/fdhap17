@@ -12,6 +12,7 @@
 <html <?php language_attributes(); ?>>
 
 <head>
+
 	<meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
@@ -41,7 +42,7 @@
 			$mini_site = get_field('mini_site', $ref_id);
 			$logo = get_field('mini_site_logo', $ref_id);
 
-            $hero_is = get_field('hero_type', $current_id);
+      $hero_is = get_field('hero_type', $current_id);
 
 			if ($mini_site) {
 				?>
@@ -54,8 +55,6 @@
 					]);
 					?>
 
-
-
 				</section>
 				<section
 					class="px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
@@ -63,8 +62,6 @@
 					<a class="flex" href="<?php echo the_permalink($ref_id) ?>">
 						<img src="<?php echo $logo['url'] ?>" width="140" class="max-md:w-[100px]" />
 					</a>
-
-
 
 					<a href="#" class="md:hidden open-menu-mobile block">
 						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
