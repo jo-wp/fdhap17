@@ -935,6 +935,10 @@
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
+.\!bg-orange{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(233 178 55 / var(--tw-bg-opacity)) !important;
+}
 .\!bg-transparent{
   background-color: transparent !important;
 }
@@ -3313,6 +3317,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   --tw-translate-x: 0.5rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.hover\:\!bg-green:hover{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(81 171 126 / var(--tw-bg-opacity)) !important;
+}
 .hover\:bg-green:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(81 171 126 / var(--tw-bg-opacity));
@@ -4847,6 +4855,13 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     border-radius: 10px;
   }
 }
+.\[\&_input\]\:border-0 input{
+  border-width: 0px;
+}
+.\[\&_input\]\:bg-\[\#F6F6F6\] input{
+  --tw-bg-opacity: 1;
+  background-color: rgb(246 246 246 / var(--tw-bg-opacity));
+}
 .\[\&_li\.active\]\:bg-orange li.active{
   --tw-bg-opacity: 1;
   background-color: rgb(233 178 55 / var(--tw-bg-opacity));
@@ -5060,11 +5075,18 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   --tw-text-opacity: 1;
   color: rgb(51 51 51 / var(--tw-text-opacity));
 }
+.\[\&_select\]\:w-full select{
+  width: 100%;
+}
 .\[\&_select\]\:rounded-full select{
   border-radius: 9999px;
 }
 .\[\&_select\]\:border-0 select{
   border-width: 0px;
+}
+.\[\&_select\]\:bg-\[\#F6F6F6\] select{
+  --tw-bg-opacity: 1;
+  background-color: rgb(246 246 246 / var(--tw-bg-opacity));
 }
 .\[\&_select\]\:p-\[20px_30px\] select{
   padding: 20px 30px;

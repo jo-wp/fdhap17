@@ -165,3 +165,26 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
 	return $args;
 }, 10, 2);
+
+
+// add_filter( 'facetwp_render_output', function( $output, $params ) {
+
+// 	var_dump($output);
+// 	die();
+//     if ( isset( $output['settings']['date_start'] ) ) {
+//         if ( 0 == $output['settings']['date_start']['range']['min']['minDate'] ) {
+//             $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; // start date min
+//         }
+//         if ( 0 == $output['settings']['date_start']['range']['min']['maxDate'] ) {
+//             $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; // start date max
+//         }
+//         if ( 0 == $output['settings']['date_start']['range']['max']['minDate'] ) {
+//             $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; // End date min
+//         }
+//         if ( 0 == $output['settings']['date_start']['range']['max']['maxDate'] ) {
+//             $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; // End date max
+//         }
+//     }
+
+//     return $output;
+//   }, 10, 2 );

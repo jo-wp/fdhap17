@@ -16,7 +16,7 @@ get_header();
       $facets = FWP()->helper->get_facets();
       if (!empty($facets)) {
         foreach ($facets as $facet) {
-          if ('pager' === $facet['type'] || 'date_range' === $facet['type'] ) {
+          if ('pager' === $facet['type'] || 'date_range' === $facet['type'] || 'classement_block' === $facet['name'] ) {
             continue;
           }
           echo '<div class="facet-block">';

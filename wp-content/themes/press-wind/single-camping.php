@@ -80,14 +80,18 @@ $selected = get_the_terms($post_id, $tax);
 
 $destination = '';
 $destination_parent = '';
-foreach ($selected as $select):
-  $destination = $select->name;
-  if ($select->parent) {
-    $parent = get_term($select->parent);
-    $destination_parent = $parent->name;
-  }
-endforeach;
+if ($selected) {
+  foreach ($selected as $select):
+    $destination = $select->name;
+    if ($select->parent) {
+      $parent = get_term($select->parent);
+      $destination_parent = $parent->name;
+    }
+  endforeach;
+}
 
+//FAQ 
+$items_answer = get_field('items_answer');
 ?>
 <div class="container-huge">
   <div class="title-stars flex max-md:flex-col md:flex-row items-center justify-start gap-[30px]">
@@ -131,18 +135,21 @@ endforeach;
           <a href=""
             class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline active  [&.active]:border-t-0 [&.active]:border-l-0 [&.active]:border-r-0 [&.active]:border-b [&.active]:border-[#333] [&.active]:border-solid">Présentation</a>
         </div>
+        <?php if($id_reservation_direct): ?>
         <div>
           <a href=""
-            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline">Disponibilités</a>
+            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Disponibilités','fdhpa17'); ?></a>
         </div>
+        <?php endif; ?>
         <div>
           <a href=""
-            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline">Informations</a>
+            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Informations','fdhpa17'); ?></a>
         </div>
+        <?php if($items_answer): ?>
         <div>
-          <a href="" class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline">Foire aux
-            questions</a>
+          <a href="" class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Foire aux questions','fdhpa17'); ?></a>
         </div>
+        <?php endif; ?>
       </div>
 
       <div
@@ -536,10 +543,10 @@ endforeach;
               <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
                 style="background-image:url('<?= $image_featured_item; ?>');">
                 <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
-                    <?php if($prix_mini): ?>
-                  <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">
-                    <?= __('À partir de', 'fdhpa17'); ?> <?=$prix_mini?>€/<?= __('nuits','fdhpa17'); ?>
-                  </span> 
+                  <?php if ($prix_mini): ?>
+                    <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">
+                      <?= __('À partir de', 'fdhpa17'); ?> <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
+                    </span>
                   <?php endif; ?>
                   <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
                       alt="icon ajouter aux favoris"></a>
@@ -578,7 +585,7 @@ endforeach;
       ?>
     </div>
   </div>
-  <?php $items_answer = get_field('items_answer');
+  <?php 
   if ($items_answer):
   ?>
     <div class="mt-[50px] md:mt-[100px]">

@@ -9,22 +9,36 @@ $destinations = get_terms([
 ]);
 ?>
 <div class=" md:bottom-[50px] md:left-0 md:right-0 md:mx-auto <?= $margin_css; ?>">
-  <div class="<?= $bg_css; ?> [&_input]:bg-[#F6F6F6] [&_input]:border-0  [&_select]:bg-[#F6F6F6] [&_select]:border-0 [&_select]:w-full text-[#333333] [&_.facetwp-facet]:mb-0 flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
-    <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[15px] py-[5px]">
+  <form action="/tous-les-campings-de-charente-maritime" method="GET"
+    class="<?= $bg_css; ?> flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[1300px]:gap-[20px] gap-[40px]">
+    <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Destination', 'fdhpa17'); ?></p>
-      <?= do_shortcode( '[facetwp facet="destination"]' ); ?>
+      <?php if (!is_wp_error($destinations) && !empty($destinations)): ?>
+        <select class="bg-[#F6F6F6] border-0 w-full" name="_destination" id="#">
+          <option>Toutes</option>
+          <?php foreach ($destinations as $destination): ?>
+            <option value="<?= esc_attr($destination->slug); ?>" <?php if(isset($_GET['_destination'])): 
+               ($_GET['_destination']==$destination->slug)? 'selected="selected"' : ''; endif; ?>>
+              <?= esc_html($destination->name); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      <?php endif; ?>
     </div>
     <div class="items-search-bar tax-destination flex flex-row">
-      <div class="md:max-w-[230px] rounded-l-[40px]  bg-[#F6F6F6] px-[15px] py-[5px]">
+      <div class="md:max-w-[230px] rounded-l-[40px]  bg-[#F6F6F6] px-[30px] py-[5px]">
         <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Arrivée', 'fdhpa17'); ?></p>
-        <?= do_shortcode( '[facetwp facet="date_start"]' ); ?>
+        <input class="bg-[#F6F6F6] border-0 w-full text-[#333333]" type="date" id="start" name="trip-start"
+          value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d') ?>" max="2050-12-31" />
       </div>
-      <div class="md:max-w-[230px] rounded-r-[40px]  bg-[#F6F6F6] px-[15px] py-[5px]">
+      <div class="md:max-w-[230px] rounded-r-[40px]  bg-[#F6F6F6] px-[30px] py-[5px]">
         <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Départ', 'fdhpa17'); ?></p>
-        <?= do_shortcode( '[facetwp facet="date_end"]' ); ?>
+        <input class="bg-[#F6F6F6] border-0 w-full text-[#333333]" type="date" id="end" name="trip-end"
+          value="<?= date('Y-m-d', strtotime('+7 days')) ?>" min="<?= date('Y-m-d', strtotime('+1 days')) ?>"
+          max="2050-12-31" />
       </div>
     </div>
-    <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[15px] py-[5px]">
+    <div class="items-search-bar md:max-w-[230px] rounded-[40px] tax-destination bg-[#F6F6F6] px-[30px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0"><?= __('Voyageurs', 'fdhpa17'); ?></p>
       <select class="bg-[#F6F6F6] border-0 w-full" name="tax-destination" id="#">
         <option class="bg-none text-[#333333]">Ajoutez des voyageurs</option>
@@ -41,26 +55,21 @@ $destinations = get_terms([
       </select>
     </div>
     <div
-      class="items-search-bar max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[15px] py-[5px]">
+      class="items-search-bar max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[30px] py-[5px]">
       <input type="checkbox" name="online-reservation" id="" />
       <p class="font-arial max-md:text-center text-white md:text-[#757575] text-[14px] font-[400] m-0 p-0">
         <?= __('Réservable sur Campings.online', 'fdhpa17'); ?>
       </p>
     </div>
-    <?php if(!is_page('tous-les-campings-de-charente-maritime')): ?>
-    <div style="display:none"><?php echo facetwp_display( 'template', 'listing' ); ?></div>
-    
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
-      <input type="submit" data-href="/tous-les-campings-de-charente-maritime/" name="online-reservation" id="" value="" class="!bg-orange border-0 w-[56px] h-[56px]
-      fwp-submit
+      <input type="submit" name="online-reservation" id="" value="" class="bg-orange border-0 w-[56px] h-[56px]
       rounded-[50%] bg-zoom bg-[20px_20px] bg-no-repeat
-      cursor-pointer hover:!bg-green transition-all
+      cursor-pointer hover:bg-green transition-all
       max-md:w-full max-md:rounded-[10px]
       max-md:text-[16px]
       max-md:text-white
       max-md:bg-orange " />
     </div>
-    <?php endif; ?>
-</div>
+  </form>
 </div>
 
