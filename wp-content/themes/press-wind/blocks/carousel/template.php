@@ -100,12 +100,13 @@ $block_id = $block['id'];
           <ul class="splide__list">
             <?php foreach ($items_selected as $item):
               $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
+              $url = ($disabled_auto_carousel)?  tp_get_term_url_by_term_page($item->ID) : get_permalink($item->ID) ;
               ?>
               <li class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px]">
                 <div class="image_featured min-h-[calc(100%-40px)] bg-cover  bg-no-repeat rounded-[20px] relative"
                   style="background-image:url('<?= $image_featured ?>');">
                   <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
-                    href="<?= get_permalink($item->ID); ?>">
+                    href="<?= $url; ?>">
                     <span
                       class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]"><?= get_the_title($item->ID); ?></span>
                   </a>
