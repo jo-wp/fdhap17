@@ -165,7 +165,7 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
     <?php if ($hero_type == 'search'): ?>
       <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
-               max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
+               max-md:!absolute max-md:top-[50px]  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
           gap-[30px] 
         ">
         <h1 class="m-0 text-center text-green text-[30px] md:text-[50px]"><?= get_the_title() ?></h1>
