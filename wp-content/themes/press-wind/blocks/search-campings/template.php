@@ -31,7 +31,7 @@ $template = [
 
 
 <section <?= get_block_wrapper_attributes(["class" => 'block-search-campings container-huge bg-bgGreen rounded-t-[200px] mx-auto flex flex-col flex-wrap ']); ?>>
-  <div class="max-w-[1066px] mx-auto flex flex-col flex-wrap py-[90px] px-[60px] md:px-[130px]">
+  <div class="max-w-[1066px] mx-auto flex flex-col flex-wrap max-md:pt-[30px] max-md:pb-[30px] md:py-[90px] px-[60px] md:px-[130px]">
     <InnerBlocks
       class="animateFade fadeOutAnimation text-center [&_h2]:text-green [&_h2_sub]:text-black [&_p]:m-0 [&_p]:text-[14px] md:[&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[20px] md:[&_h2]:text-[32px] [&_h2_sub]:text-[20px]  md:[&_h2_sub]:text-[32px] [&_h2]:font-[600] [&_h2_sub]:font-[400] [&_h2]:font-ivymode [&_h2_sub]:font-arial"
       template="<?= htmlspecialchars(json_encode($template)); ?>"

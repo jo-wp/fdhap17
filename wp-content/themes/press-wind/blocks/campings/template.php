@@ -52,9 +52,9 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
 
 }
 ?>
-<section <?= get_block_wrapper_attributes(["class" => 'container-huge block-campings bg-bgOrange rounded-[100px] p-[100px]']); ?>>
-  <div class="flex flex-row gap-[150px] ">
-    <div class="min-w-[20%]">
+<section <?= get_block_wrapper_attributes(["class" => 'container-huge block-campings bg-bgOrange rounded-[100px] p-[40px] md:p-[100px]']); ?>>
+  <div class="flex flex-col md:flex-row gap-[30px] md:gap-[150px] ">
+    <div class="md:min-w-[20%]">
       <?php
       $facets = FWP()->helper->get_facets(); 
       if (!empty($facets)) {
@@ -75,7 +75,7 @@ if ('pager' === $facet['type']
       }
       ?>
     </div>
-    <div class="min-w-[70%]">
+    <div class="md:min-w-[70%]">
       <h2 class="text-center text-[36px] leading-0"><?= __('Notre sélection','fdhpa17'); ?> <span class="font-arial text-[16px] block">de
   
       <?= __('camping à','fdhpa17'); ?> <?= $term->name ?></span></h2>
