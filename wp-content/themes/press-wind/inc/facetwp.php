@@ -2,75 +2,49 @@
 
 add_filter('facetwp_query_args', function ($args, $class) {
 
-    // N'agir que sur le template FacetWP "full" (supprime cette condition si inutile)
-
-    // Taxonomies autorisées à être lues depuis l'URI
-    // 👉 ajoute/retire ici selon ton projet
-    $allowed_taxonomies = [
-        'destination',
-        'equipement',
-        'atout',
-        'etoile',
-        'aquatique',
-        'service',
-        'label',
-        'hebergement',
-        'cible',
-        'groupe',
-        'confort'
-        // 'activite',
-        // 'services',
-        // ...
-    ];
 
     // S'assurer que tax_query est un tableau
-    if (empty($args['tax_query']) || ! is_array($args['tax_query'])) {
+    if (empty($args['tax_query']) || !is_array($args['tax_query'])) {
         $args['tax_query'] = [];
     }
 
-    // Lire l'URI passée par FacetWP (ex: "equipement/barbecue" ou "destination/camping-la-rochelle")
+    // 1) Essayer depuis l'URI : ex. "destination/camping-la-rochelle"
     $uri = isset($class->ajax_params['http_params']['uri']) ? $class->ajax_params['http_params']['uri'] : '';
-    if (! empty($uri)) {
-        $path  = trim(wp_parse_url($uri, PHP_URL_PATH), '/'); // normalise
-        $parts = array_values(array_filter(explode('/', $path))); // explode propre
+    if (!empty($uri)) {
+        // Normaliser puis chercher la partie après "destination/"
+        $path = trim(wp_parse_url($uri, PHP_URL_PATH), '/'); // enlève / début/fin si présents
+        $parts = explode('/', $path);
 
-        // On parcourt les segments pour trouver des paires taxo/slug
-        // Exemple: ["equipement","barbecue"] => taxo=equipement, slug=barbecue
-        for ($i = 0; $i < count($parts) - 1; $i++) {
-            $maybe_tax = sanitize_key($parts[$i]);
+    
 
-            // On ne traite que les taxos autorisées ET existantes
-            if (! in_array($maybe_tax, $allowed_taxonomies, true)) {
-                continue;
-            }
-            if (! taxonomy_exists($maybe_tax)) {
-                continue;
-            }
+        $idx = array_search('destination', $parts, true);
 
-            // Le segment suivant est le slug du terme
-            $slug = sanitize_title(urldecode($parts[$i + 1]));
-            if ('' === $slug) {
-                continue;
-            }
+        if ($idx !== false && isset($parts[$idx + 1])) {
+            // slug attendu : "camping-la-rochelle"
+            $slug = sanitize_title(urldecode($parts[$idx + 1]));
 
-            $term = get_term_by('slug', $slug, $maybe_tax);
-            if ($term && ! is_wp_error($term)) {
-                $args['tax_query'][] = [
-                    'taxonomy'         => $maybe_tax,
-                    'field'            => 'term_id',
-                    'terms'            => [(int) $term->term_id],
-                    'include_children' => true,
-                ];
+            if (!empty($slug)) {
+                $term = get_term_by('slug', $slug, 'destination');
+                if ($term && !is_wp_error($term)) {
+                    $args['tax_query'][] = [
+                        'taxonomy' => 'destination',
+                        'field' => 'term_id',
+                        'terms' => [(int) $term->term_id],
+                        'include_children' => true,
+                    ];
+                }
             }
         }
     }
 
-    // (Optionnel) Fallback spécifique si tu reçois encore un extras pour "destination"
+    // 2) Fallback : si un term_id est passé via extras et qu'on n'a rien ajouté
     if (
         isset($class->ajax_params['extras']['destination_term_id']) &&
         (int) $class->ajax_params['extras']['destination_term_id'] > 0
     ) {
-        // N'ajouter que si aucun filtre 'destination' n'existe déjà
+        $term_id = (int) $class->ajax_params['extras']['destination_term_id'];
+
+        // N'ajoute le fallback que si aucun filtre 'destination' n'a déjà été ajouté
         $has_destination = false;
         foreach ($args['tax_query'] as $q) {
             if (is_array($q) && isset($q['taxonomy']) && $q['taxonomy'] === 'destination') {
@@ -79,24 +53,23 @@ add_filter('facetwp_query_args', function ($args, $class) {
             }
         }
 
-        if (! $has_destination) {
+        if (!$has_destination) {
             $args['tax_query'][] = [
-                'taxonomy'         => 'destination',
-                'field'            => 'term_id',
-                'terms'            => [(int) $class->ajax_params['extras']['destination_term_id']],
+                'taxonomy' => 'destination',
+                'field' => 'term_id',
+                'terms' => [$term_id],
                 'include_children' => true,
             ];
         }
     }
 
-    // Relation par défaut si plusieurs conditions
-    if (! empty($args['tax_query']) && is_array($args['tax_query']) && ! isset($args['tax_query']['relation'])) {
+    // Si plusieurs conditions taxo existent, définir une relation par défaut
+    if (!empty($args['tax_query']) && is_array($args['tax_query']) && !isset($args['tax_query']['relation'])) {
         $args['tax_query']['relation'] = 'AND';
     }
 
     return $args;
 }, 10, 2);
-
 
 
 add_action('wp_footer', function () {
