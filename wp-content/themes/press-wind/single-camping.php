@@ -142,7 +142,7 @@ $items_answer = get_field('items_answer');
           </div>
         <?php endif; ?>
         <div>
-          <a href=""
+          <a href="#informations"
             class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Informations', 'fdhpa17'); ?></a>
         </div>
         <?php if ($items_answer): ?>
@@ -199,7 +199,7 @@ $items_answer = get_field('items_answer');
         </div>
       <?php endif; ?>
       <div
-        class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
+        id="informations" class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-row">
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
