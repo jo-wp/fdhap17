@@ -88,9 +88,13 @@ switch ($type_block_editorial) {
             <?php while( have_rows('button') ): the_row();
                 $title = get_sub_field('title');
                 $style = get_sub_field('style');
-                $page = get_sub_field('page');
+                $link = get_sub_field( 'page' );
+                $link_e = get_sub_field( 'link_extern' );
+                if($link_e) {
+                    $link = get_sub_field( 'url' );
+                }
                 ?>
-                <a class="button <?php echo $style ?>  !font-bold !text-base !py-4 !px-5" href="<?php echo $page; ?>">
+                <a class="button <?php echo $style ?>  !font-bold !text-base !py-4 !px-5" href="<?php echo $link; ?>">
                     <?php echo $title ?>
                 </a>
             <?php endwhile; ?>

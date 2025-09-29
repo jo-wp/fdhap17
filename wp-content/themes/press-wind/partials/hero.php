@@ -64,7 +64,7 @@ switch ($hero_type) {
     $height_content = 'h-auto';
     break;
   case 'minisite':
-    $height_content = 'h-[600px] md:h-[800px] max-h-[80vh]';
+    $height_content = 'h-[600px] md:h-[800px] max-h-[90vh]';
     break;
 }
 
@@ -201,7 +201,7 @@ if(is_404()){
       </div>
     <?php endif; ?>
       <?php if ($hero_type == 'minisite'): ?>
-          <div class="block-hero__content__text max-w-[1440px] mx-[30px] md:mx-[100px] lg:mx-auto flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
+          <div class="block-hero__content__text  max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
