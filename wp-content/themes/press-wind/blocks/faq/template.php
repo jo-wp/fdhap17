@@ -84,7 +84,7 @@ $template = [
             </h3>
 
             <p class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
-            m-0 font-arial text-[14px] text-black max-md:text-center">
+            m-0 [&_p]:font-arial  [&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
               <?= apply_filters('the_content',$item['reponse']) ?>
             </p>
           </li>
