@@ -4078,8 +4078,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:h-full{
     height: 100%;
   }
+  .md\:max-h-\[240px\]{
+    max-height: 240px;
+  }
   .md\:max-h-\[267px\]{
     max-height: 267px;
+  }
+  .md\:max-h-\[500px\]{
+    max-height: 500px;
   }
   .md\:min-h-\[115px\]{
     min-height: 115px;

@@ -123,7 +123,7 @@ $items_answer = get_field('items_answer');
     <?php $i = 0;
     foreach ($photos as $photo): ?>
       <img data-featherlight="<?= $photo['url']; ?>" src="<?= $photo['url']; ?>" alt="<?= $photo['caption']; ?>"
-        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?> <?= ($i >= 1) ? 'max-md:hidden' : ''; ?>">
+        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2 md:max-h-[500px]' : ''; ?> <?= ($i >= 1) ? 'max-md:hidden md:max-h-[240px]' : ''; ?>">
       <?php $i++;
     endforeach; ?>
   </div>
