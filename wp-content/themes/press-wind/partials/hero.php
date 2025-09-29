@@ -70,7 +70,9 @@ switch ($hero_type) {
 
 
 $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
-
+if(is_404()){
+  $hero_type='middle';
+}
 
 ?>
 

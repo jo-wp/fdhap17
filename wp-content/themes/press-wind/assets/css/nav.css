@@ -96,19 +96,25 @@ nav .submenu > li .submenu-child > li {
 }
 
 @media (min-width: 768px) {
+
+  .error404 nav > ul:first-child li a,
   .page-template-template-recherche nav > ul:first-child li a {
     @apply text-black;
   }
+  .error404 nav > ul:first-child li:hover::after, 
   .page-template-template-recherche nav > ul:first-child li:hover::after {
     @apply bg-black;
   }
+  .error404 nav > ul:first-child li a::after,
   .page-template-template-recherche nav > ul:first-child li a::after {
     @apply bg-arrow-black;
   }
 
+  .error404 #hero-carousel::before,
   .page-template-template-recherche #hero-carousel::before {
     display: none;
   }
+  .error404 .block-hero__content__navigation,
   .page-template-template-recherche .block-hero__content__navigation {
     @apply border-black;
   }
