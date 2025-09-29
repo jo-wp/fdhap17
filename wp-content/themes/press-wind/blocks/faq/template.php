@@ -82,11 +82,10 @@ $template = [
            after:transition-transform after:duration-300" role="button" tabindex="0" aria-expanded="false">
               <?= esc_html($item['question']); ?>
             </h3>
-
-            <p class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
+            <div class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
             m-0 [&_p]:font-arial  [&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
               <?= apply_filters('the_content',$item['reponse']) ?>
-            </p>
+            </div>
           </li>
         <?php endforeach; ?>
       </ul>
