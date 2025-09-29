@@ -3823,6 +3823,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     padding-left: 30px;
     padding-right: 30px;
   }
+  .max-md\:py-\[10px\]{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
   .max-md\:py-\[15px\]{
     padding-top: 15px;
     padding-bottom: 15px;

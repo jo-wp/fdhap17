@@ -46,8 +46,8 @@ $template = [
         <div
           class="[&_.facetwp-dropdown]:max-w-[160px]
           [&_.facetwp-search]:max-w-[80px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[15px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
-          flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
-          <div class="md:hidden cursor-pointer active-filters"><span class="text-orange text-[14px] font-arial"><?= __('Afficher / Masquer les filtres','fdhpa17') ?></span><span
+          flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px] max-md:px-[20px] max-md:py-[10px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
+          <div class="md:hidden cursor-pointer active-filters "><span class="text-orange text-[14px] font-arial"><?= __('Afficher / Masquer les filtres','fdhpa17') ?></span><span
               class="bg-green rounded-full text-white text-[13px] w-[16px] h-[16px] inline-flex items-center justify-center ml-[10px]">+</span>
           </div>
           <?= do_shortcode('[facetwp facet="classement_block"]'); ?>
