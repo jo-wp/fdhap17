@@ -91,3 +91,15 @@ add_action('wpseo_register_extra_replacements', function () {
         'Nombre de "camping(s)" avec gestion singulier/pluriel.'
     );
 });
+
+
+add_filter( 'wpseo_breadcrumb_links', function( $links ) {
+    // Si on est sur un single de "camping"
+    if ( is_singular( 'camping' ) ) {
+        // Supprime l’élément archive (toujours en 1 après l’accueil)
+        unset( $links[1] );
+        // Réindexe proprement le tableau
+        $links = array_values( $links );
+    }
+    return $links;
+});
