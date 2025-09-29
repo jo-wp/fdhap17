@@ -26,7 +26,11 @@ get_header();
           if ('pager' === $facet['type']
           || 'date_range' === $facet['type']
           || 'classement_block' === $facet['name']
-          || 'destination' === $facet['name'] ) {
+          || 'destination' === $facet['name']
+          || 'services_block' === $facet['name']
+          || 'hebergements_block' === $facet['name']
+          || 'expriences_block' === $facet['name']
+          || 'input_text_block' === $facet['name'] ) {
             continue;
           }
           echo '<div class="facet-block">';
