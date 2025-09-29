@@ -477,8 +477,8 @@
 .max-h-\[480px\]{
   max-height: 480px;
 }
-.max-h-\[80vh\]{
-  max-height: 80vh;
+.max-h-\[90vh\]{
+  max-height: 90vh;
 }
 .min-h-\[100\%\]{
   min-height: 100%;
@@ -4446,10 +4446,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .lg\:mx-\[30px\]{
     margin-left: 30px;
     margin-right: 30px;
-  }
-  .lg\:mx-auto{
-    margin-left: auto;
-    margin-right: auto;
   }
   .lg\:-mt-\[80px\]{
     margin-top: -80px;
