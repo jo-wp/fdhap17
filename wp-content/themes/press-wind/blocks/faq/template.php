@@ -85,7 +85,7 @@ $template = [
 
             <p class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
             m-0 font-arial text-[14px] text-black max-md:text-center">
-              <?= esc_html($item['reponse']); ?>
+              <?= apply_filters('the_content',$item['reponse']) ?>
             </p>
           </li>
         <?php endforeach; ?>

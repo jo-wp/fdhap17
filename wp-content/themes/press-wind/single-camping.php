@@ -346,7 +346,6 @@ $items_answer = get_field('items_answer');
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black"><?= __('Moyens de paiement', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
-
             </div>
           </div>
         </div>
