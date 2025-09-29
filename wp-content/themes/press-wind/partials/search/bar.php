@@ -48,7 +48,6 @@ $destinations = get_terms([
       </p>
     </div>
     <?php if(!is_page('carte-camping') && !is_front_page()): ?>
-    <div style="display:none"><?php echo facetwp_display( 'template', 'listing' ); ?></div>
     <?php endif; ?>
     
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
