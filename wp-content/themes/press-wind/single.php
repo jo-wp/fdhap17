@@ -44,7 +44,7 @@ $under_title = get_field('sous_titre');
         </li>
         <li class="hover:-translate-y-1 transition-all duration-300">
           <a class=" hover:no-underline "
-            href="https://www.facebook.com/sharer/sharer.php?u=<?= get_permalink($post->ID); ?>" target="_blank">
+            href="https://t.me/share/url?url=<?= get_permalink($post->ID); ?>&text=<?= get_the_title($post->ID); ?>" target="_blank">
             <img src="<?= get_bloginfo('template_directory') ?>/assets/media/logo-telegram.svg"
               alt="Icon de partager l'article <?= $post->post_title; ?> par mail" />
           </a>
