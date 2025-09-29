@@ -731,6 +731,9 @@
 .gap-7{
   gap: 1.75rem;
 }
+.gap-\[0px\]{
+  gap: 0px;
+}
 .gap-\[1\%\]{
   gap: 1%;
 }
