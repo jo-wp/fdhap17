@@ -119,11 +119,11 @@ $items_answer = get_field('items_answer');
       ?>
     </div>
   </div>
-  <div class="galerie-photo grid grid-cols-[2fr_1fr_1fr] grid-rows-2 gap-[15px] mb-[50px]">
+  <div class="galerie-photo grid md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2 gap-[15px] mb-[50px]">
     <?php $i = 0;
     foreach ($photos as $photo): ?>
       <img data-featherlight="<?= $photo['url']; ?>" src="<?= $photo['url']; ?>" alt="<?= $photo['caption']; ?>"
-        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?>">
+        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?> <?= ($i>=1)? 'max-md:hidden' : '' ; ?>">
     <?php $i++;
     endforeach; ?>
   </div>

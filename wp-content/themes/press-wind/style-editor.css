@@ -668,12 +668,6 @@
 .grid-cols-4{
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
-.grid-cols-\[2fr_1fr_1fr\]{
-  grid-template-columns: 2fr 1fr 1fr;
-}
-.grid-rows-2{
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-}
 .flex-row{
   flex-direction: row;
 }
@@ -4151,6 +4145,12 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:grid-cols-4{
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .md\:grid-cols-\[2fr_1fr_1fr\]{
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+  .md\:grid-rows-2{
+    grid-template-rows: repeat(2, minmax(0, 1fr));
   }
   .md\:flex-row{
     flex-direction: row;
