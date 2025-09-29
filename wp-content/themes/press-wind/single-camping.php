@@ -441,7 +441,7 @@ $items_answer = get_field('items_answer');
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/tripadvisor.svg"
             alt="Icon tripadvisor du camping <?= get_the_title(); ?>">
           <div class="bloc-sidebar-informations__item__content">
-            <p><a href="www.tripadvisor.fr" target="_blank">www.tripadvisor.fr</a></p>
+            <p><a href="https://www.tripadvisor.fr" target="_blank">www.tripadvisor.fr</a></p>
           </div>
         </div>
         <div class="bloc-sidebar-informations__item">
