@@ -13,7 +13,7 @@ function menuToggle() {
   menuLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
       const underMenu = link.querySelector('.submenu-child')
-      e.preventDefault()
+      // e.preventDefault()
 
       //disable all active
       menuLinks.forEach((link) => {
