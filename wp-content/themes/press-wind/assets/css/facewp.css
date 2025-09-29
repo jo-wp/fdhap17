@@ -11,3 +11,6 @@
 .splide-carousel-block-search-camping .splide__arrow--next{
   @apply -right-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] max-md:hidden ;
 }
+.facetwp-dropdown{
+  @apply text-black;
+}

@@ -27,9 +27,13 @@
   border-bottom-right-radius: 200px;
   border-bottom-left-radius: 200px;
 }
+.block-hero__content div {
+  position: relative;
+  z-index: 2;
+}
+
 @media (max-width: 768px) {
   .block-hero__content::before {
-
     background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0) 40%,
@@ -39,8 +43,10 @@
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
   }
+  .search-bar{
+    position: absolute;
+    bottom: 30px;
+    top: initial;
+  }
 }
-.block-hero__content div {
-  position: relative;
-  z-index: 2;
-}
+

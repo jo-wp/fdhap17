@@ -60,8 +60,8 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
 	// --- 1) Appel API + cache (avec dates) ---
 	// 1.a) Récup des dates (ex: via query string ?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD)
-	$start_raw = isset($_GET['trip-start']) ? trim($_GET['trip-start']) : null;
-	$end_raw   = isset($_GET['trip-end'])   ? trim($_GET['trip-end'])   : null;
+	$start_raw = isset($_GET['_date_start']) ? trim($_GET['_date_start']) : null;
+	$end_raw   = isset($_GET['_date_end'])   ? trim($_GET['_date_end'])   : null;
 
 	// 1.b) Validation & normalisation (YYYY-MM-DD)
 	$start = $start_raw ? DateTime::createFromFormat('Y-m-d', $start_raw) : null;
