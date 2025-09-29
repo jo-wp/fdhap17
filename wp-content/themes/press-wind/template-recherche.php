@@ -4,7 +4,7 @@ Template Name: Recherche
 */
 get_header();
 ?>
-<?= get_template_part('partials/search/bar'); ?>
+<?= get_template_part('partials/search/bar','without'); ?>
 <div class="container-huge block-search flex flex-col md:flex-row gap-[45px] justify-center">
   <div data-button="filters" class="max-md:block md:hidden text-center">
     <span class="bg-orange text-white text-[16px] px-[25px] py-[15px] rounded-full cursor-pointer"><?= __('Afficher les filtres','fdhpa17'); ?></span>
