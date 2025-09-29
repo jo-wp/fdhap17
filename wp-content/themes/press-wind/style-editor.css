@@ -2400,6 +2400,13 @@ nav .submenu > li .submenu-child > li{
     bottom:-40px;
     top: initial;
   }
+  .page-template-template-recherche .search-bar{
+     position: relative !important;   
+     bottom: 0px;
+  }
+  .page-template-template-recherche .search-bar .items-search-bar p{
+    color:#000;
+  }
 }
 .block-campings .fwpl-layout{
   display: grid !important;
