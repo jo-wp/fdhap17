@@ -2413,7 +2413,7 @@ nav .submenu > li .submenu-child > li{
   }
   .search-bar{
     position: absolute !important;
-    bottom: 30px;
+    bottom:-40px;
     top: initial;
   }
 }
