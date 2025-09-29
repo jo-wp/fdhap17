@@ -438,9 +438,6 @@
 .h-\[60px\]{
   height: 60px;
 }
-.h-\[60vh\]{
-  height: 60vh;
-}
 .h-\[60vw\]{
   height: 60vw;
 }
@@ -2390,9 +2387,12 @@ nav .submenu > li .submenu-child > li{
   border-bottom-right-radius: 200px;
   border-bottom-left-radius: 200px;
 }
+.block-hero__content div {
+  position: relative;
+  z-index: 2;
+}
 @media (max-width: 768px) {
   .block-hero__content::before {
-
     background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0) 40%,
@@ -2402,10 +2402,11 @@ nav .submenu > li .submenu-child > li{
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
   }
-}
-.block-hero__content div {
-  position: relative;
-  z-index: 2;
+  .search-bar{
+    position: absolute;
+    bottom: 30px;
+    top: initial;
+  }
 }
 .block-campings .fwpl-layout{
   display: grid !important;
@@ -2518,6 +2519,10 @@ nav .submenu > li .submenu-child > li{
   .splide-carousel-block-search-camping .splide__arrow--next{
     display: none;
   }
+}
+.facetwp-dropdown{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
@@ -3585,6 +3590,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:h-\[40vh\]{
     height: 40vh;
   }
+  .max-md\:h-\[45vh\]{
+    height: 45vh;
+  }
   .max-md\:h-\[65px\]{
     height: 65px;
   }
@@ -4005,6 +4013,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:h-\[40vw\]{
     height: 40vw;
+  }
+  .md\:h-\[60vh\]{
+    height: 60vh;
   }
   .md\:h-\[800px\]{
     height: 800px;
