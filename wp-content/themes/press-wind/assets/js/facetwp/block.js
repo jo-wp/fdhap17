@@ -1,5 +1,4 @@
 export default function blockSearch() {
-
   const SPLIDE_KEY = '_splideInstance'
   const SPLIDE_SELECTOR = '.splide-carousel-block-search-camping'
 
@@ -11,10 +10,10 @@ export default function blockSearch() {
           gap: '1rem',
           pagination: false,
           arrows: true,
-          perMove:1,
+          perMove: 1,
           breakpoints: {
             1024: { perPage: 2 },
-            640: { perPage: 1 },
+            640: { perPage: 3, direction: 'ttb', height: '1350px', wheel: true,fixedHeight:'430px',drag:false,pagination:true },
           },
         },
         JSON.parse(el.getAttribute('data-splide') || '{}'),
@@ -26,7 +25,6 @@ export default function blockSearch() {
 
   function mountSplides(root = document) {
     root.querySelectorAll(SPLIDE_SELECTOR).forEach((el) => {
-
       if (el[SPLIDE_KEY]) {
         try {
           el[SPLIDE_KEY].refresh()
@@ -35,7 +33,7 @@ export default function blockSearch() {
       }
       const opts = getOptionsFrom(el)
       const inst = new Splide(el, opts)
-      inst.mount() 
+      inst.mount()
       el[SPLIDE_KEY] = inst
     })
   }
@@ -47,7 +45,7 @@ export default function blockSearch() {
         try {
           inst.off && inst.off('*')
         } catch (_) {}
-        inst.destroy(true) 
+        inst.destroy(true)
         el[SPLIDE_KEY] = null
       }
     })
@@ -71,4 +69,21 @@ export default function blockSearch() {
   document.addEventListener('DOMContentLoaded', () => {
     mountSplides(document)
   })
+}
+
+
+const activeFilters = document.querySelector('.active-filters');
+const facetwpFacets = document.querySelectorAll('.block-search-campings .facetwp-facet');
+
+if (activeFilters) {
+  activeFilters.addEventListener('click', function() {
+    facetwpFacets.forEach(facet => {
+      facet.style.display = (facet.style.display === "block") ? "none" : "block";
+    });
+
+    const toggleIcon = activeFilters.querySelector('span:last-child');
+    if (toggleIcon) {
+      toggleIcon.textContent = (toggleIcon.textContent.trim() === "+") ? "-" : "+";
+    }
+  });
 }

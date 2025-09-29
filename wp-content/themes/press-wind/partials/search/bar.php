@@ -1,6 +1,6 @@
 <?php
 
-$position_css = (is_front_page() || is_page('tous-les-campings-de-charente-maritime'))? 'relative' : 'md:!absolute md:bottom-[50px]' ;
+$position_css = (is_front_page() || is_page('carte-camping'))? 'relative' : 'md:!absolute md:bottom-[50px]' ;
 $bg_css = (!is_front_page())? 'md:bg-[#F6F6F6]' : 'md:bg-white';
 $margin_css = (!is_front_page())? 'mb-[60px]' : '' ; 
 $destinations = get_terms([
@@ -47,12 +47,12 @@ $destinations = get_terms([
         <?= __('Réservable sur Campings.online', 'fdhpa17'); ?>
       </p>
     </div>
-    <?php if(!is_page('tous-les-campings-de-charente-maritime') && !is_front_page()): ?>
+    <?php if(!is_page('carte-camping') && !is_front_page()): ?>
     <div style="display:none"><?php echo facetwp_display( 'template', 'listing' ); ?></div>
     <?php endif; ?>
     
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
-      <input type="submit" data-href="/tous-les-campings-de-charente-maritime/" name="online-reservation" id="" value="" class="!bg-orange border-0 w-[56px] h-[56px]
+      <input type="submit" data-href="/carte-camping/" name="online-reservation" id="" value="" class="!bg-orange border-0 w-[56px] h-[56px]
       fwp-submit
       rounded-[50%] bg-zoom bg-[20px_20px] bg-no-repeat
       cursor-pointer hover:!bg-green transition-all

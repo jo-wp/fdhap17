@@ -1,16 +1,36 @@
-.facetwp-facet .facetwp-toggle{
+.facetwp-facet .facetwp-toggle {
   @apply font-arial text-[#7F7F7F] text-[13px];
 }
-.splide-carousel-block-search-camping .splide__arrow--prev{
+.splide-carousel-block-search-camping .splide__arrow--prev {
   @apply -left-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] rotate-180 max-md:hidden;
 }
 .splide-carousel-block-search-camping .splide__arrow--prev svg,
-.splide-carousel-block-search-camping .splide__arrow--next svg{
+.splide-carousel-block-search-camping .splide__arrow--next svg {
   @apply hidden;
 }
-.splide-carousel-block-search-camping .splide__arrow--next{
-  @apply -right-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] max-md:hidden ;
+.splide-carousel-block-search-camping .splide__arrow--next {
+  @apply -right-[80px] bg-bg-carousel-block-camping bg-contain bg-no-repeat bg-transparent w-[60px] h-[60px] max-md:hidden;
 }
-.facetwp-dropdown{
+select,
+.facetwp-dropdown {
   @apply text-black;
+}
+
+@media (max-width: 768px) {
+  .splide-carousel-block-search-camping .splide__pagination {
+    position: absolute;
+    bottom: -30px;
+    display: flex;
+    flex-direction: row;
+    top: initial;
+    left: 0;
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    .splide__pagination__page {
+    @apply bg-green;
+  }
+  .block-search-campings .filters .facetwp-facet{
+    display:none;
+  }
 }
