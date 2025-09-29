@@ -68,13 +68,13 @@ $tabLangues = array_map(
 );
 
 $periodes_dateDebut = get_post_meta($post->ID, 'periodes_dateDebut', true);
-$periodes_dateFin =  get_post_meta($post->ID, 'periodes_dateFin', true);
-$periodes_type =  get_post_meta($post->ID, 'periodes_type', true);
+$periodes_dateFin = get_post_meta($post->ID, 'periodes_dateFin', true);
+$periodes_type = get_post_meta($post->ID, 'periodes_type', true);
 
 $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true);
 
 $post_id = get_the_ID();
-$tax     = 'destination';
+$tax = 'destination';
 
 $selected = get_the_terms($post_id, $tax);
 
@@ -123,8 +123,8 @@ $items_answer = get_field('items_answer');
     <?php $i = 0;
     foreach ($photos as $photo): ?>
       <img data-featherlight="<?= $photo['url']; ?>" src="<?= $photo['url']; ?>" alt="<?= $photo['caption']; ?>"
-        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?> <?= ($i>=1)? 'max-md:hidden' : '' ; ?>">
-    <?php $i++;
+        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2' : ''; ?> <?= ($i >= 1) ? 'max-md:hidden' : ''; ?>">
+      <?php $i++;
     endforeach; ?>
   </div>
   <div class="blocs flex max-md:flex-col-reverse md:flex-row items-start justify-between gap-[70px]">
@@ -135,20 +135,21 @@ $items_answer = get_field('items_answer');
           <a href=""
             class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline active  [&.active]:border-t-0 [&.active]:border-l-0 [&.active]:border-r-0 [&.active]:border-b [&.active]:border-[#333] [&.active]:border-solid">Présentation</a>
         </div>
-        <?php if($id_reservation_direct): ?>
-        <div>
-          <a href=""
-            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Disponibilités','fdhpa17'); ?></a>
-        </div>
+        <?php if ($id_reservation_direct): ?>
+          <div>
+            <a href=""
+              class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Disponibilités', 'fdhpa17'); ?></a>
+          </div>
         <?php endif; ?>
         <div>
           <a href=""
-            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Informations','fdhpa17'); ?></a>
+            class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Informations', 'fdhpa17'); ?></a>
         </div>
-        <?php if($items_answer): ?>
-        <div>
-          <a href="" class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Foire aux questions','fdhpa17'); ?></a>
-        </div>
+        <?php if ($items_answer): ?>
+          <div>
+            <a href=""
+              class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Foire aux questions', 'fdhpa17'); ?></a>
+          </div>
         <?php endif; ?>
       </div>
 
@@ -164,7 +165,7 @@ $items_answer = get_field('items_answer');
         <div>
 
           <script>
-            setTimeout(function() {
+            setTimeout(function () {
               document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability></ctv-availability>"
             });
           </script>
@@ -177,13 +178,13 @@ $items_answer = get_field('items_answer');
               url: 'https://bookingpremium.secureholiday.net/widgets/'
             };
 
-            (function(w, d, s, ctv, r, js, fjs) {
+            (function (w, d, s, ctv, r, js, fjs) {
               r = new XMLHttpRequest();
               r.open('GET', w[ctv].url + 'js/src.json');
               r.responseType = 'json';
               r.json = true;
               r.send();
-              r.onload = function() {
+              r.onload = function () {
                 w[ctv].src = r.responseType == 'json' ? r.response : JSON.parse(r.response);
                 js.src = w[ctv].src[0];
                 fjs.parentNode.insertBefore(js, fjs);
@@ -204,10 +205,11 @@ $items_answer = get_field('items_answer');
             <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
             <ul
               class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
-              <?php if ($capacite_nombreLocationMobilhomes) : ?>
+              <?php if ($capacite_nombreLocationMobilhomes): ?>
                 <li
                   class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                  <?= $capacite_nombreLocationMobilhomes ?> Mobil homes</li>
+                  <?= $capacite_nombreLocationMobilhomes ?> Mobil homes
+                </li>
               <?php endif; ?>
             </ul>
           </div>
@@ -215,12 +217,12 @@ $items_answer = get_field('items_answer');
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'confort');
           if ($confort_terms && !is_wp_error($confort_terms)):
-          ?>
+            ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Confort', 'fdhpa17'); ?></h3>
               <ul
                 class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
-                <?php foreach ($confort_terms as $confort_term) : ?>
+                <?php foreach ($confort_terms as $confort_term): ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
                     <?= $confort_term->name; ?>
@@ -228,20 +230,21 @@ $items_answer = get_field('items_answer');
                 <?php endforeach; ?>
               </ul>
             </div>
-          <?php endif;  ?>
+          <?php endif; ?>
           <?php
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'equipement');
           if ($confort_terms && !is_wp_error($confort_terms)):
-          ?>
+            ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Equipements', 'fdhpa17'); ?></h3>
               <ul
                 class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
-                <?php foreach ($confort_terms as $confort_term) : ?>
+                <?php foreach ($confort_terms as $confort_term): ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                    <?= $confort_term->name; ?></li>
+                    <?= $confort_term->name; ?>
+                  </li>
                 <?php endforeach; ?>
               </ul>
             </div>
@@ -251,15 +254,16 @@ $items_answer = get_field('items_answer');
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'service');
           if ($confort_terms && !is_wp_error($confort_terms)):
-          ?>
+            ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Services', 'fdhpa17'); ?></h3>
               <ul
                 class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
-                <?php foreach ($confort_terms as $confort_term) : ?>
+                <?php foreach ($confort_terms as $confort_term): ?>
                   <li
                     class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                    <?= $confort_term->name; ?></li>
+                    <?= $confort_term->name; ?>
+                  </li>
                 <?php endforeach; ?>
               </ul>
             </div>
@@ -270,7 +274,7 @@ $items_answer = get_field('items_answer');
             <h3 class="font-arial text-[23px] text-black"><?= __('Périodes d\'ouverture', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
               <p>
-                <?php if ($periodes_dateDebut && $periodes_dateFin):  ?>
+                <?php if ($periodes_dateDebut && $periodes_dateFin): ?>
                   <?php
                   $dstart = new DateTime($periodes_dateDebut);
                   $dend = new DateTime($periodes_dateFin);
@@ -294,11 +298,11 @@ $items_answer = get_field('items_answer');
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'atout');
           if ($confort_terms && !is_wp_error($confort_terms)):
-          ?>
+            ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Environnement', 'fdhpa17'); ?></h3>
               <div class="bloc-camping-informations__item__content">
-                <?php foreach ($confort_terms as $confort_term) : ?>
+                <?php foreach ($confort_terms as $confort_term): ?>
                   <p><?= $confort_term->name; ?></p>
                 <?php endforeach; ?>
               </div>
@@ -308,12 +312,24 @@ $items_answer = get_field('items_answer');
             <h3 class="font-arial text-[23px] text-black"><?= __('Capacité', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
               <p>
-                <?php if ($superficie): ?> <strong><?= __('Superficie :') ?></strong><?php endif; ?> <?php if ($superficie): echo $superficie; ?> m2 <br /><?php endif; ?>
-                <?php if ($nb_mobilhomes): echo __('Mobil-homes : ', 'fdhpa17') . $nb_mobilhomes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
-                <?php if ($nb_bungalows): echo __('Bungalows : ', 'fdhpa17') . $nb_bungalows; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
-                <?php if ($empl_campingcars): echo __('Campingcars : ') . $empl_campingcars; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
-                <?php if ($empl_caravanes): echo __('Caravanes : ') . $empl_caravanes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
-                <?php if ($empl_tentes): echo __('Tentes : ') . $empl_tentes; ?> <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($superficie): ?> <strong><?= __('Superficie :') ?></strong><?php endif; ?>
+                <?php if ($superficie):
+                  echo $superficie; ?> m2 <br /><?php endif; ?>
+                <?php if ($nb_mobilhomes):
+                  echo __('Mobil-homes : ', 'fdhpa17') . $nb_mobilhomes; ?>
+                  <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($nb_bungalows):
+                  echo __('Bungalows : ', 'fdhpa17') . $nb_bungalows; ?>
+                  <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_campingcars):
+                  echo __('Campingcars : ') . $empl_campingcars; ?>
+                  <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_caravanes):
+                  echo __('Caravanes : ') . $empl_caravanes; ?>
+                  <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
+                <?php if ($empl_tentes):
+                  echo __('Tentes : ') . $empl_tentes; ?>
+                  <?= __('emplacements', 'fdhpa17') ?><br /><?php endif; ?>
               </p>
             </div>
           </div>
@@ -340,7 +356,8 @@ $items_answer = get_field('items_answer');
       <div class="bloc-sidebar-open-close mb-[30px]">
         <p
           class="relative m-0 ml-[20px] md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
-          <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?></p>
+          <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?>
+        </p>
       </div>
       <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
         <p class=" font-ivymode text-[36px] font-[700] m-0">-20 %</p>
@@ -374,22 +391,26 @@ $items_answer = get_field('items_answer');
           </div>
         </div>
       </div>
-      <?php $website = get_post_meta($post->ID, 'site_web', true);?>
+      <?php $website = get_post_meta($post->ID, 'site_web', true); ?>
       <?php if ($price_mini_mobilhomes || $url_reservation_direct || $website): ?>
         <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
           <div>
             <?php if ($price_mini_mobilhomes): ?>
               <p class="m-0 text-center font-arial text-[15px] font-[400] text-black leading-[30px] mb-[10px]"><?= __('À partir
-              de : ', 'fdhpa17'); ?><span class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes;  ?><sup
+              de : ', 'fdhpa17'); ?><span
+                  class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes; ?><sup
                     class="font-arial text-[37px] font-[700] text-green">€</span></p>
-              <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]"><?= __('Location Mobil-Home / semaine', 'fdhpa17') ?></p>
+              <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">
+                <?= __('Location Mobil-Home / semaine', 'fdhpa17') ?></p>
             <?php endif; ?>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <?php if ($website): ?>
-                <a href="<?= $website; ?>" target="_blank" class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
+                <a href="<?= $website; ?>" target="_blank"
+                  class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
               <?php endif; ?>
               <?php if ($url_reservation_direct): ?>
-                <a href="<?= $url_reservation_direct; ?>" target="_blank" class="button button--bg-orange"><?= __('Réserver', 'fdhpa17'); ?></a>
+                <a href="<?= $url_reservation_direct; ?>" target="_blank"
+                  class="button button--bg-orange"><?= __('Réserver', 'fdhpa17'); ?></a>
               <?php endif; ?>
             </div>
           </div>
@@ -397,11 +418,18 @@ $items_answer = get_field('items_answer');
       <?php endif; ?>
       <div class="bloc-sidebar-contact px-[40px] py-[12px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
-          <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]"><?= __('Contactez', 'fdhpa17'); ?>
+          <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]">
+            <?= __('Contactez', 'fdhpa17'); ?>
           </p>
           <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-            [contact id=""]
+            <a href="#" class="button button--bg-orange"
+              data-featherlight="#contactFeatherlight"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+            <div class=" hidden ">
+              <div id="contactFeatherlight">
+                <?= do_shortcode('[ninja_form id=2]'); ?>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -462,14 +490,16 @@ $items_answer = get_field('items_answer');
             <?= get_the_modified_date('r', $post->ID); ?><br />
             par Fédération de l'Hôtellerie de Plein Air de Charente<br />
             Maritime<br />
-            (Identifiant de l'offre: 5752704)</p>
+            (Identifiant de l'offre: 5752704)
+          </p>
         </div>
       </div>
     </div>
   </div>
   <div class="bloc-camping-associated max-w-[1630px] mx-auto mt-[50px] md:mt-[100px]">
     <h2 class="text-center text-green text-[24px] md:text-[50px] font-[600] leading-[57px] mb-[80px]">
-      <?= _e('Les campings à proximité', 'fdhpa17') ?></h2>
+      <?= _e('Les campings à proximité', 'fdhpa17') ?>
+    </h2>
     <div
       class="bloc-camping-associated__items grid grid-cols-4 max-md:flex justify-center flex-row flex-wrap gap-[40px] max-md:overflow-x-scroll">
       <?php
@@ -479,14 +509,14 @@ $items_answer = get_field('items_answer');
 
       if (!empty($terms) && !is_wp_error($terms)) {
         $args = array(
-          'post_type'      => 'camping',
+          'post_type' => 'camping',
           'posts_per_page' => 4,
-          'post__not_in'   => array($current_id),
-          'tax_query'      => array(
+          'post__not_in' => array($current_id),
+          'tax_query' => array(
             array(
               'taxonomy' => 'destination',
-              'field'    => 'term_id',
-              'terms'    => $terms,
+              'field' => 'term_id',
+              'terms' => $terms,
             ),
           ),
         );
@@ -503,7 +533,7 @@ $items_answer = get_field('items_answer');
             $title = get_the_title();
             $prix_mini = get_post_meta(get_the_ID(), 'price_mini', true);
 
-            $tax     = 'destination';
+            $tax = 'destination';
 
             $selected = get_the_terms(get_the_ID(), $tax);
 
@@ -539,14 +569,14 @@ $items_answer = get_field('items_answer');
             }
 
             $image_featured_item = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
-      ?>
+            ?>
             <div class="bloc-camping-associated__items__item ">
               <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
                 style="background-image:url('<?= $image_featured_item; ?>');">
                 <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
                   <?php if ($prix_mini): ?>
                     <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">
-                      <?= __('À partir de', 'fdhpa17'); ?> <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
+                      <?= __('À partir de', 'fdhpa17'); ?>         <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
                     </span>
                   <?php endif; ?>
                   <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
@@ -565,7 +595,8 @@ $items_answer = get_field('items_answer');
                   <div class="flex flex-row gap-[8px]">
                     <img src="<?= esc_url(get_theme_file_uri('/assets/media/marker-v2.svg')) ?>" alt="icon localisation">
                     <p class="text-[#000] font-arial text-[14px]"><?= get_post_meta($post->ID, 'commune', true); ?> -
-                      <?= get_post_meta($post->ID, 'code_postal', true); ?></p>
+                      <?= get_post_meta($post->ID, 'code_postal', true); ?>
+                    </p>
                   </div>
                   <div>
                     <p class="text-black font-arial text-[12px]"><?= $destination_parent; ?></p>
@@ -577,7 +608,7 @@ $items_answer = get_field('items_answer');
                 </div>
               </div>
             </div>
-      <?php
+            <?php
           }
         }
 
@@ -586,9 +617,9 @@ $items_answer = get_field('items_answer');
       ?>
     </div>
   </div>
-  <?php 
+  <?php
   if ($items_answer):
-  ?>
+    ?>
     <div class="mt-[50px] md:mt-[100px]">
       <?= get_template_part('blocks/faq/template'); ?>
     </div>
