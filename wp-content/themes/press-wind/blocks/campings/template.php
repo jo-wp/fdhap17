@@ -80,11 +80,8 @@ if ('pager' === $facet['type']
       ?>
     </div>
     <div class="md:min-w-[70%]">
-      <h2 class="text-center text-[36px] leading-0"><?= __('Notre sélection','fdhpa17'); ?> <span class="font-arial text-[16px] block">de
-  
-      <?= __('camping à','fdhpa17'); ?> <?= $term->name ?></span></h2>
-      <p class=" text-center"><?= esc_html($campings_count); ?> camping<?= $campings_count > 1 ? 's' : '' ?>
-        trouvé<?= $campings_count > 1 ? 's' : '' ?>.</p>
+      <h2 class="text-center text-[36px] leading-0"><?= esc_html($campings_count); ?> camping<?= $campings_count > 1 ? 's' : '' ?></h2>
+      <p class=" text-center"><?= get_field('titre_du_bloc_selection_campings') ?></p>
       <?= do_shortcode('[facetwp template="full"]'); ?>
     </div>
   </div>
