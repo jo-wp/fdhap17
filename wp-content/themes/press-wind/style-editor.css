@@ -4588,6 +4588,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&\>\*\:nth-child\(3\)\]\:row-start-2>*:nth-child(3){
   grid-row-start: 2;
 }
+.\[\&_\.facetwp-dropdown\]\:max-w-\[160px\] .facetwp-dropdown{
+  max-width: 160px;
+}
 .\[\&_\.facetwp-facet\]\:mb-0 .facetwp-facet{
   margin-bottom: 0px;
 }
@@ -4613,6 +4616,21 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_\.facetwp-page\]\:text-green .facetwp-page{
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
+}
+.\[\&_\.facetwp-search\]\:\!min-w-\[50px\] .facetwp-search{
+  min-width: 50px !important;
+}
+.\[\&_\.facetwp-search\]\:max-w-\[80px\] .facetwp-search{
+  max-width: 80px;
+}
+.\[\&_\.facetwp-search\]\:rounded-\[20px\] .facetwp-search{
+  border-radius: 20px;
+}
+.\[\&_\.facetwp-search\]\:border-0 .facetwp-search{
+  border-width: 0px;
+}
+.\[\&_\.facetwp-search\]\:p-\[15px_30px\] .facetwp-search{
+  padding: 15px 30px;
 }
 .\[\&_\.page-numbers\.current\]\:bg-white .page-numbers.current{
   --tw-bg-opacity: 1;

@@ -41,15 +41,21 @@ $template = [
     <div
       class="mx-[30px] md:mx-[130px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
       <div
-        class="filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[30px]">
+        class="filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
         <div
-          class="flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[30px] p-[30px] rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
+          class="[&_.facetwp-dropdown]:max-w-[160px]
+          [&_.facetwp-search]:max-w-[80px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[15px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
+          flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
           <div class="md:hidden cursor-pointer active-filters"><span class="text-orange text-[14px] font-arial"><?= __('Afficher / Masquer les filtres','fdhpa17') ?></span><span
               class="bg-green rounded-full text-white text-[13px] w-[16px] h-[16px] inline-flex items-center justify-center ml-[10px]">+</span>
           </div>
           <?= do_shortcode('[facetwp facet="classement_block"]'); ?>
+          <?= do_shortcode('[facetwp facet="services_block"]'); ?>
+          <?= do_shortcode('[facetwp facet="hebergements_block"]'); ?>
+          <?= do_shortcode('[facetwp facet="expriences_block"]'); ?>
+          <?= do_shortcode('[facetwp facet="input_text_block"]'); ?>
+          
         </div>
-
         <div data-button="map"
           class="button-map cursor-pointer flex flex-row flex-wrap justify-center hover:bg-green transition-all items-center gap-2 bg-orange rounded-[50px] px-[27px] py-[15px]">
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-map.svg" alt="Icon map">
