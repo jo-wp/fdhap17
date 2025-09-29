@@ -52,139 +52,132 @@ add_filter('gettext', function ($translated_text, $text, $domain) {
  */
 add_filter('facetwp_query_args', function ($args, $class) {
 
-	// Ne cible que le CPT "camping"
-	$post_types = (array) ($args['post_type'] ?? []);
-	if (empty($post_types) || ! in_array('camping', $post_types, true)) {
-		return $args;
-	}
+    // Ne cible que le CPT "camping"
+    $post_types = (array) ($args['post_type'] ?? []);
+    if (empty($post_types) || ! in_array('camping', $post_types, true)) {
+        return $args;
+    }
 
-	// --- 1) Appel API + cache (avec dates) ---
-	// 1.a) Récup des dates (ex: via query string ?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD)
-	$start_raw = isset($_GET['_date_start']) ? trim($_GET['_date_start']) : null;
-	$end_raw   = isset($_GET['_date_end'])   ? trim($_GET['_date_end'])   : null;
+    // --- 1) Appel API + cache (avec dates) ---
+    $start_raw = isset($_GET['_date_arrive']) ? trim($_GET['_date_arrive']) : null;
+    $end_raw   = isset($_GET['_date_depart'])   ? trim($_GET['_date_depart'])   : null;
 
-	// 1.b) Validation & normalisation (YYYY-MM-DD)
-	$start = $start_raw ? DateTime::createFromFormat('Y-m-d', $start_raw) : null;
-	$end   = $end_raw   ? DateTime::createFromFormat('Y-m-d', $end_raw)   : null;
-	$start_valid = $start && $start->format('Y-m-d') === $start_raw;
-	$end_valid   = $end   && $end->format('Y-m-d')   === $end_raw;
+			
+    $start = $start_raw ? DateTime::createFromFormat('Y-m-d', $start_raw) : null;
+    $end   = $end_raw   ? DateTime::createFromFormat('Y-m-d', $end_raw)   : null;
+    $start_valid = $start && $start->format('Y-m-d') === $start_raw;
+    $end_valid   = $end   && $end->format('Y-m-d')   === $end_raw;
 
-	// 1.c) Defaults si non fournis (ou invalides)
-	if (! $start_valid || ! $end_valid) {
-		$dateFilters = [
-			'startDate' => date('Y-m-d', strtotime('+1 day')),
-			'endDate'   => date('Y-m-d', strtotime('+10 days')),
-		];
-	} else {
-		// S'assure que end >= start
-		if ($end < $start) {
-			// swap si inversées
-			[$start, $end] = [$end, $start];
-		}
-		$dateFilters = [
-			'startDate' => $start->format('Y-m-d'),
-			'endDate'   => $end->format('Y-m-d'),
-		];
-	}
+    if (! $start_valid || ! $end_valid) {
+        $dateFilters = [
+            'startDate' => date('Y-m-d', strtotime('+1 day')),
+            'endDate'   => date('Y-m-d', strtotime('+10 days')),
+        ];
+    } else {
+        if ($end < $start) {
+            [$start, $end] = [$end, $start];
+        }
+        $dateFilters = [
+            'startDate' => $start->format('Y-m-d'),
+            'endDate'   => $end->format('Y-m-d'),
+        ];
+    }
 
-	// 1.d) Clé de cache dépendante des dates
-	$cache_key = 'ctoutvert_available_establishment_ids_' . md5(wp_json_encode($dateFilters));
-	$available_ids = get_transient($cache_key);
+    $cache_key = 'ctoutvert_available_establishment_ids_' . md5(wp_json_encode($dateFilters));
+    $available_ids = get_transient($cache_key);
 
-	if (false === $available_ids) {
-		$available_ids = [];
+    if (false === $available_ids) {
+        $available_ids = [];
+        $res = Ctoutvert::ctoutvert_search_holidays($dateFilters);
 
-		// Appel API avec dates
-		$res = Ctoutvert::ctoutvert_search_holidays($dateFilters);
+        if (
+            is_object($res)
+            && isset($res->engine_returnAvailabilityAdvancedResult)
+            && is_object($res->engine_returnAvailabilityAdvancedResult)
+            && isset($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList)
+            && is_object($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList)
+            && isset($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations)
+            && is_array($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations)
+        ) {
+            foreach ($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations as $info) {
+                if (
+                    is_object($info)
+                    && isset($info->establishmentInformation)
+                    && is_object($info->establishmentInformation)
+                    && isset($info->establishmentInformation->establishmentId)
+                    && is_numeric($info->establishmentInformation->establishmentId)
+                ) {
+                    $available_ids[] = (int) $info->establishmentInformation->establishmentId;
+                }
+            }
+        }
 
-		// Sécurise l’accès à la structure renvoyée (stdClass imbriquées)
-		if (
-			is_object($res)
-			&& isset($res->engine_returnAvailabilityAdvancedResult)
-			&& is_object($res->engine_returnAvailabilityAdvancedResult)
-			&& isset($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList)
-			&& is_object($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList)
-			&& isset($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations)
-			&& is_array($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations)
-		) {
-			foreach ($res->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations as $info) {
-				if (
-					is_object($info)
-					&& isset($info->establishmentInformation)
-					&& is_object($info->establishmentInformation)
-					&& isset($info->establishmentInformation->establishmentId)
-					&& is_numeric($info->establishmentInformation->establishmentId)
-				) {
-					$available_ids[] = (int) $info->establishmentInformation->establishmentId;
-				}
-			}
-		}
+        $available_ids = array_values(array_unique($available_ids));
+        $ttl = ! empty($available_ids) ? 5 * MINUTE_IN_SECONDS : 60;
+        set_transient($cache_key, $available_ids, $ttl);
+    }
 
-		$available_ids = array_values(array_unique($available_ids));
+    // --- 2) Construit la meta_query : (NOT EXISTS) OR ('' vide) OR (IN API) ---
+    $meta_query = isset($args['meta_query']) && is_array($args['meta_query']) ? $args['meta_query'] : [];
+    $or_group   = ['relation' => 'OR'];
 
-		// TTL : 5 min si on a des résultats, 60s si vide (pour éviter de "figer" un vide temporaire)
-		$ttl = ! empty($available_ids) ? 5 * MINUTE_IN_SECONDS : 60;
-		set_transient($cache_key, $available_ids, $ttl);
-	}
+    $or_group[] = [
+        'key'     => 'id_reservation_direct',
+        'compare' => 'NOT EXISTS',
+    ];
 
+    $or_group[] = [
+        'key'     => 'id_reservation_direct',
+        'value'   => '',
+        'compare' => '=',
+    ];
 
-	// --- 2) Construit la meta_query ---
-	// On veut : (meta NOT EXISTS) OR (meta == '') OR (meta IN $available_ids)
-	$meta_query = isset($args['meta_query']) && is_array($args['meta_query']) ? $args['meta_query'] : [];
-	$or_group   = ['relation' => 'OR'];
+    if (! empty($available_ids)) {
+        $or_group[] = [
+            'key'     => 'id_reservation_direct',
+            'value'   => $available_ids,
+            'compare' => 'IN',
+            'type'    => 'NUMERIC',
+        ];
+    }
 
-	// A) Toujours inclure ceux SANS meta
-	$or_group[] = [
-		'key'     => 'id_reservation_direct',
-		'compare' => 'NOT EXISTS',
-	];
+    $meta_query[]       = $or_group;
+    $args['meta_query'] = $meta_query;
 
-	// B) Toujours inclure ceux avec meta vide
-	$or_group[] = [
-		'key'     => 'id_reservation_direct',
-		'value'   => '',
-		'compare' => '=',
-	];
+    // -- Nettoyage : retirer post__in s'il est vide ou ne contient que des valeurs "falsy"
+    if ( isset( $args['post__in'] ) ) {
+        $post__in = (array) $args['post__in'];
+        $post__in = array_filter($post__in, static function($v) {
+            return !empty($v);
+        });
+        if ( empty($post__in) ) {
+            unset($args['post__in']);
+        } else {
+            $args['post__in'] = array_values($post__in);
+        }
+    }
 
-	// C) Inclure ceux dont la meta (numérique) est dans la liste API
-	if (! empty($available_ids)) {
-		$or_group[] = [
-			'key'     => 'id_reservation_direct',
-			'value'   => $available_ids,
-			'compare' => 'IN',
-			'type'    => 'NUMERIC',
-		];
-	}
-
-	$meta_query[]        = $or_group;
-	$args['meta_query']  = $meta_query;
-
-	// Laisse ton tri / pagination existants (exemple) :
-	// $args['orderby']        = [ 'title' => 'ASC' ];
-	// $args['posts_per_page'] = 6;
-
-	return $args;
-}, 10, 2);
+    return $args;
+}, 100, 2);
 
 
-// add_filter( 'facetwp_render_output', function( $output, $params ) {
+add_filter( 'facetwp_render_output', function( $output, $params ) {
+	
 
-// 	var_dump($output);
-// 	die();
-//     if ( isset( $output['settings']['date_start'] ) ) {
-//         if ( 0 == $output['settings']['date_start']['range']['min']['minDate'] ) {
-//             $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; // start date min
-//         }
-//         if ( 0 == $output['settings']['date_start']['range']['min']['maxDate'] ) {
-//             $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; // start date max
-//         }
-//         if ( 0 == $output['settings']['date_start']['range']['max']['minDate'] ) {
-//             $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; // End date min
-//         }
-//         if ( 0 == $output['settings']['date_start']['range']['max']['maxDate'] ) {
-//             $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; // End date max
-//         }
-//     }
+    if ( isset( $output['settings']['date_start'] ) ) {
+        if ( 0 == $output['settings']['date_start']['range']['min']['minDate'] ) {
+            $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; // start date min
+        }
+        if ( 0 == $output['settings']['date_start']['range']['min']['maxDate'] ) {
+            $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; // start date max
+        }
+        if ( 0 == $output['settings']['date_start']['range']['max']['minDate'] ) {
+            $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; // End date min
+        }
+        if ( 0 == $output['settings']['date_start']['range']['max']['maxDate'] ) {
+            $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; // End date max
+        }
+    }
 
-//     return $output;
-//   }, 10, 2 );
+    return $output;
+  }, 10, 2 );
