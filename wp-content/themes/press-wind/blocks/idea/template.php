@@ -96,7 +96,6 @@ $template = [
                         <h3
                           class="text-white text-[20px] no-underline font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
                           <?= $item['article']->post_title; ?>
-                          <span class="md:hidden block text-green text-[12px] no-underline">Explorer ></span>
                         </h3>
                       </div>
                     </a>

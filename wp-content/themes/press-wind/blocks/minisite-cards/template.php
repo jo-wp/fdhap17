@@ -53,7 +53,6 @@ $template = [
                                     style="background-image: url('<?php echo $image["url"]; ?>)">
                                 <div class="m-0 relative z-10 mb-[10px] max-lg:rounded-b-[10px] max-lg:flex max-md:flex-col max-md:items-center max-md:justify-center max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
                                     <h3 class="text-black md:text-white text-[16px] md:text-[20px] font-[400] md:font-bold font-arial my-0"><?php echo $title ?></h3>
-                                    <span class="text-[12px] md:hidden text-green items-center after:content-[''] after:bg-arrow-mini-green after:w-[7px] after:h-[8px] after:inline-block after:ml-2">Explorer</span>
                                 </div>
                             </a>
 
