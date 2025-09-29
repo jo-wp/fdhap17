@@ -3,38 +3,40 @@
 class FacetWP_Facet_Date_Range extends FacetWP_Facet
 {
 
-    function __construct() {
-        $this->label = __( 'Date Range', 'fwp' );
-        $this->fields = [ 'source_other', 'compare_type', 'date_fields', 'date_format' ];
+    function __construct()
+    {
+        $this->label = __('Date Range', 'fwp');
+        $this->fields = ['source_other', 'compare_type', 'date_fields', 'date_format'];
     }
 
 
     /**
      * Generate the facet HTML
      */
-    function render( $params ) {
+    function render($params)
+    {
 
         $output = '';
         $value = (array) $params['selected_values'];
-        $fields = empty( $params['facet']['fields'] ) ? 'both' : $params['facet']['fields'];
+        $fields = empty($params['facet']['fields']) ? 'both' : $params['facet']['fields'];
 
-        $text_date = facetwp_i18n( __( 'Date', 'fwp-front' ) );
-        $text_start_date = facetwp_i18n( __( 'Start date', 'fwp-front' ) );
-        $text_end_date = facetwp_i18n( __( 'End date', 'fwp-front' ) );
+        $text_date = facetwp_i18n(__('Date', 'fwp-front'));
+        $text_start_date = facetwp_i18n(__('Start date', 'fwp-front'));
+        $text_end_date = facetwp_i18n(__('End date', 'fwp-front'));
 
-        $text_date_empty = facetwp_i18n( __( 'No dates', 'fwp-front' ) );
-        $text_start_date_empty = facetwp_i18n( __( 'No start dates', 'fwp-front' ) );
-        $text_end_date_empty = facetwp_i18n( __( 'No end dates', 'fwp-front' ) );
+        $text_date_empty = facetwp_i18n(__('No dates', 'fwp-front'));
+        $text_start_date_empty = facetwp_i18n(__('No start dates', 'fwp-front'));
+        $text_end_date_empty = facetwp_i18n(__('No end dates', 'fwp-front'));
 
 
-        if ( 'exact' == $fields ) {
-            $output .= '<input type="text" class="facetwp-date facetwp-date-min" data-empty="' . esc_attr( $text_date_empty ) . '" value="' . esc_attr( $value[0] ?? '' ) . '" placeholder="' . esc_attr( $text_date ) . '" />';
+        if ('exact' == $fields) {
+            $output .= '<input type="text" class="facetwp-date facetwp-date-min" data-empty="' . esc_attr($text_date_empty) . '" value="' . esc_attr($value[0] ?? '') . '" placeholder="' . esc_attr($text_date) . '" />';
         }
-        if ( 'both' == $fields || 'start_date' == $fields ) {
-            $output .= '<input type="text" class="facetwp-date facetwp-date-min" data-empty="' . esc_attr( $text_start_date_empty ) . '" value="' . esc_attr( $value[0] ?? '' ) . '" placeholder="' . esc_attr( $text_start_date ) . '" />';
+        if ('both' == $fields || 'start_date' == $fields) {
+            $output .= '<input type="text" class="facetwp-date facetwp-date-min" data-empty="' . esc_attr($text_start_date_empty) . '" value="' . esc_attr($value[0] ?? '') . '" placeholder="' . esc_attr($text_start_date) . '" />';
         }
-        if ( 'both' == $fields || 'end_date' == $fields ) {
-            $output .= '<input type="text" class="facetwp-date facetwp-date-max" data-empty="' . esc_attr( $text_end_date_empty ) . '" value="' . esc_attr( $value[1] ?? '' ) . '" placeholder="' . esc_attr( $text_end_date ) . '" />';
+        if ('both' == $fields || 'end_date' == $fields) {
+            $output .= '<input type="text" class="facetwp-date facetwp-date-max" data-empty="' . esc_attr($text_end_date_empty) . '" value="' . esc_attr($value[1] ?? '') . '" placeholder="' . esc_attr($text_end_date) . '" />';
         }
 
         return $output;
@@ -44,102 +46,117 @@ class FacetWP_Facet_Date_Range extends FacetWP_Facet
     /**
      * Filter the query based on selected values
      */
-    function filter_posts( $params ) {
+    function filter_posts($params)
+    {
+        // global $wpdb;
+
+        // $facet = $params['facet'];
+        // $values = $params['selected_values'];
+        // $where = '';
+
+        // $min = empty( $values[0] ) ? false : $values[0];
+        // $max = empty( $values[1] ) ? false : $values[1];
+
+        // $fields = $facet['fields'] ?? 'both';
+        // $compare_type = empty( $facet['compare_type'] ) ? 'basic' : $facet['compare_type'];
+        // $is_dual = ! empty( $facet['source_other'] );
+
+        // if ( $is_dual && 'basic' != $compare_type ) {
+        //     if ( 'exact' == $fields ) {
+        //         $max = $min;
+        //     }
+
+        //     /**
+        //      * Enclose type defaults
+        //      * default min or max to 
+        //      * opposite value
+        //      **/
+        //     if ( 'enclose' == $compare_type ) {
+        //         $min = ( false !== $min ) ? $min : $max;
+        //         $max = ( false !== $max ) ? $max : $min;
+        //     }
+
+        //     $min = ( false !== $min ) ? $min : '0000-00-00';
+        //     $max = ( false !== $max ) ? $max : '3000-12-31';
+
+        //     /**
+        //      * Enclose compare
+        //      * The post's range must surround the user-defined range
+        //      */
+        //     if ( 'enclose' == $compare_type ) {
+        //         $where .= " AND LEFT(facet_value, 10) <= '$min'";
+        //         $where .= " AND LEFT(facet_display_value, 10) >= '$max'";
+        //     }
+
+        //     /**
+        //      * Intersect compare
+        //      * @link http://stackoverflow.com/a/325964
+        //      */
+        //     if ( 'intersect' == $compare_type ) {
+        //         $where .= " AND LEFT(facet_value, 10) <= '$max'";
+        //         $where .= " AND LEFT(facet_display_value, 10) >= '$min'";
+        //     }
+        // }
+
+        // /**
+        //  * Basic compare
+        //  * The user-defined range must surround the post's range
+        //  */
+        // else {
+        //     if ( 'exact' == $fields ) {
+        //         $max = $min;
+        //     }
+        //     if ( false !== $min ) {
+        //         $where .= " AND LEFT(facet_value, 10) >= '$min'";
+        //     }
+        //     if ( false !== $max ) {
+        //         $where .= " AND LEFT(facet_display_value, 10) <= '$max'";
+        //     }
+        // }
+
+        // $sql = "
+        // SELECT DISTINCT post_id FROM {$wpdb->prefix}facetwp_index
+        // WHERE facet_name = '{$facet['name']}' $where";
+        // return facetwp_sql( $sql, $facet );
+
         global $wpdb;
 
         $facet = $params['facet'];
-        $values = $params['selected_values'];
-        $where = '';
 
-        $min = empty( $values[0] ) ? false : $values[0];
-        $max = empty( $values[1] ) ? false : $values[1];
-
-        $fields = $facet['fields'] ?? 'both';
-        $compare_type = empty( $facet['compare_type'] ) ? 'basic' : $facet['compare_type'];
-        $is_dual = ! empty( $facet['source_other'] );
-
-        if ( $is_dual && 'basic' != $compare_type ) {
-            if ( 'exact' == $fields ) {
-                $max = $min;
-            }
-
-            /**
-             * Enclose type defaults
-             * default min or max to 
-             * opposite value
-             **/
-            if ( 'enclose' == $compare_type ) {
-                $min = ( false !== $min ) ? $min : $max;
-                $max = ( false !== $max ) ? $max : $min;
-            }
-
-            $min = ( false !== $min ) ? $min : '0000-00-00';
-            $max = ( false !== $max ) ? $max : '3000-12-31';
-
-            /**
-             * Enclose compare
-             * The post's range must surround the user-defined range
-             */
-            if ( 'enclose' == $compare_type ) {
-                $where .= " AND LEFT(facet_value, 10) <= '$min'";
-                $where .= " AND LEFT(facet_display_value, 10) >= '$max'";
-            }
-
-            /**
-             * Intersect compare
-             * @link http://stackoverflow.com/a/325964
-             */
-            if ( 'intersect' == $compare_type ) {
-                $where .= " AND LEFT(facet_value, 10) <= '$max'";
-                $where .= " AND LEFT(facet_display_value, 10) >= '$min'";
-            }
-        }
-
-        /**
-         * Basic compare
-         * The user-defined range must surround the post's range
-         */
-        else {
-            if ( 'exact' == $fields ) {
-                $max = $min;
-            }
-            if ( false !== $min ) {
-                $where .= " AND LEFT(facet_value, 10) >= '$min'";
-            }
-            if ( false !== $max ) {
-                $where .= " AND LEFT(facet_display_value, 10) <= '$max'";
-            }
-        }
-
+        // Ne rien filtrer selon la date : on n'ajoute aucune contrainte min/max
         $sql = "
-        SELECT DISTINCT post_id FROM {$wpdb->prefix}facetwp_index
-        WHERE facet_name = '{$facet['name']}' $where";
-        return facetwp_sql( $sql, $facet );
+        SELECT DISTINCT post_id
+        FROM {$wpdb->prefix}facetwp_index
+        WHERE facet_name = '{$facet['name']}'";
+
+        return facetwp_sql($sql, $facet);
     }
 
 
     /**
      * Output any front-end scripts
      */
-    function front_scripts() {
+    function front_scripts()
+    {
         FWP()->display->assets['fDate.css'] = FACETWP_URL . '/assets/vendor/fDate/fDate.css';
         FWP()->display->assets['fDate.js'] = FACETWP_URL . '/assets/vendor/fDate/fDate.min.js';
     }
 
 
-    function register_fields() {
+    function register_fields()
+    {
         return [
             'date_fields' => [
                 'type' => 'alias',
                 'items' => [
                     'fields' => [
                         'type' => 'select',
-                        'label' => __( 'Fields to show', 'fwp' ),
+                        'label' => __('Fields to show', 'fwp'),
                         'choices' => [
-                            'both' => __( 'Start + End Dates', 'fwp' ),
-                            'exact' => __( 'Exact Date', 'fwp' ),
-                            'start_date' => __( 'Start Date', 'fwp' ),
-                            'end_date' => __( 'End Date', 'fwp' )
+                            'both' => __('Start + End Dates', 'fwp'),
+                            'exact' => __('Exact Date', 'fwp'),
+                            'start_date' => __('Start Date', 'fwp'),
+                            'end_date' => __('End Date', 'fwp')
                         ]
                     ]
                 ]
@@ -148,7 +165,7 @@ class FacetWP_Facet_Date_Range extends FacetWP_Facet
                 'type' => 'alias',
                 'items' => [
                     'format' => [
-                        'label' => __( 'Display format', 'fwp' ),
+                        'label' => __('Display format', 'fwp'),
                         'notes' => 'See available <a href="https://facetwp.com/help-center/facets/facet-types/date-range/#tokens" target="_blank">formatting tokens</a>',
                         'placeholder' => 'Y-m-d'
                     ]
@@ -161,44 +178,34 @@ class FacetWP_Facet_Date_Range extends FacetWP_Facet
     /**
      * (Front-end) Attach settings to the AJAX response
      */
-    function settings_js( $params ) {
+    function settings_js($params)
+    {
         global $wpdb;
 
         $facet = $params['facet'];
         $selected_values = $params['selected_values'];
-        $fields = empty( $facet['fields'] ) ? 'both' : $facet['fields'];
-        $format = empty( $facet['format'] ) ? '' : $facet['format'];
+        $fields = empty($facet['fields']) ? 'both' : $facet['fields'];
+        $format = empty($facet['format']) ? '' : $facet['format'];
 
-        // Use "OR" mode by excluding the facet's own selection
-        $where_clause = $this->get_where_clause( $facet );
+        // Plage volontairement immense pour "désactiver" les bornes
+        $min_any = '0000-01-01';
+        $max_any = '3000-12-31';
 
-        $sql = "
-        SELECT MIN(facet_value) AS `minDate`, MAX(facet_display_value) AS `maxDate` FROM {$wpdb->prefix}facetwp_index
-        WHERE facet_name = '{$facet['name']}' AND facet_display_value != '' $where_clause";
-        $row = $wpdb->get_row( $sql );
-
-        $min = substr( $row->minDate ?? '', 0, 10 );
-        $max = substr( $row->maxDate ?? '', 0, 10 );
-
-        if ( 'both' == $fields ) {
-            $min_upper = ! empty( $selected_values[1] ) ? $selected_values[1] : $max;
-            $max_lower = ! empty( $selected_values[0] ) ? $selected_values[0] : $min;
-
+        if ('both' == $fields) {
             $range = [
                 'min' => [
-                    'minDate' => $min,
-                    'maxDate' => $min_upper
+                    'minDate' => $min_any,
+                    'maxDate' => $max_any
                 ],
                 'max' => [
-                    'minDate' => $max_lower,
-                    'maxDate' => $max
+                    'minDate' => $min_any,
+                    'maxDate' => $max_any
                 ]
             ];
-        }
-        else {
+        } else {
             $range = [
-                'minDate' => $min,
-                'maxDate' => $max
+                'minDate' => $min_any,
+                'maxDate' => $max_any
             ];
         }
 
@@ -211,9 +218,10 @@ class FacetWP_Facet_Date_Range extends FacetWP_Facet
     }
 
 
-    function get_i18n_labels() {
+    function get_i18n_labels()
+    {
         $locale = get_locale();
-        $locale = empty( $locale ) ? 'en' : substr( $locale, 0, 2 );
+        $locale = empty($locale) ? 'en' : substr($locale, 0, 2);
 
         $locales = [
             'ca' => [
@@ -296,9 +304,9 @@ class FacetWP_Facet_Date_Range extends FacetWP_Facet
             ]
         ];
 
-        if ( isset( $locales[ $locale ] ) ) {
-            $locales[ $locale ]['clearText'] = __( 'Clear', 'fwp-front' );
-            return $locales[ $locale ];
+        if (isset($locales[$locale])) {
+            $locales[$locale]['clearText'] = __('Clear', 'fwp-front');
+            return $locales[$locale];
         }
 
         return '';
