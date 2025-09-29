@@ -17,6 +17,11 @@ if ($term && !empty($term->term_id)) {
 
 //ACF FIELDS
 $hero_type = get_field('hero_type', $id);
+
+if(is_404()){
+  $hero_type='tiny';
+}
+
 $activate_search = get_field('activate_search', $id);
 $carousel_images = get_field('carousel_images', $id) ?: [];
 $count_carousel_images = count($carousel_images);
@@ -70,9 +75,7 @@ switch ($hero_type) {
 
 
 $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
-if(is_404()){
-  $hero_type='middle';
-}
+
 
 ?>
 
