@@ -7,13 +7,13 @@
  * Version: 1.0.0
  */
 
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
   exit;
 }
 
 // ▶️ Dépendances admin pour l’upload en CLI
 if (defined('WP_CLI') && WP_CLI) {
-  if (! function_exists('media_handle_sideload')) {
+  if (!function_exists('media_handle_sideload')) {
     require_once ABSPATH . 'wp-admin/includes/file.php';
     require_once ABSPATH . 'wp-admin/includes/media.php';
     require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -29,16 +29,16 @@ class APIDAE_Service
   public static function connect_to_apidae($endpoint, $params = [], $method = 'GET', $json = false, $retries = 3, $sleepSeconds = 1)
   {
     $config = [
-      'base_url'  => 'https://api.apidae-tourisme.com/api/v002',
-      'api_key'   => defined('APIDAE_KEY') ? APIDAE_KEY : '',
+      'base_url' => 'https://api.apidae-tourisme.com/api/v002',
+      'api_key' => defined('APIDAE_KEY') ? APIDAE_KEY : '',
       'project_id' => defined('APIDAE_PROJECT_ID') ? APIDAE_PROJECT_ID : '',
-      'headers'   => ['Content-Type' => 'application/json'],
-      'timeout'   => 60,
+      'headers' => ['Content-Type' => 'application/json'],
+      'timeout' => 60,
     ];
 
     // Clés API
     $params = array_merge([
-      'apiKey'   => $config['api_key'],
+      'apiKey' => $config['api_key'],
       'projetId' => $config['project_id'],
     ], $params);
 
@@ -110,7 +110,8 @@ class APIDAE_Service
    */
   protected static function extract_term_labels($vals): array
   {
-    if ($vals === null) return [];
+    if ($vals === null)
+      return [];
 
     // Normalise en liste :
     if (!is_array($vals)) {
@@ -143,6 +144,61 @@ class APIDAE_Service
     return array_values(array_unique($out));
   }
 
+  protected static function normalize_term_items($vals): array
+  {
+    if ($vals === null)
+      return [];
+
+    // Emballe en liste
+    if (!is_array($vals)) {
+      $vals = [$vals];
+    } else {
+      $isAssoc = $vals !== [] && array_keys($vals) !== range(0, count($vals) - 1);
+      if ($isAssoc)
+        $vals = [$vals];
+    }
+
+    $out = [];
+    foreach ($vals as $v) {
+      // Cas { name, slug } déjà prêt
+      if (is_array($v) && isset($v['name'])) {
+        $name = trim(wp_strip_all_tags((string) $v['name']));
+        if ($name === '')
+          continue;
+        $slug = isset($v['slug']) && $v['slug'] !== '' ? sanitize_title((string) $v['slug']) : sanitize_title($name);
+        $out[] = ['name' => $name, 'slug' => $slug];
+        continue;
+      }
+
+      // Cas objet/tableau APIDAE
+      if (is_array($v)) {
+        $name = $v['libelleFr'] ?? $v['nom'] ?? $v['name'] ?? $v['title'] ?? '';
+        $name = trim(wp_strip_all_tags((string) $name));
+        if ($name === '')
+          continue;
+        $out[] = ['name' => $name, 'slug' => sanitize_title($name)];
+        continue;
+      }
+
+      // Cas string
+      $name = trim(wp_strip_all_tags((string) $v));
+      if ($name === '')
+        continue;
+      $out[] = ['name' => $name, 'slug' => sanitize_title($name)];
+    }
+
+    // Uniques par slug (priorité au premier rencontré)
+    $seen = [];
+    $uniq = [];
+    foreach ($out as $it) {
+      if (!isset($seen[$it['slug']])) {
+        $seen[$it['slug']] = true;
+        $uniq[] = $it;
+      }
+    }
+    return $uniq;
+  }
+
 
 
   /**
@@ -151,26 +207,22 @@ class APIDAE_Service
    */
   protected static function set_post_terms_safe(int $post_id, string $taxonomy, $vals, bool $replace = true): void
   {
-    if (!taxonomy_exists($taxonomy)) {
-      // Si la taxo n'est pas enregistrée, on ne fait rien
+    if (!taxonomy_exists($taxonomy))
       return;
-    }
 
-    $labels = self::extract_term_labels($vals);
-    // Si tu veux VIDER la taxo quand la source est vide, décommente la ligne ci-dessous :
-    // if (empty($labels)) { wp_set_object_terms($post_id, [], $taxonomy); return; }
-    if (empty($labels)) {
+    $items = self::normalize_term_items($vals);
+    if (empty($items))
       return;
-    }
 
     $term_ids = [];
-    foreach ($labels as $name) {
-      $slug = sanitize_title($name);
+    foreach ($items as $it) {
+      $name = $it['name'];
+      $slug = $it['slug'] ?: sanitize_title($name);
 
-      // Vérifie d'abord par slug (évite les doublons d'accents/majuscules)
+      // D’abord par slug
       $existing = term_exists($slug, $taxonomy);
       if (!$existing) {
-        // fallback par nom si le slug n'est pas trouvé
+        // fallback par nom
         $existing = term_exists($name, $taxonomy);
       }
 
@@ -181,14 +233,12 @@ class APIDAE_Service
         if (!is_wp_error($created)) {
           $term_ids[] = (int) $created['term_id'];
         } else {
-          // Debug utile en dev
           error_log("[APIDAE] wp_insert_term failed for {$taxonomy} / {$name}: " . $created->get_error_message());
         }
       }
     }
 
     if (!empty($term_ids)) {
-      // $replace=true => remplace complètement la liste ; false => fusionne/ajoute
       wp_set_object_terms($post_id, $term_ids, $taxonomy, $append = !$replace);
     }
   }
@@ -219,35 +269,35 @@ class APIDAE_Service
   {
 
     $apidae_id = $item['id'] ?? null;
-    if (! $apidae_id) {
+    if (!$apidae_id) {
       return ['ok' => false, 'reason' => 'no_apidae_id'];
     }
 
     // existe ?
     $existing = get_posts([
-      'post_type'      => 'camping',
-      'meta_key'       => 'apidae_id',
-      'meta_value'     => $apidae_id,
+      'post_type' => 'camping',
+      'meta_key' => 'apidae_id',
+      'meta_value' => $apidae_id,
       'posts_per_page' => 1,
-      'fields'         => 'ids',
+      'fields' => 'ids',
       'suppress_filters' => true,
-      'no_found_rows'  => true,
+      'no_found_rows' => true,
     ]);
 
-    
 
-    $title       = $item['nom']['libelleFr'] ?? 'Camping sans nom';
-    $description = (!empty($item['presentation']['descriptifDetaille']['libelleFr']))? $item['presentation']['descriptifDetaille']['libelleFr'] : $item['presentation']['descriptifCourt']['libelleFr'];
+
+    $title = $item['nom']['libelleFr'] ?? 'Camping sans nom';
+    $description = (!empty($item['presentation']['descriptifDetaille']['libelleFr'])) ? $item['presentation']['descriptifDetaille']['libelleFr'] : $item['presentation']['descriptifCourt']['libelleFr'];
 
     if ($existing) {
       if ($mode === 'create-only') {
         return ['ok' => true, 'post_id' => $existing[0], 'skipped' => 'exists'];
       }
       $post_id = $existing[0];
-      if (! $dry_run) {
+      if (!$dry_run) {
         wp_update_post([
-          'ID'           => $post_id,
-          'post_title'   => $title,
+          'ID' => $post_id,
+          'post_title' => $title,
           'post_content' => $description,
         ]);
       }
@@ -257,10 +307,10 @@ class APIDAE_Service
         return ['ok' => true, 'post_id' => 0, 'skipped' => 'dry-run-create'];
       }
       $post_id = wp_insert_post([
-        'post_title'   => $title,
+        'post_title' => $title,
         'post_content' => $description,
-        'post_type'    => 'camping',
-        'post_status'  => 'publish',
+        'post_type' => 'camping',
+        'post_status' => 'publish',
       ]);
       if (is_wp_error($post_id)) {
         return ['ok' => false, 'reason' => 'insert_failed', 'error' => $post_id->get_error_message()];
@@ -279,12 +329,12 @@ class APIDAE_Service
     }
 
     // 🏠 Localisation
-    $adresse     = $item['localisation']['adresse']['adresse1'] ?? '';
-    $commune     = $item['localisation']['adresse']['commune']['nom'] ?? '';
+    $adresse = $item['localisation']['adresse']['adresse1'] ?? '';
+    $commune = $item['localisation']['adresse']['commune']['nom'] ?? '';
     $code_postal = $item['localisation']['adresse']['codePostal'] ?? '';
-    $pays        = $item['localisation']['adresse']['commune']['pays']['libelleFr'] ?? '';
-    $lat         = $item['localisation']['geolocalisation']['geoJson']['coordinates'][1] ?? '';
-    $lng         = $item['localisation']['geolocalisation']['geoJson']['coordinates'][0] ?? '';
+    $pays = $item['localisation']['adresse']['commune']['pays']['libelleFr'] ?? '';
+    $lat = $item['localisation']['geolocalisation']['geoJson']['coordinates'][1] ?? '';
+    $lng = $item['localisation']['geolocalisation']['geoJson']['coordinates'][0] ?? '';
     update_post_meta($post_id, 'adresse', $adresse);
     update_post_meta($post_id, 'commune', $commune);
     update_post_meta($post_id, 'code_postal', $code_postal);
@@ -296,23 +346,26 @@ class APIDAE_Service
     // 📞 Contacts
     if (!empty($item['informations']['moyensCommunication'])) {
       foreach ($item['informations']['moyensCommunication'] as $moyen) {
-        $type   = $moyen['type']['libelleFr'] ?? '';
+        $type = $moyen['type']['libelleFr'] ?? '';
         $valeur = $moyen['coordonnees']['fr'] ?? '';
-        if ($type === 'Téléphone')        update_post_meta($post_id, 'telephone', $valeur);
-        elseif ($type === 'Mél')          update_post_meta($post_id, 'email', $valeur);
-        elseif ($type === 'Site web (URL)') update_post_meta($post_id, 'site_web', $valeur);
+        if ($type === 'Téléphone')
+          update_post_meta($post_id, 'telephone', $valeur);
+        elseif ($type === 'Mél')
+          update_post_meta($post_id, 'email', $valeur);
+        elseif ($type === 'Site web (URL)')
+          update_post_meta($post_id, 'site_web', $valeur);
       }
     }
 
-    
+
 
     // 🏕️ HPA
     if (!empty($item['informationsHotelleriePleinAir'])) {
       $info = $item['informationsHotelleriePleinAir'];
-      update_post_meta($post_id, 'hotellerie_type',  $info['hotelleriePleinAirType']['libelleFr'] ?? '');
+      update_post_meta($post_id, 'hotellerie_type', $info['hotelleriePleinAirType']['libelleFr'] ?? '');
       update_post_meta($post_id, 'numero_classement', $info['numeroClassement'] ?? '');
-      update_post_meta($post_id, 'date_classement',   $info['dateClassement'] ?? '');
-      update_post_meta($post_id, 'classement',        $info['classement']['libelleFr'] ?? '');
+      update_post_meta($post_id, 'date_classement', $info['dateClassement'] ?? '');
+      update_post_meta($post_id, 'classement', $info['classement']['libelleFr'] ?? '');
       update_post_meta($post_id, 'nb_real', $info['capacite']['nombreEmplacementsDeclares'] ?? '');
       update_post_meta($post_id, 'nb_mobilhomes', $info['capacite']['nombreLocationMobilhomes'] ?? '');
       update_post_meta($post_id, 'nb_bungalows', $info['capacite']['nombreLocationBungalows'] ?? '');
@@ -331,8 +384,8 @@ class APIDAE_Service
         }
       }
     }
-    
-    
+
+
 
     // Tarifs
     if (!empty($item['descriptionTarif'])) {
@@ -343,32 +396,32 @@ class APIDAE_Service
       $reservation = $item['reservation'];
       if ($reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']) {
         $id_reservation_direct = self::extractSecureHolidayId($reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr']);
-        update_post_meta($post_id, 'id_reservation_direct', $id_reservation_direct  ?? '');
+        update_post_meta($post_id, 'id_reservation_direct', $id_reservation_direct ?? '');
         update_post_meta($post_id, 'url_reservation_direct', $reservation['organismes'][0]['moyensCommunication'][0]['coordonnees']['fr'] ?? '');
       }
     }
-    
+
 
     // 🖼️ Images (featured + galerie simple)
-    $gallery_ids = [];
-    if (!empty($item['illustrations'])) {
-      foreach ($item['illustrations'] as $index => $illustration) {
-        $image_url = $illustration['traductionFichiers'][0]['url'] ?? '';
-        if ($image_url) {
-          $image_id = media_sideload_image($image_url, $post_id, null, 'id');
-          if (!is_wp_error($image_id)) {
-            if ($index === 0) {
-              set_post_thumbnail($post_id, $image_id);
-            } else {
-              // $gallery_ids[] = $image_id;
-            }
-          }
-        }
-      }
-    }
-    if (!empty($gallery_ids)) {
-      // update_post_meta($post_id, 'gallery', $gallery_ids);
-    }
+    // $gallery_ids = [];
+    // if (!empty($item['illustrations'])) {
+    //   foreach ($item['illustrations'] as $index => $illustration) {
+    //     $image_url = $illustration['traductionFichiers'][0]['url'] ?? '';
+    //     if ($image_url) {
+    //       $image_id = media_sideload_image($image_url, $post_id, null, 'id');
+    //       if (!is_wp_error($image_id)) {
+    //         if ($index === 0) {
+    //           set_post_thumbnail($post_id, $image_id);
+    //         } else {
+    //           // $gallery_ids[] = $image_id;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // if (!empty($gallery_ids)) {
+    //   // update_post_meta($post_id, 'gallery', $gallery_ids);
+    // }
 
     // ✅ Type + compléments
     update_post_meta($post_id, 'type', $item['type'] ?? '');
@@ -378,7 +431,7 @@ class APIDAE_Service
       $item['localisation']['geolocalisation']['complement']['libelleFr'] ?? ''
     );
 
-    
+
 
     // Langages : ['prestations']['languesParlees']
     if (!empty($item['prestations']['languesParlees'])) {
@@ -387,7 +440,7 @@ class APIDAE_Service
     }
 
 
-    
+
     // Ouvertures : ouverture.periodesOuvertures
     if (!empty($item['ouverture']['periodesOuvertures'])) {
       $periodes = $item['ouverture']['periodesOuvertures'];
@@ -404,7 +457,7 @@ class APIDAE_Service
     //Periodes price : descriptionTarif.periodes 
     if (!empty($item['descriptionTarif']['periodes'])) {
       $periodes = $item['descriptionTarif']['periodes'][0]['tarifs'];
-      
+
       if ($periodes) {
         $min = null;
         $max = null;
@@ -426,10 +479,10 @@ class APIDAE_Service
         update_post_meta($post_id, 'price_mini_mobilhomes', $min);
         update_post_meta($post_id, 'price_max_mobilhomes', $max);
       }
-      
+
     }
 
-    
+
 
     // Update Taxonomy 
     /**
@@ -447,44 +500,374 @@ class APIDAE_Service
 
     // ---------- Update Taxonomy ----------
     $tax_inputs = [
-      'destination' => $item['localisation']['adresse']['commune']['nom'] ?? null, // string → 1 seul terme
-      'atout'       => $item['localisation']['environnements'] ?? [],              // array d'objets Apidae
-      'service'     => $item['prestations']['services'] ?? [],                     // array d'objets Apidae
-      'equipement'  => $item['prestations']['equipements'] ?? [],                  // array d'objets Apidae
-      'etoile'      => $item['informationsHotelleriePleinAir']['classement'] ?? [], // objet Apidae (libelleFr "3 étoiles"…)
-      'hebergement' => $item['informationsHotelleriePleinAir']['hotelleriePleinAirType'] ?? null, // objet → 1 terme
-      'label'       => $item['informationsHotelleriePleinAir']['labels'] ?? [],    // array d'objets Apidae
-      'confort'     => $item['prestations']['conforts'] ?? [],                      // array d'objets Apidae
+      'destination' => $item['localisation']['adresse']['commune']['nom'] ?? null,
+      'atout' => $item['localisation']['environnements'] ?? [],
+      'service' => $item['prestations']['services'] ?? [],
+      'equipement' => $item['prestations']['equipements'] ?? [],
+      'etoile' => $item['informationsHotelleriePleinAir']['classement'] ?? [],
+      'hebergement' => $item['informationsHotelleriePleinAir']['hotelleriePleinAirType'] ?? null,
+      'label' => $item['informationsHotelleriePleinAir']['labels'] ?? [],
+      'confort' => $item['prestations']['conforts'] ?? [],
     ];
 
+    // ✅ Reroutage multi-sources (service, equipement, atout, confort)
+    self::apply_multi_source_redirects($tax_inputs, ['service', 'equipement', 'atout', 'confort']);
 
-    // Normalise: si une valeur n’est pas un array, on l’emballe
+    // Écriture finale
     foreach ($tax_inputs as $tax => $vals) {
-      // true = on synchronise (on remplace). Mets false si tu veux juste ajouter.
-      self::set_post_terms_safe($post_id, $tax, $vals, true);
+      self::set_post_terms_safe($post_id, $tax, $vals, true); // replace = true
     }
 
-
     return ['ok' => true, 'post_id' => $post_id, 'action' => $action];
+  }
+
+
+  /**
+   * Map de redirection des services vers d'autres taxonomies.
+   * key = slug APIDAE du service source
+   * value = ['taxonomy'=>..., 'name'=>..., 'slug'=>...]
+   */
+  // 1) Une map par TAXONOMIE SOURCE (tu mets ici tes règles)
+  protected static function service_redirect_map(): array
+  {
+  return [
+    // --- existant (pêche, bien-être, cibles, hébergements) ---
+    'vente-de-cartes-de-peche'      => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'vente-de-materiel-de-peche'    => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'massages-modelages'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'soins-esthetiques'             => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'espace-coworking'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+    'accessible-en-poussette'       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+
+    'hebergement-locatif-climatise' => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé',      'slug' => 'mobil-home-clim'],
+    'location-de-mobilhome'         => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home',                'slug' => 'mobil-home'],
+    'location-bungatoile'           => ['taxonomy' => 'hebergement', 'name' => 'Insolite',                  'slug' => 'logement-insolite'],
+    'location-caravanes'            => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+    'location-hll-chalet'           => ['taxonomy' => 'hebergement', 'name' => 'Chalet',                    'slug' => 'chalet'],
+    'location-tentes'               => ['taxonomy' => 'hebergement', 'name' => 'Tente prête à camper',      'slug' => 'tente-prete-a-camper'],
+    'camping-cars-autorises'        => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+
+    // --- aquatiques ---
+    'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
+    'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
+    'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
+    'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+
+    // --- atouts ---
+    'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'equipements-developpement-durable'=> ['taxonomy'=>'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+
+    // --- cibles ---
+    'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+    'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+
+    // --- services (regroupements/renommages) ---
+    'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service','name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+
+    'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
+    'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
+                                   => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
+    'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
+    'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
+    'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+    'borne-de-recharge-pour-2-roues-electriques'
+                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+    'bornes-de-recharge-pour-vehicules-electriques'
+                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+    'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
+    'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+    'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
+  ];
+  }
+
+  protected static function equipement_redirect_map(): array
+  {
+ return [
+    // --- aquatiques ---
+    'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
+    'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
+    'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
+    'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+    'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+    'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+
+    // --- atouts ---
+    'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'equipements-developpement-durable'=> ['taxonomy'=>'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+    'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+    'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+
+    // --- cibles ---
+    'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+    'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+
+    // --- hebergements ---
+    'emplacement-grand-confort'     => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+    'emplacements-nus'              => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+
+    // --- services (regroupements/renommages) ---
+    'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service','name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+    'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+
+    'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
+    'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
+                                   => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
+    'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
+    'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
+    'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+    'borne-de-recharge-pour-2-roues-electriques'
+                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+    'bornes-de-recharge-pour-vehicules-electriques'
+                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+    'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
+    'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+    'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
+  ];
+  }
+
+  protected static function atout_redirect_map(): array
+  {
+  return [
+    // ---- Coeur de ville ----
+    'centre-village'                 => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+    'centre-ville'                   => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+    'en-ville'                       => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+    'en-centre-historique'           => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+
+    // ---- Nature ----
+    'en-foret'                       => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+    'espace-naturel-sensible'        => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+    'isole'                          => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+    'vue-sur-le-vignoble'            => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+
+    // ---- Bord de lac ----
+    'vue-lac'                        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
+    'lac-ou-plan-deau-a-5-km'        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
+    'lac-ou-plan-deau-a-moins-de-300-m' => ['taxonomy' => 'atout', 'name' => 'Bord de lac','slug' => 'bord-de-lac'],
+
+    // ---- Bord de rivière ----
+    'halte-fluviale-a-moins-de-500-m'=> ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
+    'riviere-ou-fleuve-a-moins-de-300-m'=> ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
+    'vue-sur-fleuve-ou-riviere'      => ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
+    'riviere-a-5-km'                 => ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
+
+    // ---- Bord de mer ----
+    'les-pieds-dans-leau-mer'        => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+    'les-pieds-dans-leau-plage'      => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+    'mer-a-moins-de-300-m'           => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+    'plage-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+
+    // ---- Etang de pêche ----
+    'etang-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+    'les-pieds-dans-leau-etang'      => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+    'etang-a-moins-de-5-km'          => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+  ];
+  }
+
+  protected static function confort_redirect_map(): array
+  {
+  return [
+    // ---- Accès Internet / Wifi → Services > Accès Internet Wifi (wifi)
+    'acces-internet-privatif-wifi'          => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+    'acces-internet-privatif-wifi-gratuit'  => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+    'acces-internet-privatif-wifi-payant'   => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+
+    // ---- Laverie → Services > Laverie
+    'lave-linge-collectif'                  => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
+    'seche-linge-collectif'                 => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
+
+    // ---- Avec bébé → Cibles > Avec bébé (camping-avec-bebe)
+    'baignoire-bebe'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'chaise-bebe'                           => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'chauffe-biberon'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'lit-bebe'                              => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'materiel-bebe'                         => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'poussette'                             => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+    'table-a-langer'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+
+    // ---- Locatif climatisé → Hebergements > Mobil-home climatisé
+    'locatif-climatise'                     => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé','slug' => 'mobil-home-clim'],
+  ];
+  }
+
+  protected static function redirect_map_for(string $source_tax): array
+  {
+    switch ($source_tax) {
+      case 'service':
+        return self::service_redirect_map();
+      case 'equipement':
+        return self::equipement_redirect_map();
+      case 'atout':
+        return self::atout_redirect_map();
+      case 'confort':
+        return self::confort_redirect_map();
+      default:
+        return [];
+    }
+  }
+
+  protected static function route_terms_to_other_taxonomies($raw_vals, string $source_tax): array
+  {
+    $map = self::redirect_map_for($source_tax);
+
+    // Si pas de règles pour cette source, on ne touche à rien
+    if (!$map) {
+      return [
+        'restants' => self::normalize_term_items($raw_vals),
+        'additions_par_tax' => [],
+      ];
+    }
+
+    $items = self::normalize_term_items($raw_vals);
+    $restants = [];
+    $additions_par_tax = [];
+
+    foreach ($items as $it) {
+      $src_slug = $it['slug'];
+      if (isset($map[$src_slug])) {
+        $dst = $map[$src_slug];
+        $tax = $dst['taxonomy'];
+        $additions_par_tax[$tax] = $additions_par_tax[$tax] ?? [];
+        $additions_par_tax[$tax][] = ['name' => $dst['name'], 'slug' => $dst['slug']];
+        // on ne garde pas cet item dans la taxonomie source
+      } else {
+        $restants[] = $it;
+      }
+    }
+
+    // dédup par taxo
+    foreach ($additions_par_tax as $tax => $list) {
+      $additions_par_tax[$tax] = self::normalize_term_items($list);
+    }
+
+    return [
+      'restants' => $restants,
+      'additions_par_tax' => $additions_par_tax,
+    ];
+  }
+
+  protected static function apply_multi_source_redirects(array &$tax_inputs, array $sources = ['service', 'equipement', 'atout', 'confort']): void
+  {
+    foreach ($sources as $srcTax) {
+      $routed = self::route_terms_to_other_taxonomies($tax_inputs[$srcTax] ?? [], $srcTax);
+      // on réécrit la source avec les "restants" (ceux NON redirigés)
+      $tax_inputs[$srcTax] = $routed['restants'];
+
+      // on fusionne les ajouts dans les taxos cibles
+      foreach (($routed['additions_par_tax'] ?? []) as $dst_tax => $items) {
+        $tax_inputs[$dst_tax] = array_merge(
+          self::normalize_term_items($tax_inputs[$dst_tax] ?? []),
+          $items
+        );
+      }
+    }
+  }
+
+
+  /**
+   * Prend la liste brute des services APIDAE (strings/objets) et renvoie :
+   * - services_restants : ceux qui doivent rester dans la taxo 'service'
+   * - additions_par_tax : ['atout'=>[items...], 'aquatique'=>[items...], ...]
+   */
+  protected static function route_services_to_other_taxonomies($raw_services): array
+  {
+    $map = self::service_redirect_map();
+
+    // On convertit les services d’entrée en items normalisés (name, slug)
+    $service_items = self::normalize_term_items($raw_services);
+
+    $services_restants = [];
+    $additions_par_tax = []; // taxonomy => list of items
+
+    foreach ($service_items as $it) {
+      $src_slug = $it['slug'];
+      var_dump($src_slug);
+      if (isset($map[$src_slug])) {
+        $dst = $map[$src_slug];
+        $tax = $dst['taxonomy'];
+        $additions_par_tax[$tax] = $additions_par_tax[$tax] ?? [];
+
+        // On pousse l’item cible (name/slug imposés)
+        $additions_par_tax[$tax][] = [
+          'name' => $dst['name'],
+          'slug' => $dst['slug'],
+        ];
+        // Ne pas garder ce service dans la taxo 'service'
+      } else {
+        // Pas de redirection => il reste dans 'service'
+        $services_restants[] = $it;
+      }
+    }
+
+    // Dédupliquer par taxo
+    foreach ($additions_par_tax as $tax => $items) {
+      $additions_par_tax[$tax] = self::normalize_term_items($items);
+    }
+
+    return [
+      'services_restants' => $services_restants,
+      'additions_par_tax' => $additions_par_tax,
+    ];
   }
 
   public static function update_illustrations_apidae_camping(array $item, $acf_field = 'galerie_photo_camping')
   {
     $existing = get_posts([
-      'post_type'      => 'camping',
-      'meta_key'       => 'apidae_id',
-      'meta_value'     => $item['id'] ?? 0,
+      'post_type' => 'camping',
+      'meta_key' => 'apidae_id',
+      'meta_value' => $item['id'] ?? 0,
       'posts_per_page' => 1,
-      'fields'         => 'ids',
+      'fields' => 'ids',
       'suppress_filters' => true,
-      'no_found_rows'  => true,
+      'no_found_rows' => true,
     ]);
-    if (! $existing) {
+    if (!$existing) {
       return ['ok' => false, 'reason' => 'not_found'];
     }
     $post_id = $existing[0];
 
-    $images  = $item['illustrations'] ?? [];
+    $images = $item['illustrations'] ?? [];
     $sources = [];
     foreach ($images as $image) {
       $u = $image['traductionFichiers'][0]['url'] ?? '';
@@ -509,7 +892,7 @@ class APIDAE_Service
       return new WP_Error('no_sources', 'Aucune image fournie.');
     }
     $existing_ids = function_exists('get_field') ? get_field($field, $post_id, false) : get_post_meta($post_id, $field, true);
-    if (! is_array($existing_ids)) {
+    if (!is_array($existing_ids)) {
       $existing_ids = [];
     }
 
@@ -532,7 +915,7 @@ class APIDAE_Service
     $final_ids = array_values(array_unique(array_merge($existing_ids, $new_ids)));
     if (function_exists('update_field')) {
       $ok = update_field($field, $final_ids, $post_id);
-      if (! $ok) {
+      if (!$ok) {
         return new WP_Error('update_failed', 'La mise à jour du champ ACF a échoué.');
       }
     } else {
@@ -642,10 +1025,10 @@ class APIDAE_Service
     }
 
     return [
-      'post_id'  => $post_id,
-      'added'    => count($new_ids),
-      'total'    => count($final_ids),
-      'mode'     => $replace ? 'replace' : 'merge',
+      'post_id' => $post_id,
+      'added' => count($new_ids),
+      'total' => count($final_ids),
+      'mode' => $replace ? 'replace' : 'merge',
       'featured' => $featured_id,
       'unchanged' => $unchanged,
     ];
@@ -654,7 +1037,7 @@ class APIDAE_Service
   // Helpers à mettre dans la même classe (en static private si tu préfères)
   protected static function upsert_terms_for_taxonomy($taxonomy, array $terms): array
   {
-    if (! taxonomy_exists($taxonomy)) {
+    if (!taxonomy_exists($taxonomy)) {
       return []; // taxonomy non déclarée → on ignore
     }
     $term_ids = [];
@@ -701,12 +1084,12 @@ class APIDAE_Service
     $total_deleted = 0;
     do {
       $posts = get_posts([
-        'post_type'      => 'camping',
+        'post_type' => 'camping',
         'posts_per_page' => $batchSize,
-        'post_status'    => 'any',
-        'fields'         => 'ids',
+        'post_status' => 'any',
+        'fields' => 'ids',
         'suppress_filters' => true,
-        'no_found_rows'  => true,
+        'no_found_rows' => true,
       ]);
       if (empty($posts)) {
         break;
@@ -748,34 +1131,34 @@ if (defined('WP_CLI') && WP_CLI) {
      */
     public function import_object($args, $assoc_args)
     {
-      $id     = (int) ($assoc_args['id'] ?? 0);
-      $mode   = $assoc_args['mode'] ?? 'upsert';
-      $dry    = isset($assoc_args['dry-run']);
-      $sleep  = (int) ($assoc_args['sleep'] ?? 0);
+      $id = (int) ($assoc_args['id'] ?? 0);
+      $mode = $assoc_args['mode'] ?? 'upsert';
+      $dry = isset($assoc_args['dry-run']);
+      $sleep = (int) ($assoc_args['sleep'] ?? 0);
 
-      if (! $id) {
+      if (!$id) {
         WP_CLI::error('Paramètre --id manquant.');
       }
 
       $fields = 'id,nom,localisation.adresse,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
         'responseFields' => $fields,
-        'locales'        => 'fr',
+        'locales' => 'fr',
       ]);
-      if (! $res['success']) {
+      if (!$res['success']) {
         WP_CLI::error('APIDAE error: ' . $res['message']);
       }
 
       $item = $res['data'] ?? null;
-      if (! $item) {
+      if (!$item) {
         WP_CLI::error('Objet introuvable.');
       }
 
-      
-      var_dump('Before : '.$item['localisation']['adresse']['commune']['nom']);
+
+      var_dump('Before : ' . $item['localisation']['adresse']['commune']['nom']);
 
       $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
-      if (! $r['ok']) {
+      if (!$r['ok']) {
         WP_CLI::error('Import failed: ' . ($r['error'] ?? $r['reason'] ?? 'unknown'));
       }
 
@@ -825,9 +1208,9 @@ if (defined('WP_CLI') && WP_CLI) {
         'descriptionTarif.periodes'
       ]);
 
-      $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . (int)$item['id'], [
+      $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . (int) $item['id'], [
         'responseFields' => $fields,
-        'locales'        => 'fr',
+        'locales' => 'fr',
       ]);
 
       // var_dump($res['data']);
@@ -863,23 +1246,25 @@ if (defined('WP_CLI') && WP_CLI) {
       }
 
       // count demandé par l’utilisateur (plafonné à 200 par l’API)
-      $requestedCount = (int)($assoc_args['count'] ?? 200);
-      $pageCount      = max(0, min($requestedCount, 200)); // <= 200 sinon l’API le plafonne
-      if ($pageCount === 0) $pageCount = 200; // doc: défaut 20, mais on choisit 200 pour efficacité
+      $requestedCount = (int) ($assoc_args['count'] ?? 200);
+      $pageCount = max(0, min($requestedCount, 200)); // <= 200 sinon l’API le plafonne
+      if ($pageCount === 0)
+        $pageCount = 200; // doc: défaut 20, mais on choisit 200 pour efficacité
 
       // bornes
-      $cliOffset = (int)($assoc_args['offset'] ?? 0); // décalage global demandé
-      $cliLimit  = isset($assoc_args['limit']) ? (int)$assoc_args['limit'] : null; // max d’items à traiter
-      $mode      = $assoc_args['mode'] ?? 'upsert';
-      $sleep     = (int)($assoc_args['sleep'] ?? 0);
-      $dry       = isset($assoc_args['dry-run']);
+      $cliOffset = (int) ($assoc_args['offset'] ?? 0); // décalage global demandé
+      $cliLimit = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null; // max d’items à traiter
+      $mode = $assoc_args['mode'] ?? 'upsert';
+      $sleep = (int) ($assoc_args['sleep'] ?? 0);
+      $dry = isset($assoc_args['dry-run']);
 
       // 1er appel pour connaître numFound
       $params = ['selectionIds' => $selection_ids, 'count' => $pageCount, 'first' => $cliOffset];
       $res = APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
-      if (!$res['success']) WP_CLI::error('APIDAE error: ' . $res['message']);
+      if (!$res['success'])
+        WP_CLI::error('APIDAE error: ' . $res['message']);
 
-      $numFound = (int)($res['data']['numFound'] ?? 0);
+      $numFound = (int) ($res['data']['numFound'] ?? 0);
       if ($numFound === 0) {
         WP_CLI::log('Aucun résultat.');
         return;
@@ -901,8 +1286,10 @@ if (defined('WP_CLI') && WP_CLI) {
       $processPage = function ($data) use (&$done, &$created, &$updated, &$skipped, &$errors, $mode, $dry, $sleep, &$remainingToProcess) {
         $items = $data['objetsTouristiques'] ?? [];
         foreach ($items as $item) {
-          if ($remainingToProcess <= 0) break;
-          if (!$item) continue;
+          if ($remainingToProcess <= 0)
+            break;
+          if (!$item)
+            continue;
 
           $item = self::ensure_full_item($item);
           $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
@@ -924,7 +1311,8 @@ if (defined('WP_CLI') && WP_CLI) {
             WP_CLI::log(sprintf("[%d] %s — %s", $done, $item['id'], $r['action'] ?? ($r['skipped'] ?? 'ok')));
           }
 
-          if ($sleep) sleep($sleep);
+          if ($sleep)
+            sleep($sleep);
         }
       };
 
@@ -960,7 +1348,7 @@ if (defined('WP_CLI') && WP_CLI) {
      */
     public function update_images($args, $assoc_args)
     {
-      $id  = (int)($assoc_args['id'] ?? 0);
+      $id = (int) ($assoc_args['id'] ?? 0);
       $acf = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
       if (!$id) {
         WP_CLI::error('Paramètre --id manquant.');
@@ -969,9 +1357,9 @@ if (defined('WP_CLI') && WP_CLI) {
       $fields = 'id,illustrations';
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
         'responseFields' => $fields,
-        'locales'        => 'fr',
+        'locales' => 'fr',
       ]);
-      if (! $res['success']) {
+      if (!$res['success']) {
         WP_CLI::error('APIDAE error: ' . $res['message']);
       }
       $item = $res['data'] ?? null;
@@ -980,7 +1368,7 @@ if (defined('WP_CLI') && WP_CLI) {
       }
 
       $r = APIDAE_Service::update_illustrations_apidae_camping($item, $acf);
-      if (! $r['ok']) {
+      if (!$r['ok']) {
         WP_CLI::error('MAJ images échouée: ' . ($r['error'] ?? $r['reason'] ?? 'unknown'));
       }
       WP_CLI::success('Images mises à jour pour post_id ' . $r['post_id']);
@@ -998,8 +1386,8 @@ if (defined('WP_CLI') && WP_CLI) {
      */
     public function delete_all($args, $assoc_args)
     {
-      $batch = (int)($assoc_args['batch-size'] ?? 200);
-      $sleep = (int)($assoc_args['sleep'] ?? 0);
+      $batch = (int) ($assoc_args['batch-size'] ?? 200);
+      $sleep = (int) ($assoc_args['sleep'] ?? 0);
       $count = APIDAE_Service::delete_all_campings($batch, $sleep);
       WP_CLI::success("Supprimé $count posts de type 'camping'.");
     }
@@ -1030,12 +1418,12 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --selection-ids manquant.');
       }
 
-      $acf    = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
-      $merge  = isset($assoc_args['merge']);
-      $limit  = isset($assoc_args['limit']) ? (int)$assoc_args['limit'] : null;
-      $offset = (int)($assoc_args['offset'] ?? 0);
-      $sleep  = (int)($assoc_args['sleep'] ?? 0);
-      $dry    = isset($assoc_args['dry-run']);
+      $acf = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
+      $merge = isset($assoc_args['merge']);
+      $limit = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null;
+      $offset = (int) ($assoc_args['offset'] ?? 0);
+      $sleep = (int) ($assoc_args['sleep'] ?? 0);
+      $dry = isset($assoc_args['dry-run']);
       $set_featured = isset($assoc_args['set-featured']); // ➕ NEW
 
 
@@ -1085,10 +1473,10 @@ if (defined('WP_CLI') && WP_CLI) {
       $res = APIDAE_Service::connect_to_apidae(
         '/recherche/list-objets-touristiques',
         [
-          'selectionIds'   => $selection_ids,
-          'count'          => 999,
+          'selectionIds' => $selection_ids,
+          'count' => 999,
           'responseFields' => $fields,
-          'locales'        => 'fr',
+          'locales' => 'fr',
         ],
         'GET',
         true
@@ -1128,9 +1516,9 @@ if (defined('WP_CLI') && WP_CLI) {
         // retrouver le post
         $posts = get_posts([
           'post_type' => 'camping',
-          'meta_key'  => 'apidae_id',
+          'meta_key' => 'apidae_id',
           'meta_value' => $apidae_id,
-          'fields'    => 'ids',
+          'fields' => 'ids',
           'posts_per_page' => 1,
           'suppress_filters' => true,
           'no_found_rows' => true,
@@ -1209,24 +1597,24 @@ if (defined('WP_CLI') && WP_CLI) {
      */
     public function update_all_images_from_posts($args, $assoc_args)
     {
-      $acf    = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
-      $merge  = isset($assoc_args['merge']);
-      $limit  = isset($assoc_args['limit']) ? (int)$assoc_args['limit'] : null;
-      $offset = (int)($assoc_args['offset'] ?? 0);
-      $sleep  = (int)($assoc_args['sleep'] ?? 0);
-      $dry    = isset($assoc_args['dry-run']);
+      $acf = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
+      $merge = isset($assoc_args['merge']);
+      $limit = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null;
+      $offset = (int) ($assoc_args['offset'] ?? 0);
+      $sleep = (int) ($assoc_args['sleep'] ?? 0);
+      $dry = isset($assoc_args['dry-run']);
       $set_featured = isset($assoc_args['set-featured']); // ➕ NEW
 
 
       $query = [
-        'post_type'      => 'camping',
+        'post_type' => 'camping',
         'posts_per_page' => -1,
-        'fields'         => 'ids',
-        'post_status'    => 'any',
+        'fields' => 'ids',
+        'post_status' => 'any',
         'suppress_filters' => true,
-        'no_found_rows'  => true,
-        'meta_key'       => 'apidae_id',
-        'meta_compare'   => 'EXISTS',
+        'no_found_rows' => true,
+        'meta_key' => 'apidae_id',
+        'meta_compare' => 'EXISTS',
       ];
       $all = get_posts($query);
       $total = count($all);
@@ -1257,7 +1645,7 @@ if (defined('WP_CLI') && WP_CLI) {
 
         $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . intval($apidae_id), [
           'responseFields' => 'id,illustrations',
-          'locales'        => 'fr',
+          'locales' => 'fr',
         ]);
         if (!$res['success'] || empty($res['data'])) {
           $err++;
