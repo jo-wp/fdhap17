@@ -60,7 +60,10 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge flex flex-col items-start md:items-center justify-center block-featured-blog max-md:mx-0']); ?>>
   <div class="max-md:mx-[30px]">
     <InnerBlocks
-      class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-0 [&_h2]:text-center [&_p]:m-0 max-md:text-center text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-primary [&_p]:font-arial [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
+      class=" animateFade fadeOutAnimation
+       [&_h2]:text-black [&_h2]:mb-0 [&_h2]:text-center
+       [&_h2_sub]:m-0 max-md:text-center text-[20px] md:[&_h2_sub]:text-[32px] [&_h2_sub]:font-[400] [&_h2_sub]:text-primary [&_h2_sub]:font-arial
+       [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>

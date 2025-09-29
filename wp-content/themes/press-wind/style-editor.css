@@ -4921,6 +4921,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2_sub\]\:float-none h2 sub{
   float: none;
 }
+.\[\&_h2_sub\]\:m-0 h2 sub{
+  margin: 0px;
+}
 .\[\&_h2_sub\]\:mb-0 h2 sub{
   margin-bottom: 0px;
 }
@@ -4956,6 +4959,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 .\[\&_h2_sub\]\:text-green h2 sub{
+  --tw-text-opacity: 1;
+  color: rgb(81 171 126 / var(--tw-text-opacity));
+}
+.\[\&_h2_sub\]\:text-primary h2 sub{
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
