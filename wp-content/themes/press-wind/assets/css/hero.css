@@ -44,7 +44,7 @@
     border-bottom-left-radius: 0px;
   }
   .search-bar{
-    position: absolute;
+    position: absolute !important;
     bottom: 30px;
     top: initial;
   }

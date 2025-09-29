@@ -2412,7 +2412,7 @@ nav .submenu > li .submenu-child > li{
     border-bottom-left-radius: 0px;
   }
   .search-bar{
-    position: absolute;
+    position: absolute !important;
     bottom: 30px;
     top: initial;
   }
@@ -3215,17 +3215,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   z-index: 10;
 }
-.after\:ml-2::after{
-  content: var(--tw-content);
-  margin-left: 0.5rem;
-}
 .after\:block::after{
   content: var(--tw-content);
   display: block;
-}
-.after\:inline-block::after{
-  content: var(--tw-content);
-  display: inline-block;
 }
 .after\:h-\[17px\]::after{
   content: var(--tw-content);
@@ -3243,10 +3235,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   height: 7px;
 }
-.after\:h-\[8px\]::after{
-  content: var(--tw-content);
-  height: 8px;
-}
 .after\:h-full::after{
   content: var(--tw-content);
   height: 100%;
@@ -3262,10 +3250,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:w-\[17px\]::after{
   content: var(--tw-content);
   width: 17px;
-}
-.after\:w-\[7px\]::after{
-  content: var(--tw-content);
-  width: 7px;
 }
 .after\:w-full::after{
   content: var(--tw-content);
@@ -3292,10 +3276,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:bg-arrow-menu::after{
   content: var(--tw-content);
   background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu.svg');
-}
-.after\:bg-arrow-mini-green::after{
-  content: var(--tw-content);
-  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-mini-green.svg');
 }
 .after\:bg-gradient-to-b::after{
   content: var(--tw-content);
@@ -3518,6 +3498,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media not all and (min-width: 768px){
+  .max-md\:\!fixed{
+    position: fixed !important;
+  }
   .max-md\:fixed{
     position: fixed;
   }
@@ -3529,6 +3512,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:relative{
     position: relative;
+  }
+  .max-md\:\!top-\[53px\]{
+    top: 53px !important;
   }
   .max-md\:-left-\[30px\]{
     left: -30px;
@@ -4728,6 +4714,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&_h1_sub\]\:font-arial h1 sub{
   font-family: Arial, Helvetica, sans-serif;
+}
+.\[\&_h1_sub\]\:text-\[20px\] h1 sub{
+  font-size: 20px;
 }
 .\[\&_h1_sub\]\:text-\[24px\] h1 sub{
   font-size: 24px;
