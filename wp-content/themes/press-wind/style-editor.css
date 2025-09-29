@@ -2440,9 +2440,14 @@ nav .submenu > li .submenu-child > li{
   min-width: auto;
 }
 .block-campings .facetwp-template > div{
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   column-gap: 30px;
   row-gap: 50px;
+}
+@media (min-width: 768px){
+  .block-campings .facetwp-template > div{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 .block-search .facetwp-checkbox{
   background-image: url('/wp-content/themes/press-wind/assets/media/checkbox-filter.png');

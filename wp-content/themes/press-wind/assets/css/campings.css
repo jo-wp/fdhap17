@@ -17,7 +17,7 @@
   @apply max-h-[290px] min-w-[auto] aspect-[3/2];
 }
 .block-campings .facetwp-template > div{
-  @apply grid-cols-3 gap-x-[30px] gap-y-[50px];
+  @apply grid-cols-1 md:grid-cols-3 gap-x-[30px] gap-y-[50px];
 }
 
 .block-search .facetwp-checkbox{
