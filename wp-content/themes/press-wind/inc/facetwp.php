@@ -3,9 +3,6 @@
 add_filter('facetwp_query_args', function ($args, $class) {
 
     // N'agir que sur le template FacetWP "full" (supprime cette condition si inutile)
-    if ('full' !== $class->template) {
-        return $args;
-    }
 
     // Taxonomies autorisées à être lues depuis l'URI
     // 👉 ajoute/retire ici selon ton projet
