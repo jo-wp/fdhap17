@@ -97,23 +97,27 @@ nav .submenu > li .submenu-child > li {
 
 @media (min-width: 768px) {
 
+  .single-camping nav > ul:first-child li a,
   .error404 nav > ul:first-child li a,
   .page-template-template-recherche nav > ul:first-child li a {
     @apply text-black;
   }
+  .single-camping nav > ul:first-child li:hover::after, 
   .error404 nav > ul:first-child li:hover::after, 
   .page-template-template-recherche nav > ul:first-child li:hover::after {
     @apply bg-black;
   }
+  .single-camping nav > ul:first-child li a::after,
   .error404 nav > ul:first-child li a::after,
   .page-template-template-recherche nav > ul:first-child li a::after {
     @apply bg-arrow-black;
   }
-
+.single-camping #hero-carousel::before,
   .error404 #hero-carousel::before,
   .page-template-template-recherche #hero-carousel::before {
     display: none;
   }
+  .single-camping  .block-hero__content__navigation,
   .error404 .block-hero__content__navigation,
   .page-template-template-recherche .block-hero__content__navigation {
     @apply border-black;

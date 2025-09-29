@@ -22,6 +22,10 @@ if(is_404()){
   $hero_type='tiny';
 }
 
+if(is_singular('camping')){
+  $hero_type='tiny';
+}
+
 $activate_search = get_field('activate_search', $id);
 $carousel_images = get_field('carousel_images', $id) ?: [];
 $count_carousel_images = count($carousel_images);
