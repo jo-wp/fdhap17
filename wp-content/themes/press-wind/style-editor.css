@@ -4971,9 +4971,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:\[\&_h2_sub\]\:text-\[32px\] h2 sub{
     font-size: 32px;
   }
-  .md\:\[\&_h2_sub\]\:text-\[45px\] h2 sub{
-    font-size: 45px;
-  }
   .md\:\[\&_h2_sub\]\:text-inherit h2 sub{
     color: inherit;
   }
