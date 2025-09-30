@@ -2443,7 +2443,7 @@ nav .submenu > li .submenu-child > li{
   }
   .search-bar{
     position: absolute !important;
-    bottom:-40px;
+    bottom:0px;
     top: initial;
   }
   .page-template-template-recherche .search-bar{
