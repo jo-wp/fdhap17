@@ -269,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
   carouselDescription()
   menuToggle()
   menuMobileToggle()
-  instagramOverride()
   authorQuoteSlider()
   generateSummary()
   ensureMap()
@@ -278,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
   animationBlock()
   blockSearch()
   filtreMobile()
+  instagramOverride()
 
   //Import
   const map = document.querySelector('#map')
