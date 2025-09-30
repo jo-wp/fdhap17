@@ -3665,6 +3665,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:w-\[100px\]{
     width: 100px;
   }
+  .max-md\:w-\[50\%\]{
+    width: 50%;
+  }
   .max-md\:w-\[90\%\]{
     width: 90%;
   }
