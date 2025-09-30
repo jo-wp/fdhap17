@@ -1,6 +1,7 @@
 nav {
   @apply max-md:overflow-x-hidden max-md:overflow-y-hidden;
 }
+
 nav .submenu {
   @apply overflow-hidden absolute opacity-0 invisible transition-opacity duration-0
          left-[calc(-100%_-_100%)] bg-bgGreen m-0 p-0 
@@ -34,6 +35,10 @@ nav .submenu li {
 }
 nav > ul > li:hover .submenu li {
   @apply opacity-100 translate-y-0 duration-300; /* anime uniquement à l’entrée */
+}
+
+nav li:last-child a::after{
+  @apply hidden;
 }
 
 /* Stagger uniquement à l’entrée (sur hover) */
