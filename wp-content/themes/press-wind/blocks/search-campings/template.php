@@ -45,7 +45,7 @@ $template = [
         class="filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
         <div
           class="[&_.facetwp-dropdown]:max-w-[160px]
-          [&_.facetwp-search]:max-w-[80px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[15px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
+          [&_.facetwp-search]:max-w-[150px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[20px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
           flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px] max-md:px-[20px] max-md:py-[10px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
           <div class="md:hidden cursor-pointer active-filters "><span class="text-orange text-[14px] font-arial"><?= __('Afficher / Masquer les filtres','fdhpa17'); ?></span><span
               class="bg-green rounded-full text-white text-[13px] w-[16px] h-[16px] inline-flex items-center justify-center ml-[10px]">+</span>
@@ -58,7 +58,7 @@ $template = [
           
         </div>
         <div data-button="map"
-          class="button-map cursor-pointer flex flex-row flex-wrap justify-center hover:bg-green transition-all items-center gap-2 bg-orange rounded-[50px] px-[27px] py-[15px]">
+          class="button-map hidden cursor-pointer flex flex-row flex-wrap justify-center hover:bg-green transition-all items-center gap-2 bg-orange rounded-[50px] px-[27px] py-[15px]">
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-map.svg" alt="Icon map">
           <span class="font-arial text-[14px] font-[700] text-white"><?= __('Voir sur la carte', 'fdhpa17'); ?></span>
         </div>

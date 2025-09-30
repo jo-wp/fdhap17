@@ -4649,8 +4649,8 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_\.facetwp-search\]\:\!min-w-\[50px\] .facetwp-search{
   min-width: 50px !important;
 }
-.\[\&_\.facetwp-search\]\:max-w-\[80px\] .facetwp-search{
-  max-width: 80px;
+.\[\&_\.facetwp-search\]\:max-w-\[150px\] .facetwp-search{
+  max-width: 150px;
 }
 .\[\&_\.facetwp-search\]\:rounded-\[20px\] .facetwp-search{
   border-radius: 20px;
@@ -4658,8 +4658,8 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_\.facetwp-search\]\:border-0 .facetwp-search{
   border-width: 0px;
 }
-.\[\&_\.facetwp-search\]\:p-\[15px_30px\] .facetwp-search{
-  padding: 15px 30px;
+.\[\&_\.facetwp-search\]\:p-\[20px_30px\] .facetwp-search{
+  padding: 20px 30px;
 }
 .\[\&_\.page-numbers\.current\]\:bg-white .page-numbers.current{
   --tw-bg-opacity: 1;
