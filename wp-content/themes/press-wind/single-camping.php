@@ -422,7 +422,7 @@ $items_answer = get_field('items_answer');
           </p>
           <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-            <a href="#" class="button button--bg-orange"
+            <a href="#" class="button button--bg-orange max-md:px-[20px]"
               data-featherlight="#contactFeatherlight"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
             <div class=" hidden ">
               <div id="contactFeatherlight">
