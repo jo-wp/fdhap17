@@ -2093,6 +2093,11 @@ nav .submenu > li .submenu-child > li{
     display: none;
   }
 }
+@media(max-width:768px){
+  .block-hero__content__navigation{
+    height: 100%;
+  }
+}
 @media (min-width: 768px) {
 
   .single-camping nav > ul:first-child li a,
@@ -3636,11 +3641,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:hidden{
     display: none;
   }
+  .max-md\:h-\[100\%\]{
+    height: 100%;
+  }
   .max-md\:h-\[100vh\]{
     height: 100vh;
-  }
-  .max-md\:h-\[40vh\]{
-    height: 40vh;
   }
   .max-md\:h-\[45vh\]{
     height: 45vh;

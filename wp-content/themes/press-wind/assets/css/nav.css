@@ -101,6 +101,12 @@ nav .submenu > li .submenu-child > li {
   max-md:border-0 max-md:before:hidden;
 }
 
+@media(max-width:768px){
+  .block-hero__content__navigation{
+    height: 100%;
+  }
+}
+
 @media (min-width: 768px) {
 
   .single-camping nav > ul:first-child li a,
