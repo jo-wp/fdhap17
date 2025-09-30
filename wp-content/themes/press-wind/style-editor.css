@@ -3702,9 +3702,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:flex-col{
     flex-direction: column;
   }
-  .max-md\:flex-col-reverse{
-    flex-direction: column-reverse;
-  }
   .max-md\:items-start{
     align-items: flex-start;
   }

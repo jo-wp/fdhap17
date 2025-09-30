@@ -127,7 +127,7 @@ $items_answer = get_field('items_answer');
       <?php $i++;
     endforeach; ?>
   </div>
-  <div class="blocs flex max-md:flex-col-reverse md:flex-row items-start justify-between gap-[70px]">
+  <div class="blocs flex max-md:flex-col md:flex-row items-start justify-between gap-[70px]">
     <div class="bloc-content-camping ">
       <div
         class="bloc-camping-navigation mb-[50px] inline-flex flex-row flex-wrap gap-[50px] border-t-0 border-l-0 border-r-0 border-b border-[#DDD] border-solid pb-[15px]">
