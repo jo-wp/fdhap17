@@ -2058,6 +2058,13 @@ nav .submenu > li .submenu-child{
     padding-top: 15px;
     opacity: 0;
   }
+}
+@media (min-width: 768px){
+  nav .submenu > li .submenu-child{
+    width: 210px;
+  }
+}
+@media not all and (min-width: 768px){
   nav .submenu > li .submenu-child.active{
     visibility: visible;
     right: 0;
