@@ -83,6 +83,7 @@ function splideJsBlockIdea() {
         },
       },
     })
+
     block_idea__filters_controls_next.addEventListener('click', () => {
       carouselSplide.go('>')
     })
@@ -90,6 +91,7 @@ function splideJsBlockIdea() {
     block_idea__filters_controls_prev.addEventListener('click', () => {
       carouselSplide.go('<')
     })
+
     carouselSplide.mount()
 
     const slides = [...document.querySelectorAll('.splide__slide-item')]
@@ -110,15 +112,23 @@ function splideJsBlockIdea() {
       filterButtons.forEach((button) => {
         button.addEventListener('click', () => {
           filterButtons.forEach((btn) => btn.classList.remove('active'))
-          button.classList.toggle('active')
+          button.classList.add('active')
           handleFilter(button.dataset.filter)
         })
       })
+
+      // 👉 Activer automatiquement le 1er filtre en mobile
+      if (window.innerWidth < 768 && filterButtons.length > 0) {
+        const firstButton = filterButtons[0]
+        firstButton.classList.add('active')
+        handleFilter(firstButton.dataset.filter)
+      }
     }
 
     initFilter()
   }
 }
+
 
 // function expandFAQItem() {
 //   const questions = document.querySelectorAll('.block-faq li h3')
