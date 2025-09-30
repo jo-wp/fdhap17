@@ -51,14 +51,15 @@ $destinations = get_terms([
     <?php endif; ?>
     
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
-      <input type="submit" data-href="/carte-camping/" name="online-reservation" id="" value="" class="!bg-orange border-0 w-[56px] h-[56px]
+      <input type="submit" data-href="/carte-camping/" name="online-reservation" id="" value="Rechercher" class="!bg-orange border-0 w-[56px] h-[56px]
       fwp-submit
       rounded-[50%] bg-zoom bg-[20px_20px] bg-no-repeat
       cursor-pointer hover:!bg-green transition-all
       max-md:w-full max-md:rounded-[10px]
       max-md:text-[16px]
       max-md:text-white
-      max-md:bg-orange " />
+      max-md:bg-orange
+      md:text-[0px]" />
     </div>
 </div>
 </div>

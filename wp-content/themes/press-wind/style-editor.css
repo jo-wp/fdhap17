@@ -4370,6 +4370,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:text-left{
     text-align: left;
   }
+  .md\:text-\[0px\]{
+    font-size: 0px;
+  }
   .md\:text-\[16px\]{
     font-size: 16px;
   }

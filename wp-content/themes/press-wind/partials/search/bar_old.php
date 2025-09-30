@@ -62,7 +62,7 @@ $destinations = get_terms([
       </p>
     </div>
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
-      <input type="submit" name="online-reservation" id="" value="" class="bg-orange border-0 w-[56px] h-[56px]
+      <input type="submit" name="online-reservation" id="" value="Rechercher" class="bg-orange border-0 w-[56px] h-[56px]
       rounded-[50%] bg-zoom bg-[20px_20px] bg-no-repeat
       cursor-pointer hover:bg-green transition-all
       max-md:w-full max-md:rounded-[10px]
