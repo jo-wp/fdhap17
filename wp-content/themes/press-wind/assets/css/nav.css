@@ -94,7 +94,7 @@ nav .submenu > li .submenu-child {
 
         max-md:border max-md:border-black/15 max-md:border-solid max-md:border-t max-md:border-b-0  max-md:border-l-0  max-md:border-r-0
         max-md:mt-[15px] max-md:pt-[15px]
-        md:w-[210px];
+        md:w-[200px];
 }
 nav .submenu > li .submenu-child > li {
   @apply font-arial text-[12.6px] text-black font-[400] mb-[7px]

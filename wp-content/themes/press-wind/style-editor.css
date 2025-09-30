@@ -2061,7 +2061,7 @@ nav .submenu > li .submenu-child{
 }
 @media (min-width: 768px){
   nav .submenu > li .submenu-child{
-    width: 210px;
+    width: 200px;
   }
 }
 @media not all and (min-width: 768px){
