@@ -13,7 +13,7 @@ export default function blockSearch() {
           perMove: 1,
           breakpoints: {
             1024: { perPage: 2 },
-            640: { perPage: 3, direction: 'ttb', height: '1350px', wheel: true,fixedHeight:'430px',drag:false,pagination:true },
+            640: { perPage: 3, direction: 'ttb', height: '1320px', wheel: true,fixedHeight:'450px',drag:false,pagination:true },
           },
         },
         JSON.parse(el.getAttribute('data-splide') || '{}'),

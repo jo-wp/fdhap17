@@ -16,7 +16,7 @@
     "src": "assets/media/wp-performance.png"
   },
   "main-legacy.js": {
-    "file": "assets/main-legacy-B9FXUdy1.js",
+    "file": "assets/main-legacy-sqKMhvHu.js",
     "name": "main",
     "src": "main-legacy.js",
     "isEntry": true,
@@ -28,7 +28,7 @@
     ]
   },
   "main.js": {
-    "file": "assets/main-C5mGCUvQ.js",
+    "file": "assets/main-D0BglG7N.js",
     "name": "main",
     "src": "main.js",
     "isEntry": true,
