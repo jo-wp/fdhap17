@@ -70,7 +70,7 @@ if ($type_block_presentation == 'default') {
     $section_class = 'max-md:max-w-full max-md:flex-col md:flex-row max-w-[1400px]';
   endif;
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover aspect-square max-w-full" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full" />
     <?php
   };
 } elseif ($type_block_presentation == 'image_out') {
@@ -87,7 +87,7 @@ if ($type_block_presentation == 'default') {
   $block_texte_class = 'md:mr-[40px] max-md:py-[30px] md:[padding:73px_39px_119px_39px] bg-white rounded-[10px]';
   $inverse = 'rounded-[10px] max-w-[1270px] mx-auto max-[1270px]:mx-[30px] bg-no-repeat bg-cover';
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover aspect-square max-w-full" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full" />
     <?php
   };
 }

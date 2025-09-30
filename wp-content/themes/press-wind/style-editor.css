@@ -1082,17 +1082,9 @@
   padding-left: 69px;
   padding-right: 69px;
 }
-.px-\[73px\]{
-  padding-left: 73px;
-  padding-right: 73px;
-}
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-.py-\[100px\]{
-  padding-top: 100px;
-  padding-bottom: 100px;
 }
 .py-\[10px\]{
   padding-top: 10px;
@@ -1113,6 +1105,10 @@
 .py-\[20px\]{
   padding-top: 20px;
   padding-bottom: 20px;
+}
+.py-\[25px\]{
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .py-\[27px\]{
   padding-top: 27px;
@@ -4148,6 +4144,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:aspect-\[2\/3\]{
     aspect-ratio: 2/3;
   }
+  .md\:aspect-square{
+    aspect-ratio: 1 / 1;
+  }
   .md\:h-\[40vw\]{
     height: 40vw;
   }
@@ -4430,6 +4429,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:px-\[60px\]{
     padding-left: 60px;
     padding-right: 60px;
+  }
+  .md\:px-\[73px\]{
+    padding-left: 73px;
+    padding-right: 73px;
+  }
+  .md\:py-\[100px\]{
+    padding-top: 100px;
+    padding-bottom: 100px;
   }
   .md\:py-\[30px\]{
     padding-top: 30px;
@@ -4863,6 +4870,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media (min-width: 768px){
+  .md\:\[\&_h1\]\:text-left h1{
+    text-align: left;
+  }
   .md\:\[\&_h1\]\:text-\[30px\] h1{
     font-size: 30px;
   }
@@ -4944,12 +4954,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2\]\:mt-0 h2{
   margin-top: 0px;
 }
-.\[\&_h2\]\:pl-\[38px\] h2{
-  padding-left: 38px;
-}
-.\[\&_h2\]\:text-left h2{
-  text-align: left;
-}
 .\[\&_h2\]\:text-center h2{
   text-align: center;
 }
@@ -5012,6 +5016,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:\[\&_h2\]\:mb-\[67px\] h2{
     margin-bottom: 67px;
+  }
+  .md\:\[\&_h2\]\:pl-\[38px\] h2{
+    padding-left: 38px;
   }
   .md\:\[\&_h2\]\:text-left h2{
     text-align: left;

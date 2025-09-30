@@ -59,7 +59,7 @@ $template = [
 <section <?= get_block_wrapper_attributes(["class" => 'block-mansonry max-w-[1100px] mx-auto ']); ?>>
   <div>
     <InnerBlocks
-      class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-[67px] [&_h2]:text-left [&_h2]:pl-[38px] [&_p]:m-0 [&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
+      class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2]:mb-[67px] [&_h2]:text-center md:[&_h2]:text-left md:[&_h2]:pl-[38px] [&_p]:m-0 [&_p]:text-[16px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h2]:font-[700] [&_h2]:font-ivymode"
       template="<?= htmlspecialchars(json_encode($template)); ?>"
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>

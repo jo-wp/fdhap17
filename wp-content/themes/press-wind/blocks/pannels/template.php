@@ -33,7 +33,7 @@ $template = [
 ?>
 
 
-<section <?= get_block_wrapper_attributes(["class" => 'block-pannels max-w-[1066px] mx-auto flex flex-col flex-wrap']); ?>>
+<section <?= get_block_wrapper_attributes(["class" => 'block-pannels max-w-[1066px] mx-[30px] md:mx-auto flex flex-col flex-wrap']); ?>>
   <div>
     <InnerBlocks
       class=" animateFade fadeOutAnimation [&_h2]:text-black [&_h2_sub]:text-black [&_p]:m-0 [&_p]:text-[20px] md:[&_p]:text-[32px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial [&_h2]:text-[20px] [&_h2_sub]:text-[20px] md:[&_h2]:text-[36px] md:[&_h2_sub]:text-[32px] [&_h2]:font-[700] [&_h2_sub]:font-[400] [&_h2]:font-ivymode [&_h2_sub]:font-arial"
@@ -41,10 +41,10 @@ $template = [
       allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
   </div>
   <div class="flex flex-wrap flew-row gap-[32px] max-md:mt-[30px] md:mt-[77px]">
-    <div class="animateFade fadeOutAnimation flex-1 flex flex-wrap flew-row items-center justify-center p-[50px] [&_p]:m-0 [&_p]:text-[15px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial" style="background-color: <?= $background_left ?> ;">
+    <div class="animateFade fadeOutAnimation flex-1 flex flex-wrap flew-row items-center justify-center p-[50px] [&_p]:m-0 [&_p]:text-[15px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial max-md:[&_p]:text-center max-md:rounded-[20px]" style="background-color: <?= $background_left ?> ;">
       <?= $description_left;  ?>
     </div>
-    <div class="animateFade fadeOutAnimation flex-1 flex flex-wrap flew-row items-center justify-center p-[50px] [&_p]:m-0 [&_p]:text-[15px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial" style="background-color: <?= $background_right ?> ;">
+    <div class="animateFade fadeOutAnimation flex-1 flex flex-wrap flew-row items-center justify-center p-[50px] [&_p]:m-0 [&_p]:text-[15px] [&_p]:font-[400] [&_p]:text-black [&_p]:font-arial max-md:[&_p]:text-center max-md:rounded-[20px]" style="background-color: <?= $background_right ?> ;">
       <?= $description_right;  ?>
     </div>
   </div>
