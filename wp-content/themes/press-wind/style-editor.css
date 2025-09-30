@@ -4922,6 +4922,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media (min-width: 768px){
+  .md\:\[\&_h2\]\:mb-\[50px\] h2{
+    margin-bottom: 50px;
+  }
   .md\:\[\&_h2\]\:mb-\[67px\] h2{
     margin-bottom: 67px;
   }

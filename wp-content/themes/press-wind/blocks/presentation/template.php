@@ -45,7 +45,7 @@ $bg_url = ($type_block_presentation == 'image_background') ? $image_presentation
 if ($type_block_presentation == 'default') {
   $block_image = function ($data) { ?>
     <div class="carousel">
-      <ul class="carousel__list m-0 p-0 list-none max-md:mb-[50px]">
+      <ul class="carousel__list m-0 p-0 list-none max-md:mb-[20px]">
         <li class="carousel__item" data-pos="-2" style="background-image:url('<?= $data[0] ?>')"></li>
         <li class="carousel__item" data-pos="-1" style="background-image:url('<?= $data[1] ?>')"></li>
         <li class="carousel__item" data-pos="0" style="background-image:url('<?= $data[2] ?>')"></li>
@@ -113,7 +113,7 @@ if ($type_block_presentation == 'default') {
     </div>
     <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px]">
       <InnerBlocks class="animateFade fadeOutAnimation [&_h2]:leading-[36px] [&_h1]:leading-[36px]
-        [&_h2]:mb-[50px] [&_h1]:mb-[50px] [&_h2]:text-black [&_h1]:text-black [&_li]:mt-0 max-md:[&_li]:text-[14px]
+        [&_h2]:mb-[20px] md:[&_h2]:mb-[50px] [&_h1]:mb-[50px] [&_h2]:text-black [&_h1]:text-black [&_li]:mt-0 max-md:[&_li]:text-[14px]
         md:[&_li]:text-[16px] [&_li]:text-[#333333] [&_li]:font-arial [&_p]:mt-0 text-[14px] 
         md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_p_a]:underline [&_h2]:text-[20px] md:[&_h2]:text-[36px] [&_h1]:text-[20px] md:[&_h1]:text-[36px] 
         [&_h2]:font-[600] [&_h1]:font-[600] [&_h2]:font-ivymode [&_h1]:font-ivymode [&_h2_sub]:font-arial [&_h1_sub]:font-arial  [&_h2_sub]:font-[400] [&_h1_sub]:font-[400]
