@@ -34,6 +34,16 @@ $firstImage = is_string($first['image'] ?? null) ? $first['image'] : ($first['im
 $firstText = nl2br($first['texte'] ?? '');
 $description = nl2br($first['description'] ?? '');
 $link = nl2br($first['link'] ?? '');
+
+if($first['url']) {
+    echo "oui";
+    $linkMinisite = nl2br($first['url']);
+} else {
+    $linkMinisite = $link;
+}
+
+
+
 $center = get_field('center_hero', $id);
 
 
@@ -223,8 +233,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
                   <?php endif; ?>
               </div>
 
-              <?php if($link) : ?>
-              <a id="hero-link" href="<?php echo $link ?>" class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
+              <?php if($linkMinisite) : ?>
+              <a id="hero-link" href="<?php echo $linkMinisite ?>" class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
               <?php endif; ?>
 
               <?php if($count_carousel_images > 1 ) : ?>
@@ -330,7 +340,13 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     if (firstUrl) layerCurrent.style.backgroundImage = `url(${firstUrl})`;
     heroText && (heroText.innerHTML = slides[0]?.texte || "");
     heroDesc && (heroDesc.innerHTML = slides[0]?.description || "");
-    heroLink && (heroLink.href = slides[0]?.link || "");
+
+    if(slides[0].url) {
+        heroLink && (heroLink.href = slides[0]?.url || "");
+    } else {
+        heroLink && (heroLink.href = slides[0]?.link || "");
+    }
+
 
     function preload(src) {
       return new Promise(resolve => {
@@ -367,7 +383,16 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
       const nextUrl = resolveUrl(slides[next]?.image);
       const nextTxt = slides[next]?.texte || "";
       const nextDesc = slides[next]?.description || "";
-      const nextLink = slides[next]?.link || "";
+      let nextLink = slides[next]?.link || "";
+
+        if( slides[next].url ) {
+            nextLink = slides[next].url;
+        }
+
+
+      console.log(nextLink);
+
+
 
       await preload(nextUrl);
 
