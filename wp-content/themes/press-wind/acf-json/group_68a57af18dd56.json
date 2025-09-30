@@ -188,6 +188,36 @@
                     "allow_null": 0,
                     "allow_in_bindings": 0,
                     "parent_repeater": "field_68c04ef98c42f"
+                },
+                {
+                    "key": "field_68dbe63cc9ca2",
+                    "label": "Lien externe",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_68a57cda72d5b",
+                                "operator": "==",
+                                "value": "minisite"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_68c04ef98c42f"
                 }
             ]
         },
@@ -267,5 +297,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1759158155
+    "modified": 1759241814
 }
