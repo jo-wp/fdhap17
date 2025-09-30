@@ -37,8 +37,8 @@ $template = [
     ]
   ]
 ];
-$section_class = 'max-md:flex-col md:flex-row max-md:max-w-full md:max-w-[1400px]';
-$inverse = 'bg-bgOrange max-md:max-w-full md:max-w-[90%] md:rounded-r-[200px] min-h-[680px] ';
+$section_class = 'max-md:flex-col-reverse md:flex-row max-md:max-w-full md:max-w-[1400px]';
+$inverse = 'bg-bgOrange max-md:max-w-full md:max-w-[90%] rounded-t-[20px] md:rounded-r-[200px] min-h-[680px] ';
 $block_image_class = 'max-md:max-w-full md:min-w-[570px]';
 $block_texte_class = '';
 $bg_url = ($type_block_presentation == 'image_background') ? $image_presentation : '';
@@ -95,12 +95,12 @@ if ($type_block_presentation == 'default') {
 ?>
 <section <?= get_block_wrapper_attributes(
   [
-    "class" => 'block-presentation  ' . $inverse . ' py-[88px] max-md:px-[15px]',
+    "class" => 'block-presentation  ' . $inverse . 'py-[20px] md:py-[88px] max-md:px-[15px]',
     "style" => 'background-image:url(\'' . $bg_url . '\')'
   ]
 ); ?>>
   <div class="flex <?= $section_class; ?> flex-wrap md:gap-[45px] lg:gap-[90px]  mx-auto ">
-    <div class="  flex-1 flex justify-center items-center max-md:mb-[50px] <?= $block_image_class; ?>">
+    <div class="  flex-1 flex justify-center items-center max-md:mb-[0px] <?= $block_image_class; ?>">
       <?php if ($type_block_presentation == 'default'):
         $block_image($carousel_images);
       elseif ($type_block_presentation == 'image_background'):
@@ -112,12 +112,13 @@ if ($type_block_presentation == 'default') {
       endif; ?>
     </div>
     <div class="flex-1 <?= $block_texte_class; ?>  max-md:px-[15px]">
-      <InnerBlocks class="animateFade fadeOutAnimation [&_h2]:leading-[36px] [&_h1]:leading-[36px]
+      <InnerBlocks class="animateFade fadeOutAnimation  md:[&_h2]:leading-[36px] md:[&_h1]:leading-[36px]
         [&_h2]:mb-[20px] md:[&_h2]:mb-[50px] [&_h1]:mb-[50px] [&_h2]:text-black [&_h1]:text-black [&_li]:mt-0 max-md:[&_li]:text-[14px]
         md:[&_li]:text-[16px] [&_li]:text-[#333333] [&_li]:font-arial [&_p]:mt-0 text-[14px] 
-        md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_p_a]:underline [&_h2]:text-[20px] md:[&_h2]:text-[36px] [&_h1]:text-[20px] md:[&_h1]:text-[36px] 
+        md:[&_p]:text-[16px] [&_p]:text-[#333333] [&_p]:font-arial [&_p_a]:underline [&_h2]:text-[24px] md:[&_h2]:text-[36px] [&_h1]:text-[20px] md:[&_h1]:text-[36px] 
         [&_h2]:font-[600] [&_h1]:font-[600] [&_h2]:font-ivymode [&_h1]:font-ivymode [&_h2_sub]:font-arial [&_h1_sub]:font-arial  [&_h2_sub]:font-[400] [&_h1_sub]:font-[400]
          max-md:[&_h2]:text-center [&_h2_sub]:text-[20px] max-md:[&_h1]:text-center [&_h1_sub]:text-[20px] 
+         max-md:text-center
          md:[&_h2_sub]:text-[32px] md:[&_h1_sub]:text-[32px]" template="<?= htmlspecialchars(json_encode($template)); ?>"
         allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
     </div>

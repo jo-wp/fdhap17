@@ -78,7 +78,7 @@ switch ($hero_type) {
 }
 
 
-$mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
+$mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 
 
 ?>
@@ -90,7 +90,8 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
     <div class="wrapper-search">
       <form action="<?= esc_url(home_url('/')) ?>">
         <input name="s" type="text"
-          class="search-input hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0" />
+          class="search-input placeholder-white hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0" 
+          placeholder="Rechercher"/>
         <input type="submit" class="search-submit" value="Rechercher" />
       </form>
     </div>
@@ -199,10 +200,10 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
           <span class="carousel-hero-button-prev cursor-pointer">
-            <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
+            <img  class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
           </span>
           <span class="carousel-hero-button-next cursor-pointer">
-            <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
+            <img  class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
           </span>
         </div>
       </div>
@@ -229,11 +230,11 @@ $mb_section = (is_front_page()) ? 'mb-[100px]' : 'mb-[30px]';
 
               <?php if($count_carousel_images > 1 ) : ?>
               <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
-                  <span class="carousel-hero-button-prev cursor-pointer">
-                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
+                  <span class="carousel-hero-button-prev cursor-pointer ">
+                    <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
                   </span>
-                          <span class="carousel-hero-button-next cursor-pointer">
-                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
+                          <span class="carousel-hero-button-next cursor-pointer  ">
+                    <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
                   </span>
               </div>
               <?php endif; ?>

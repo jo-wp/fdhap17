@@ -1,0 +1,10 @@
+@media(max-width:768px){
+  .instagram-gallery-feed .instagram-gallery-list .instagram-gallery-item:first-child{
+  @apply max-h-[110px];
+}
+.instagram-gallery-list[data-feed_layout="gallery"] .instagram-gallery-item:nth-child(1) img,
+.instagram-gallery-list[data-feed_layout="gallery"] .instagram-gallery-item:nth-child(2) img,
+.instagram-gallery-list[data-feed_layout="gallery"] .instagram-gallery-item:nth-child(3) img{
+  @apply max-md:!rounded-[20px];
+}
+}
