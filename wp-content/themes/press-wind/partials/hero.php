@@ -18,12 +18,12 @@ if ($term && !empty($term->term_id)) {
 //ACF FIELDS
 $hero_type = get_field('hero_type', $id);
 
-if(is_404()){
-  $hero_type='tiny';
+if (is_404()) {
+  $hero_type = 'tiny';
 }
 
-if(is_singular('camping')){
-  $hero_type='tiny';
+if (is_singular('camping')) {
+  $hero_type = 'tiny';
 }
 
 $activate_search = get_field('activate_search', $id);
@@ -35,11 +35,11 @@ $firstText = nl2br($first['texte'] ?? '');
 $description = nl2br($first['description'] ?? '');
 $link = nl2br($first['link'] ?? '');
 
-if($first['url']) {
-    echo "oui";
-    $linkMinisite = nl2br($first['url']);
+if ($first['url']) {
+  echo "oui";
+  $linkMinisite = nl2br($first['url']);
 } else {
-    $linkMinisite = $link;
+  $linkMinisite = $link;
 }
 
 
@@ -95,21 +95,24 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 
 <section class="block-hero w-full <?= $mb_section; ?> <?= $hero_type ?>">
 
-  <?php if($hero_type != 'minisite') { ?>
-  <div class="max-md:hidden p-[15px] flex flex-row gap-[30px]  content-center justify-end bg-green top-bar">
-    <div class="wrapper-search">
-      <form action="<?= esc_url(home_url('/')) ?>">
-        <input name="s" type="text"
-          class="search-input placeholder-white hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0" 
-          placeholder="Rechercher"/>
-        <input type="submit" class="search-submit" value="Rechercher" />
-      </form>
+  <?php if ($hero_type != 'minisite') { ?>
+    <div class="max-md:hidden p-[15px] flex flex-row gap-[30px]  content-center justify-end bg-green top-bar">
+      <div class="wrapper-search">
+        <form action="<?= esc_url(home_url('/')) ?>">
+          <input name="s" type="text"
+            class="search-input placeholder-white hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0"
+            placeholder="Rechercher" />
+          <input type="submit" class="search-submit" value="Rechercher" />
+        </form>
+      </div>
+      <?php if (function_exists('wpml_add_language_selector')) {
+        do_action('wpml_add_language_selector');
+      } ?>
+      <a href="" class="flex items-center">
+        <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
+          alt="Icon wishlist">
+      </a>
     </div>
-    <a href="" class="flex items-center">
-      <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-        alt="Icon wishlist">
-    </a>
-  </div>
   <?php } ?>
   <div id="hero-carousel"
     class="block-hero__content md:mx-[30px]  relative <?= $gradient_full . ' ' . $height_content . ' ' . $disabled_gradient ?> max-h-[1000px] md:rounded-b-[200px] bg-cover"
@@ -120,29 +123,29 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       <div class="bg-layer bg-layer--next !absolute inset-0 md:rounded-b-[200px]"></div>
     </div>
 
-      <?php if($hero_type != 'minisite'): ?>
-    <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
-      <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
-        <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
-      </a>
-      <div class="block-hero__content__mobile__actions flex flex-row gap-[15px]">
-        <a href="" class="flex items-center">
-          <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-            alt="Icon wishlist">
+    <?php if ($hero_type != 'minisite'): ?>
+      <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
+        <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
+          <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
         </a>
-        <a href="#" class="open-menu-mobile block">
-          <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
-            alt="button mobile menu">
-        </a>
-        <a href="#" class="close-menu-mobile hidden ">
-          <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
-            alt="button mobile menu ">
-        </a>
+        <div class="block-hero__content__mobile__actions flex flex-row gap-[15px]">
+          <a href="" class="flex items-center">
+            <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
+              alt="Icon wishlist">
+          </a>
+          <a href="#" class="open-menu-mobile block">
+            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
+              alt="button mobile menu">
+          </a>
+          <a href="#" class="close-menu-mobile hidden ">
+            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
+              alt="button mobile menu ">
+          </a>
+        </div>
       </div>
-    </div>
-      <?php endif; ?>
-      <?php if($hero_type != 'minisite'): ?>
-    <div class="block-hero__content__navigation
+    <?php endif; ?>
+    <?php if ($hero_type != 'minisite'): ?>
+      <div class="block-hero__content__navigation
       relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
       border-b <?= $border_color; ?> border-solid border-t-0 border-l-0 border-r-0
       flex flex-row gap-[1%] md:items-center md:justify-center
@@ -156,32 +159,33 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       max-md:-translate-x-full                        
       max-md:[&.active]:translate-x-0                
       max-md:transition-transform max-md:duration-300 max-md:ease-in-out">
-      <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
-        <img src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>" alt="Logo"
-          class="max-w-full" />
-      </a>
+        <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
+          <img
+            src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>"
+            alt="Logo" class="max-w-full" />
+        </a>
 
-      <nav class="flex items-center justify-center w-full">
-        <?php
-        wp_nav_menu([
-          'theme_location' => 'primary',
-          'container' => false,
-          // On impose tes classes EXACTES sur le <ul> racine :
-          'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
+        <nav class="flex items-center justify-center w-full">
+          <?php
+          wp_nav_menu([
+            'theme_location' => 'primary',
+            'container' => false,
+            // On impose tes classes EXACTES sur le <ul> racine :
+            'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
         max-[1320px]:gap-0 max-[1320px]:justify-between
         max-md:flex-col max-md:justify-start max-md:items-start max-md:ml-[15px]',
-          // On force le wrapper pour ne pas avoir d'ID automatique
-          'items_wrap' => '<ul class="%2$s">%3$s</ul>',
-          // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises
-          'walker' => new CM17_Menu_Walker($text_color),
-          // Profondeur 3 pour gérer .submenu > .submenu-child
-          'depth' => 3,
-        ]);
-        ?>
-      </nav>
+            // On force le wrapper pour ne pas avoir d'ID automatique
+            'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+            // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises
+            'walker' => new CM17_Menu_Walker($text_color),
+            // Profondeur 3 pour gérer .submenu > .submenu-child
+            'depth' => 3,
+          ]);
+          ?>
+        </nav>
 
-    </div>
-      <?php endif; ?>
+      </div>
+    <?php endif; ?>
 
     <?php if ($hero_type == 'search'): ?>
       <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
@@ -210,46 +214,53 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         </h1>
         <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
           <span class="carousel-hero-button-prev cursor-pointer">
-            <img  class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
+            <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>"
+              alt="Previous">
           </span>
           <span class="carousel-hero-button-next cursor-pointer">
-            <img  class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
+            <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>"
+              alt="Next">
           </span>
         </div>
       </div>
     <?php endif; ?>
-      <?php if ($hero_type == 'minisite'): ?>
-          <div class="block-hero__content__text  max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
+    <?php if ($hero_type == 'minisite'): ?>
+      <div class="block-hero__content__text  max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
-              <div class="mb-[40px] <?php if($center) { ?> mx-auto <?php } ?>">
-              <h1 id="hero-text"
-                  class="max-md:!text-[30px] lg:text-[55px] text-white whitespace-pre-line animateFade fadeOutAnimation <?php if($center) { ?> text-center <?php } ?>">
-                  <?= $firstText ?>
-              </h1>
+        <div class="mb-[40px] <?php if ($center) { ?> mx-auto <?php } ?>">
+          <h1 id="hero-text"
+            class="max-md:!text-[30px] lg:text-[55px] text-white whitespace-pre-line animateFade fadeOutAnimation <?php if ($center) { ?> text-center <?php } ?>">
+            <?= $firstText ?>
+          </h1>
 
-              <?php if($description): ?>
-              <p id="hero-description" class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto leading-[38px] <?php if($center) { ?> text-center <?php } ?>"><?= $description ?></p>
-                  <?php endif; ?>
-              </div>
+          <?php if ($description): ?>
+            <p id="hero-description"
+              class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto leading-[38px] <?php if ($center) { ?> text-center <?php } ?>">
+              <?= $description ?></p>
+          <?php endif; ?>
+        </div>
 
-              <?php if($linkMinisite) : ?>
-              <a id="hero-link" href="<?php echo $linkMinisite ?>" class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
-              <?php endif; ?>
+        <?php if ($linkMinisite): ?>
+          <a id="hero-link" href="<?php echo $linkMinisite ?>"
+            class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
+        <?php endif; ?>
 
-              <?php if($count_carousel_images > 1 ) : ?>
-              <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
-                  <span class="carousel-hero-button-prev cursor-pointer ">
-                    <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>" alt="Previous">
-                  </span>
-                          <span class="carousel-hero-button-next cursor-pointer  ">
-                    <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>" alt="Next">
-                  </span>
-              </div>
-              <?php endif; ?>
+        <?php if ($count_carousel_images > 1): ?>
+          <div class="block-hero__content__carousel flex flex-row gap-[28px] max-md:mx-auto">
+            <span class="carousel-hero-button-prev cursor-pointer ">
+              <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-prev.png')) ?>"
+                alt="Previous">
+            </span>
+            <span class="carousel-hero-button-next cursor-pointer  ">
+              <img class="max-md:w-[30px]" src="<?= esc_url(get_theme_file_uri('/assets/media/hero-carousel-next.png')) ?>"
+                alt="Next">
+            </span>
           </div>
-      <?php endif; ?>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
     <?php if ($activate_search): ?>
       <?php get_template_part('partials/search/bar'); ?>
     <?php endif; ?>
@@ -257,7 +268,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 </section>
 
 
-<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search'  && !is_404()): ?>
+<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && !is_404()): ?>
   <section
     class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
     <?php
@@ -299,7 +310,9 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     opacity: 1 !important;
   }
 
-  #hero-text, #hero-description, #hero-link {
+  #hero-text,
+  #hero-description,
+  #hero-link {
     transition: opacity .35s ease !important;
     will-change: opacity !important;
   }
@@ -307,7 +320,9 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
   @media (prefers-reduced-motion: reduce) {
 
     .bg-layer,
-    #hero-text,  #hero-description, #hero-link {
+    #hero-text,
+    #hero-description,
+    #hero-link {
       transition: none !important;
     }
   }
@@ -342,10 +357,10 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     heroText && (heroText.innerHTML = slides[0]?.texte || "");
     heroDesc && (heroDesc.innerHTML = slides[0]?.description || "");
 
-    if(slides[0].url) {
-        heroLink && (heroLink.href = slides[0]?.url || "");
+    if (slides[0].url) {
+      heroLink && (heroLink.href = slides[0]?.url || "");
     } else {
-        heroLink && (heroLink.href = slides[0]?.link || "");
+      heroLink && (heroLink.href = slides[0]?.link || "");
     }
 
 
@@ -386,9 +401,9 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       const nextDesc = slides[next]?.description || "";
       let nextLink = slides[next]?.link || "";
 
-        if( slides[next].url ) {
-            nextLink = slides[next].url;
-        }
+      if (slides[next].url) {
+        nextLink = slides[next].url;
+      }
 
 
       console.log(nextLink);
@@ -414,14 +429,14 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         heroText.innerHTML = nextTxt;
         heroText.style.opacity = '1';
       }
-        if (heroDesc) {
-            heroDesc.innerHTML = nextDesc;
-            heroDesc.style.opacity = '1';
-        }
-        if (heroLink) {
-            heroLink.href = nextLink;
-            heroLink.style.opacity = '1';
-        }
+      if (heroDesc) {
+        heroDesc.innerHTML = nextDesc;
+        heroDesc.style.opacity = '1';
+      }
+      if (heroLink) {
+        heroLink.href = nextLink;
+        heroLink.style.opacity = '1';
+      }
 
 
 
