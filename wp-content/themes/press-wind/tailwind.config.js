@@ -12,6 +12,7 @@ module.exports = {
     './partials/**/**/*.php',
     './partials/**/*.php',
     './inc/**/*.php',
+     '../../plugins/camping-favorites/**/*.php',
     '*.php',
     './assets/*.{js,jsx,ts,tsx,vue}',
   ],

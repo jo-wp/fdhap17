@@ -105,9 +105,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
           <input type="submit" class="search-submit" value="Rechercher" />
         </form>
       </div>
-      <?php if (function_exists('wpml_add_language_selector')) {
-        do_action('wpml_add_language_selector');
-      } ?>
+      <?php do_action( 'wpml_add_language_selector' ); ?>
       <a href="" class="flex items-center">
         <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
           alt="Icon wishlist">
@@ -173,7 +171,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
             // On impose tes classes EXACTES sur le <ul> racine :
             'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
         max-[1320px]:gap-0 max-[1320px]:justify-between
-        max-md:flex-col max-md:justify-start max-md:items-start max-md:ml-[15px]',
+        max-md:flex-col max-md:justify-start max-md:items-start ',
             // On force le wrapper pour ne pas avoir d'ID automatique
             'items_wrap' => '<ul class="%2$s">%3$s</ul>',
             // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises

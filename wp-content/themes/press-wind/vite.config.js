@@ -11,9 +11,10 @@ export const viteConfig = {
   cacheDir: './node_modules/.vite/press-wind',
   // plugins : ssl, live reload, legacy
   plugins: [basicSsl(), liveReload([
+
   __dirname + '/**/*.php',
   __dirname + '/templates/**/*.php',
-  __dirname + '/partials/**/*.php'
+  __dirname + '/partials/**/*.php',
 ]), legacy({})],
   base:
     process.env.APP_ENV === 'development'

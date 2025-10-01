@@ -76,14 +76,14 @@ $template = [
         class="w-full md:w-1/2 md:mr-[30px] float-left m-0 p-0  list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] mt-[60px] mb-[20px] md:mb-[80px]">
         <?php foreach ($part1 as $item): ?>
           <li class="animateFade fadeOutAnimation py-[36px] px-[24px] bg-white rounded-[20px]">
-            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
+            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[16px] md:text-[20px] text-black mb-[0px] md:pr-[30px]
            relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
            md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
            after:transition-transform after:duration-300" role="button" tabindex="0" aria-expanded="false">
               <?= esc_html($item['question']); ?>
             </h3>
             <div class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
-            m-0 [&_p]:font-arial  [&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
+            m-0 [&_p]:font-arial [&_p]:text-[12px]  md:[&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
               <?= apply_filters('the_content',$item['reponse']) ?>
             </div>
           </li>
@@ -95,14 +95,14 @@ $template = [
         class="w-full md:w-1/2 float-left m-0 p-0 list-none grid grid-cols-1 md:grid-cols-1 gap-x-[32px] gap-y-[20px] md:mt-[60px] mb-[80px]">
         <?php foreach ($part2 as $item): ?>
           <li class="animateFade fadeOutAnimation py-[36px] px-[24px] bg-white rounded-[20px]">
-            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[20px] text-black mb-[0px] md:pr-[30px]
+            <h3 class="faq-toggle cursor-pointer max-md:text-center m-0 font-arial text-[16px] md:text-[20px] text-black mb-[0px] md:pr-[30px]
            relative after:content-[''] after:absolute after:right-0 max-md:after:left-0 max-md:after:mx-auto
            md:after:top-[25%] after:bg-more-icon after:w-[17px] after:h-[17px] max-md:after:-bottom-[45px]
            after:transition-transform after:duration-300" role="button" tabindex="0" aria-expanded="false">
               <?= esc_html($item['question']); ?>
             </h3>
   <div class="faq-answer transition-all duration-500 ease-in-out max-h-0 overflow-hidden opacity-0
-            m-0 [&_p]:font-arial  [&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
+            m-0 [&_p]:font-arial [&_p]:text-[12px] md:[&_p]:text-[14px]  [&_p]:text-black max-md:text-center">
               <?= apply_filters('the_content',$item['reponse']) ?>
             </div>
           </li>

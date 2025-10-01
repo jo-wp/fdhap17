@@ -1,5 +1,8 @@
 nav {
-  @apply max-md:overflow-x-hidden max-md:overflow-y-hidden;
+  @apply max-md:overflow-x-hidden max-md:overflow-y-hidden max-md:!items-start max-md:h-[100%];
+}
+nav:first-of-type{
+  @apply max-md:px-[15px];
 }
 
 nav .submenu {
@@ -9,20 +12,20 @@ nav .submenu {
          px-[80px] top-[92px] pt-[40px] pointer-events-none
          max-md:left-0 max-md:top-0 
         max-md:p-0
-        max-md:pl-[15px]
          max-md:bg-white
          max-md:rounded-none
-         max-md:-translate-x-[15px]
          max-md:min-w-full
          max-md:invisible
         max-md:[&.active]:visible
         max-md:opacity-0
         max-md:[&.active]:opacity-100
-        max-md:overflow-x-hidden;
+        max-md:[&.active]:px-[0px]
+        max-md:overflow-x-hidden
+        max-md:[&_.active]:-translate-x-[0px]
+        max-md:absolute max-md:z-[20] max-md:w-full;
 }
 nav > ul > li:hover .submenu {
-  @apply opacity-100 visible duration-500 pointer-events-auto 
-  max-md:w-[calc(100%_+_15px)];
+  @apply md:opacity-100 md:visible md:duration-500 md:pointer-events-auto ;
 }
 
 /* Items du submenu */
@@ -32,6 +35,10 @@ nav .submenu li {
               max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px];
+}
+nav .submenu.active {
+  @apply max-md:h-[100vh] max-md:z-[999999] max-md:fixed max-md:top-0
+  max-md:w-full max-md:px-[15px];
 }
 nav > ul > li:hover .submenu li {
   @apply opacity-100 translate-y-0 duration-300; /* anime uniquement à l’entrée */
@@ -76,10 +83,14 @@ nav > ul > li:hover .submenu li:nth-child(10) {
 nav .submenu > li {
   @apply list-none  m-0 p-0 w-[50%] font-arial text-[16px] font-[700] text-black mb-[25px] pb-[11px]
   max-md:mb-[15px] no-underline
-  border-b border-t-0 border-l-0 border-r-0 border-solid border-[#333333];
+  border-b border-t-0 border-l-0 border-r-0 border-solid border-[#333333]
+  max-md:w-full;
 }
 nav .submenu > li.active {
   @apply border-b border-t-0 border-l-0 border-r-0 border-solid border-green;
+}
+nav .submenu.active > li{
+  @apply relative z-[9999999];
 }
 nav .submenu > li > a {
   @apply no-underline;
@@ -87,14 +98,18 @@ nav .submenu > li > a {
 nav .submenu > li .submenu-child {
   @apply list-none absolute top-0 bg-bgGreen m-0 p-0 -right-[1000%] max-md:[&.active]:right-[0] md:[&.active]:-right-[100%] transition-all
     max-md:relative max-md:bg-white
-             max-md:invisible
+    max-md:invisible
         max-md:[&.active]:visible
         max-md:opacity-0
         max-md:[&.active]:opacity-100
-
         max-md:border max-md:border-black/15 max-md:border-solid max-md:border-t max-md:border-b-0  max-md:border-l-0  max-md:border-r-0
-        max-md:mt-[15px] max-md:pt-[15px]
-        md:w-[200px];
+       
+        md:w-[200px] max-md:mt-0 max-md:pt-[0]
+        max-md:left-0 max-md:h-0 max-md:m-0 max-md:p-0;
+}
+
+nav .submenu > li .submenu-child.active{
+  @apply max-md:left-0 max-md:h-max  max-md:mt-[15px] max-md:pt-[15px];
 }
 nav .submenu > li .submenu-child > li {
   @apply font-arial text-[12.6px] text-black font-[400] mb-[7px]
@@ -133,5 +148,14 @@ nav .submenu > li .submenu-child > li {
   .error404 .block-hero__content__navigation,
   .page-template-template-recherche .block-hero__content__navigation {
     @apply border-black;
+  }
+}
+
+
+@media (max-width: 767.98px) {
+  nav .submenu.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 }

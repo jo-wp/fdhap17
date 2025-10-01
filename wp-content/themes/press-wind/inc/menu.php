@@ -45,17 +45,17 @@ class CM17_Menu_Walker extends Walker_Nav_Menu {
     $is_current   = in_array('current-menu-item', $item->classes ?? [], true) || in_array('current-menu-ancestor', $item->classes ?? [], true);
 
     // Classes <li> top-level (deux variantes selon présence d’enfants)
-    $li_classes_top_with_children = "relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+    $li_classes_top_with_children = "relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[2px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] md:hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid
             max-md:before:content-[''] max-md:before:w-[15px] max-md:before:h-[15px] max-md:before:bg-arrow-menu-mobile
             max-md:before:absolute max-md:before:bg-contain max-md:before:bg-no-repeat
             max-md:before:right-[20px]";
 
-    $li_classes_top_no_children = " relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[4px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] hover:after:bg-orange
+    $li_classes_top_no_children = " relative max-[1080px]:leading-[20px] leading-[90px] after:w-0 after:transition-all after:duration-300 after:content-[''] hover:after:absolute hover:after:left-0 hover:after:-bottom-[4px] hover:after:content-[''] hover:after:w-[100%] hover:after:h-[3px] md:hover:after:bg-orange
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid";
 
     // Classes <a> top-level
-    $a_classes_top = trim(($this->text_color_class ? $this->text_color_class : '') . " max-md:font-[700] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ");
+    $a_classes_top = trim(($this->text_color_class ? $this->text_color_class : '') . " max-md:font-[700] max-md:text-[16px] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ");
 
     // Profondeur 0 : on retient le titre pour l’entête mobile du sous-menu
     if ($depth === 0) {
