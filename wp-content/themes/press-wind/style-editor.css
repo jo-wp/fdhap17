@@ -2712,6 +2712,30 @@ select,
 .camping-fav-btn.is-active img {
   content: url("/assets/media/heart.png");
 } */
+.wpml-ls-legacy-dropdown{
+  max-width: 60px;
+}
+.wpml-ls-legacy-dropdown a{
+  border-width: 0px;
+  border-style: none;
+  background-color: transparent;
+}
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle:after{
+  display: none;
+}
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu{
+  border-width: 0px;
+  border-style: none;
+}
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu a{
+  border-width: 0px;
+  border-style: none;
+}
+.wpml-ls-legacy-dropdown a{
+  border-width: 0px;
+  border-style: none;
+  background-color: transparent;
+}
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
 .splide__container{box-sizing:border-box;position:relative}

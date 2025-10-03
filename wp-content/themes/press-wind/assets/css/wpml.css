@@ -1,0 +1,18 @@
+.wpml-ls-legacy-dropdown{
+  @apply max-w-[60px]
+}
+.wpml-ls-legacy-dropdown a{
+  @apply bg-transparent border-none border-0;
+}
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle:after{
+  @apply  hidden;
+}
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu{
+  @apply border-none border-0;
+}
+.wpml-ls-legacy-dropdown .wpml-ls-sub-menu a{
+  @apply border-none border-0;
+}
+.wpml-ls-legacy-dropdown a{
+  @apply bg-transparent border-none border-0;
+}
