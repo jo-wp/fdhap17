@@ -18,7 +18,7 @@ if( !$disabled_auto_featured_blog  ) {
     'orderby'                => 'date',
     'order'                  => 'DESC',
     'post_status'            => array( 'publish' ),
-    'suppress_filters'       => true, // WPML
+    // 'suppress_filters'       => true, // WPML
   );
 
   // The Query

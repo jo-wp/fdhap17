@@ -20,6 +20,12 @@
   @apply grid-cols-1 md:grid-cols-3 gap-x-[30px] gap-y-[50px];
 }
 
+/* @media(max-width:768px){
+  .block-campings .facet-block .facet-wrapper{
+    display: none;
+  }
+} */
+
 .block-search .facetwp-checkbox{
   @apply bg-checkbox bg-[length:16px_16px] pl-[20px] ;
 }

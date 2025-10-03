@@ -70,7 +70,7 @@ if ($type_block_presentation == 'default') {
     $section_class = 'max-md:max-w-full max-md:flex-col md:flex-row max-w-[1400px]';
   endif;
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full rounded-[10px] max-md:mb-[20px]" />
     <?php
   };
 } elseif ($type_block_presentation == 'image_out') {
@@ -78,7 +78,7 @@ if ($type_block_presentation == 'default') {
   $block_image_class = 'max-md:px-[15px]';
   $inverse = 'max-w-full md:rounded-l-[200px] mx-auto relative max-md:before:left-0 md:before:-right-[30%] md:before:rounded-l-[20px] before:top-0 before:min-h-[100%] before:absolute before:content-[""] before:w-full before:bg-bgOrange overflow-hidden  max-md:!px-[0]';
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-w-full rounded-[20px]" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-w-full rounded-[20px] max-md:mb-[20px]" />
     <?php
   };
 } elseif ($type_block_presentation == 'image_background') {
@@ -87,7 +87,7 @@ if ($type_block_presentation == 'default') {
   $block_texte_class = 'md:mr-[40px] max-md:py-[30px] md:[padding:73px_39px_119px_39px] bg-white rounded-[10px]';
   $inverse = 'rounded-[10px] max-w-[1270px] mx-auto max-[1270px]:mx-[30px] bg-no-repeat bg-cover';
   $block_image = function ($data) { ?>
-    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full" />
+    <img src="<?= $data; ?>" alt="Image mise en avant" class="max-md:w-full w-full object-cover md:aspect-square max-w-full rounded-[10px] max-md:mb-[20px]" />
     <?php
   };
 }
@@ -95,7 +95,7 @@ if ($type_block_presentation == 'default') {
 ?>
 <section <?= get_block_wrapper_attributes(
   [
-    "class" => 'block-presentation  ' . $inverse . 'py-[20px] md:py-[88px] max-md:px-[15px]',
+    "class" => 'block-presentation  ' . $inverse . 'py-[20px] max-md:py-[30px] md:py-[88px] max-md:px-[15px]',
     "style" => 'background-image:url(\'' . $bg_url . '\')'
   ]
 ); ?>>

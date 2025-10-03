@@ -76,11 +76,7 @@ require_once dirname(__FILE__) . '/api/ctoutvert/ctoutvert.php';
 
 
 add_action('wp_enqueue_scripts', function () {
-	// CSS local
-	wp_enqueue_style(
-		'featherlight-css',
-		get_template_directory_uri() . '/assets/css/library/featherlight.css',
-	);
+
 	// https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
 	wp_enqueue_style(
 		'leaflet-css',
@@ -88,12 +84,6 @@ add_action('wp_enqueue_scripts', function () {
 	);
 
 
-	// JS local
-	wp_enqueue_script(
-		'featherlight-js',
-		get_template_directory_uri() . '/assets/js/library/featherlight.js',
-		array('jquery'),
-	);
 	//https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
 	wp_enqueue_script(
 		'leaflet-js',
@@ -102,6 +92,7 @@ add_action('wp_enqueue_scripts', function () {
 	);
 
 });
+
 
 /**
  * Allow SVG uploads
@@ -184,3 +175,91 @@ add_filter('wpseo_canonical', function ($canonical) {
 	return $canonical;
 });
 
+
+
+
+add_action('wp_enqueue_scripts', function () {
+    // Uniquement sur les single du CPT "camping"
+    if ( ! is_singular('camping') ) {
+        return;
+    }
+
+    // jQuery de WP
+    wp_enqueue_script('jquery');
+
+    // Helpers version = filemtime pour bust de cache (si le fichier existe)
+    $theme_uri  = get_template_directory_uri();
+    $theme_path = get_template_directory();
+
+    $ver_core_js     = file_exists("$theme_path/assets/js/library/featherlight.js") ? filemtime("$theme_path/assets/js/library/featherlight.js") : null;
+    $ver_gallery_js  = file_exists("$theme_path/assets/js/library/featherlight.gallery.js") ? filemtime("$theme_path/assets/js/library/featherlight.gallery.js") : null;
+    $ver_core_css    = file_exists("$theme_path/assets/css/library/featherlight.css") ? filemtime("$theme_path/assets/css/library/featherlight.css") : null;
+    $ver_gallery_css = file_exists("$theme_path/assets/css/library/featherlight.gallery.css") ? filemtime("$theme_path/assets/css/library/featherlight.gallery.css") : null;
+
+    // CSS (handles distincts)
+    wp_enqueue_style(
+        'featherlight-core-css',
+        $theme_uri . '/assets/css/library/featherlight.css',
+        [],
+        $ver_core_css
+    );
+    wp_enqueue_style(
+        'featherlight-gallery-css',
+        $theme_uri . '/assets/css/library/featherlight.gallery.css',
+        ['featherlight-core-css'],
+        $ver_gallery_css
+    );
+
+    // JS (handles distincts, ordre correct, en footer)
+    wp_enqueue_script(
+        'featherlight-core-js',
+        $theme_uri . '/assets/js/library/featherlight.js',
+        ['jquery'],
+        $ver_core_js,
+        true
+    );
+    wp_enqueue_script(
+        'featherlight-gallery-js',
+        $theme_uri . '/assets/js/library/featherlight.galery.js', 
+        ['jquery', 'featherlight-core-js'],
+        $ver_gallery_js,
+        true
+    );
+
+    // Ton init, injecté APRÈS featherlight-gallery-js pour garantir $.fn.featherlightGallery
+    $inline = <<<JS
+jQuery(function($){
+  if (typeof $.fn.featherlightGallery !== 'function') {
+    console.error('Featherlight Gallery non chargé : vérifie featherlight.gallery.js + l\'ordre des dépendances.');
+    return;
+  }
+
+  var \$items = $('#gallery img.fl-item');
+
+  if (\$items.length) {
+    \$items.featherlightGallery({
+      previousIcon: '‹',
+      nextIcon: '›',
+      galleryFadeIn: 120,
+      galleryFadeOut: 120,
+      openSpeed: 160,
+      closeSpeed: 160
+    });
+  }
+
+  $('#open-all').on('click', function(e){
+    e.preventDefault();
+		console.log(\$items.length)
+    if (\$items.length) {
+      \$items.first().trigger('click');
+    }
+  });
+});
+JS;
+
+    wp_add_inline_script('featherlight-gallery-js', $inline, 'after');
+
+    // (Optionnel) Leaflet, si tu en as besoin sur cette page
+    wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', [], '1.9.4');
+    wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', [], '1.9.4', true);
+});

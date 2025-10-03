@@ -33,6 +33,7 @@
 }
 
 @media (max-width: 768px) {
+
   .block-hero__content::before {
     background: linear-gradient(
       180deg,
@@ -43,6 +44,10 @@
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
   }
+  /* .bg-stack .bg-layer {
+     border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px; 
+  } */
   .search-bar {
     position: absolute !important;
     bottom: 0px;

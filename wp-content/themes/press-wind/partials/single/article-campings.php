@@ -20,8 +20,16 @@ $campings_associated_article = get_field('campings_associated_article');
               <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
                 <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">À partir de
                 </span>
-                <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-                    alt="icon ajouter aux favoris"></a>
+          <a href="#"
+   class="camping-fav-btn"
+   data-camping-id="<?php echo get_the_ID(); ?>"
+   data-label-add="Ajouter aux favoris"
+   data-label-remove="Retirer des favoris"
+   aria-pressed="false">
+   <img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
+        alt="icon ajouter aux favoris">
+   <span class="txt" style="display:none;">Ajouter aux favoris</span>
+</a>
               </div>
             </div>
             <div class="informations mt-[20px]">

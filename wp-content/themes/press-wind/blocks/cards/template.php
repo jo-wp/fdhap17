@@ -37,8 +37,8 @@ $gap = ($disabled_space) ? '' : 'gap-[10px]';
       <?php $text_color = ($item['color']) ? $item['color'] : '#fff'; ?>
       <div class="flex-1 bg-center bg-cover bg-no-repeat p-[30px] md:p-[55px] rounded-[20px]  max-md:min-h-[200px]" <?= ($item['type']=='image')? 'style="background-image:url(\''.$item['image'].'\')"' : 'style="background-color:'.$item['background'].';"' ?>>
         <?php if($item['type']=='texte'): ?>
-        <h2 class=" font-ivymode max-md:text-[24px] md:text-[32px] md:leading-[45px] " style="color:<?= $text_color; ?>"><?php echo $item['titre']; ?></h2>
-        <div class="content font-arial text-[15px] "  style="color:<?= $text_color; ?>">
+        <h2 class=" font-ivymode max-md:text-[24px] md:text-[32px] md:leading-[45px] max-md:text-center" style="color:<?= $text_color; ?>"><?php echo $item['titre']; ?></h2>
+        <div class="content font-arial text-[15px] max-md:text-center"  style="color:<?= $text_color; ?>">
           <?php echo $item['texte']; ?>
         </div>
         <?php endif; ?>

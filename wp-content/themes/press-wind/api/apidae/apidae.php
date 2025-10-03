@@ -317,7 +317,7 @@ class APIDAE
 // ]);
 
 // echo'<pre>';
-// print_r($result['data']['descriptionTarif']['periodes'][0]['tarifs']);
+// print_r($result['data']['descriptionTarif']['modesPaiement']);
 // echo'</pre>';
 // die();
 

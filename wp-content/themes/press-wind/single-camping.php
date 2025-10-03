@@ -46,14 +46,15 @@ if (!empty($galerie_photo_camping)) {
   $i = 0;
   foreach ($galerie_photo_camping as $photo) {
     $photos[] = [
+      'url_thumbnail' => $photo['sizes']['large'],
       'url' => $photo['url'],
       'caption' => $photo['title'],
       'type' => 'photo'
     ];
     $i++;
-    if ($i >= 5) {
-      break;
-    }
+    // if ($i >= 5) {
+    //   break;
+    // }
   }
 }
 
@@ -119,13 +120,26 @@ $items_answer = get_field('items_answer');
       ?>
     </div>
   </div>
-  <div class="galerie-photo grid md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2 gap-[15px] mb-[50px]">
+  <div class="galerie-photo relative ">
+              <a id="open-all" class=" hover:no-underline cursor-pointer rounded-[5px] font-arial px-[15px] py-[10px] flex flex-row items-center gap-2 justify-center bg-white/80 text-[16px] text-black absolute left-[15px] top-[30px]"><img src="<?= get_template_directory_uri() ?>/assets/media/icon-gallery.svg">Voir les photos (<?= count($photos) ?>)</a>
+
+      <div data-featherlight-gallery class="grid md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2 gap-[15px] mb-[50px]" id="gallery">
+
     <?php $i = 0;
-    foreach ($photos as $photo): ?>
-      <img data-featherlight="<?= $photo['url']; ?>" src="<?= $photo['url']; ?>" alt="<?= $photo['caption']; ?>"
-        class="w-full h-full cursor-pointer object-cover rounded-[20px] <?= ($i == 0) ? 'col-span-1 row-span-2 md:max-h-[500px]' : ''; ?> <?= ($i >= 1) ? 'max-md:hidden md:max-h-[240px]' : ''; ?>">
-      <?php $i++;
-    endforeach; ?>
+   foreach ($photos as $photo): ?>
+  <img 
+    href="<?= $photo['url']; ?>" 
+    src="<?= $photo['url_thumbnail']; ?>" 
+    alt="<?= $photo['caption']; ?>"
+    class="fl-item w-full h-full cursor-pointer object-cover rounded-[20px]
+      <?= ($i == 0) ? 'col-span-1 row-span-2 md:max-h-[500px]' : ''; ?>
+      <?= ($i >= 1) ? 'max-md:hidden md:max-h-[240px]' : ''; ?>
+      <?= ($i >= 5) ? 'hidden' : ''; ?>"
+  >
+  <?php $i++;
+endforeach; ?>
+      </div>
+    
   </div>
   <div class="blocs flex max-md:flex-col md:flex-row items-start justify-between gap-[70px]">
     <div class="bloc-content-camping ">
@@ -198,8 +212,8 @@ $items_answer = get_field('items_answer');
 
         </div>
       <?php endif; ?>
-      <div
-        id="informations" class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
+      <div id="informations"
+        class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-row">
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
@@ -346,6 +360,25 @@ $items_answer = get_field('items_answer');
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black"><?= __('Moyens de paiement', 'fdhpa17'); ?></h3>
             <div class="bloc-camping-informations__item__content">
+              <?php
+              $terms = get_the_terms(get_the_ID(), 'paiement');
+
+              if ($terms && !is_wp_error($terms)):
+                echo '<div class="paiements-wrap flex flex-row flex-wrap gap-[5px]">';
+
+                foreach ($terms as $term) {
+                  $icon_url = get_stylesheet_directory_uri() . '/assets/media/icon_' . $term->slug . '.png';
+
+                  echo '<div class="paiement-item">';
+                  echo '<img title="' . $term->name . '" src="' . esc_url($icon_url) . '" alt="' . esc_attr($term->name) . '" class="paiement-icon" />';
+                  
+                  echo '</div>';
+                }
+
+                echo '</div>';
+              endif;
+              ?>
+
             </div>
           </div>
         </div>
@@ -373,13 +406,13 @@ $items_answer = get_field('items_answer');
           <div class="mt-[10px]">
             <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-time.svg"
               alt="Icon Expiration offre du camping <?= get_the_title(); ?>" />
-            <p class="m-0 max-md:text-[14px]">Cette offre expire dans :</p>
+            <p class="m-0 max-md:text-[14px]"><?= __('Cette offre expire dans :','fdhpa17') ?></p>
           </div>
         </div>
         <div class="flex flex-col ">
           <div
             class="border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]">
-            Imprimer ce bon</div>
+            <?= __('Imprimer ce bon','fdhpa17') ?></div>
           <div class="flex flex-row items-center justify-center mt-[20px] gap-[5px]">
             <div
               class="border border-solid border-white rounded-[10px] p-[12px] font-ivymode max-md:text-[20px] md:text-[24px] font-[700]">
@@ -400,7 +433,8 @@ $items_answer = get_field('items_answer');
                   class="font-arial text-[50px] font-[700] text-green"><?= $price_mini_mobilhomes; ?><sup
                     class="font-arial text-[37px] font-[700] text-green">€</span></p>
               <p class="m-0 text-center font-arial text-[20px] font-[400] mb-[10px]">
-                <?= __('Location Mobil-Home / semaine', 'fdhpa17') ?></p>
+                <?= __('Location Mobil-Home / semaine', 'fdhpa17') ?>
+              </p>
             <?php endif; ?>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <?php if ($website): ?>
@@ -487,9 +521,9 @@ $items_answer = get_field('items_answer');
           </div>
           <p class="text-center !font-body !text-[13px]"><?= __('Mis à jour le ', 'fdhpa17'); ?>
             <?= get_the_modified_date('r', $post->ID); ?><br />
-            par Fédération de l'Hôtellerie de Plein Air de Charente<br />
-            Maritime<br />
-            (Identifiant de l'offre: 5752704)
+            <?= __('par Fédération de l\'Hôtellerie de Plein Air de Charente','fdhpa17') ?><br />
+            <?= __('Maritime','fdhpa17') ?><br />
+            (<?= __('Identifiant de l\'offre','fdhpa17') ?>: <?= get_post_meta($post->ID,'apidae_id',true); ?>)
           </p>
         </div>
       </div>
@@ -578,8 +612,16 @@ $items_answer = get_field('items_answer');
                       <?= __('À partir de', 'fdhpa17'); ?>         <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
                     </span>
                   <?php endif; ?>
-                  <a href="#"><img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-                      alt="icon ajouter aux favoris"></a>
+                 <a href="#"
+   class="camping-fav-btn"
+   data-camping-id="<?php echo get_the_ID(); ?>"
+   data-label-add="Ajouter aux favoris"
+   data-label-remove="Retirer des favoris"
+   aria-pressed="false">
+   <img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
+        alt="icon ajouter aux favoris">
+   <span class="txt" style="display:none;">Ajouter aux favoris</span>
+</a>
                 </div>
               </div>
               <div class="informations mt-[20px]">

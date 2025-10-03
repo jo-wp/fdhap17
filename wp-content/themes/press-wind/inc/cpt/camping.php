@@ -51,7 +51,8 @@ class CPT_CAMPING
       'hebergement',
       'cible',
       'groupe',
-      'confort'
+      'confort',
+      'paiement'
     ];
 
     foreach ($taxonomies as $taxonomy) {

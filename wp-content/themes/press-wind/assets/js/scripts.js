@@ -4,9 +4,11 @@ import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
 import filtreMobile from './facetwp/mobile.js';
 import menuMobile from './menu/main.js';
+import ctaMobile from './menu/cta.js';
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
 import Splide from '@splidejs/splide'
+
 window.Splide = Splide
 
 function menuToggle() {
@@ -266,6 +268,7 @@ function animationBlock() {
 
 document.addEventListener('DOMContentLoaded', () => {
   splideJsBlockIdea()
+  
   // expandFAQItem()
   carouselDescription()
   menuToggle()
@@ -280,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
   filtreMobile()
   instagramOverride()
   menuMobile()
-
+  ctaMobile()
   
 
   //Import

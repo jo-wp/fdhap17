@@ -14,7 +14,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 
 ?>
 <footer id="colophon"
-	class="container-huge px-[20px] flex flex-col gap-[30px] md:gap-[96px] site-footer bg-green py-[27px] rounded-b-[200px] mb-[30px] max-md:p-[15px]">
+	class="container-huge px-[20px] flex flex-col gap-[30px] md:gap-[96px] site-footer bg-green py-[27px] max-md:rounded-b-[100px] md:rounded-b-[200px] mb-[30px] max-md:p-[15px]">
 	<div class="">
 		<?php if ($logos_footer): ?>
 			<div

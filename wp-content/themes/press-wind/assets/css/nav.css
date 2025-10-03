@@ -158,4 +158,7 @@ nav .submenu > li .submenu-child > li {
     pointer-events: auto;
     transform: translateY(0);
   }
+  .wpml-ls-statics-shortcode_actions{
+    max-width: 90px;
+  }
 }

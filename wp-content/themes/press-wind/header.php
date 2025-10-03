@@ -109,4 +109,13 @@
             }
 
 			?>
+			<a href="/carte-camping" id="cta-button" class="cta-button opacity-0 translate-y-5 md:hidden z-[999]
+         max-md:fixed max-md:right-0 max-md:left-0 max-md:mx-auto max-md:max-w-[250px] max-md:bg-orange
+         max-md:text-white max-md:text-[16px] max-md:flex max-md:flex-row max-md:flex-wrap max-md:gap-[10px]
+         max-md:items-center max-md:justify-center max-md:border-0 max-md:rounded-[20px]
+         max-md:py-[10px] max-md:bottom-[20px]
+         transition-all duration-500 ease-out [&.show]:opacity-100 [&.show]:translate-y-0">
+				<img src="<?= get_stylesheet_directory_uri() ?>/assets/media/icon-button-calendar.svg" alt="Button Voir dispo">
+				<?= __('Voir les disponibilités','fdhpa17'); ?>
+					</a>
 		</header>

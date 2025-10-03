@@ -101,12 +101,12 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         <form action="<?= esc_url(home_url('/')) ?>">
           <input name="s" type="text"
             class="search-input placeholder-white hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0"
-            placeholder="Rechercher" />
-          <input type="submit" class="search-submit" value="Rechercher" />
+            placeholder="<?= __('Rechercher','fdhpa17') ?>" />
+          <input type="submit" class="search-submit" value="<?= __('Rechercher','fdhpa17') ?>" />
         </form>
       </div>
       <?php do_action( 'wpml_add_language_selector' ); ?>
-      <a href="" class="flex items-center">
+      <a href="/wishlist/" class="flex items-center">
         <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
           alt="Icon wishlist">
       </a>
@@ -122,15 +122,16 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     </div>
 
     <?php if ($hero_type != 'minisite'): ?>
-      <div class="md:hidden block-hero__content__mobile bg-white px-[15px] flex flex-row justify-between items-center">
+      <div class="md:hidden block-hero__content__mobile max-md:!z-[10] bg-white px-[15px] flex flex-row justify-between items-center">
         <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
           <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
         </a>
         <div class="block-hero__content__mobile__actions flex flex-row gap-[15px]">
-          <a href="" class="flex items-center">
+          <a href="/wishlist" class="flex items-center">
             <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
               alt="Icon wishlist">
           </a>
+      <?php do_action( 'wpml_add_language_selector' ); ?>
           <a href="#" class="open-menu-mobile block">
             <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
               alt="button mobile menu">
@@ -186,7 +187,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     <?php endif; ?>
 
     <?php if ($hero_type == 'search'): ?>
-      <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
+      <div class="block-hero__content__text max-md:!z-[9] max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex h-[200px] items-center md:items-center justify-center flex-col relative z-10
                max-md:!absolute max-md:top-[50px]  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
           gap-[30px] 
         ">
@@ -202,7 +203,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       </div>
     <?php endif; ?>
     <?php if ($hero_type == 'full'): ?>
-      <div class="block-hero__content__text max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex max-md:h-[45vh] md:h-[60vh] items-center md:items-start justify-center flex-col relative z-10
+      <div class="block-hero__content__text max-md:!z-[9] max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex max-md:h-[45vh] md:h-[60vh] items-center md:items-start justify-center flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
@@ -223,7 +224,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       </div>
     <?php endif; ?>
     <?php if ($hero_type == 'minisite'): ?>
-      <div class="block-hero__content__text  max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
+      <div class="block-hero__content__text max-md:!z-[9] max-w-[1440px] mx-auto max-[1570px]:mx-[30px] flex  h-[90%] items-center md:items-start justify-end flex-col relative z-10
                max-md:!absolute max-md:top-0  max-md:left-0 max-md:right-0 max-md:max-auto max-md:text-center
 
         ">
