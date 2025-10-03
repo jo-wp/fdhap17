@@ -2736,6 +2736,11 @@ select,
   border-style: none;
   background-color: transparent;
 }
+.wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a, .wpml-ls-legacy-dropdown a:focus, .wpml-ls-legacy-dropdown a:hover{
+  background-color: transparent;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
 .splide__container{box-sizing:border-box;position:relative}
