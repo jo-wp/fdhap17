@@ -429,7 +429,7 @@ CSS;
                  'data-icon="'+esc(heart)+'" '+
                  'data-icon-active="'+esc(heartA)+'" '+
                  'aria-pressed="false">'+
-                '<img src="'+esc(heart)+'" alt="icon ajouter aux favoris">'+
+                '<img src="'+esc(heart)+'" alt="">'+
                 '<span class="txt" style="display:none;">Ajouter aux favoris</span>'+
               '</a>'+
             '</div>'+
@@ -457,7 +457,7 @@ CSS;
       }
 
       // Conserver l'ordre d'ajout
-      var html = '<div class="grid gap-[30px]  grid-cols-4">';
+      var html = '<div class="grid gap-[30px] grid-cols-1 md:grid-cols-4">';
       items.forEach(function(it){
         var p = byId[it.id];
         if (p) html += renderCard(p, it.added_at);

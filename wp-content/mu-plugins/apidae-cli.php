@@ -508,6 +508,7 @@ class APIDAE_Service
       'hebergement' => $item['informationsHotelleriePleinAir']['hotelleriePleinAirType'] ?? null,
       'label' => $item['informationsHotelleriePleinAir']['labels'] ?? [],
       'confort' => $item['prestations']['conforts'] ?? [],
+      'paiement' => $item['descriptionTarif']['modesPaiement'] ?? []
     ];
 
     // ✅ Reroutage multi-sources (service, equipement, atout, confort)
@@ -1145,6 +1146,8 @@ if (defined('WP_CLI') && WP_CLI) {
         'responseFields' => $fields,
         'locales' => 'fr',
       ]);
+
+
       if (!$res['success']) {
         WP_CLI::error('APIDAE error: ' . $res['message']);
       }
@@ -1153,9 +1156,6 @@ if (defined('WP_CLI') && WP_CLI) {
       if (!$item) {
         WP_CLI::error('Objet introuvable.');
       }
-
-
-      var_dump('Before : ' . $item['localisation']['adresse']['commune']['nom']);
 
       $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
       if (!$r['ok']) {
@@ -1182,11 +1182,13 @@ if (defined('WP_CLI') && WP_CLI) {
         || empty($item['prestations']['conforts'])
         || empty($item['reservation']['organismes'])
         || empty($item['ouverture']['periodesOuvertures'])
-        || empty($item['descriptionTarif']['periodes']);
+        || empty($item['descriptionTarif']['periodes'])
+        || empty($item['descriptionTarif']['modesPaiement']);
 
       if (!$need) {
         return $item;
       }
+
 
 
       $fields = implode(',', [
@@ -1205,7 +1207,8 @@ if (defined('WP_CLI') && WP_CLI) {
         'prestations.conforts',
         'reservation.organismes',
         'ouverture.periodesOuvertures',
-        'descriptionTarif.periodes'
+        'descriptionTarif.periodes',
+        'descriptionTarif.modesPaiement'
       ]);
 
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . (int) $item['id'], [
