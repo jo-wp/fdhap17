@@ -2713,6 +2713,7 @@ select,
   content: url("/assets/media/heart.png");
 } */
 .wpml-ls-legacy-dropdown{
+  width: auto;
   max-width: 60px;
 }
 .wpml-ls-legacy-dropdown a{
@@ -2740,6 +2741,9 @@ select,
   background-color: transparent;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle{
+  padding-right: 0px;
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */

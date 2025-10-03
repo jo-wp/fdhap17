@@ -1,5 +1,5 @@
 .wpml-ls-legacy-dropdown{
-  @apply max-w-[60px]
+  @apply max-w-[60px] w-auto;
 }
 .wpml-ls-legacy-dropdown a{
   @apply bg-transparent border-none border-0;
@@ -18,4 +18,7 @@
 }
 .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a, .wpml-ls-legacy-dropdown a:focus, .wpml-ls-legacy-dropdown a:hover{
   @apply bg-transparent text-white;
+}
+.wpml-ls-legacy-dropdown a.wpml-ls-item-toggle{
+  @apply pr-0;
 }
