@@ -59,6 +59,7 @@
                         "class": "",
                         "id": ""
                     },
+                    "wpml_cf_preferences": 1,
                     "choices": {
                         "image": "Image",
                         "texte": "Texte"
@@ -247,5 +248,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1757622316
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759483871
 }

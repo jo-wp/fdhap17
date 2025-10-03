@@ -16,6 +16,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "choices": {
                 "full": "Grand + Carousel",
                 "middle": "Moyen",
@@ -50,6 +51,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "message": "",
             "default_value": 0,
             "allow_in_bindings": 0,
@@ -71,6 +73,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "layout": "table",
             "pagination": 0,
             "min": 0,
@@ -243,6 +246,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "message": "",
             "default_value": 0,
             "allow_in_bindings": 0,
@@ -297,5 +301,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1759241814
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759482667
 }

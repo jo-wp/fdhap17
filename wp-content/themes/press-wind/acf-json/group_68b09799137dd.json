@@ -16,6 +16,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "choices": {
                 "default": "Vert",
                 "orange": "Orange"
@@ -45,6 +46,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "message": "",
             "default_value": 0,
             "allow_in_bindings": 0,
@@ -112,5 +114,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758117995
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759483902
 }

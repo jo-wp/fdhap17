@@ -34,6 +34,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "return_format": "url",
             "library": "all",
             "min_width": "",
@@ -60,6 +61,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "return_format": "url",
             "library": "all",
             "min_width": "",
@@ -86,6 +88,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "return_format": "url",
             "library": "all",
             "min_width": "",
@@ -117,5 +120,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758895835
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759482710
 }

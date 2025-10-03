@@ -16,6 +16,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "choices": {
                 "default": "Par défaut (home)",
                 "image_big_right": "Grande Image & Petit bloc texte",
@@ -46,6 +47,7 @@
                 "class": "",
                 "id": ""
             },
+            "wpml_cf_preferences": 1,
             "return_format": "array",
             "library": "all",
             "min_width": "",
@@ -244,5 +246,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1759156989
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759484132
 }

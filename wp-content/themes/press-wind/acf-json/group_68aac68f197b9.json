@@ -38,6 +38,7 @@
                         "class": "",
                         "id": ""
                     },
+                    "wpml_cf_preferences": 2,
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -96,5 +97,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1759160066
+    "acfml_field_group_mode": "advanced",
+    "modified": 1759484182
 }
