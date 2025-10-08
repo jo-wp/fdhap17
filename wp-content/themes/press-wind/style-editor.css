@@ -193,8 +193,14 @@
 .right-0{
   right: 0px;
 }
+.right-14{
+  right: 3.5rem;
+}
 .top-0{
   top: 0px;
+}
+.top-2{
+  top: 0.5rem;
 }
 .top-4{
   top: 1rem;
@@ -353,6 +359,9 @@
 }
 .mt-10{
   margin-top: 2.5rem;
+}
+.mt-2{
+  margin-top: 0.5rem;
 }
 .mt-20{
   margin-top: 5rem;
@@ -743,6 +752,9 @@
 }
 .gap-0{
   gap: 0px;
+}
+.gap-10{
+  gap: 2.5rem;
 }
 .gap-2{
   gap: 0.5rem;
@@ -2780,9 +2792,13 @@ select,
   font-size: 16px;
   font-weight: 400;
 }
+<<<<<<< HEAD
 .page-template-default.page .site-main .nf-form-content [type='email'],
 .page-template-default.page .site-main .nf-form-content [type='text'],
 .page-template-default.page .site-main .nf-form-content textarea{
+=======
+.page-template-default.page .site-main .nf-form-content [type='email']{
+>>>>>>> 6fbda6561788615b69cfc256a975dc6196047d2c
   width: 100%;
   border-radius: 40px;
   border-width: 0px;
@@ -4594,9 +4610,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:justify-around{
     justify-content: space-around;
   }
-  .md\:gap-16{
-    gap: 4rem;
-  }
   .md\:gap-4{
     gap: 1rem;
   }
@@ -4914,6 +4927,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .lg\:gap-10{
     gap: 2.5rem;
+  }
+  .lg\:gap-16{
+    gap: 4rem;
   }
   .lg\:gap-\[90px\]{
     gap: 90px;

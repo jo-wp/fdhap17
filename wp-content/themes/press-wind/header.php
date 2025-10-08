@@ -62,18 +62,26 @@
 
 				</section>
 				<section
-					class="px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
+					class="max-md:bg-white px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
 
 					<a class="flex" href="<?php echo the_permalink($ref_id) ?>">
 						<img src="<?php echo $logo['url'] ?>" width="140" class="max-md:w-[100px]" />
 					</a>
 
-					<a href="#" class="md:hidden open-menu-mobile block">
-						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
-							alt="button mobile menu">
-					</a>
+                    <div class="md:hidden">
+
+                        <div class="absolute right-14 top-2">
+                            <?php do_action( 'wpml_add_language_selector' ); ?>
+                        </div>
+
+                        <a href="#" class="open-menu-mobile block">
+                            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
+                                 alt="button mobile menu">
+                        </a>
+                    </div>
+
 					<a href="#" class="close-menu-mobile hidden ">
-						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
+						<img class="mt-2" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
 							alt="button mobile menu ">
 					</a>
 
@@ -88,7 +96,7 @@
 						wp_nav_menu([
 							'theme_location' => 'minisite-primary', // doit correspondre à ce que tu as mis dans register_nav_menus
 							'container' => 'nav',     // balise wrapper <nav>
-							'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
+							'menu_class' => 'font-montserrat font-semibold text-base flex gap-10 lg:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
 						]);
 						?>
 						<div class="md:hidden">
@@ -109,6 +117,21 @@
 
             if($hero_is != "none") {
                 get_template_part('partials/hero');
+            } else {
+                if ($mini_site) {
+                    ?>
+                    <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
+                        <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
+                            <li>
+                                <a href="<?php the_permalink($ref_id); ?>">fdhpa-17</a>
+                            </li>
+                            <li class="font-bold tracking-wider">
+                                <?php the_title() ?>
+                            </li>
+                        </ol>
+                    </nav>
+                    <?php
+                }
             }
 
 			?>
