@@ -1,7 +1,7 @@
 .page-template-default.page .site-main {
   @apply max-w-[1150px] mx-auto  max-[1210px]:mx-[30px] px-4 lg:px-0;
 }
-.page-template-default.page .site-main .nf-form-content  h3 {
+.page-template-default.page .site-main .nf-form-title  h3 {
   @apply text-[36px] font-[600] m-0 mb-[20px] text-orange;
 }
 .page-template-default.page .site-main .nf-form-content {
