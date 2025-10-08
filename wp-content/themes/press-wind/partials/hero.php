@@ -243,7 +243,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 
         <?php if ($linkMinisite): ?>
           <a id="hero-link" href="<?php echo $linkMinisite ?>"
-            class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm">En savoir plus</a>
+            class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm"><?= __('En savoir plus','fdhpa17') ?></a>
         <?php endif; ?>
 
         <?php if ($count_carousel_images > 1): ?>
@@ -267,7 +267,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 </section>
 
 
-<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && !is_404()): ?>
+<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && $hero_type != 'minisite' && !is_404()): ?>
   <section
     class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
     <?php
@@ -277,6 +277,28 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     ?>
   </section>
 <?php endif; ?>
+
+<?php if ($hero_type == 'minisite'): ?>
+    <section
+            class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
+        <?php
+        $mini_site = get_field('mini_site', $id);
+        if(!$mini_site) { // except home minisite
+        ?>
+            <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
+                <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
+                    <li>
+                        <a href="<?php the_permalink($id); ?>">fdhpa-17</a>
+                    </li>
+                    <li class="font-bold tracking-wider">
+                        <?= __('Accueil','fdhpa17') ?>
+                    </li>
+                </ol>
+            </nav>
+        <?php } ?>
+    </section>
+<?php endif; ?>
+
 <style>
   .bg-stack {
     pointer-events: none;
