@@ -2779,7 +2779,7 @@ select,
     padding-right: 0px;
   }
 }
-.page-template-default.page .site-main h3{
+.page-template-default.page .site-main .nf-form-content  h3{
   margin: 0px;
   margin-bottom: 20px;
   font-size: 36px;
