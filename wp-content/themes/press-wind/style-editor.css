@@ -2760,7 +2760,7 @@ select,
 .wpml-ls-legacy-dropdown a.wpml-ls-item-toggle{
   padding-right: 0px;
 }
-.page-template-default.page .site-main{
+.page-template-template-container.page .site-main{
   margin-left: auto;
   margin-right: auto;
   max-width: 1150px;
@@ -2768,18 +2768,18 @@ select,
   padding-right: 1rem;
 }
 @media (max-width: 1210px){
-  .page-template-default.page .site-main{
+  .page-template-template-container.page .site-main{
     margin-left: 30px;
     margin-right: 30px;
   }
 }
 @media (min-width: 1024px){
-  .page-template-default.page .site-main{
+  .page-template-template-container.page .site-main{
     padding-left: 0px;
     padding-right: 0px;
   }
 }
-.page-template-default.page .site-main .nf-form-title  h3{
+.page-template-template-container.page .site-main .nf-form-title  h3{
   margin: 0px;
   margin-bottom: 20px;
   font-size: 36px;
@@ -2787,14 +2787,14 @@ select,
   --tw-text-opacity: 1;
   color: rgb(233 178 55 / var(--tw-text-opacity));
 }
-.page-template-default.page .site-main .nf-form-content{
+.page-template-template-container.page .site-main .nf-form-content{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
-.page-template-default.page .site-main .nf-form-content [type='email'],
-.page-template-default.page .site-main .nf-form-content [type='text'],
-.page-template-default.page .site-main .nf-form-content textarea{
+.page-template-template-container.page .site-main .nf-form-content [type='email'],
+.page-template-template-container.page .site-main .nf-form-content [type='text'],
+.page-template-template-container.page .site-main .nf-form-content textarea{
   width: 100%;
   border-radius: 40px;
   border-width: 0px;
@@ -2808,12 +2808,12 @@ select,
   padding-top: 22px;
   padding-bottom: 22px;
 }
-.page-template-default.page .site-main .nf-after-field .nf-error-msg,
-.page-template-default.page .site-main .nf-after-form-content .nf-error-msg{
+.page-template-template-container.page .site-main .nf-after-field .nf-error-msg,
+.page-template-template-container.page .site-main .nf-after-form-content .nf-error-msg{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
-.page-template-default.page .site-main .nf-form-content [type='submit']{
+.page-template-template-container.page .site-main .nf-form-content [type='submit']{
   cursor: pointer;
   border-radius: 40px;
   border-width: 2px;
@@ -2834,7 +2834,7 @@ select,
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
-.page-template-default.page .site-main .nf-form-content [type='submit']:hover{
+.page-template-template-container.page .site-main .nf-form-content [type='submit']:hover{
   border-width: 2px;
   --tw-border-opacity: 1;
   border-color: rgb(81 171 126 / var(--tw-border-opacity));
@@ -2843,32 +2843,32 @@ select,
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
-.page-template-default.page .site-main .nf-form-content label{
+.page-template-template-container.page .site-main .nf-form-content label{
   padding-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
-.page-template-default.page .site-main .nf-form-fields-required{
+.page-template-template-container.page .site-main .nf-form-fields-required{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 @media (min-width: 768px) {
-  .page-template-default.page
+  .page-template-template-container.page
     .site-main
     .nf-form-content
     .nf-cell:nth-child(1){
     padding-right: 50px;
   }
-  .page-template-default.page
+  .page-template-template-container.page
     .site-main
     .nf-form-content
     .nf-cell:nth-child(2){
     padding-left: 50px;
   }
 }
-.page-template-default.page .site-main .nf-form-content input[type='checkbox'],
-.page-template-default.page .site-main .nf-form-content input[type='radio'] {
+.page-template-template-container.page .site-main .nf-form-content input[type='checkbox'],
+.page-template-template-container.page .site-main .nf-form-content input[type='radio'] {
   appearance: none;
   -webkit-appearance: none; /* Safari iOS */
   -moz-appearance: none; /* Firefox */
@@ -2886,11 +2886,11 @@ select,
   transition: all 0.2s ease;
   border-radius: 50%;
 }
-.page-template-default.page
+.page-template-template-container.page
   .site-main
   .nf-form-content
   input[type='checkbox']:checked,
-.page-template-default.page
+.page-template-template-container.page
   .site-main
   .nf-form-content
   input[type='radio']:checked {
