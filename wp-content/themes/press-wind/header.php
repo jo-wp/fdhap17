@@ -62,16 +62,24 @@
 
 				</section>
 				<section
-					class="px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
+					class="max-md:bg-white px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
 
 					<a class="flex" href="<?php echo the_permalink($ref_id) ?>">
 						<img src="<?php echo $logo['url'] ?>" width="140" class="max-md:w-[100px]" />
 					</a>
 
-					<a href="#" class="md:hidden open-menu-mobile block">
-						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
-							alt="button mobile menu">
-					</a>
+                    <div class="md:hidden">
+
+                        <div class="absolute right-14">
+                            <?php do_action( 'wpml_add_language_selector' ); ?>
+                        </div>
+
+                        <a href="#" class="open-menu-mobile block">
+                            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
+                                 alt="button mobile menu">
+                        </a>
+                    </div>
+
 					<a href="#" class="close-menu-mobile hidden ">
 						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
 							alt="button mobile menu ">
