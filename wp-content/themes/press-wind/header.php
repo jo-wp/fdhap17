@@ -117,6 +117,10 @@
 
             if($hero_is != "none") {
                 get_template_part('partials/hero');
+            } else {
+                if (function_exists('yoast_breadcrumb')) {
+                    yoast_breadcrumb('<p id="breadcrumbs">', '</p>');
+                }
             }
 
 			?>
