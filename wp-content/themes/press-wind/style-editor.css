@@ -2827,6 +2827,7 @@ select,
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
 .page-template-default.page .site-main .nf-form-content label{
+  padding-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -2840,6 +2841,29 @@ select,
 }
 .page-template-default.page .site-main .nf-form-content .nf-cell:nth-child(2){
   padding-left: 50px;
+}
+.page-template-default.page .site-main .nf-form-content input[type="checkbox"],
+.page-template-default.page .site-main .nf-form-content input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none; /* Safari iOS */
+  -moz-appearance: none;    /* Firefox */
+  
+  width: 20px !important;
+  height: 20px;
+  margin: 4px;
+  
+  border: 1px solid #2FA36B;
+  border-radius: 4px;   /* carré par défaut */
+  background: transparent;
+  cursor: pointer;
+  margin-right: 10px;
+  position: relative;
+  transition: all .2s ease;
+    border-radius: 50%;
+}
+.page-template-default.page .site-main .nf-form-content input[type="checkbox"]:checked,
+.page-template-default.page .site-main .nf-form-content input[type="radio"]:checked {
+ background: #2FA36B;
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
