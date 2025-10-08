@@ -16,11 +16,7 @@
     "src": "assets/media/wp-performance.png"
   },
   "main-legacy.js": {
-<<<<<<< HEAD
-    "file": "assets/main-legacy-DhlP7bTw.js",
-=======
-    "file": "assets/main-legacy-BsYHmt_K.js",
->>>>>>> 6fbda6561788615b69cfc256a975dc6196047d2c
+    "file": "assets/main-legacy-Di6vnNNQ.js",
     "name": "main",
     "src": "main-legacy.js",
     "isEntry": true,
@@ -32,11 +28,7 @@
     ]
   },
   "main.js": {
-<<<<<<< HEAD
-    "file": "assets/main-BATnI5Tt.js",
-=======
-    "file": "assets/main-CmdbPeHK.js",
->>>>>>> 6fbda6561788615b69cfc256a975dc6196047d2c
+    "file": "assets/main-C-YFhx_Z.js",
     "name": "main",
     "src": "main.js",
     "isEntry": true,
@@ -44,11 +36,7 @@
       "assets/js/dynamic/hello.js"
     ],
     "css": [
-<<<<<<< HEAD
-      "assets/main-CImKvpgy.css"
-=======
-      "assets/main-Dbj5hbAA.css"
->>>>>>> 6fbda6561788615b69cfc256a975dc6196047d2c
+      "assets/main-BsMg71t8.css"
     ],
     "assets": [
       "assets/wp-performance-CuIG5My3.png"

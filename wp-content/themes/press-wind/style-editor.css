@@ -2792,13 +2792,9 @@ select,
   font-size: 16px;
   font-weight: 400;
 }
-<<<<<<< HEAD
 .page-template-default.page .site-main .nf-form-content [type='email'],
 .page-template-default.page .site-main .nf-form-content [type='text'],
 .page-template-default.page .site-main .nf-form-content textarea{
-=======
-.page-template-default.page .site-main .nf-form-content [type='email']{
->>>>>>> 6fbda6561788615b69cfc256a975dc6196047d2c
   width: 100%;
   border-radius: 40px;
   border-width: 0px;
