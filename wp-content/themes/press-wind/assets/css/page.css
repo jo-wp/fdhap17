@@ -1,0 +1,34 @@
+.page-template-default.page .site-main{
+  @apply max-w-[1150px] mx-auto  max-[1210px]:mx-[30px] px-4 lg:px-0;
+}
+.page-template-default.page .site-main h3{
+  @apply text-[36px] font-[600] m-0 mb-[20px] text-orange;
+}
+.page-template-default.page .site-main .nf-form-content {
+  @apply font-arial text-[16px] font-[400];
+}
+.page-template-default.page .site-main .nf-form-content [type="email"]{
+  @apply bg-bgGreen px-[30px] py-[22px] rounded-[40px] border-0 border-solid border-green w-full;
+}
+.page-template-default.page .site-main .nf-after-field .nf-error-msg,
+.page-template-default.page .site-main .nf-after-form-content .nf-error-msg{
+  @apply text-[12px] font-arial;
+}
+.page-template-default.page .site-main .nf-form-content [type="submit"]{
+  @apply bg-green text-white text-[16px] font-[400] rounded-[40px] px-[32px] py-[15px] cursor-pointer
+  border-2 border-solid border-green
+  hover:bg-white transition-all duration-300 hover:text-green hover:border-2 hover:border-green 
+  ;
+}
+.page-template-default.page .site-main .nf-form-content label{
+  @apply font-arial text-[16px] font-[400];
+}
+.page-template-default.page .site-main .nf-form-fields-required{
+  @apply text-[12px] font-arial;
+}
+.page-template-default.page .site-main .nf-form-content .nf-cell:nth-child(1){
+  @apply pr-[50px];
+}
+.page-template-default.page .site-main .nf-form-content .nf-cell:nth-child(2){
+  @apply pl-[50px];
+}
