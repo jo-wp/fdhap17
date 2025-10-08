@@ -104,41 +104,39 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
     return $links;
 });
 
-add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
-    // Liste des taxonomies concernées
-    $taxos = [
-        'destination',
-        'equipement',
-        'atout',
-        'etoile',
-        'aquatique',
-        'service',
-        'label',
-        'hebergement',
-        'cible',
-        'groupe',
-        'confort',
-        'paiement',
-    ];
 
-    // On ne touche qu'aux archives de terme pour ces taxonomies
-    if ( is_tax( $taxos ) ) {
-        $term = get_queried_object();
-        if ( $term && isset( $term->term_id ) ) {
+// function yoast_term_bctitle( $term_id ) {
+//     // Cas récent (Yoast stocke directement la meta du terme)
+//     $bctitle = get_term_meta( $term_id, 'wpseo_bctitle', true );
 
-            // Yoast stocke ses metas de terme sous la clé 'wpseo' (table termmeta)
-            $yoast_meta = get_term_meta( $term->term_id, 'wpseo', true );
 
-            if ( is_array( $yoast_meta ) && ! empty( $yoast_meta['bctitle'] ) ) {
-                // Le dernier lien = terme courant dans Yoast
-                $last = count( $links ) - 1;
-                if ( isset( $links[ $last ]['text'] ) ) {
-                    $links[ $last ]['text'] = $yoast_meta['bctitle'];
-                }
-            }
-        }
-    }
+//     // Fallback anciens Yoast (regroupé dans 'wpseo')
+//     if ( ! $bctitle ) {
+//         $yoast = get_term_meta( $term_id, 'wpseo', true );
+//               var_dump($bctitle);
+//             die();
+//         if ( is_array( $yoast ) && ! empty( $yoast['bctitle'] ) ) {
+//             $bctitle = $yoast['bctitle'];
+//         }
+//     }
+//     return $bctitle;
+// }
 
-    return $links;
-}, 10, 1 );
+// add_filter( 'wpseo_breadcrumb_links', function( $links ) {
+//     $taxos = [ 'destination','equipement','atout','etoile','aquatique','service',
+//                'label','hebergement','cible','groupe','confort','paiement' ];
+
+//     if ( is_tax( $taxos ) ) {
+//         $term = get_queried_object();
+//         if ( $term && isset( $term->term_id ) ) {
+//             $bctitle = yoast_term_bctitle( $term->term_id );
+          
+//             if ( $bctitle ) {
+//                 $last = count( $links ) - 1;
+//                 $links[ $last ]['text'] = $bctitle;
+//             }
+//         }
+//     }
+//     return $links;
+// }, 10 );

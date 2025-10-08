@@ -7,7 +7,9 @@
 .page-template-default.page .site-main .nf-form-content {
   @apply font-arial text-[16px] font-[400];
 }
-.page-template-default.page .site-main .nf-form-content [type='email'] {
+.page-template-default.page .site-main .nf-form-content [type='email'],
+.page-template-default.page .site-main .nf-form-content [type='text'],
+.page-template-default.page .site-main .nf-form-content textarea {
   @apply bg-bgGreen px-[30px] py-[22px] rounded-[40px] border-0 border-solid border-green w-full;
 }
 .page-template-default.page .site-main .nf-after-field .nf-error-msg,
