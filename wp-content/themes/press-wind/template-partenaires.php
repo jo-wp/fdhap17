@@ -12,16 +12,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 ?>
 <section class="container-huge 2xl:mx-auto 2xl:w-[1280px] 2xl:max-w-full text-center">
 
-    <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
-        <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
-            <li>
-                <a href="<?php the_permalink($ref_id); ?>">fdhpa-17</a>
-            </li>
-            <li class="font-bold tracking-wider">
-                <?php the_title() ?>
-            </li>
-        </ol>
-    </nav>
+
 
     <h1 class="inline-block font-bold pb-4 text-green text-center text-[32px] relative after:absolute after:bottom-0 after:block after:bg-green after:h-[1px] after:-left-4 after:-right-4 after:content-['']"><?php the_title() ?></h1>
 
