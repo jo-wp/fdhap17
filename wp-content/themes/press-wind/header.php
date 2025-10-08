@@ -70,7 +70,7 @@
 
                     <div class="md:hidden">
 
-                        <div class="absolute right-14">
+                        <div class="absolute right-14 top-2">
                             <?php do_action( 'wpml_add_language_selector' ); ?>
                         </div>
 
@@ -81,7 +81,7 @@
                     </div>
 
 					<a href="#" class="close-menu-mobile hidden ">
-						<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
+						<img class="mt-2" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
 							alt="button mobile menu ">
 					</a>
 
@@ -96,7 +96,7 @@
 						wp_nav_menu([
 							'theme_location' => 'minisite-primary', // doit correspondre à ce que tu as mis dans register_nav_menus
 							'container' => 'nav',     // balise wrapper <nav>
-							'menu_class' => 'font-montserrat font-semibold text-base flex md:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
+							'menu_class' => 'font-montserrat font-semibold text-base flex gap-10 lg:gap-16 list-none m-0 max-md:p-0 max-md:flex-col ', // classes Tailwind si tu veux
 						]);
 						?>
 						<div class="md:hidden">
