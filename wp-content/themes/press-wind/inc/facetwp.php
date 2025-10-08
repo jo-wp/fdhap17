@@ -220,20 +220,44 @@ add_filter('facetwp_query_args', function ($args, $class) {
 }, 100, 2);
 
 
+add_filter('facetwp_render_output', function ($output, $params) {
+
+
+    if (isset($output['settings']['date_start'])) {
+        if (0 == $output['settings']['date_start']['range']['min']['minDate']) {
+            $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; // start date min
+        }
+        if (0 == $output['settings']['date_start']['range']['min']['maxDate']) {
+            $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; // start date max
+        }
+        if (0 == $output['settings']['date_start']['range']['max']['minDate']) {
+            $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; // End date min
+        }
+        if (0 == $output['settings']['date_start']['range']['max']['maxDate']) {
+            $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; // End date max
+        }
+    }
+
+    return $output;
+}, 10, 2);
+
+
 add_filter('facetwp_is_enabled', function ($enabled) {
     if (is_search()) {
         foreach ($_GET as $key => $val) {
             if (0 === strpos($key, 'fwp_')) {
-                return true; 
+                return true; // l'utilisateur utilise une facet -> ON
             }
         }
-        return false; 
+        return false; // aucune facet -> OFF
     }
     return $enabled;
 }, 10, 1);
 
+// Ceinture et bretelles : FacetWP n’interfère pas avec la WP_Query principale des recherches
 add_filter('facetwp_is_main_query', function ($is_main, $query) {
     if ($query->is_search()) {
+        // si aucune facet n’est active, ne pas traiter la requête principale
         foreach ($_GET as $key => $val) {
             if (0 === strpos($key, 'fwp_')) {
                 return $is_main;
