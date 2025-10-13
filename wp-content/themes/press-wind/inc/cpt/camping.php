@@ -146,7 +146,6 @@ class CPT_CAMPING
   {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
-    // ⚠️ (Optionnel mais recommandé) vérifs de sécurité :
     if (!current_user_can('edit_post', $post_id)) return;
     if (!isset($_POST['apidae_meta_nonce']) || !wp_verify_nonce($_POST['apidae_meta_nonce'], 'save_apidae_meta')) return;
 

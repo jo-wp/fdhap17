@@ -4,24 +4,21 @@
 .page-template-template-container.page .site-main .nf-form-title  h3 {
   @apply text-[36px] font-[600] m-0 mb-[20px] text-orange;
 }
-.page-template-template-container.page .site-main .nf-form-content {
+#subForm  {
   @apply font-arial text-[16px] font-[400];
 }
-.page-template-template-container.page .site-main .nf-form-content [type='email'],
-.page-template-template-container.page .site-main .nf-form-content [type='text'],
-.page-template-template-container.page .site-main .nf-form-content textarea {
+#subForm [type='email'],
+#subForm [type='text'],
+#subForm textarea {
   @apply bg-bgGreen px-[30px] py-[22px] rounded-[40px] border-0 border-solid border-green w-full;
 }
-.page-template-template-container.page .site-main .nf-after-field .nf-error-msg,
-.page-template-template-container.page .site-main .nf-after-form-content .nf-error-msg {
-  @apply text-[12px] font-arial;
-}
-.page-template-template-container.page .site-main .nf-form-content [type='submit'] {
+
+#subForm [type='submit'] {
   @apply bg-green text-white text-[16px] font-[400] rounded-[40px] px-[32px] py-[15px] cursor-pointer
   border-2 border-solid border-green
   hover:bg-white transition-all duration-300 hover:text-green hover:border-2 hover:border-green;
 }
-.page-template-template-container.page .site-main .nf-form-content label {
+#subForm  label {
   @apply font-arial text-[16px] font-[400] pl-[10px];
 }
 .page-template-template-container.page .site-main .nf-form-fields-required {
@@ -42,8 +39,8 @@
   }
 }
 
-.page-template-template-container.page .site-main .nf-form-content input[type='checkbox'],
-.page-template-template-container.page .site-main .nf-form-content input[type='radio'] {
+#subForm  input[type='checkbox'],
+#subForm  input[type='radio'] {
   appearance: none;
   -webkit-appearance: none; /* Safari iOS */
   -moz-appearance: none; /* Firefox */
@@ -61,13 +58,10 @@
   transition: all 0.2s ease;
   border-radius: 50%;
 }
-.page-template-template-container.page
-  .site-main
-  .nf-form-content
-  input[type='checkbox']:checked,
-.page-template-template-container.page
-  .site-main
-  .nf-form-content
-  input[type='radio']:checked {
+#subForm input[type='checkbox']:checked,
+#subForm input[type='radio']:checked {
   background: #2fa36b;
+}
+#subForm fieldset{
+  border: 0;
 }
