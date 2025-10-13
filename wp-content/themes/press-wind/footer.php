@@ -90,6 +90,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 		<?php endif; ?>
 	</div>
 	<div class="copyrights flex max-md:flex-col md:flex-row items-center justify-start gap-[30px] md:pl-[200px]">
+		<a class="text-white font-arial text-[16px] font-[400] animateFade fadeOutAnimation " href="javascript:window.Sddan.cmp.displayUI();">Cookies</a>
 		<?php foreach ($copyrights_items as $item): ?>
 			<a class="text-white font-arial text-[16px] font-[400] animateFade fadeOutAnimation "
 				href="<?= $item['lien']['url']; ?>"><?= $item['lien']['title'] ?></a>
@@ -100,6 +101,25 @@ $copyrights_items = get_field('copyrights_items', 'option');
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
+
+<?php if(WP_ENV!='development'): ?>
+	 <!-- CMP -->
+ <script>
+(function ($) {
+    $(document).ready(function () {
+        $('#open-modal').on('click', function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+            if (window.Sddan && window.Sddan.cmp && typeof window.Sddan.cmp.displayUI === 'function') {
+                window.Sddan.cmp.displayUI(); // Call the modal function
+            } else {
+                console.error('Sddan CMP is not loaded.');
+            }
+        });
+    });
+})(jQuery);
+</script>
+ <!-- End CMP -->
+<?php endif; ?>
 
 </body>
 
