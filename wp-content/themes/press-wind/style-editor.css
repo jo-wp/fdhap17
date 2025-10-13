@@ -184,6 +184,9 @@
 .-left-\[110\%\]{
   left: -110%;
 }
+.-top-\[70px\]{
+  top: -70px;
+}
 .left-0{
   left: 0px;
 }
@@ -405,6 +408,9 @@
 .mt-\[67px\]{
   margin-top: 67px;
 }
+.mt-\[70px\]{
+  margin-top: 70px;
+}
 .mt-\[77px\]{
   margin-top: 77px;
 }
@@ -609,6 +615,9 @@
 .max-w-\[1480px\]{
   max-width: 1480px;
 }
+.max-w-\[150px\]{
+  max-width: 150px;
+}
 .max-w-\[1565px\]{
   max-width: 1565px;
 }
@@ -647,6 +656,9 @@
 }
 .max-w-\[540px\]{
   max-width: 540px;
+}
+.max-w-\[620px\]{
+  max-width: 620px;
 }
 .max-w-\[800px\]{
   max-width: 800px;
@@ -789,6 +801,9 @@
 .gap-\[17px\]{
   gap: 17px;
 }
+.gap-\[18px\]{
+  gap: 18px;
+}
 .gap-\[20px\]{
   gap: 20px;
 }
@@ -872,6 +887,9 @@
 }
 .rounded-\[10px\]{
   border-radius: 10px;
+}
+.rounded-\[13\.85px\]{
+  border-radius: 13.85px;
 }
 .rounded-\[16px\]{
   border-radius: 16px;
@@ -1156,6 +1174,10 @@
   padding-top: 27px;
   padding-bottom: 27px;
 }
+.py-\[30px\]{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
 .py-\[36px\]{
   padding-top: 36px;
   padding-bottom: 36px;
@@ -1184,6 +1206,9 @@
   padding-top: 8px;
   padding-bottom: 8px;
 }
+.\!pr-\[0px\]{
+  padding-right: 0px !important;
+}
 .pb-3{
   padding-bottom: 0.75rem;
 }
@@ -1196,6 +1221,9 @@
 .pb-\[19px\]{
   padding-bottom: 19px;
 }
+.pb-\[40px\]{
+  padding-bottom: 40px;
+}
 .pb-\[54px\]{
   padding-bottom: 54px;
 }
@@ -1207,6 +1235,9 @@
 }
 .pt-\[75px\]{
   padding-top: 75px;
+}
+.pt-\[90px\]{
+  padding-top: 90px;
 }
 .text-left{
   text-align: left;
@@ -1432,6 +1463,10 @@
 .text-orangeGlow{
   --tw-text-opacity: 1;
   color: rgb(251 146 15 / var(--tw-text-opacity));
+}
+.text-red-600{
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 .text-white{
   --tw-text-opacity: 1;
@@ -2787,14 +2822,14 @@ select,
   --tw-text-opacity: 1;
   color: rgb(233 178 55 / var(--tw-text-opacity));
 }
-.page-template-template-container.page .site-main .nf-form-content{
+#subForm{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
-.page-template-template-container.page .site-main .nf-form-content [type='email'],
-.page-template-template-container.page .site-main .nf-form-content [type='text'],
-.page-template-template-container.page .site-main .nf-form-content textarea{
+#subForm [type='email'],
+#subForm [type='text'],
+#subForm textarea{
   width: 100%;
   border-radius: 40px;
   border-width: 0px;
@@ -2808,12 +2843,7 @@ select,
   padding-top: 22px;
   padding-bottom: 22px;
 }
-.page-template-template-container.page .site-main .nf-after-field .nf-error-msg,
-.page-template-template-container.page .site-main .nf-after-form-content .nf-error-msg{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-.page-template-template-container.page .site-main .nf-form-content [type='submit']{
+#subForm [type='submit']{
   cursor: pointer;
   border-radius: 40px;
   border-width: 2px;
@@ -2834,7 +2864,7 @@ select,
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
-.page-template-template-container.page .site-main .nf-form-content [type='submit']:hover{
+#subForm [type='submit']:hover{
   border-width: 2px;
   --tw-border-opacity: 1;
   border-color: rgb(81 171 126 / var(--tw-border-opacity));
@@ -2843,7 +2873,7 @@ select,
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
-.page-template-template-container.page .site-main .nf-form-content label{
+#subForm  label{
   padding-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
@@ -2867,8 +2897,8 @@ select,
     padding-left: 50px;
   }
 }
-.page-template-template-container.page .site-main .nf-form-content input[type='checkbox'],
-.page-template-template-container.page .site-main .nf-form-content input[type='radio'] {
+#subForm  input[type='checkbox'],
+#subForm  input[type='radio'] {
   appearance: none;
   -webkit-appearance: none; /* Safari iOS */
   -moz-appearance: none; /* Firefox */
@@ -2886,15 +2916,12 @@ select,
   transition: all 0.2s ease;
   border-radius: 50%;
 }
-.page-template-template-container.page
-  .site-main
-  .nf-form-content
-  input[type='checkbox']:checked,
-.page-template-template-container.page
-  .site-main
-  .nf-form-content
-  input[type='radio']:checked {
+#subForm input[type='checkbox']:checked,
+#subForm input[type='radio']:checked {
   background: #2fa36b;
+}
+#subForm fieldset{
+  border: 0;
 }
 /** FONT IMPORT CDN */
 /** FONT IMPORT LOCAL */
@@ -3752,6 +3779,12 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     margin-right: 30px;
   }
 }
+@media (max-width: 1350px){
+  .max-\[1350px\]\:mx-\[30px\]{
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
 @media (max-width: 1340px){
   .max-\[1340px\]\:mx-\[30px\]{
     margin-left: 30px;
@@ -4420,6 +4453,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:mt-\[100px\]{
     margin-top: 100px;
   }
+  .md\:mt-\[50px\]{
+    margin-top: 50px;
+  }
   .md\:mt-\[60px\]{
     margin-top: 60px;
   }
@@ -4531,6 +4567,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:min-w-\[720px\]{
     min-width: 720px;
   }
+  .md\:max-w-\[1286px\]{
+    max-width: 1286px;
+  }
   .md\:max-w-\[1400px\]{
     max-width: 1400px;
   }
@@ -4611,6 +4650,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:gap-8{
     gap: 2rem;
+  }
+  .md\:gap-\[100px\]{
+    gap: 100px;
   }
   .md\:gap-\[150px\]{
     gap: 150px;
@@ -4782,6 +4824,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:text-\[32px\]{
     font-size: 32px;
+  }
+  .md\:text-\[36px\]{
+    font-size: 36px;
   }
   .md\:text-\[50px\]{
     font-size: 50px;
@@ -5329,6 +5374,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:\[\&_h2\]\:mb-\[67px\] h2{
     margin-bottom: 67px;
   }
+  .md\:\[\&_h2\]\:min-w-\[400px\] h2{
+    min-width: 400px;
+  }
   .md\:\[\&_h2\]\:pl-\[38px\] h2{
     padding-left: 38px;
   }
@@ -5346,6 +5394,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:\[\&_h2\]\:text-\[45px\] h2{
     font-size: 45px;
+  }
+  .md\:\[\&_h2\]\:text-\[50px\] h2{
+    font-size: 50px;
   }
   .md\:\[\&_h2\]\:leading-\[36px\] h2{
     line-height: 36px;
@@ -5378,8 +5429,14 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_h2_sub\]\:block h2 sub{
   display: block;
 }
+.\[\&_h2_sub\]\:inline-block h2 sub{
+  display: inline-block;
+}
 .\[\&_h2_sub\]\:text-center h2 sub{
   text-align: center;
+}
+.\[\&_h2_sub\]\:align-middle h2 sub{
+  vertical-align: middle;
 }
 .\[\&_h2_sub\]\:font-arial h2 sub{
   font-family: Arial, Helvetica, sans-serif;
@@ -5422,6 +5479,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:\[\&_h2_sub\]\:text-\[32px\] h2 sub{
     font-size: 32px;
+  }
+  .md\:\[\&_h2_sub\]\:text-\[50px\] h2 sub{
+    font-size: 50px;
   }
   .md\:\[\&_h2_sub\]\:text-inherit h2 sub{
     color: inherit;
@@ -5620,6 +5680,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p\]\:font-\[400\] p{
   font-weight: 400;
 }
+.\[\&_p\]\:font-\[700\] p{
+  font-weight: 700;
+}
 .\[\&_p\]\:font-light p{
   font-weight: 300;
 }
@@ -5654,6 +5717,28 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media (min-width: 768px){
+  .md\:\[\&_p\]\:border p{
+    border-width: 1px;
+  }
+  .md\:\[\&_p\]\:border-b-0 p{
+    border-bottom-width: 0px;
+  }
+  .md\:\[\&_p\]\:border-r-0 p{
+    border-right-width: 0px;
+  }
+  .md\:\[\&_p\]\:border-t-0 p{
+    border-top-width: 0px;
+  }
+  .md\:\[\&_p\]\:border-solid p{
+    border-style: solid;
+  }
+  .md\:\[\&_p\]\:border-black p{
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51 / var(--tw-border-opacity));
+  }
+  .md\:\[\&_p\]\:pl-\[60px\] p{
+    padding-left: 60px;
+  }
   .md\:\[\&_p\]\:text-left p{
     text-align: left;
   }
@@ -5729,6 +5814,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_span_span\]\:text-black span span{
   --tw-text-opacity: 1;
   color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.\[\&_strong\]\:text-green strong{
+  --tw-text-opacity: 1;
+  color: rgb(81 171 126 / var(--tw-text-opacity));
 }
 .\[\&_ul\]\:m-0 ul{
   margin: 0px;
