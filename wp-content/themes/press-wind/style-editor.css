@@ -2822,11 +2822,15 @@ select,
   --tw-text-opacity: 1;
   color: rgb(233 178 55 / var(--tw-text-opacity));
 }
+.page-template-template-container .nf-form-layout,
 #subForm{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
+.page-template-template-container .nf-form-content [type='email'],
+.page-template-template-container .nf-form-content [type="text"],
+.page-template-template-container .nf-form-content textarea,
 #subForm [type='email'],
 #subForm [type='text'],
 #subForm textarea{
@@ -2843,6 +2847,7 @@ select,
   padding-top: 22px;
   padding-bottom: 22px;
 }
+.page-template-template-container .nf-form-content [type='submit'],
 #subForm [type='submit']{
   cursor: pointer;
   border-radius: 40px;
@@ -2864,6 +2869,7 @@ select,
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
+.page-template-template-container .nf-form-content [type='submit']:hover,
 #subForm [type='submit']:hover{
   border-width: 2px;
   --tw-border-opacity: 1;
@@ -2873,30 +2879,29 @@ select,
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
+.page-template-template-container .nf-form-content label,
 #subForm  label{
   padding-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
-.page-template-template-container.page .site-main .nf-form-fields-required{
+.page-template-template-container .nf-form-cont .nf-form-fields-required{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 @media (min-width: 768px) {
-  .page-template-template-container.page
-    .site-main
-    .nf-form-content
-    .nf-cell:nth-child(1){
+  .page-template-template-container .nf-form-content .nf-cell:nth-child(1){
     padding-right: 50px;
   }
-  .page-template-template-container.page
-    .site-main
+  .page-template-template-container .site-main
     .nf-form-content
     .nf-cell:nth-child(2){
     padding-left: 50px;
   }
 }
+.page-template-template-container input[type='checkbox'],
+.page-template-template-container input[type='radio'],
 #subForm  input[type='checkbox'],
 #subForm  input[type='radio'] {
   appearance: none;
@@ -2916,6 +2921,8 @@ select,
   transition: all 0.2s ease;
   border-radius: 50%;
 }
+.page-template-template-container input[type='checkbox']:checked,
+.page-template-template-container input[type='radio']:checked,
 #subForm input[type='checkbox']:checked,
 #subForm input[type='radio']:checked {
   background: #2fa36b;
