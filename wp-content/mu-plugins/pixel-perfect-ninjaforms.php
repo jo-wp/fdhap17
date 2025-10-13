@@ -103,11 +103,43 @@ add_action('ninja_forms_after_submission', function( $form_data ){
     $pushCF = function($key, $val) use (&$custom){
         if ($val !== '' && $val !== null) $custom[] = ['Key' => $key, 'Value' => $val];
     };
-    $pushCF('Profil', $profil);
+
+     $firstnameField = $getByKey('firstname') ?: $getById(26); // <-- mets l'ID réel si besoin
+    $lastnameField  = $getByKey('lastname')  ?: $getById(27); // <-- mets l'ID réel si besoin
+    $messageField   = $getByKey('message')   ?: $getById(28); // <-- mets l'ID réel si besoin
+
+    // Valeurs nettoyées
+    $firstname = '';
+    if ($firstnameField && isset($firstnameField['value'])) {
+        $firstname = is_array($firstnameField['value']) ? reset($firstnameField['value']) : (string)$firstnameField['value'];
+        $firstname = sanitize_text_field($firstname);
+    }
+
+    $lastname = '';
+    if ($lastnameField && isset($lastnameField['value'])) {
+        $lastname = is_array($lastnameField['value']) ? reset($lastnameField['value']) : (string)$lastnameField['value'];
+        $lastname = sanitize_text_field($lastname);
+    }
+
+    $messageTxt = '';
+    if ($messageField && isset($messageField['value'])) {
+        $messageTxt = is_array($messageField['value']) ? implode("\n", (array)$messageField['value']) : (string)$messageField['value'];
+        // pour un textarea : supprime balises, garde le texte
+        $messageTxt = sanitize_textarea_field($messageTxt);
+    }
+
+    // Concat pour le champ "Name" Campaign Monitor / Pixel-Perfect
+    $fullName = trim($firstname . ' ' . $lastname);
+
+    // --- CustomFields à pousser (doivent exister côté Pixel-Perfect) ---
+    $pushCF('Profil', $profil);           // (déjà présent)
+    $pushCF('FirstName', $firstname);     // crée/assure ces 3 champs personnalisés dans PP
+    $pushCF('LastName',  $lastname);
+    $pushCF('Message',   $messageTxt);
 
     $payload = [
         'EmailAddress' => $email,
-        'Name'         => '',
+        'Name'         => $fullName,
         'CustomFields' => $custom,
         'Resubscribe'  => true,
         'RestartSubscriptionBasedAutoresponders' => true,
