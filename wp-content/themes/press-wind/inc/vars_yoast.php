@@ -112,47 +112,75 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
  */
 add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
+    // Active le debug ciblé si tu ajoutes `define('WP_DEBUG_BCTITLE', true);` dans wp-config.php
+    $do_debug = defined('WP_DEBUG_BCTITLE') && WP_DEBUG_BCTITLE === true;
+
     foreach ( $links as &$link ) {
-        echo '<pre>';
-        var_dump($link);
-        echo '</pre>';
-        // --- TERME DE TAXONOMIE ---
-        $term_id = 0;
+
+        // --- Détecter le terme ---
+        $term = null;
         if ( isset( $link['term'] ) && $link['term'] instanceof WP_Term ) {
-            $term_id = (int) $link['term']->term_id;
+            $term = $link['term'];
         } elseif ( ! empty( $link['term_id'] ) ) {
-            $term_id = (int) $link['term_id'];
+            $term = get_term( (int) $link['term_id'] );
         } elseif ( ! empty( $link['id'] ) && ! get_post_status( (int) $link['id'] ) ) {
-            // Parfois Yoast met l'id du terme dans 'id' (qui n'est pas un post)
-            $t = get_term( (int) $link['id'] );
-            if ( $t && ! is_wp_error( $t ) ) {
-                $term_id = (int) $t->term_id;
+            $maybe = get_term( (int) $link['id'] );
+            if ( $maybe && ! is_wp_error( $maybe ) ) {
+                $term = $maybe;
             }
         }
 
-        if ( $term_id ) {
-            // Meta récente
-            if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
-                $link['text'] = (string) get_term_meta( $term_id, 'wpseo_bctitle', true );
-                continue;
-            }
-            // Fallback ancien stockage Yoast
+        if ( ! $term || is_wp_error( $term ) ) {
+            continue; // pas un terme → on ne touche pas
+        }
+
+        $term_id = (int) $term->term_id;
+        $used    = null;
+
+        // 1) Nouveau stockage : meta directe 'wpseo_bctitle'
+        if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
+            $link['text'] = (string) get_term_meta( $term_id, 'wpseo_bctitle', true );
+            $used = 'wpseo_bctitle';
+        }
+        // 2) Ancien stockage : meta groupée 'wpseo' => ['bctitle' => ...]
+        elseif ( metadata_exists( 'term', $term_id, 'wpseo' ) ) {
             $legacy = get_term_meta( $term_id, 'wpseo', true );
             if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
+                // on écrase même si c'est ''
                 $link['text'] = (string) $legacy['bctitle'];
-                continue;
+                $used = "legacy_wpseo['bctitle']";
+            }
+        }
+        // 3) API Yoast (au cas où) : WPSEO_Taxonomy_Meta
+        elseif ( class_exists( 'WPSEO_Taxonomy_Meta' ) ) {
+            // Cette API retourne un tableau de metas normalisées (dont 'bctitle' si présent)
+            $meta = WPSEO_Taxonomy_Meta::get_term_meta( $term, $term->taxonomy );
+            if ( is_array( $meta ) && array_key_exists( 'bctitle', $meta ) ) {
+                $link['text'] = (string) $meta['bctitle'];
+                $used = 'WPSEO_Taxonomy_Meta::get_term_meta';
             }
         }
 
-        // --- POST / PAGE ---
-        if ( ! empty( $link['id'] ) && get_post_status( (int) $link['id'] ) ) {
-            $pid = (int) $link['id'];
-            if ( metadata_exists( 'post', $pid, '_yoast_wpseo_bctitle' ) ) {
-                $link['text'] = (string) get_post_meta( $pid, '_yoast_wpseo_bctitle', true );
-                continue;
+        // --- Debug optionnel ---
+        if ( $do_debug ) {
+            // On log une seule fois par page par terme pour éviter le bruit
+            $marker = 'bctitle_debug_done_' . $term_id;
+            if ( ! did_action( $marker ) ) {
+                do_action( $marker );
+
+                $keys = array_keys( (array) get_term_meta( $term_id ) );
+                error_log( sprintf(
+                    '[BCTITLE] term_id=%d tax=%s used=%s | meta_keys=%s | wpseo_bctitle=%s | legacy=%s',
+                    $term_id,
+                    $term->taxonomy,
+                    $used ?: 'none',
+                    implode(',', $keys),
+                    var_export( get_term_meta( $term_id, 'wpseo_bctitle', true ), true ),
+                    var_export( get_term_meta( $term_id, 'wpseo', true ), true )
+                ) );
             }
         }
     }
 
     return $links;
-}, 9999 ); // très tard pour écraser les autres réécritures
+}, 9999 ); // ultra tard pour gagner la dernière main
