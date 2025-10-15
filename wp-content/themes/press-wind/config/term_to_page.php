@@ -321,3 +321,87 @@ add_action('loop_start', function ($q) {
   echo '</section>';
 });
 
+
+
+/** =======================
+ *  WPML — Sync uniquement lors de l'update d'un terme
+ *  Conditions :
+ *   - si la traduction n'a pas de page liée → on met la page traduite
+ *   - si elle en a une différente → on remplace par la page traduite
+ *   - sinon → no-op
+ *  ======================= */
+
+if ( defined('ICL_SITEPRESS_VERSION') ) {
+
+  /**
+   * Retourne le tableau des traductions d'un élément WPML, indexé par code langue.
+   * @param int    $element_id
+   * @param string $element_type 'post_term_page' pour le CPT, 'tax_{taxonomy}' pour un terme
+   * @return array<string, object>
+   */
+  function tp_wpml_get_translations_map( $element_id, $element_type ) {
+    $trid = apply_filters( 'wpml_element_trid', null, $element_id, $element_type );
+    if ( empty( $trid ) ) return [];
+    $translations = apply_filters( 'wpml_get_element_translations', null, $trid, $element_type );
+    return is_array($translations) ? $translations : [];
+  }
+
+  /**
+   * Synchronise les liens pour TOUTES les traductions d'un terme, en se basant
+   * sur la page liée au terme courant (dans sa langue) et sa table de traductions.
+   * @param int    $term_id
+   * @param string $taxonomy
+   */
+  function tp_wpml_sync_term_links_conditional( $term_id, $taxonomy ) {
+    // Page liée au terme courant (langue actuelle du terme)
+    $src_post_id = tp_get_linked_post_id( $term_id );
+    if ( ! $src_post_id ) {
+      // Sans page source, on ne peut rien propager.
+      return;
+    }
+
+    // Maps de traductions
+    $term_translations = tp_wpml_get_translations_map( $term_id, 'tax_' . $taxonomy );
+    if ( empty( $term_translations ) ) return;
+
+    $page_translations = tp_wpml_get_translations_map( $src_post_id, 'post_term_page' );
+    if ( empty( $page_translations ) ) return;
+
+    foreach ( $term_translations as $lang => $t_trans ) {
+      if ( empty( $t_trans->element_id ) ) continue;
+
+      // S'il n'existe pas de page traduite dans cette langue → on ignore
+      if ( empty( $page_translations[$lang] ) || empty( $page_translations[$lang]->element_id ) ) continue;
+
+      $term_id_tr   = (int) $t_trans->element_id;
+      $page_id_tr   = (int) $page_translations[$lang]->element_id;
+      $current_link = (int) tp_get_linked_post_id( $term_id_tr );
+
+      // CONDITIONS :
+      // 1) pas de page liée → setter
+      if ( ! $current_link ) {
+        tp_set_linked_post_id( $term_id_tr, $page_id_tr );
+        continue;
+      }
+
+      // 2) page liée différente → remplacer par la nouvelle
+      if ( $current_link !== $page_id_tr ) {
+        tp_set_linked_post_id( $term_id_tr, $page_id_tr );
+        continue;
+      }
+
+      // 3) sinon, même page → ne rien faire
+    }
+  }
+
+  // On déclenche UNIQUEMENT lors de la création/édition d'un terme (pas côté post)
+  foreach ( TP_TAXONOMIES as $tax ) {
+    add_action( 'created_' . $tax, function( $term_id ) use ( $tax ) {
+      tp_wpml_sync_term_links_conditional( $term_id, $tax );
+    }, 20 );
+
+    add_action( 'edited_' . $tax, function( $term_id ) use ( $tax ) {
+      tp_wpml_sync_term_links_conditional( $term_id, $tax );
+    }, 20 );
+  }
+}
