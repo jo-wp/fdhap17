@@ -111,23 +111,21 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
  * de Yoast (même vide), pour posts/pages et termes.
  */
 /**
- * Yoast breadcrumbs : remplacer le texte UNIQUEMENT pour les TERMES,
- * en utilisant le "Titre du fil d’Ariane" (même vide) depuis :
- *  1) term meta 'wpseo_bctitle'
- *  2) term meta legacy 'wpseo' => ['bctitle']
- *  3) option legacy 'wpseo_taxonomy_meta'[$tax][$term_id]['bctitle']
- */
-/**
- * Yoast breadcrumbs (TERMS ONLY) + WPML fallback :
- * - Utilise 'wpseo_bctitle' du terme courant si la méta existe (même si '').
- * - Sinon, tente le terme source (langue par défaut) via WPML.
- * - Gère aussi l'ancien stockage : term meta 'wpseo' => ['bctitle'] et très legacy 'wpseo_taxonomy_meta'.
+ * Yoast breadcrumbs (TERMS ONLY) — utilise le breadcrumb_title précompilé
+ * depuis la table {prefix}_yoast_indexable, et écrase le texte même si vide.
+ * - Ne touche PAS aux posts/pages.
+ * - Fait une seule requête SQL pour tous les termes du breadcrumb.
  */
 add_filter( 'wpseo_breadcrumb_links', function( $links ) {
+    global $wpdb;
 
-    foreach ( $links as &$link ) {
-        // Résoudre le terme
+    // 1) Collecter tous les termes présents dans les liens
+    $term_refs = []; // [ index_du_lien => [term_id, taxonomy] ]
+    $term_ids  = [];
+
+    foreach ( $links as $i => $link ) {
         $term = null;
+
         if ( isset( $link['term'] ) && $link['term'] instanceof WP_Term ) {
             $term = $link['term'];
         } elseif ( ! empty( $link['term_id'] ) ) {
@@ -138,73 +136,49 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
                 $term = $maybe;
             }
         }
-        if ( ! $term || is_wp_error( $term ) ) {
-            continue; // pas un terme → on ne touche pas
+
+        if ( $term && ! is_wp_error( $term ) ) {
+            $term_refs[ $i ] = [ (int) $term->term_id, $term->taxonomy ];
+            $term_ids[] = (int) $term->term_id;
         }
+    }
 
-        $term_id = (int) $term->term_id;
+    if ( empty( $term_ids ) ) {
+        return $links; // aucun terme → rien à faire
+    }
 
-        // --- 1) TERME COURANT : nouvelles/anciennes metas ---
-        $bctitle = null;
-        $has_meta = false;
+    // 2) Récupérer les breadcrumb_title depuis wp_yoast_indexable en un seul coup
+    $in_ids = implode( ',', array_map( 'intval', array_unique( $term_ids ) ) );
+    $table  = $wpdb->prefix . 'yoast_indexable';
 
-        if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
-            $bctitle = get_term_meta( $term_id, 'wpseo_bctitle', true );
-            $has_meta = true;
-        } elseif ( metadata_exists( 'term', $term_id, 'wpseo' ) ) {
-            $legacy = get_term_meta( $term_id, 'wpseo', true );
-            if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
-                $bctitle = (string) $legacy['bctitle'];
-                $has_meta = true;
-            }
-        } else {
-            // Très legacy : option globale
-            $opt = get_option( 'wpseo_taxonomy_meta' );
-            if ( is_array( $opt )
-                && isset( $opt[ $term->taxonomy ][ $term_id ] )
-                && array_key_exists( 'bctitle', $opt[ $term->taxonomy ][ $term_id ] ) ) {
-                $bctitle = (string) $opt[ $term->taxonomy ][ $term_id ]['bctitle'];
-                $has_meta = true;
-            }
+    // Note: on filtre aussi par object_sub_type = taxonomy pour être 100% sûr
+    // (même si term_id est global).
+    $rows = $wpdb->get_results("
+        SELECT object_id, object_sub_type, breadcrumb_title
+        FROM {$table}
+        WHERE object_type = 'term'
+          AND object_id IN ( {$in_ids} )
+    ");
+
+    if ( empty( $rows ) ) {
+        return $links; // pas d’index Yoast pour ces termes (réindexation nécessaire ?)
+    }
+
+    // 3) Indexer les résultats: clé "term_id|taxonomy" → breadcrumb_title (peut être '' ou NULL)
+    $by_term = [];
+    foreach ( $rows as $r ) {
+        $key = (int) $r->object_id . '|' . (string) $r->object_sub_type;
+        $by_term[ $key ] = $r->breadcrumb_title; // on garde tel quel (incl. '')
+    }
+
+    // 4) Appliquer aux liens (écraser même si vide dès qu’une ligne existe)
+    foreach ( $term_refs as $i => list( $tid, $tax ) ) {
+        $key = $tid . '|' . $tax;
+        if ( array_key_exists( $key, $by_term ) ) {
+            // Important : on écrase même si NULL/'' pour respecter "même vide"
+            $links[ $i ]['text'] = (string) $by_term[ $key ];
         }
-
-        if ( $has_meta ) {
-            $link['text'] = (string) $bctitle; // écrase même si '' (vide)
-            continue;
-        }
-
-        // --- 2) FALLBACK WPML : chercher le bctitle du terme source ---
-        if ( function_exists( 'apply_filters' ) ) {
-            // langue par défaut (source)
-            $default_lang = apply_filters( 'wpml_default_language', null );
-            if ( $default_lang ) {
-                $orig_term_id = apply_filters( 'wpml_object_id', $term_id, $term->taxonomy, true, $default_lang );
-                if ( $orig_term_id && $orig_term_id !== $term_id ) {
-                    // même logique de lecture côté terme source
-                    if ( metadata_exists( 'term', $orig_term_id, 'wpseo_bctitle' ) ) {
-                        $link['text'] = (string) get_term_meta( $orig_term_id, 'wpseo_bctitle', true );
-                        continue;
-                    }
-                    if ( metadata_exists( 'term', $orig_term_id, 'wpseo' ) ) {
-                        $legacy = get_term_meta( $orig_term_id, 'wpseo', true );
-                        if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
-                            $link['text'] = (string) $legacy['bctitle'];
-                            continue;
-                        }
-                    }
-                    $opt = get_option( 'wpseo_taxonomy_meta' );
-                    if ( is_array( $opt )
-                        && isset( $opt[ $term->taxonomy ][ $orig_term_id ] )
-                        && array_key_exists( 'bctitle', $opt[ $term->taxonomy ][ $orig_term_id ] ) ) {
-                        $link['text'] = (string) $opt[ $term->taxonomy ][ $orig_term_id ]['bctitle'];
-                        continue;
-                    }
-                }
-            }
-        }
-        // Sinon : pas de méta trouvée nulle part → on laisse le nom du terme.
     }
 
     return $links;
-}, 9999 );
-
+}, 9999); // très tard, pour passer après tes autres filtres
