@@ -1,5 +1,5 @@
 <?php
-add_filter('post_thumbnail_url', function ($url, $post_id, $size) {
+add_filter('get_the_post_thumbnail_url', function ($url, $post_id, $size) {
   $post_type = get_post_type($post_id);
 
   if ($post_type === 'camping') {
