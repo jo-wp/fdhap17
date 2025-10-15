@@ -107,94 +107,50 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
 
 /**
- * Force Yoast à utiliser le champ "Titre du fil d’Ariane" défini dans la metabox,
- * même s’il est vide (pour écraser le titre par défaut).
+ * Remplace le texte de TOUTES les miettes par le champ "Titre du fil d’Ariane"
+ * de Yoast (même vide), pour posts/pages et termes.
  */
-add_filter( 'wpseo_breadcrumb_single_link_info', function( $link_info ) {
+add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
-    // 1) Cas Post/Page (Yoast fournit un id de post valide)
-    if ( ! empty( $link_info['id'] ) && get_post_status( (int) $link_info['id'] ) ) {
-        $post_id     = (int) $link_info['id'];
-        $meta_exists = metadata_exists( 'post', $post_id, '_yoast_wpseo_bctitle' );
-        $bctitle     = get_post_meta( $post_id, '_yoast_wpseo_bctitle', true );
+    foreach ( $links as &$link ) {
 
-        if ( $meta_exists ) {               // on écrase même si la valeur est '' (vide)
-            $link_info['text'] = $bctitle;
-        }
-        return $link_info;
-    }
-
-    // 2) Cas Taxonomie
-    // Yoast peut passer l'objet terme dans $link_info['term'],
-    // ou parfois un id qui n'est pas un post_id.
-    $term = null;
-
-    if ( isset( $link_info['term'] ) && $link_info['term'] instanceof WP_Term ) {
-        $term = $link_info['term'];
-    } elseif ( ! empty( $link_info['term_id'] ) ) {
-        $term = get_term( (int) $link_info['term_id'] );
-    } elseif ( ! empty( $link_info['id'] ) && ! get_post_status( (int) $link_info['id'] ) ) {
-        // dernier recours : tenter de résoudre comme terme si 'id' n'est pas un post
-        $maybe_term = get_term( (int) $link_info['id'] );
-        if ( $maybe_term && ! is_wp_error( $maybe_term ) ) {
-            $term = $maybe_term;
-        }
-    }
-
-    if ( $term && ! is_wp_error( $term ) ) {
-        // Meta récente
-        $meta_exists_term = metadata_exists( 'term', $term->term_id, 'wpseo_bctitle' );
-        $bctitle_term     = get_term_meta( $term->term_id, 'wpseo_bctitle', true );
-
-        if ( $meta_exists_term ) {
-            $link_info['text'] = $bctitle_term;   // écrase même si ''
-            return $link_info;
+        // --- TERME DE TAXONOMIE ---
+        $term_id = 0;
+        if ( isset( $link['term'] ) && $link['term'] instanceof WP_Term ) {
+            $term_id = (int) $link['term']->term_id;
+        } elseif ( ! empty( $link['term_id'] ) ) {
+            $term_id = (int) $link['term_id'];
+        } elseif ( ! empty( $link['id'] ) && ! get_post_status( (int) $link['id'] ) ) {
+            // Parfois Yoast met l'id du terme dans 'id' (qui n'est pas un post)
+            $t = get_term( (int) $link['id'] );
+            if ( $t && ! is_wp_error( $t ) ) {
+                $term_id = (int) $t->term_id;
+            }
         }
 
-        // Fallback ancien Yoast : meta groupée 'wpseo' => ['bctitle' => ...]
-        $legacy = get_term_meta( $term->term_id, 'wpseo', true );
-        if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
-            $link_info['text'] = (string) $legacy['bctitle']; // peut être vide, on respecte
-            return $link_info;
+        if ( $term_id ) {
+            // Meta récente
+            if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
+                $link['text'] = (string) get_term_meta( $term_id, 'wpseo_bctitle', true );
+                continue;
+            }
+            // Fallback ancien stockage Yoast
+            $legacy = get_term_meta( $term_id, 'wpseo', true );
+            if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
+                $link['text'] = (string) $legacy['bctitle'];
+                continue;
+            }
+        }
+
+        // --- POST / PAGE ---
+        if ( ! empty( $link['id'] ) && get_post_status( (int) $link['id'] ) ) {
+            $pid = (int) $link['id'];
+            if ( metadata_exists( 'post', $pid, '_yoast_wpseo_bctitle' ) ) {
+                $link['text'] = (string) get_post_meta( $pid, '_yoast_wpseo_bctitle', true );
+                continue;
+            }
         }
     }
 
-    return $link_info;
-}, 100 ); // priorité haute pour passer après d'éventuels autres filtres
-
-
-
-// function yoast_term_bctitle( $term_id ) {
-//     // Cas récent (Yoast stocke directement la meta du terme)
-//     $bctitle = get_term_meta( $term_id, 'wpseo_bctitle', true );
-
-
-//     // Fallback anciens Yoast (regroupé dans 'wpseo')
-//     if ( ! $bctitle ) {
-//         $yoast = get_term_meta( $term_id, 'wpseo', true );
-//               var_dump($bctitle);
-//             die();
-//         if ( is_array( $yoast ) && ! empty( $yoast['bctitle'] ) ) {
-//             $bctitle = $yoast['bctitle'];
-//         }
-//     }
-//     return $bctitle;
-// }
-
-// add_filter( 'wpseo_breadcrumb_links', function( $links ) {
-//     $taxos = [ 'destination','equipement','atout','etoile','aquatique','service',
-//                'label','hebergement','cible','groupe','confort','paiement' ];
-
-//     if ( is_tax( $taxos ) ) {
-//         $term = get_queried_object();
-//         if ( $term && isset( $term->term_id ) ) {
-//             $bctitle = yoast_term_bctitle( $term->term_id );
-          
-//             if ( $bctitle ) {
-//                 $last = count( $links ) - 1;
-//                 $links[ $last ]['text'] = $bctitle;
-//             }
-//         }
-//     }
-//     return $links;
-// }, 10 );
+    return $links;
+}, 9999 ); // très tard pour écraser les autres réécritures
