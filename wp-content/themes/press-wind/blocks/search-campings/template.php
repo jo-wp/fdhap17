@@ -68,12 +68,10 @@ $template = [
   </div>
 </section>
 
-<div id="modal" class=" hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
+<div id="modal" class=" hidden fixed inset-0 bg-black/50  items-center justify-center z-50 ">
   <div id="mapBlockSearchCampings" class="relative">
-    <button
-      id="closeModal"
-      class="px-4 py-2  text-white absolute  -right-[20px] cursor-pointer -top-[20px] bg-orange border-none text-[20px] rounded-[50%] font-arial"
-    >X</button>
+    <button id="closeModal"
+      class="px-4 py-2  text-white absolute  -right-[20px] cursor-pointer -top-[20px] bg-orange border-none text-[20px] rounded-[50%] font-arial">X</button>
     <span>La carte</span>
     <div id="block-render-campings-map" class="map h-[70vh] w-[60vh]"></div>
   </div>
@@ -81,17 +79,19 @@ $template = [
 
 <script>
 
-    const modal = document.getElementById("modal");
+  const modal = document.getElementById("modal");
   const openModal = document.getElementById("openMapBlockSearchCampings");
   const closeModal = document.getElementById("closeModal");
 
   openModal.addEventListener("click", () => {
     modal.classList.remove("hidden");
+    modal.classList.add('flex');
     rebuildMarkers()
   });
 
   closeModal.addEventListener("click", () => {
     modal.classList.add("hidden");
+    modal.classList.remove('flex');
   });
 
   // modal.addEventListener("click", () => {
@@ -100,64 +100,64 @@ $template = [
 
   let map, markersLayer
 
-function ensureMap() {
-  if (!map) {
-    const el = document.getElementById('block-render-campings-map')
+  function ensureMap() {
+    if (!map) {
+      const el = document.getElementById('block-render-campings-map')
 
-    if (!el) return
+      if (!el) return
 
-    map = L.map(el, { scrollWheelZoom: false })
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 12,
-      attribution: '&copy; OpenStreetMap',
-    }).addTo(map)
+      map = L.map(el, { scrollWheelZoom: false })
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 12,
+        attribution: '&copy; OpenStreetMap',
+      }).addTo(map)
 
-    markersLayer = L.layerGroup().addTo(map)
-    map.setView([46.1603, -1.1511], 9)
+      markersLayer = L.layerGroup().addTo(map)
+      map.setView([46.1603, -1.1511], 9)
+    }
   }
-}
 
-function rebuildMarkers() {
-  ensureMap()
-  if (!map || !markersLayer) return
+  function rebuildMarkers() {
+    ensureMap()
+    if (!map || !markersLayer) return
 
-  markersLayer.clearLayers()
+    markersLayer.clearLayers()
 
-  const markerSvg = `
+    const markerSvg = `
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="39" viewBox="0 0 30 39">
   <path d="M17.5074 37.8874C22.1164 31.5693 29.8464 19.9367 29.8464 13.0156C29.8464 5.83806 23.2253 0 15.089 0C6.95256 0 0.331543 5.83806 0.331543 13.0156C0.331543 19.9367 8.06145 31.5693 12.6705 37.8874C13.7522 39.3709 16.4257 39.3709 17.5074 37.8874ZM5.2144 13.0156C5.2144 8.21258 9.64315 4.30654 15.089 4.30654C20.5347 4.30654 24.9635 8.21258 24.9635 13.0156C24.9635 17.8172 20.5347 21.7232 15.089 21.7232C9.64315 21.7232 5.2144 17.8157 5.2144 13.0156Z" fill="#51AB7E"/>
   </svg>
   `.trim()
 
-  const icon = L.icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(markerSvg),
-    iconSize: [30, 39],
-    iconAnchor: [15, 39],
-    popupAnchor: [0, -39],
-  })
+    const icon = L.icon({
+      iconUrl: 'data:image/svg+xml;base64,' + btoa(markerSvg),
+      iconSize: [30, 39],
+      iconAnchor: [15, 39],
+      popupAnchor: [0, -39],
+    })
 
-  const $items = jQuery('.js-camping-item[data-lat][data-lng]')
-  console.log($items);
+    const $items = jQuery('.js-camping-item[data-lat][data-lng]')
+    console.log($items);
 
-  const bounds = L.latLngBounds([])
-  $items.each(function () {
-    const $it = jQuery(this)
-    const lat = parseFloat($it.attr('data-lat'))
-    const lng = parseFloat($it.attr('data-lng'))
-    if (isFinite(lat) && isFinite(lng)) {
-      const title = $it.attr('data-title') || ''
-      const url = $it.attr('data-url') || '#'
-      const marker = L.marker([lat, lng],{ icon }).bindPopup(
-        `<strong>${title}</strong><br><a href="${url}">Voir la fiche</a>`,
-      )
-      markersLayer.addLayer(marker)
-      bounds.extend([lat, lng])
+    const bounds = L.latLngBounds([])
+    $items.each(function () {
+      const $it = jQuery(this)
+      const lat = parseFloat($it.attr('data-lat'))
+      const lng = parseFloat($it.attr('data-lng'))
+      if (isFinite(lat) && isFinite(lng)) {
+        const title = $it.attr('data-title') || ''
+        const url = $it.attr('data-url') || '#'
+        const marker = L.marker([lat, lng], { icon }).bindPopup(
+          `<strong>${title}</strong><br><a href="${url}">Voir la fiche</a>`,
+        )
+        markersLayer.addLayer(marker)
+        bounds.extend([lat, lng])
+      }
+    })
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [20, 20] })
     }
-  })
-
-  if (bounds.isValid()) {
-    map.fitBounds(bounds, { padding: [20, 20] })
   }
-}
 
 </script>
