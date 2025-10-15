@@ -69,11 +69,11 @@ $template = [
 </section>
 
 <div id="modal" class=" hidden fixed inset-0 bg-black/50  items-center justify-center z-50 ">
-  <div id="mapBlockSearchCampings" class="relative">
+  <div id="mapBlockSearchCampings" class="relative max-md:w-[80%]">
     <button id="closeModal"
       class="px-4 py-2  text-white absolute  -right-[20px] cursor-pointer -top-[20px] bg-orange border-none text-[20px] rounded-[50%] font-arial">X</button>
     <span>La carte</span>
-    <div id="block-render-campings-map" class="map h-[70vh] w-[80%] md:h-[70vh] md:w-[60vh]"></div>
+    <div id="block-render-campings-map" class="map h-[70vh] w-[100%] md:h-[70vh] md:w-[60vh]"></div>
   </div>
 </div>
 
