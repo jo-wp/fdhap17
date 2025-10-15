@@ -8,6 +8,8 @@ if (!defined('WP_ENV')) {
 }
 
 
+// Override !!
+require_once dirname(__FILE__) . '/inc/override.php';
 // gutenberg setup, change like you want
 require_once dirname(__FILE__) . '/inc/gutenberg.php';
 // auto loading acf blocks
