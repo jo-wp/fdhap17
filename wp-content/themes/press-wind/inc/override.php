@@ -44,9 +44,17 @@ function rp_get_camping_fallback_image( $post_id, $size = 'thumbnail' ) {
  * 1) Couvrir get_the_post_thumbnail_url()
  */
 add_filter('get_the_post_thumbnail_url', function ($url, $post_id, $size) {
+
   if (get_post_type($post_id) !== 'camping') {
     return $url;
   }
+
+  $debug = [
+      'url' => $url,
+      'post_id' => $post_id,
+      'size' => $size,
+    ];
+    echo '<script>console.log(' . json_encode($debug) . ');</script>';
 
   if (empty($url)) {
     $fallback = rp_get_camping_fallback_image($post_id, $size);
