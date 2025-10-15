@@ -113,7 +113,9 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
     foreach ( $links as &$link ) {
-
+        echo '<pre>';
+        var_dump($link);
+        echo '</pre>';
         // --- TERME DE TAXONOMIE ---
         $term_id = 0;
         if ( isset( $link['term'] ) && $link['term'] instanceof WP_Term ) {
