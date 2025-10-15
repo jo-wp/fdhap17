@@ -5,6 +5,7 @@ import instagramOverride from './instagram/main.js'
 import filtreMobile from './facetwp/mobile.js';
 import menuMobile from './menu/main.js';
 import ctaMobile from './menu/cta.js';
+import displayCardMapSearchCampings from './campings/block-search-campings.js';
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
 import Splide from '@splidejs/splide'
@@ -284,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
   instagramOverride()
   menuMobile()
   ctaMobile()
-  
 
   //Import
   const map = document.querySelector('#map')
