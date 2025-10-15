@@ -117,10 +117,16 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
  *  2) term meta legacy 'wpseo' => ['bctitle']
  *  3) option legacy 'wpseo_taxonomy_meta'[$tax][$term_id]['bctitle']
  */
+/**
+ * Yoast breadcrumbs (TERMS ONLY) + WPML fallback :
+ * - Utilise 'wpseo_bctitle' du terme courant si la méta existe (même si '').
+ * - Sinon, tente le terme source (langue par défaut) via WPML.
+ * - Gère aussi l'ancien stockage : term meta 'wpseo' => ['bctitle'] et très legacy 'wpseo_taxonomy_meta'.
+ */
 add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
     foreach ( $links as &$link ) {
-        // Identifier le terme
+        // Résoudre le terme
         $term = null;
         if ( isset( $link['term'] ) && $link['term'] instanceof WP_Term ) {
             $term = $link['term'];
@@ -133,36 +139,72 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
             }
         }
         if ( ! $term || is_wp_error( $term ) ) {
-            continue;
+            continue; // pas un terme → on ne touche pas
         }
 
         $term_id = (int) $term->term_id;
 
-        // (1) Nouveau : term meta directe
-        if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
-            $link['text'] = (string) get_term_meta( $term_id, 'wpseo_bctitle', true ); // même si ''
-            continue;
-        }
+        // --- 1) TERME COURANT : nouvelles/anciennes metas ---
+        $bctitle = null;
+        $has_meta = false;
 
-        // (2) Legacy : term meta groupée 'wpseo' => ['bctitle' => ...]
-        if ( metadata_exists( 'term', $term_id, 'wpseo' ) ) {
+        if ( metadata_exists( 'term', $term_id, 'wpseo_bctitle' ) ) {
+            $bctitle = get_term_meta( $term_id, 'wpseo_bctitle', true );
+            $has_meta = true;
+        } elseif ( metadata_exists( 'term', $term_id, 'wpseo' ) ) {
             $legacy = get_term_meta( $term_id, 'wpseo', true );
             if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
-                $link['text'] = (string) $legacy['bctitle']; // même si ''
-                continue;
+                $bctitle = (string) $legacy['bctitle'];
+                $has_meta = true;
+            }
+        } else {
+            // Très legacy : option globale
+            $opt = get_option( 'wpseo_taxonomy_meta' );
+            if ( is_array( $opt )
+                && isset( $opt[ $term->taxonomy ][ $term_id ] )
+                && array_key_exists( 'bctitle', $opt[ $term->taxonomy ][ $term_id ] ) ) {
+                $bctitle = (string) $opt[ $term->taxonomy ][ $term_id ]['bctitle'];
+                $has_meta = true;
             }
         }
 
-        // (3) Très legacy : option 'wpseo_taxonomy_meta'
-        $opt = get_option( 'wpseo_taxonomy_meta' );
-        if ( is_array( $opt )
-            && isset( $opt[ $term->taxonomy ] )
-            && isset( $opt[ $term->taxonomy ][ $term_id ] )
-            && array_key_exists( 'bctitle', $opt[ $term->taxonomy ][ $term_id ] ) ) {
-            $link['text'] = (string) $opt[ $term->taxonomy ][ $term_id ]['bctitle']; // même si ''
+        if ( $has_meta ) {
+            $link['text'] = (string) $bctitle; // écrase même si '' (vide)
             continue;
         }
+
+        // --- 2) FALLBACK WPML : chercher le bctitle du terme source ---
+        if ( function_exists( 'apply_filters' ) ) {
+            // langue par défaut (source)
+            $default_lang = apply_filters( 'wpml_default_language', null );
+            if ( $default_lang ) {
+                $orig_term_id = apply_filters( 'wpml_object_id', $term_id, $term->taxonomy, true, $default_lang );
+                if ( $orig_term_id && $orig_term_id !== $term_id ) {
+                    // même logique de lecture côté terme source
+                    if ( metadata_exists( 'term', $orig_term_id, 'wpseo_bctitle' ) ) {
+                        $link['text'] = (string) get_term_meta( $orig_term_id, 'wpseo_bctitle', true );
+                        continue;
+                    }
+                    if ( metadata_exists( 'term', $orig_term_id, 'wpseo' ) ) {
+                        $legacy = get_term_meta( $orig_term_id, 'wpseo', true );
+                        if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
+                            $link['text'] = (string) $legacy['bctitle'];
+                            continue;
+                        }
+                    }
+                    $opt = get_option( 'wpseo_taxonomy_meta' );
+                    if ( is_array( $opt )
+                        && isset( $opt[ $term->taxonomy ][ $orig_term_id ] )
+                        && array_key_exists( 'bctitle', $opt[ $term->taxonomy ][ $orig_term_id ] ) ) {
+                        $link['text'] = (string) $opt[ $term->taxonomy ][ $orig_term_id ]['bctitle'];
+                        continue;
+                    }
+                }
+            }
+        }
+        // Sinon : pas de méta trouvée nulle part → on laisse le nom du terme.
     }
 
     return $links;
 }, 9999 );
+
