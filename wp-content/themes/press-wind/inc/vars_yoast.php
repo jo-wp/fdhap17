@@ -111,35 +111,57 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
  * même s’il est vide (pour écraser le titre par défaut).
  */
 add_filter( 'wpseo_breadcrumb_single_link_info', function( $link_info ) {
-    if ( empty( $link_info['id'] ) ) {
-        return $link_info;
-    }
 
-    $id = (int) $link_info['id'];
+    // 1) Cas Post/Page (Yoast fournit un id de post valide)
+    if ( ! empty( $link_info['id'] ) && get_post_status( (int) $link_info['id'] ) ) {
+        $post_id     = (int) $link_info['id'];
+        $meta_exists = metadata_exists( 'post', $post_id, '_yoast_wpseo_bctitle' );
+        $bctitle     = get_post_meta( $post_id, '_yoast_wpseo_bctitle', true );
 
-    // Cas 1 : c’est un post ou une page
-    if ( get_post_status( $id ) ) {
-        // On récupère la méta _yoast_wpseo_bctitle (même si vide)
-        $meta_exists = metadata_exists( 'post', $id, '_yoast_wpseo_bctitle' );
-        $bctitle     = get_post_meta( $id, '_yoast_wpseo_bctitle', true );
-
-        if ( $meta_exists ) {
+        if ( $meta_exists ) {               // on écrase même si la valeur est '' (vide)
             $link_info['text'] = $bctitle;
         }
-
         return $link_info;
     }
 
-    // Cas 2 : c’est un terme de taxonomie
-    $meta_exists_term = metadata_exists( 'term', $id, 'wpseo_bctitle' );
-    $bctitle_term     = get_term_meta( $id, 'wpseo_bctitle', true );
+    // 2) Cas Taxonomie
+    // Yoast peut passer l'objet terme dans $link_info['term'],
+    // ou parfois un id qui n'est pas un post_id.
+    $term = null;
 
-    if ( $meta_exists_term ) {
-        $link_info['text'] = $bctitle_term;
+    if ( isset( $link_info['term'] ) && $link_info['term'] instanceof WP_Term ) {
+        $term = $link_info['term'];
+    } elseif ( ! empty( $link_info['term_id'] ) ) {
+        $term = get_term( (int) $link_info['term_id'] );
+    } elseif ( ! empty( $link_info['id'] ) && ! get_post_status( (int) $link_info['id'] ) ) {
+        // dernier recours : tenter de résoudre comme terme si 'id' n'est pas un post
+        $maybe_term = get_term( (int) $link_info['id'] );
+        if ( $maybe_term && ! is_wp_error( $maybe_term ) ) {
+            $term = $maybe_term;
+        }
+    }
+
+    if ( $term && ! is_wp_error( $term ) ) {
+        // Meta récente
+        $meta_exists_term = metadata_exists( 'term', $term->term_id, 'wpseo_bctitle' );
+        $bctitle_term     = get_term_meta( $term->term_id, 'wpseo_bctitle', true );
+
+        if ( $meta_exists_term ) {
+            $link_info['text'] = $bctitle_term;   // écrase même si ''
+            return $link_info;
+        }
+
+        // Fallback ancien Yoast : meta groupée 'wpseo' => ['bctitle' => ...]
+        $legacy = get_term_meta( $term->term_id, 'wpseo', true );
+        if ( is_array( $legacy ) && array_key_exists( 'bctitle', $legacy ) ) {
+            $link_info['text'] = (string) $legacy['bctitle']; // peut être vide, on respecte
+            return $link_info;
+        }
     }
 
     return $link_info;
-}, 10 );
+}, 100 ); // priorité haute pour passer après d'éventuels autres filtres
+
 
 
 // function yoast_term_bctitle( $term_id ) {
