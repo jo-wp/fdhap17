@@ -133,50 +133,70 @@ class Ctoutvert
     }
   }
 
-  public static function ctoutvert_search_holidays($dateFilters = [], $productTypes = [])
-  {
-    $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
-    $username = CTOUTVERT_USERNAME;
-    $password = CTOUTVERT_PASSWORD;
-    $id_engine = CTOUTVERT_ID_ENGINE;
+public static function ctoutvert_search_holidays($dateFilter = [], $productTypes = [], $onlyWithOffer = false)
+{
+  $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+  $username = CTOUTVERT_USERNAME;
+  $password = CTOUTVERT_PASSWORD;
+  $id_engine = CTOUTVERT_ID_ENGINE;
 
-    try {
-      $client = new SoapClient($wsdl, [
-        'trace' => 1,
-        'exceptions' => true
-      ]);
+  try {
+    $client = new SoapClient($wsdl, [
+      'trace'      => 1,
+      'exceptions' => true,
+      // utile quand on envoie des listes
+      'features'   => SOAP_SINGLE_ELEMENT_ARRAYS,
+    ]);
 
-      // Préparation de l'objet dateFilters
-      if (empty($dateFilters)) {
-        $dateFilters = [
-          'startDate' => date('Y-m-d', strtotime('+1 day')),
-          'endDate' => date('Y-m-d', strtotime('+10 days'))
-        ];
-      }
-
-      $params = [
-        'user' => [
-          'user' => $username,
-          'password' => $password,
-          'idEngine' => $id_engine,
-        ],
-        'language' => 'FR',
-        // 'request' => [ ... ] 
+    // Par sécurité, assure des dates valides si rien n’est passé
+    if (empty($dateFilter)) {
+      $dateFilter = [
+        'startDate' => date('Y-m-d', strtotime('+1 day')),
+        'endDate'   => date('Y-m-d', strtotime('+10 days')),
       ];
-
-      if ($dateFilters) {
-        $params['dateFilters'] = $dateFilters;
-      }
-
-
-      $result = $client->__soapCall('engine_returnAvailabilityAdvanced', [$params]);
-
-      return $result;
-    } catch (Exception $e) {
-      error_log('Erreur appel engine_returnAvailabilityAdvanced : ' . $e->getMessage());
-      return $e->getMessage();
     }
+
+    $params = [
+      'user' => [
+        'user'     => $username,
+        'password' => $password,
+        'idEngine' => $id_engine,
+      ],
+      'language'   => 'FR',
+      // !!! clé correcte (singulier)
+      'dateFilter' => $dateFilter,
+    ];
+
+    if ($onlyWithOffer) {
+      // N’envoie pas les champs obsolètes
+      $params['specialOfferFilter'] = [
+        'ExcludeNonOffer'     => true,   // uniquement des séjours avec offre
+        'IncludeClassicOffers'=> true,   // inclure les offres "classiques"
+        // 'offerTypes' => ['Classic', 'Injected'], // exemple si tu veux cibler
+        // 'campaignWSCode' => 'XXX',              // optionnel
+        // 'DiscountCode'   => 'PROMO2025',        // optionnel
+      ];
+    }
+
+    // Optionnel : filtrer des types de produits
+    if (!empty($productTypes)) {
+      $params['productFilter'] = [
+        'productTypes' => $productTypes, // vérifie le nom exact attendu par le WSDL
+      ];
+    }
+
+    $result = $client->__soapCall('engine_returnAvailabilityAdvanced', [$params]);
+
+    // DEBUG utile: vérifie ce qui a été réellement envoyé
+    // error_log($client->__getLastRequest());
+
+    return $result;
+  } catch (Exception $e) {
+    error_log('Erreur appel engine_returnAvailabilityAdvanced : ' . $e->getMessage());
+    return $e->getMessage();
   }
+}
+
 
 
   public static function ctoutvert_get_specialoffer($campingId)
@@ -225,12 +245,13 @@ class Ctoutvert
 if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
 
   // $data = Ctoutvert::get_camping_ctoutvert(14166);
+  // $data = Ctoutvert::ctoutvert_get_specialoffer(1563506);
   // $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
   // $dateFilters = [
   //   'startDate' => '2026-01-05',
   //   'endDate' => '2026-01-10'
   // ];
-  // $data = Ctoutvert::ctoutvert_search_holidays( $dateFilters);
+  // $data = Ctoutvert::ctoutvert_search_holidays( null,null,true);
   // echo '<pre>';
   // print_r($data);
   // echo '</pre>';
