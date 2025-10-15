@@ -106,6 +106,42 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
 
 
+/**
+ * Force Yoast à utiliser le champ "Titre du fil d’Ariane" défini dans la metabox,
+ * même s’il est vide (pour écraser le titre par défaut).
+ */
+add_filter( 'wpseo_breadcrumb_single_link_info', function( $link_info ) {
+    if ( empty( $link_info['id'] ) ) {
+        return $link_info;
+    }
+
+    $id = (int) $link_info['id'];
+
+    // Cas 1 : c’est un post ou une page
+    if ( get_post_status( $id ) ) {
+        // On récupère la méta _yoast_wpseo_bctitle (même si vide)
+        $meta_exists = metadata_exists( 'post', $id, '_yoast_wpseo_bctitle' );
+        $bctitle     = get_post_meta( $id, '_yoast_wpseo_bctitle', true );
+
+        if ( $meta_exists ) {
+            $link_info['text'] = $bctitle;
+        }
+
+        return $link_info;
+    }
+
+    // Cas 2 : c’est un terme de taxonomie
+    $meta_exists_term = metadata_exists( 'term', $id, 'wpseo_bctitle' );
+    $bctitle_term     = get_term_meta( $id, 'wpseo_bctitle', true );
+
+    if ( $meta_exists_term ) {
+        $link_info['text'] = $bctitle_term;
+    }
+
+    return $link_info;
+}, 10 );
+
+
 // function yoast_term_bctitle( $term_id ) {
 //     // Cas récent (Yoast stocke directement la meta du terme)
 //     $bctitle = get_term_meta( $term_id, 'wpseo_bctitle', true );
