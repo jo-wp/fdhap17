@@ -573,8 +573,8 @@
 .w-\[56px\]{
   width: 56px;
 }
-.w-\[60vh\]{
-  width: 60vh;
+.w-\[80\%\]{
+  width: 80%;
 }
 .w-full{
   width: 100%;
@@ -4541,6 +4541,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:h-\[60vh\]{
     height: 60vh;
   }
+  .md\:h-\[70vh\]{
+    height: 70vh;
+  }
   .md\:h-\[800px\]{
     height: 800px;
   }
@@ -4582,6 +4585,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .md\:w-\[52\%\]{
     width: 52%;
+  }
+  .md\:w-\[60vh\]{
+    width: 60vh;
   }
   .md\:w-\[65\%\]{
     width: 65%;
