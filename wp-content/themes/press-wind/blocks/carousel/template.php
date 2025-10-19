@@ -84,7 +84,7 @@ $block_id = $block['id'];
   <div class="block-carousel__items">
     <?php if ($items_selected): ?>
       <section class="splide splidejs-<?= $block_id; ?>">
-        <div class="block-carousel__filters-controls splide__arrows">
+        <div class="block-carousel__filters-controls splide__arrows max-md:hidden">
           <button
             class="splide__arrow splide__arrow--prev block-carousel__filters-controls-prev !bg-transparent !border-none !cursor-pointer !-left-[60px]">
             <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/media/arrow-prev-green.svg"
