@@ -334,7 +334,8 @@ JS;
 });
 
 
-function enqueue_cmp_script() {
+
+add_action('wp_enqueue_scripts',function () {
     if (defined('WP_ENV') && WP_ENV != 'development') {
         wp_enqueue_script(
             'cmp-script',
@@ -344,5 +345,4 @@ function enqueue_cmp_script() {
             true // dans le footer
         );
     }
-}
-add_action('wp_enqueue_scripts', 'enqueue_cmp_script');
+});
