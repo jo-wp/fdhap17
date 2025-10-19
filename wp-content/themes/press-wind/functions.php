@@ -339,7 +339,7 @@ add_action('wp_enqueue_scripts',function () {
     if (defined('WP_ENV') && WP_ENV != 'development') {
         wp_enqueue_script(
             'cmp-script',
-            get_template_directory_uri() . '/assets/js/cmp.js',
+            get_template_directory_uri() . '/assets/js/cmp/cmp.js',
             array('jquery'), // <--- dépendance jQuery
             null,
             true // dans le footer
