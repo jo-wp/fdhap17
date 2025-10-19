@@ -332,3 +332,17 @@ JS;
   wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', [], '1.9.4');
   wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', [], '1.9.4', true);
 });
+
+
+function enqueue_cmp_script() {
+    if (defined('WP_ENV') && WP_ENV != 'development') {
+        wp_enqueue_script(
+            'cmp-script',
+            get_template_directory_uri() . '/assets/js/cmp.js',
+            array('jquery'), // <--- dépendance jQuery
+            null,
+            true // dans le footer
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_cmp_script');

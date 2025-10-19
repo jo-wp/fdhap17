@@ -102,25 +102,6 @@ $copyrights_items = get_field('copyrights_items', 'option');
 
 <?php wp_footer(); ?>
 
-<?php if(WP_ENV!='development'): ?>
-	 <!-- CMP -->
- <script>
-(function ($) {
-    $(document).ready(function () {
-        $('#open-modal').on('click', function (e) {
-            e.preventDefault(); // Prevent the default link behavior
-            if (window.Sddan && window.Sddan.cmp && typeof window.Sddan.cmp.displayUI === 'function') {
-                window.Sddan.cmp.displayUI(); // Call the modal function
-            } else {
-                console.error('Sddan CMP is not loaded.');
-            }
-        });
-    });
-})(jQuery);
-</script>
- <!-- End CMP -->
-<?php endif; ?>
-
 </body>
 
 </html>
