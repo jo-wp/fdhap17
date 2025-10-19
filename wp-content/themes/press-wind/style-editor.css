@@ -2708,9 +2708,14 @@ nav .submenu > li .submenu-child > li{
   min-width: auto;
 }
 .block-search .facetwp-template > div{
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   column-gap: 30px;
   row-gap: 50px;
+}
+@media (min-width: 768px){
+  .block-search .facetwp-template > div{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .single-post h2{
   margin-top: 20px !important;

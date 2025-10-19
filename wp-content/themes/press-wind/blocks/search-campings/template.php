@@ -72,7 +72,7 @@ $template = [
   <div id="mapBlockSearchCampings" class="relative max-md:w-[80%]">
     <button id="closeModal"
       class="px-4 py-2  text-white absolute  -right-[20px] cursor-pointer -top-[20px] bg-orange border-none text-[20px] rounded-[50%] font-arial">X</button>
-    <span>La carte</span>
+    <span><?= __('La carte','fdhpa17'); ?></span>
     <div id="block-render-campings-map" class="map h-[70vh] w-[100%] md:h-[70vh] md:w-[60vh]"></div>
   </div>
 </div>

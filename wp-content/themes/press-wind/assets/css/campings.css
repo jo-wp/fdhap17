@@ -42,5 +42,5 @@
   @apply max-h-[290px] min-w-[auto] aspect-[3/2];
 }
 .block-search .facetwp-template > div{
-  @apply grid-cols-2 gap-x-[30px] gap-y-[50px];
+  @apply grid-cols-1 md:grid-cols-2 gap-x-[30px] gap-y-[50px] ;
 }
