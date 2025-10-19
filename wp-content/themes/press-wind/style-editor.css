@@ -270,10 +270,6 @@
   margin-left: 30px;
   margin-right: 30px;
 }
-.mx-\[90px\]{
-  margin-left: 90px;
-  margin-right: 90px;
-}
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -4065,6 +4061,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:h-\[100vh\]{
     height: 100vh;
   }
+  .max-md\:h-\[320px\]{
+    height: 320px;
+  }
   .max-md\:h-\[45vh\]{
     height: 45vh;
   }
@@ -4091,6 +4090,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:w-\[50\%\]{
     width: 50%;
+  }
+  .max-md\:w-\[70\%\]{
+    width: 70%;
   }
   .max-md\:w-\[80\%\]{
     width: 80%;
@@ -4140,6 +4142,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:flex-wrap{
     flex-wrap: wrap;
+  }
+  .max-md\:flex-nowrap{
+    flex-wrap: nowrap;
   }
   .max-md\:items-start{
     align-items: flex-start;
@@ -4481,6 +4486,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:mx-\[30px\]{
     margin-left: 30px;
     margin-right: 30px;
+  }
+  .md\:mx-\[90px\]{
+    margin-left: 90px;
+    margin-right: 90px;
   }
   .md\:mx-auto{
     margin-left: auto;
