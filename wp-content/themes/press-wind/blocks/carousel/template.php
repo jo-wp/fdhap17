@@ -142,8 +142,7 @@ $block_id = $block['id'];
             arrows: slidesCount > 2 // adapte pour tablette
           },
           768: {
-            perPage: 1,
-            arrows: slidesCount > 1 // adapte pour mobile
+            destroy:true
           }
         }
       })
