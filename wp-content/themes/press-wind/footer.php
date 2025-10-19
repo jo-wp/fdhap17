@@ -42,15 +42,15 @@ $copyrights_items = get_field('copyrights_items', 'option');
 						data-id="A61C50BEC994754B1D79C5819EC1255CC3873E6F8B51876DCB5E2826F19E413141CE16AE237389AD09A628D12E1B8D3C0F461238AA3FD2E00BA0E01193774A16">
 						<div>
 							<div class="flex flex-row flex-wrap items-center justify-center max-md:gap-[20px]">
-								<input autocomplete="Email" class="js-cm-email-input qa-input-email text-[16px] p-[20px] md:min-w-[300px] border-0 rounded-[50px] pr-[80px]" id="fieldEmail" maxlength="200"
+								<input autocomplete="Email" class="js-cm-email-input qa-input-email text-[16px] p-[20px] md:!max-w-[300px] border-0 rounded-[50px] pr-[80px]" id="fieldEmail" maxlength="200"
 									name="cm-fkjldy-fkjldy" placeholder="Votre email" required="" type="email">
 								<button type="submit" class="bg-orange border-0 px-[40px] py-[15px] text-white md:-ml-[75px] text-[16px] rounded-[50px]">Envoyer </button></div>
 							<div><input type="hidden" value="Newsletter" id="fielddtklkrk" maxlength="200" name="cm-f-dtklkrk"></div>
 							<div>
 								<div>
 									<div><input aria-required="" id="cm-privacy-consent" name="cm-privacy-consent" required=""
-											type="checkbox"><label class=" text-[14px] text-black" for="cm-privacy-consent">J’accepte de recevoir les informations de Campings
-											Atlantique</label></div><input id="cm-privacy-consent-hidden" name="cm-privacy-consent-hidden"
+											type="checkbox" class="!bg-green border !border-white !border-solid checked:!bg-white"><label class="text-[14px] text-white" for="cm-privacy-consent"><?= __('J’accepte de recevoir les informations de Campings
+											Atlantique','fdhpa17'); ?></label></div><input id="cm-privacy-consent-hidden" name="cm-privacy-consent-hidden"
 										type="hidden" value="true">
 								</div>
 							</div>
