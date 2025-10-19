@@ -97,7 +97,7 @@ $block_id = $block['id'];
           </button>
         </div>
         <div class="splide__track">
-          <ul class="splide__list max-md:flex max-md:flex-row max-md:flex-nowrap max-md:gap-[15px] max-md:overflow-x-scroll max-md:w-full">
+          <ul class="splide__list max-md:!flex max-md:flex-row max-md:flex-nowrap max-md:gap-[15px] max-md:overflow-x-scroll max-md:w-full">
             <?php foreach ($items_selected as $item):
               $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
               $url = ($disabled_auto_carousel)?  tp_get_term_url_by_term_page($item->ID) : get_permalink($item->ID) ;
