@@ -4326,6 +4326,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:pb-\[30px\]{
     padding-bottom: 30px;
   }
+  .max-md\:pl-\[20px\]{
+    padding-left: 20px;
+  }
   .max-md\:pt-\[60px\]{
     padding-top: 60px;
   }
