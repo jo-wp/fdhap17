@@ -1,6 +1,7 @@
 .block-minisite-twocolsequal .nf-form-fields-required,
 .block-minisite-twocolsequal .ninja-forms-req-symbol{
     @apply hidden;
+
 }
 
 .block-minisite-twocolsequal input[type="submit"]{
@@ -18,9 +19,7 @@
     @apply !h-[150px]
 }
 
-.block-minisite-twocolsequal nf-field:last-child {
-    @apply flex float-left items-center ml-10 mt-9;
-}
+
 
 .block-minisite-twocolsequal nf-field:nth-last-child(2) {
     @apply float-left w-1/2 mt-6;
@@ -40,4 +39,21 @@
 
 .block-minisite-twocolsequal  .nf-error .ninja-forms-field {
     @apply border-orange;
+}
+
+.block-minisite-twocolsequal nf-rows-wrap {
+    @apply flex flex-row flex-wrap;
+}
+
+.block-minisite-twocolsequal .nf-row {
+    @apply w-full;
+}
+
+.block-minisite-twocolsequal .nf-row:last-child,
+.block-minisite-twocolsequal .nf-row:nth-last-child(2) {
+    @apply xl:w-1/2;
+}
+
+.block-minisite-twocolsequal .nf-row:last-child {
+    @apply xl:pl-6;
 }

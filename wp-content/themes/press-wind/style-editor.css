@@ -723,6 +723,9 @@
 .cursor-pointer{
   cursor: pointer;
 }
+.resize{
+  resize: both;
+}
 .list-none{
   list-style-type: none;
 }
@@ -3454,13 +3457,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .block-minisite-twocolsequal textarea{
   height: 150px !important;
 }
-.block-minisite-twocolsequal nf-field:last-child{
-  float: left;
-  margin-left: 2.5rem;
-  margin-top: 2.25rem;
-  display: flex;
-  align-items: center;
-}
 .block-minisite-twocolsequal nf-field:nth-last-child(2){
   float: left;
   margin-top: 1.5rem;
@@ -3485,6 +3481,23 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .block-minisite-twocolsequal  .nf-error .ninja-forms-field{
   --tw-border-opacity: 1;
   border-color: rgb(233 178 55 / var(--tw-border-opacity));
+}
+.block-minisite-twocolsequal nf-rows-wrap{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.block-minisite-twocolsequal .nf-row{
+  width: 100%;
+}
+@media (min-width: 1280px){
+  .block-minisite-twocolsequal .nf-row:last-child,
+.block-minisite-twocolsequal .nf-row:nth-last-child(2){
+    width: 50%;
+  }
+  .block-minisite-twocolsequal .nf-row:last-child{
+    padding-left: 1.5rem;
+  }
 }
 .before\:absolute::before{
   content: var(--tw-content);
