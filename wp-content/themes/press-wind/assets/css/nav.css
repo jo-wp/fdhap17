@@ -162,3 +162,15 @@ nav .submenu > li .submenu-child > li {
     max-width: 90px;
   }
 }
+
+.element-is-sticky{
+  @apply !bg-white !w-full !left-0 !pl-[7%] !pr-[7%];
+}
+
+.element-is-sticky nav > ul > li > a {
+  @apply text-black;
+}
+
+.element-is-sticky nav > ul > li > a::after{
+  @apply bg-arrow-menu-black;
+}

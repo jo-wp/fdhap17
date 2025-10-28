@@ -2294,6 +2294,21 @@ nav .submenu > li .submenu-child > li{
     max-width: 90px;
   }
 }
+.element-is-sticky{
+  left: 0px !important;
+  width: 100% !important;
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+  padding-left: 7% !important;
+  padding-right: 7% !important;
+}
+.element-is-sticky nav > ul > li > a{
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.element-is-sticky nav > ul > li > a::after{
+  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu-black.svg');
+}
 .instagram-gallery-feed{
   padding-left: 15px !important;
   padding-right: 15px !important;
