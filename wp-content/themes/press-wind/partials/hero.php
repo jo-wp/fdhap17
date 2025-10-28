@@ -150,9 +150,11 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     <?php endif; ?>
     <?php if ($hero_type != 'minisite'): ?>
       <div class="block-hero__content__navigation
-      relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
+     ">
+      <div class=" relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
       border-b <?= $border_color; ?> border-solid border-t-0 border-l-0 border-r-0
       flex flex-row gap-[1%] md:items-center md:justify-center
+
 
       max-md:!fixed max-md:!top-[53px] max-md:-left-[30px]       
       max-md:bg-white max-md:h-[100%] max-md:w-full   
@@ -163,10 +165,15 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       max-md:-translate-x-full                        
       max-md:[&.active]:translate-x-0                
       max-md:transition-transform max-md:duration-300 max-md:ease-in-out">
+        
         <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
           <img
             src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>"
-            alt="Logo" class="max-w-full" />
+            alt="Logo" class="origin max-w-full" />
+
+                      <img
+            src="<?= $logo_tiny; ?>"
+            alt="Logo" class="color hidden " />
         </a>
 
         <nav class="flex items-center justify-center w-full">
@@ -187,6 +194,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
           ]);
           ?>
         </nav>
+      </div>
 
       </div>
     <?php endif; ?>

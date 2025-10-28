@@ -1975,6 +1975,10 @@ section{
   color: rgb(255 255 255 / var(--tw-text-opacity));
   text-decoration-line: none;
 }
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh; /* optionnel, utile pour bloquer totalement le défilement mobile */
+}
 @media not all and (min-width: 768px){
   nav{
     height: 100%;
@@ -2251,6 +2255,7 @@ nav .submenu > li .submenu-child > li{
 @media(max-width:768px){
   .block-hero__content__navigation{
     height: 100%;
+    z-index: 9999 !important;
   }
 }
 @media (min-width: 768px) {
@@ -2294,20 +2299,29 @@ nav .submenu > li .submenu-child > li{
     max-width: 90px;
   }
 }
-.element-is-sticky{
-  left: 0px !important;
-  width: 100% !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
-  padding-left: 7% !important;
-  padding-right: 7% !important;
+.block-hero__content__navigation.is-sticky{
+  position: fixed;
+  top: 0;
+  left: 0;          /* si nav est full width */
+  right: 0;         /* si nav est full width */
+  z-index: 1000;
+  background: #fff; /* évite voir derrière */
+  box-shadow: 0 2px 8px rgba(0,0,0,.08); /* optionnel */
+      width: 100% !important;
 }
-.element-is-sticky nav > ul > li > a{
-  --tw-text-opacity: 1;
-  color: rgb(51 51 51 / var(--tw-text-opacity));
+.block-hero__content__navigation.is-sticky nav > ul > li > a{
+  --tw-text-opacity: 1 !important;
+  color: rgb(51 51 51 / var(--tw-text-opacity)) !important;
 }
-.element-is-sticky nav > ul > li > a::after{
-  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu-black.svg');
+.block-hero__content__navigation.is-sticky nav > ul > li > a::after{
+  background-image: url('/wp-content/themes/press-wind/assets/media/arrow-menu-black.svg') !important;
+}
+.block-hero__content__navigation.is-sticky .origin{
+  display: none;
+}
+.block-hero__content__navigation.is-sticky .color{
+  display: block;
+  max-width: 260px;
 }
 .instagram-gallery-feed{
   padding-left: 15px !important;

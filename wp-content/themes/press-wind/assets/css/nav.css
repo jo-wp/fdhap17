@@ -1,3 +1,7 @@
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh; /* optionnel, utile pour bloquer totalement le défilement mobile */
+}
 nav {
   @apply max-md:overflow-x-hidden max-md:overflow-y-hidden max-md:!items-start max-md:h-[100%];
 }
@@ -119,6 +123,7 @@ nav .submenu > li .submenu-child > li {
 @media(max-width:768px){
   .block-hero__content__navigation{
     height: 100%;
+    z-index: 9999 !important;
   }
 }
 
@@ -163,14 +168,26 @@ nav .submenu > li .submenu-child > li {
   }
 }
 
-.element-is-sticky{
-  @apply !bg-white !w-full !left-0 !pl-[7%] !pr-[7%];
-}
 
-.element-is-sticky nav > ul > li > a {
-  @apply text-black;
+.block-hero__content__navigation.is-sticky{
+  position: fixed;
+  top: 0;
+  left: 0;          /* si nav est full width */
+  right: 0;         /* si nav est full width */
+  z-index: 1000;
+  background: #fff; /* évite voir derrière */
+  box-shadow: 0 2px 8px rgba(0,0,0,.08); /* optionnel */
+      width: 100% !important;
 }
-
-.element-is-sticky nav > ul > li > a::after{
-  @apply bg-arrow-menu-black;
+.block-hero__content__navigation.is-sticky nav > ul > li > a {
+  @apply !text-black
+}
+.block-hero__content__navigation.is-sticky nav > ul > li > a::after{
+  @apply !bg-arrow-menu-black;
+}
+.block-hero__content__navigation.is-sticky .origin{
+  @apply hidden;
+}
+.block-hero__content__navigation.is-sticky .color{
+  @apply block max-w-[260px];
 }

@@ -8,6 +8,7 @@ import ctaMobile from './menu/cta.js';
 import displayCardMapSearchCampings from './campings/block-search-campings.js';
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
+import isSticky from './menu/sticky.js';
 import Splide from '@splidejs/splide'
 
 window.Splide = Splide
@@ -38,31 +39,34 @@ function menuToggle() {
 }
 
 function menuMobileToggle() {
-  const openBtn = document.querySelector('.open-menu-mobile')
-  const closeBtn = document.querySelector('.close-menu-mobile')
-  const navigation = document.querySelector('.block-hero__content__navigation')
-  const navigationMiniSite = document.querySelector('.block-minisite__menu')
+  const openBtn = document.querySelector('.open-menu-mobile');
+  const closeBtn = document.querySelector('.close-menu-mobile');
+  const navigation = document.querySelector('.block-hero__content__navigation > div');
+  const navigationMiniSite = document.querySelector('.block-minisite__menu');
 
-  const targetNav = navigation || navigationMiniSite
+  const targetNav = navigation || navigationMiniSite;
 
   if (openBtn && closeBtn && targetNav) {
     // Ouvrir le menu
     openBtn.addEventListener('click', function (e) {
-      e.preventDefault()
-      targetNav.classList.add('active')
-      openBtn.classList.add('hidden')
-      closeBtn.classList.remove('hidden')
-    })
+      e.preventDefault();
+      targetNav.classList.add('active');
+      openBtn.classList.add('hidden');
+      closeBtn.classList.remove('hidden');
+      document.body.classList.add('no-scroll'); // 🔒 désactive le scroll
+    });
 
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
-      e.preventDefault()
-      targetNav.classList.remove('active')
-      closeBtn.classList.add('hidden')
-      openBtn.classList.remove('hidden')
-    })
+      e.preventDefault();
+      targetNav.classList.remove('active');
+      closeBtn.classList.add('hidden');
+      openBtn.classList.remove('hidden');
+      document.body.classList.remove('no-scroll'); // 🔓 réactive le scroll
+    });
   }
 }
+
 
 function splideJsBlockIdea() {
   const carousel = document.querySelector('.splide__carousel__block_idea')
@@ -285,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   instagramOverride()
   menuMobile()
   ctaMobile()
-
+  isSticky()
   //Import
   const map = document.querySelector('#map')
   if (map) {
