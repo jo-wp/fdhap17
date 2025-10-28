@@ -3757,9 +3757,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .last\:mb-0:last-child{
   margin-bottom: 0px;
 }
-.checked\:\!bg-white:checked{
+.checked\:\!bg-orange:checked{
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(233 178 55 / var(--tw-bg-opacity)) !important;
 }
 .hover\:-translate-x-1:hover{
   --tw-translate-x: -0.25rem;
