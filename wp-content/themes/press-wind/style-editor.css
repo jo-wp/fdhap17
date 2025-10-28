@@ -4788,6 +4788,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:gap-\[45px\]{
     gap: 45px;
   }
+  .md\:gap-\[50px\]{
+    gap: 50px;
+  }
   .md\:gap-\[53px\]{
     gap: 53px;
   }
