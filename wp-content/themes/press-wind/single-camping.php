@@ -214,7 +214,7 @@ endforeach; ?>
       <?php endif; ?>
       <div id="informations"
         class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
-        <div class="flex-1 flex flex-wrap flex-row">
+        <div class="flex-1 flex flex-wrap flex-col md:flex-row">
           <div class="bloc-camping-informations__item">
             <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
             <ul

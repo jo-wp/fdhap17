@@ -18,7 +18,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 	<div class="">
 		<?php if ($logos_footer): ?>
 			<div
-				class="footer-logos max-md:grid max-md:grid-cols-2 md:flex flex-row max-md:gap-[10px] md:gap-[42px] justify-center items-center ">
+				class="footer-logos max-md:grid max-md:grid-cols-4 md:flex flex-row max-md:gap-[10px] md:gap-[42px] justify-center items-center ">
 				<?php foreach ($logos_footer as $logo): ?>
 					<div class="animateFade fadeOutAnimation footer-logo hover:-translate-y-1 transition-all duration-300">
 						<a href="<?= $logo['url']['url'] ?>">
@@ -44,7 +44,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 							<div class="flex flex-row flex-wrap items-center justify-center max-md:gap-[20px]">
 								<input autocomplete="Email" class="js-cm-email-input qa-input-email text-[16px] p-[20px] md:!max-w-[300px] border-0 rounded-[50px] pr-[80px]" id="fieldEmail" maxlength="200"
 									name="cm-fkjldy-fkjldy" placeholder="Votre email" required="" type="email">
-								<button type="submit" class="bg-orange border-0 px-[40px] py-[15px] text-white md:-ml-[75px] text-[16px] rounded-[50px]">Envoyer </button></div>
+								<button type="submit" class="!bg-orange hover:!bg-green hover:!text-white !border-0 px-[40px] py-[15px] text-white md:-ml-[75px] text-[16px] rounded-[50px]">Envoyer </button></div>
 							<div><input type="hidden" value="Newsletter" id="fielddtklkrk" maxlength="200" name="cm-f-dtklkrk"></div>
 							<div>
 								<div>

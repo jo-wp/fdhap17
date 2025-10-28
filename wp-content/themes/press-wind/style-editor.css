@@ -723,9 +723,6 @@
 .cursor-pointer{
   cursor: pointer;
 }
-.resize{
-  resize: both;
-}
 .list-none{
   list-style-type: none;
 }
@@ -947,6 +944,9 @@
 }
 .rounded-ee-\[20px\]{
   border-end-end-radius: 20px;
+}
+.\!border-0{
+  border-width: 0px !important;
 }
 .border{
   border-width: 1px;
@@ -3794,6 +3794,10 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
+.hover\:\!text-white:hover{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
 .hover\:no-underline:hover{
   text-decoration-line: none;
 }
@@ -4146,6 +4150,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .max-md\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .max-md\:flex-row{
     flex-direction: row;

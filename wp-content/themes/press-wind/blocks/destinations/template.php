@@ -88,7 +88,8 @@ $template = [
                 <p class="absolute inset-0 flex items-center justify-center text-center px-[69px]
              !text-white !text-[16px] !font-arial
              opacity-0 translate-y-4 transition-all duration-500 ease-out delay-100
-             group-hover:opacity-100 group-hover:translate-y-0">
+             group-hover:opacity-100 group-hover:translate-y-0
+             max-md:hidden">
                   <?php if ($pageDescription): ?>
                     <?= esc_html($pageDescription); ?>
                   <?php endif; ?>
