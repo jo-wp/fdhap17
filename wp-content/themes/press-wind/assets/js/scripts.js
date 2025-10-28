@@ -43,29 +43,47 @@ function menuMobileToggle() {
   const closeBtn = document.querySelector('.close-menu-mobile');
   const navigation = document.querySelector('.block-hero__content__navigation > div');
   const navigationMiniSite = document.querySelector('.block-minisite__menu');
-
   const targetNav = navigation || navigationMiniSite;
+
+  let scrollY = 0; // pour mémoriser la position avant blocage
 
   if (openBtn && closeBtn && targetNav) {
     // Ouvrir le menu
     openBtn.addEventListener('click', function (e) {
       e.preventDefault();
+
       targetNav.classList.add('active');
       openBtn.classList.add('hidden');
       closeBtn.classList.remove('hidden');
-      document.body.classList.add('no-scroll'); // 🔒 désactive le scroll
+
+      // 🔒 Bloquer le scroll (mobile + desktop)
+      scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
     });
 
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
       e.preventDefault();
+
       targetNav.classList.remove('active');
       closeBtn.classList.add('hidden');
       openBtn.classList.remove('hidden');
-      document.body.classList.remove('no-scroll'); // 🔓 réactive le scroll
+
+      // 🔓 Réactiver le scroll
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY); // revenir à la position précédente
     });
   }
 }
+
 
 
 function splideJsBlockIdea() {
