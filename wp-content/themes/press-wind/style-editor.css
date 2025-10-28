@@ -2321,6 +2321,7 @@ nav .submenu > li .submenu-child > li{
 }
 .block-hero__content__navigation.is-sticky .color{
   display: block;
+  width: 100%;
   max-width: 260px;
 }
 .instagram-gallery-feed{

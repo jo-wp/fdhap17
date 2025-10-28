@@ -189,5 +189,5 @@ nav .submenu > li .submenu-child > li {
   @apply hidden;
 }
 .block-hero__content__navigation.is-sticky .color{
-  @apply block max-w-[260px];
+  @apply block max-w-[260px] w-full;
 }
