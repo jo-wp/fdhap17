@@ -18,11 +18,16 @@ if ($term && !empty($term->term_id)) {
 //ACF FIELDS
 $hero_type = get_field('hero_type', $id);
 
+
 if (is_404()) {
   $hero_type = 'tiny';
 }
 
 if (is_singular('camping')) {
+  $hero_type = 'tiny';
+}
+
+if(is_singular('ambassador')){
   $hero_type = 'tiny';
 }
 
@@ -267,7 +272,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 </section>
 
 
-<?php if (!is_front_page() && !is_singular('camping') && !is_author() && $hero_type != 'search' && $hero_type != 'minisite' && !is_404()): ?>
+<?php if (!is_front_page() && !is_singular(('ambassador')) && !is_singular('camping') && !is_author() && $hero_type != 'search' && $hero_type != 'minisite' && !is_404()): ?>
   <section
     class="relative z-[19] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
     <?php
