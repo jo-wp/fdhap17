@@ -44,8 +44,9 @@ $template = [
         class="  filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
         <div
           class="[&_.facetwp-dropdown]:max-w-[160px]
-          [&_.facetwp-search]:max-w-[150px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[20px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
-          flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px] max-md:px-[20px] max-md:py-[10px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green">
+          [&_.facetwp-search]:max-w-[150px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[20px_50px] [&_.facetwp-search]:border-0
+          flex flex-col md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-center gap-[15px] max-md:px-[20px] max-md:py-[10px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green
+          [&_.facetwp-search]:rounded-full [&_.facetwp-icon]:left-[5px] [&_.facetwp-icon]:right-[initial]">
           <div class="md:hidden cursor-pointer active-filters "><span
               class="text-orange text-[14px] font-arial"><?= __('Afficher / Masquer les filtres', 'fdhpa17'); ?></span><span
               class="bg-green rounded-full text-white text-[13px] w-[16px] h-[16px] inline-flex items-center justify-center ml-[10px]">+</span>
