@@ -5437,6 +5437,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_\.facetwp-search\]\:p-\[20px_50px\] .facetwp-search{
   padding: 20px 50px;
 }
+@media not all and (min-width: 768px){
+  .max-md\:\[\&_\.facetwp-search\]\:\!min-w-\[150px\] .facetwp-search{
+    min-width: 150px !important;
+  }
+}
 .\[\&_\.page-numbers\.current\]\:bg-white .page-numbers.current{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
