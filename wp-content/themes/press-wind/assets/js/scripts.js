@@ -41,6 +41,7 @@ function menuToggle() {
 function menuMobileToggle() {
   const openBtn = document.querySelector('.open-menu-mobile');
   const closeBtn = document.querySelector('.close-menu-mobile');
+  const navigationWrapper = document.querySelector('.block-hero__content__navigation');
   const navigation = document.querySelector('.block-hero__content__navigation > div');
   const navigationMiniSite = document.querySelector('.block-minisite__menu');
   const targetNav = navigation || navigationMiniSite;
@@ -51,6 +52,8 @@ function menuMobileToggle() {
     // Ouvrir le menu
     openBtn.addEventListener('click', function (e) {
       e.preventDefault();
+
+      navigationWrapper.style.zIndex = '9999';
 
       targetNav.classList.add('active');
       openBtn.classList.add('hidden');
@@ -68,6 +71,7 @@ function menuMobileToggle() {
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
       e.preventDefault();
+      navigationWrapper.style.zIndex = '2';
 
       targetNav.classList.remove('active');
       closeBtn.classList.add('hidden');

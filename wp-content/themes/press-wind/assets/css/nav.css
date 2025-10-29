@@ -121,7 +121,7 @@ nav .submenu > li .submenu-child > li {
 }
 
 @media(max-width:768px){
-  .block-hero__content__navigation{
+  .block-hero__content__navigation > div:first-child{
     height: 100%;
     z-index: 9999 !important;
   }

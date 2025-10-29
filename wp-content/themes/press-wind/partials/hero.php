@@ -27,7 +27,7 @@ if (is_singular('camping')) {
   $hero_type = 'tiny';
 }
 
-if(is_singular('ambassador')){
+if (is_singular('ambassador')) {
   $hero_type = 'tiny';
 }
 
@@ -92,6 +92,8 @@ switch ($hero_type) {
     break;
 }
 
+$under_menu_links = get_field('under_menu_links','option');
+
 
 $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 
@@ -106,11 +108,11 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         <form action="<?= esc_url(home_url('/')) ?>">
           <input name="s" type="text"
             class="search-input placeholder-white hover:<?= $text_color; ?> <?= $text_color; ?> focus:<?= $text_color; ?> bg-transparent border border-b-1 border-white border-l-0 border-t-0 border-r-0"
-            placeholder="<?= __('Rechercher','fdhpa17') ?>" />
-          <input type="submit" class="search-submit" value="<?= __('Rechercher','fdhpa17') ?>" />
+            placeholder="<?= __('Rechercher', 'fdhpa17') ?>" />
+          <input type="submit" class="search-submit" value="<?= __('Rechercher', 'fdhpa17') ?>" />
         </form>
       </div>
-      <?php do_action( 'wpml_add_language_selector' ); ?>
+      <?php do_action('wpml_add_language_selector'); ?>
       <a href="/wishlist/" class="flex items-center">
         <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
           alt="Icon wishlist">
@@ -127,7 +129,8 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     </div>
 
     <?php if ($hero_type != 'minisite'): ?>
-      <div class="md:hidden block-hero__content__mobile max-md:!z-[10] bg-white px-[15px] flex flex-row justify-between items-center">
+      <div
+        class="md:hidden block-hero__content__mobile max-md:!z-[10] bg-white px-[15px] flex flex-row justify-between items-center">
         <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%]">
           <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
         </a>
@@ -136,7 +139,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
             <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
               alt="Icon wishlist">
           </a>
-      <?php do_action( 'wpml_add_language_selector' ); ?>
+          <?php do_action('wpml_add_language_selector'); ?>
           <a href="#" class="open-menu-mobile block">
             <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
               alt="button mobile menu">
@@ -151,7 +154,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
     <?php if ($hero_type != 'minisite'): ?>
       <div class="block-hero__content__navigation
      ">
-      <div class=" relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
+        <div class=" relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
       border-b <?= $border_color; ?> border-solid border-t-0 border-l-0 border-r-0
       flex flex-row gap-[1%] md:items-center md:justify-center
 
@@ -165,36 +168,46 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       max-md:-translate-x-full                        
       max-md:[&.active]:translate-x-0                
       max-md:transition-transform max-md:duration-300 max-md:ease-in-out">
-        
-        <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
-          <img
-            src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>"
-            alt="Logo" class="origin max-w-full" />
 
-                      <img
-            src="<?= $logo_tiny; ?>"
-            alt="Logo" class="color hidden " />
-        </a>
+          <a href="<?= get_bloginfo('url') ?>" class="max-w-[20%] max-md:hidden">
+            <img
+              src="<?= ($hero_type != 'tiny' && $hero_type != 'search' && $hero_type != 'minisite') ? $logo : $logo_tiny; ?>"
+              alt="Logo" class="origin max-w-full" />
 
-        <nav class="flex items-center justify-center w-full">
-          <?php
-          wp_nav_menu([
-            'theme_location' => 'primary',
-            'container' => false,
-            // On impose tes classes EXACTES sur le <ul> racine :
-            'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
+            <img src="<?= $logo_tiny; ?>" alt="Logo" class="color hidden " />
+          </a>
+
+          <nav class="flex max-md:flex-col md:items-center md:justify-center w-full">
+            <?php
+            wp_nav_menu([
+              'theme_location' => 'primary',
+              'container' => false,
+              // On impose tes classes EXACTES sur le <ul> racine :
+              'menu_class' => 'flex items-center justify-center w-full list-none m-0 p-0 gap-[5%]
         max-[1320px]:gap-0 max-[1320px]:justify-between
         max-md:flex-col max-md:justify-start max-md:items-start ',
-            // On force le wrapper pour ne pas avoir d'ID automatique
-            'items_wrap' => '<ul class="%2$s">%3$s</ul>',
-            // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises
-            'walker' => new CM17_Menu_Walker($text_color),
-            // Profondeur 3 pour gérer .submenu > .submenu-child
-            'depth' => 3,
-          ]);
-          ?>
-        </nav>
-      </div>
+              // On force le wrapper pour ne pas avoir d'ID automatique
+              'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+              // Le walker injecte tout le reste (li/a/sous-menus) avec les classes requises
+              'walker' => new CM17_Menu_Walker($text_color),
+              // Profondeur 3 pour gérer .submenu > .submenu-child
+              'depth' => 3,
+            ]);
+            ?>
+            <?php if($under_menu_links): ?>
+            <ul class="max-md:flex md:hidden
+            m-0 p-0 list-none max-md:flex-col max-md:mt-[20px]">
+              <?php foreach($under_menu_links as $link): ?>
+              <li class="max-md:mb-[15px]">
+                <img src="<?= $link['logo'] ?>" alt="Icon Lien" />
+                <a class=" text-orange font-arial font-[700] text-[16px] " href="<?= $link['lien']['url'] ?>" target="<?= $link['lien']['target'] ?>" ><?= $link['lien']['title']; ?></a>
+              </li>
+              <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+          </nav>
+
+        </div>
 
       </div>
     <?php endif; ?>
@@ -250,13 +263,14 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
           <?php if ($description): ?>
             <p id="hero-description"
               class="text-white font-bold lg:text-[32px] max-w-[900px] mx-auto leading-[38px] <?php if ($center) { ?> text-center <?php } ?>">
-              <?= $description ?></p>
+              <?= $description ?>
+            </p>
           <?php endif; ?>
         </div>
 
         <?php if ($linkMinisite): ?>
           <a id="hero-link" href="<?php echo $linkMinisite ?>"
-            class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm"><?= __('En savoir plus','fdhpa17') ?></a>
+            class="button button--bg-orange !border-orange !px-7 !py-2 mb-20 !text-sm"><?= __('En savoir plus', 'fdhpa17') ?></a>
         <?php endif; ?>
 
         <?php if ($count_carousel_images > 1): ?>
@@ -292,24 +306,24 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
 <?php endif; ?>
 
 <?php if ($hero_type == 'minisite'): ?>
-    <section
-            class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
-        <?php
-        $mini_site = get_field('mini_site', $id);
-        if(!$mini_site) { // except home minisite
-        ?>
-            <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
-                <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
-                    <li>
-                        <a href="<?php the_permalink($id); ?>">fdhpa-17</a>
-                    </li>
-                    <li class="font-bold tracking-wider">
-                        <?= __('Accueil','fdhpa17') ?>
-                    </li>
-                </ol>
-            </nav>
-        <?php } ?>
-    </section>
+  <section
+    class="relative z-[9999] md:mb-[80px] [&_p]:font-arial [&_p]:m-[0] [&_p_span_span]:text-black [&_p]:text-[13.34px] [&_p_span]:text-orange [&_p_span]:font-[700] [&_p_span_span]:font-[400] [&_p]:text-center">
+    <?php
+    $mini_site = get_field('mini_site', $id);
+    if (!$mini_site) { // except home minisite
+      ?>
+      <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
+        <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
+          <li>
+            <a href="<?php the_permalink($id); ?>">fdhpa-17</a>
+          </li>
+          <li class="font-bold tracking-wider">
+            <?= __('Accueil', 'fdhpa17') ?>
+          </li>
+        </ol>
+      </nav>
+    <?php } ?>
+  </section>
 <?php endif; ?>
 
 <style>

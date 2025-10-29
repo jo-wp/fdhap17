@@ -2253,7 +2253,7 @@ nav .submenu > li .submenu-child > li{
   }
 }
 @media(max-width:768px){
-  .block-hero__content__navigation{
+  .block-hero__content__navigation > div:first-child{
     height: 100%;
     z-index: 9999 !important;
   }
@@ -4075,6 +4075,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:mb-\[0px\]{
     margin-bottom: 0px;
   }
+  .max-md\:mb-\[15px\]{
+    margin-bottom: 15px;
+  }
   .max-md\:mb-\[20px\]{
     margin-bottom: 20px;
   }
@@ -4083,6 +4086,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:ml-\[15px\]{
     margin-left: 15px;
+  }
+  .max-md\:mt-\[20px\]{
+    margin-top: 20px;
   }
   .max-md\:mt-\[30px\]{
     margin-top: 30px;
