@@ -15,11 +15,11 @@ $destinations = get_terms([
       <?= do_shortcode( '[facetwp facet="destination"]' ); ?>
     </div>
     <div class="items-search-bar tax-destination flex flex-col md:flex-row max-md:flex-wrap max-md:gap-[7px]">
-      <div class="md:max-w-[230px] rounded-[10px] md:rounded-l-[40px] max-md:bg-white  bg-[#F6F6F6] px-[30px] py-[5px] max-md:w-[90%] max-md:[&_input]:w-full">
+      <div class="md:max-w-[230px] rounded-[10px] md:rounded-l-[40px] max-md:bg-white  bg-[#F6F6F6] px-[30px] py-[5px] max-md:w-[80%] max-md:[&_input]:w-full">
         <p class="font-arial text-[14px] font-[700] m-0 p-0 max-md:hidden"><?= __('Arrivée', 'fdhpa17'); ?></p>
         <?= do_shortcode( '[facetwp facet="date_start"]' ); ?>
       </div>
-      <div class="md:max-w-[230px] rounded-[10px] md:rounded-r-[40px] max-md:bg-white  bg-[#F6F6F6] px-[30px] py-[5px] max-md:w-[90%] max-md:[&_input]:w-full">
+      <div class="md:max-w-[230px] rounded-[10px] md:rounded-r-[40px] max-md:bg-white  bg-[#F6F6F6] px-[30px] py-[5px] max-md:w-[80%] max-md:[&_input]:w-full">
         <p class="font-arial text-[14px] font-[700] m-0 p-0 max-md:hidden"><?= __('Départ', 'fdhpa17'); ?></p>
         <?= do_shortcode( '[facetwp facet="date_end"]' ); ?>
       </div>
