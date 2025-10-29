@@ -199,8 +199,14 @@ nav .submenu > li .submenu-child > li {
 .fdate-wrap.above {
   transform: translateY(calc(-100% - 60px)); /* ou -410px si tu préfères fixe */
 }
+@media(max-width:768px){
+.fdate-wrap.above {
+    transform: translateY(calc(-100% - 35px)) translateX(-30px);
+}
+}
 
 /* quand la search-bar est en haut -> le calendrier s'ouvre en dessous */
 .fdate-wrap.below {
   transform: translateY(20px);
 }
+
