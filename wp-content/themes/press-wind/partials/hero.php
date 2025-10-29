@@ -152,7 +152,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
       </div>
     <?php endif; ?>
     <?php if ($hero_type != 'minisite'): ?>
-      <div class="block-hero__content__navigation z-[4]
+      <div class="block-hero__content__navigation !z-[10]
      ">
         <div class=" relative !z-30 max-w-[1440px] mx-auto max-[1570px]:mx-[30px]
       border-b <?= $border_color; ?> border-solid border-t-0 border-l-0 border-r-0

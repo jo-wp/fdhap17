@@ -226,6 +226,9 @@
 .\!z-30{
   z-index: 30 !important;
 }
+.\!z-\[10\]{
+  z-index: 10 !important;
+}
 .z-10{
   z-index: 10;
 }
@@ -240,9 +243,6 @@
 }
 .z-\[19\]{
   z-index: 19;
-}
-.z-\[4\]{
-  z-index: 4;
 }
 .z-\[9999\]{
   z-index: 9999;
@@ -2815,7 +2815,7 @@ select,
 @media (max-width: 768px) {
   .splide-carousel-block-search-camping .splide__pagination {
     position: absolute;
-    bottom: -30px;
+    bottom: -60px;
     display: flex;
     flex-direction: row;
     top: initial;
@@ -2827,8 +2827,122 @@ select,
     --tw-bg-opacity: 1;
     background-color: rgb(81 171 126 / var(--tw-bg-opacity));
   }
-  .block-search-campings .filters .facetwp-facet{
-    display:none;
+  .block-search-campings .filters .facetwp-facet {
+    display: none;
+  }
+  .splide-carousel-block-search-camping .splide__pagination__page::before {
+    content: attr(
+      aria-label
+    ); /* Par défaut, ça afficherait "Go to page 1" etc. */
+    display: none; /* On va ignorer ça et mettre du texte personnalisé plus bas */
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(1)
+    .splide__pagination__page::before {
+    content: '1';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(2)
+    .splide__pagination__page::before {
+    content: '2';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(3)
+    .splide__pagination__page::before {
+    content: '3';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(4)
+    .splide__pagination__page::before {
+    content: '4';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(5)
+    .splide__pagination__page::before {
+    content: '5';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(6)
+    .splide__pagination__page::before {
+    content: '6';
+  }
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(7)
+    .splide__pagination__page::before {
+    content: '7';
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(8)
+    .splide__pagination__page::before {
+    content: '8';
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(9)
+    .splide__pagination__page::before {
+    content: '9';
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(10)
+    .splide__pagination__page::before {
+    content: '10';
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(11)
+    .splide__pagination__page::before {
+    content: '11';
+  }
+
+  .splide-carousel-block-search-camping
+    .splide__pagination
+    li:nth-child(12)
+    .splide__pagination__page::before {
+    content: '12';
+  }
+
+  .splide-carousel-block-search-camping .splide__pagination__page::before {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #51ab7e !important;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .splide-carousel-block-search-camping .splide__pagination__page {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background: #666;
+    border-radius: 50%;
+    background-color: transparent !important;
+    color: #51ab7e !important;
+  }
+  .splide-carousel-block-search-camping .splide__pagination__page.is-active {
+    transform: scale(1);
+    background-color: #51ab7e !important;
+
+    opacity: 1;
+  }
+  .splide-carousel-block-search-camping .splide__pagination__page.is-active::before{
+    color: #fff !important; 
   }
 }
 @media(max-width:768px){

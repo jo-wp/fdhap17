@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!activeFiltersBlockCampings) return
 
   activeFiltersBlockCampings.addEventListener('click', () => {
-    console.log('y a un click')
+
     facetwpFacetsBlockCampings.forEach((facet) => {
       // On toggle manuellement la visibilité mobile
       if (facet.classList.contains('max-md:hidden')) {
