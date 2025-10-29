@@ -191,3 +191,16 @@ nav .submenu > li .submenu-child > li {
 .block-hero__content__navigation.is-sticky .color{
   @apply block max-w-[260px] w-full;
 }
+
+
+.fdate-wrap { will-change: transform; }
+
+/* quand la search-bar est en bas -> le calendrier s'ouvre au-dessus */
+.fdate-wrap.above {
+  transform: translateY(calc(-100% - 60px)); /* ou -410px si tu préfères fixe */
+}
+
+/* quand la search-bar est en haut -> le calendrier s'ouvre en dessous */
+.fdate-wrap.below {
+  transform: translateY(20px);
+}

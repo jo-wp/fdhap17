@@ -291,6 +291,45 @@ function animationBlock() {
   fadeElms.forEach((el) => observer.observe(el))
 }
 
+
+(function () {
+  const searchBar = document.querySelector('.search-bar');
+
+  function isSearchBarInBottomHalf() {
+    if (!searchBar) return false;
+    const r = searchBar.getBoundingClientRect();
+    const middleY = r.top + r.height / 2;
+    return middleY > window.innerHeight / 2;
+  }
+
+  function applyAboveBelow() {
+    const cal = document.querySelector('.fdate-wrap.opened'); // calendrier visible
+    if (!searchBar || !cal) return;
+
+    const bottomHalf = isSearchBarInBottomHalf();
+
+    // toggle sur la search-bar
+    searchBar.classList.toggle('above', bottomHalf);
+
+    // toggle sur le calendrier
+    cal.classList.toggle('above', bottomHalf);
+    cal.classList.toggle('below', !bottomHalf);
+  }
+
+  // écoute les changements
+  window.addEventListener('scroll', applyAboveBelow, { passive: true });
+  window.addEventListener('resize', applyAboveBelow);
+
+  // détecte ouverture du calendrier
+  const mo = new MutationObserver(() => applyAboveBelow());
+  mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
+  // init
+  applyAboveBelow();
+})();
+
+
+
 // carouselDescription()
 
 document.addEventListener('DOMContentLoaded', () => {

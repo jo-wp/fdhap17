@@ -15,6 +15,9 @@ select,
 .facetwp-dropdown {
   @apply text-black;
 }
+.search-bar .facetwp-dropdown{
+  @apply text-[#757575];
+}
 
 @media (max-width: 768px) {
   .splide-carousel-block-search-camping .splide__pagination {
