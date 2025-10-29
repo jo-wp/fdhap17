@@ -90,7 +90,7 @@ class CM17_Menu_Walker extends Walker_Nav_Menu {
     }
 
     // Classes <a> par niveau
-    $a_class_final = ($depth === 0) ? $a_classes_top : " no-underline";
+    $a_class_final = ($depth === 0) ? $a_classes_top : " no-underline ";
 
     $title = $item->title;
 

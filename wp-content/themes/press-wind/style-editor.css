@@ -2188,6 +2188,7 @@ nav .submenu.active > li{
   z-index: 9999999;
 }
 nav .submenu > li > a{
+  font-family: IvyMode;
   text-decoration-line: none;
 }
 nav .submenu > li .submenu-child{
