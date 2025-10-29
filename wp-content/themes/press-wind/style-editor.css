@@ -5405,8 +5405,8 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }
-.\[\&_\.facetwp-search\]\:\!min-w-\[50px\] .facetwp-search{
-  min-width: 50px !important;
+.\[\&_\.facetwp-search\]\:\!min-w-\[250px\] .facetwp-search{
+  min-width: 250px !important;
 }
 .\[\&_\.facetwp-search\]\:max-w-\[150px\] .facetwp-search{
   max-width: 150px;
