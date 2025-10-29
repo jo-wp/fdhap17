@@ -12,7 +12,7 @@ nav:first-of-type{
 nav .submenu {
   @apply overflow-hidden absolute opacity-0 invisible transition-opacity duration-0
          left-[calc(-100%_-_100%)] bg-bgGreen m-0 p-0 
-         min-h-[300px] min-w-[590px] z-20 rounded-b-[200px] 
+         min-h-[300px] min-w-[590px] z-20 rounded-b-[110px] 
          px-[80px] top-[92px] pt-[40px] pointer-events-none
          max-md:left-0 max-md:top-0 
         max-md:p-0

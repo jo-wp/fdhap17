@@ -55,6 +55,12 @@ function isSticky(){
     ro.observe(nav);
   };
 
+  document.querySelector('nav').addEventListener('click', function (e) {
+  if (e.target.tagName === 'A' && e.target.getAttribute('href') === '#') {
+    e.preventDefault();
+  }
+});
+
   // initialisation + écoute du resize pour bascule responsive
   setupObserver();
   window.addEventListener("resize", setupObserver);

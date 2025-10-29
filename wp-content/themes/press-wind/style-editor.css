@@ -2016,8 +2016,8 @@ nav .submenu{
   min-height: 300px;
   min-width: 590px;
   overflow: hidden;
-  border-bottom-right-radius: 200px;
-  border-bottom-left-radius: 200px;
+  border-bottom-right-radius: 110px;
+  border-bottom-left-radius: 110px;
   --tw-bg-opacity: 1;
   background-color: rgb(236 245 240 / var(--tw-bg-opacity));
   padding: 0px;
