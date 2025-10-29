@@ -210,3 +210,9 @@ nav .submenu > li .submenu-child > li {
   transform: translateY(20px);
 }
 
+@media(max-width:768px){
+  .title-mobile-card-camping{
+    @apply max-md:bg-white max-md:text-[14px] max-md:rounded-[40px] max-md:px-[22px] max-md:py-[10px] max-md:text-[#51ab7e] max-md:font-bold;
+  }
+}
+
