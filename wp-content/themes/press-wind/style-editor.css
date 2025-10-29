@@ -1812,6 +1812,9 @@ section{
   padding-left: 30px !important;
   padding-right: 30px !important;
 }
+.border-green{
+  border-color: #51AB7E;
+}
 .button{
   display: inline-block;
   border-radius: 40px;
@@ -1845,6 +1848,7 @@ section{
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  border-color: #51AB7E;
 }
 .button--primary:hover{
   --tw-bg-opacity: 1;
@@ -2173,6 +2177,7 @@ nav .submenu > li.active{
   border-style: solid;
   --tw-border-opacity: 1;
   border-color: rgb(81 171 126 / var(--tw-border-opacity));
+  border-color: #51AB7E;
 }
 nav .submenu.active > li{
   position: relative;
@@ -2500,6 +2505,7 @@ nav .submenu > li .submenu-child > li{
   background-color: rgb(81 171 126 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+  border-color: #51AB7E;
 }
 .minisite-pagination a:hover{
   --tw-bg-opacity: 1;
@@ -3048,6 +3054,7 @@ select,
   padding-right: 30px;
   padding-top: 22px;
   padding-bottom: 22px;
+  border-color: #51AB7E;
 }
 .page-template-template-container .nf-form-content [type='submit'],
 #subForm [type='submit']{
@@ -3070,6 +3077,7 @@ select,
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+  border-color: #51AB7E;
 }
 .page-template-template-container .nf-form-content [type='submit']:hover,
 #subForm [type='submit']:hover{

@@ -346,3 +346,22 @@ add_action('wp_enqueue_scripts',function () {
         );
     }
 });
+
+
+function fdhpa17_first_term_name( $post_id, array $tax_candidates ) {
+  foreach ( $tax_candidates as $tax ) {
+    $terms = get_the_terms( $post_id, $tax );
+    if ( $terms && ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+      $term = reset( $terms );
+      $name = $term->name;
+
+      // Limite à 25 caractères max
+      if ( mb_strlen( $name ) > 15 ) {
+        $name = mb_substr( $name, 0, 15 ) . '…';
+      }
+
+      return $name;
+    }
+  }
+  return '';
+}

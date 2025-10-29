@@ -41,7 +41,7 @@ $template = [
     <div
       class="mx-[30px] md:mx-[130px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
       <div
-        class="filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
+        class="  filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
         <div
           class="[&_.facetwp-dropdown]:max-w-[160px]
           [&_.facetwp-search]:max-w-[150px] [&_.facetwp-search]:!min-w-[50px] [&_.facetwp-search]:p-[20px_30px] [&_.facetwp-search]:border-0 [&_.facetwp-search]:rounded-[20px]
