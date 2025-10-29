@@ -13,7 +13,15 @@ export default function blockSearch() {
           perMove: 1,
           breakpoints: {
             1024: { perPage: 2 },
-            640: { perPage: 3, direction: 'ttb', height: '1320px', wheel: true,fixedHeight:'450px',drag:false,pagination:true },
+            640: {
+              perPage: 3,
+              direction: 'ttb',
+              height: '1320px',
+              wheel: true,
+              fixedHeight: '450px',
+              drag: false,
+              pagination: true,
+            },
           },
         },
         JSON.parse(el.getAttribute('data-splide') || '{}'),
@@ -71,19 +79,95 @@ export default function blockSearch() {
   })
 }
 
-
-const activeFilters = document.querySelector('.active-filters');
-const facetwpFacets = document.querySelectorAll('.block-search-campings .facetwp-facet');
+const activeFilters = document.querySelector('.active-filters')
+const facetwpFacets = document.querySelectorAll(
+  '.block-search-campings .facetwp-facet',
+)
 
 if (activeFilters) {
-  activeFilters.addEventListener('click', function() {
-    facetwpFacets.forEach(facet => {
-      facet.style.display = (facet.style.display === "block") ? "none" : "block";
-    });
+  activeFilters.addEventListener('click', function () {
+    facetwpFacets.forEach((facet) => {
+      facet.style.display = facet.style.display === 'block' ? 'none' : 'block'
+    })
 
-    const toggleIcon = activeFilters.querySelector('span:last-child');
+    const toggleIcon = activeFilters.querySelector('span:last-child')
     if (toggleIcon) {
-      toggleIcon.textContent = (toggleIcon.textContent.trim() === "+") ? "-" : "+";
+      toggleIcon.textContent = toggleIcon.textContent.trim() === '+' ? '-' : '+'
     }
-  });
+  })
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const activeFiltersBlockCampings = document.querySelector(
+    '.active-filters-block-campings',
+  )
+  const facetwpFacetsBlockCampings = document.querySelectorAll(
+    '.block-campings .ctitle',
+  )
+  const blocks = document.querySelectorAll('.block-campings .facet-block')
+
+  if (!activeFiltersBlockCampings) return
+
+  activeFiltersBlockCampings.addEventListener('click', () => {
+    console.log('y a un click')
+    facetwpFacetsBlockCampings.forEach((facet) => {
+      // On toggle manuellement la visibilité mobile
+      if (facet.classList.contains('max-md:hidden')) {
+        facet.classList.remove('max-md:hidden')
+        facet.classList.add('max-md:block') // ou max-md:block selon ton besoin
+        facet.style.marginTop = '20px'
+      } else {
+        facet.classList.remove('max-md:block', 'max-md:block')
+        facet.classList.add('max-md:hidden')
+        facet.style.marginTop = '0px'
+        blocks.forEach((block) => {
+           const wrapper = block.querySelector('.facet-wrapper')   
+           wrapper.classList.remove('max-md:block')
+           wrapper.classList.add('max-md:hidden')
+        })
+      }
+    })
+
+    const toggleIcon =
+      activeFiltersBlockCampings.querySelector('span:last-child')
+    if (toggleIcon) {
+      toggleIcon.textContent = toggleIcon.textContent.trim() === '+' ? '-' : '+'
+    }
+  })
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  const blocks = document.querySelectorAll('.facet-block')
+
+  blocks.forEach((block) => {
+    const title = block.querySelector('.ctitle')
+    const wrapper = block.querySelector('.facet-wrapper')
+    if (!title || !wrapper) return
+
+    // Améliore l’accessibilité + UX
+    title.setAttribute('role', 'button')
+    title.setAttribute('tabindex', '0')
+    title.classList.add('cursor-pointer')
+
+    const toggle = () => {
+      // On ne touche qu’au comportement mobile (<= md)
+      if (wrapper.classList.contains('max-md:hidden')) {
+        wrapper.classList.remove('max-md:hidden')
+        wrapper.classList.add('max-md:block') // ou 'max-md:flex' si tu préfères
+        title.setAttribute('aria-expanded', 'true')
+      } else {
+        wrapper.classList.remove('max-md:block', 'max-md:flex')
+        wrapper.classList.add('max-md:hidden')
+        title.setAttribute('aria-expanded', 'false')
+      }
+    }
+
+    title.addEventListener('click', toggle)
+    title.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggle()
+      }
+    })
+  })
+})

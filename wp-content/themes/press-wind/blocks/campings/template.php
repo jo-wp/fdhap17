@@ -54,33 +54,48 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
 ?>
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge block-campings bg-bgOrange rounded-[100px] p-[40px] md:p-[100px]']); ?>>
   <div class="flex flex-col md:flex-row gap-[30px] md:gap-[150px] ">
-    <div class="md:min-w-[20%]">
+    <div class="md:min-w-[20%] 
+    max-md:px-[20px] max-md:py-[10px]  rounded-[10px] max-md:border max-md:border-solid max-md:border-green
+    ">
       <?php
-      $facets = FWP()->helper->get_facets(); 
+      echo '<span class="text-orange text-[14px] font-arial md:hidden max-md:block text-center max-md:mb-[0px] active-filters-block-campings">';
+      echo __('Afficher / Masquer les filtres', 'fdhpa17');
+      echo '<span class="bg-green rounded-full text-white text-[11px] w-[16px] h-[16px] inline-flex items-center justify-center ml-[10px]">+</span>';
+      echo '</span>';
+      $facets = FWP()->helper->get_facets();
       if (!empty($facets)) {
         foreach ($facets as $facet) {
-      if ('pager' === $facet['type']
-          || 'date_range' === $facet['type']
-          || 'classement_block' === $facet['name']
-          || 'destination' === $facet['name']
-                    || 'services_block' === $facet['name']
-          || 'hebergements_block' === $facet['name']
-          || 'expriences_block' === $facet['name']
-          || 'input_text_block' === $facet['name']) {
+          if (
+            'pager' === $facet['type']
+            || 'date_range' === $facet['type']
+            || 'classement_block' === $facet['name']
+            || 'destination' === $facet['name']
+            || 'services_block' === $facet['name']
+            || 'hebergements_block' === $facet['name']
+            || 'expriences_block' === $facet['name']
+            || 'input_text_block' === $facet['name']
+          ) {
             continue;
           }
-          echo '<div class="facet-block">';
-            echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($facet['label']) . '</p>';
-            echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px]">';
-            echo do_shortcode('[facetwp facet="' . esc_attr($facet['name']) . '"]');
-            echo '</div>';
+
+          echo '<div class="facet-block max-md:!border-0 max-md:!mb-0 max-md:!pb-0">';
+          echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]
+            max-md:text-center max-md:bg-white max-md:rounded-full max-md:max-w-max
+            max-md:px-[30px] max-md:py-[15px] max-md:text-black max-md:font-[400]
+            max-md:mx-auto max-md:mb-0 max-md:text-[13px] max-md:min-w-[150px]
+            max-md:hidden
+            ">' . esc_html($facet['label']) . '</p>';
+          echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px] max-md:hidden">';
+          echo do_shortcode('[facetwp facet="' . esc_attr($facet['name']) . '"]');
+          echo '</div>';
           echo '</div>';
         }
       }
       ?>
     </div>
     <div class="md:min-w-[70%]">
-      <h2 class="text-center text-[36px] leading-0"><?= esc_html($campings_count); ?> camping<?= $campings_count > 1 ? 's' : '' ?></h2>
+      <h2 class="text-center text-[36px] leading-0"><?= esc_html($campings_count); ?>
+        camping<?= $campings_count > 1 ? 's' : '' ?></h2>
       <p class=" text-center"><?= get_field('titre_du_bloc_selection_campings') ?></p>
       <?= do_shortcode('[facetwp template="full"]'); ?>
     </div>

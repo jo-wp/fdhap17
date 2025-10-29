@@ -1335,6 +1335,9 @@
   font-size: 1.5rem;
   line-height: 2rem;
 }
+.text-\[11px\]{
+  font-size: 11px;
+}
 .text-\[12px\]{
   font-size: 12px;
 }
@@ -4072,6 +4075,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     margin-left: auto;
     margin-right: auto;
   }
+  .max-md\:\!mb-0{
+    margin-bottom: 0px !important;
+  }
   .max-md\:mb-0{
     margin-bottom: 0px;
   }
@@ -4162,6 +4168,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:w-full{
     width: 100%;
   }
+  .max-md\:min-w-\[150px\]{
+    min-width: 150px;
+  }
   .max-md\:min-w-\[250px\]{
     min-width: 250px;
   }
@@ -4179,6 +4188,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:max-w-full{
     max-width: 100%;
+  }
+  .max-md\:max-w-max{
+    max-width: max-content;
   }
   .max-md\:-translate-x-full{
     --tw-translate-x: -100%;
@@ -4279,6 +4291,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:rounded-b-\[20px\]{
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
+  }
+  .max-md\:\!border-0{
+    border-width: 0px !important;
   }
   .max-md\:border{
     border-width: 1px;
@@ -4382,6 +4397,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     padding-top: 50px;
     padding-bottom: 50px;
   }
+  .max-md\:\!pb-0{
+    padding-bottom: 0px !important;
+  }
   .max-md\:pb-\[30px\]{
     padding-bottom: 30px;
   }
@@ -4397,6 +4415,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-md\:\!text-\[30px\]{
     font-size: 30px !important;
   }
+  .max-md\:text-\[13px\]{
+    font-size: 13px;
+  }
   .max-md\:text-\[14px\]{
     font-size: 14px;
   }
@@ -4408,6 +4429,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:text-\[24px\]{
     font-size: 24px;
+  }
+  .max-md\:font-\[400\]{
+    font-weight: 400;
   }
   .max-md\:font-\[700\]{
     font-weight: 700;
