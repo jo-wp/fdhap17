@@ -39,7 +39,7 @@ $template = [
   </div>
   <div class="max-w-full">
     <div
-      class="mx-[30px] md:mx-[130px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
+      class="mx-[30px] md:mx-[90px] min-h-[230px] [&_select]:p-[20px_30px] [&_select]:border-0 [&_select]:rounded-full">
       <div
         class="  filters flex flex-col-reverse md:flex-row flex-wrap [&_.facetwp-facet]:mb-0 items-center justify-between mb-[70px] gap-[15px]">
         <div
