@@ -365,3 +365,55 @@ function fdhpa17_first_term_name( $post_id, array $tax_candidates ) {
   }
   return '';
 }
+
+
+add_action('wp_head', function () {
+    if (is_admin() || is_feed() || is_robots()) return;
+
+    // --- Récup dynamiques + fallbacks agence ---
+    $name = get_bloginfo('name') ?: 'FDHPA17'; // fallback agence
+    $url  = home_url('/') ?: 'https://www.fdhpa17.com/'; // fallback agence
+
+    // Logo : d’abord le "logo du site" WordPress, sinon fallback agence
+    $logo_url = '';
+    $custom_logo_id = (int) get_theme_mod('custom_logo');
+    if ($custom_logo_id) {
+        // ok si ton env permet cette fonction ; sinon remplace par une URL fixe
+        $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+    }
+    if (!$logo_url) {
+        $logo_url = get_field('logo_header_hero','option');
+    }
+
+    // Réseaux : si tu as des champs ACF Options, remplace ici :
+    $sameAs = array_values(array_filter([
+        function_exists('get_field') ? get_field('social_facebook', 'option') : null,
+        function_exists('get_field') ? get_field('social_instagram', 'option') : null,
+        // ajoute d’autres réseaux si tu veux (YouTube, TikTok…)
+    ]));
+
+    // Structure de base (issue du fichier agence)
+    $data = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Organization',
+        'name'     => $name,
+        'url'      => $url,
+        'logo'     => $logo_url,
+    ];
+    if (!empty($sameAs)) {
+        $data['sameAs'] = $sameAs;
+    } else {
+        // Fallback strict agence si pas de données dynamiques
+        $data['sameAs'] = [
+            'https://www.facebook.com/campings17',
+            'https://www.instagram.com/campings17/',
+        ];
+    }
+
+    // Hook pour surcharger facilement (utile en staging/prod)
+    $data = apply_filters('fdhpa_org_schema', $data);
+
+    echo '<script type="application/ld+json">' .
+         wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .
+         '</script>' . "\n";
+}, 6);

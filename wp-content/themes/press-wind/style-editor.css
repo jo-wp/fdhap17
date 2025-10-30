@@ -2191,6 +2191,9 @@ nav .submenu > li > a{
   font-family: IvyMode;
   text-decoration-line: none;
 }
+nav .submenu > li > a::after {
+  
+}
 nav .submenu > li .submenu-child{
   position: absolute;
   top: 0px;
@@ -2318,11 +2321,11 @@ nav .submenu > li .submenu-child > li{
 .block-hero__content__navigation.is-sticky{
   position: fixed;
   top: 0;
-  left: 0;          /* si nav est full width */
-  right: 0;         /* si nav est full width */
-  z-index: 1000;
-  background: #fff; /* évite voir derrière */
-  box-shadow: 0 2px 8px rgba(0,0,0,.08); /* optionnel */
+  left: 0;         
+  right: 0;        
+  z-index: 1000 !important;
+  background: #fff; 
+  box-shadow: 0 2px 8px rgba(0,0,0,.08); 
       width: 100% !important;
 }
 .block-hero__content__navigation.is-sticky nav > ul > li > a{

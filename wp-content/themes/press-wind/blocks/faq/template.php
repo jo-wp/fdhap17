@@ -110,7 +110,38 @@ $template = [
       </ul>
     <?php endif; ?>
   </div>
+
 </section>
+
+<?php
+// Génération du JSON-LD FAQPage
+if (!empty($items_answer)) {
+  $faq_schema = [
+    "@context" => "https://schema.org",
+    "@type" => "FAQPage",
+    "mainEntity" => []
+  ];
+
+  foreach ($items_answer as $item) {
+    $question = trim(wp_strip_all_tags($item['question']));
+    $answer = trim(wp_strip_all_tags($item['reponse']));
+
+    if ($question && $answer) {
+      $faq_schema["mainEntity"][] = [
+        "@type" => "Question",
+        "name" => $question,
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => $answer
+        ]
+      ];
+    }
+  }
+
+  // Sécurisation + affichage propre
+  echo '<script type="application/ld+json">' . wp_json_encode($faq_schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+}
+?>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {

@@ -99,6 +99,11 @@ nav .submenu.active > li{
 nav .submenu > li > a {
   @apply no-underline font-ivymode;
 }
+
+nav .submenu > li > a::after {
+  
+}
+
 nav .submenu > li .submenu-child {
   @apply list-none absolute top-0 bg-bgGreen m-0 p-0 -right-[1000%] max-md:[&.active]:right-[0] md:[&.active]:-right-[100%] transition-all
     max-md:relative max-md:bg-white
@@ -172,11 +177,11 @@ nav .submenu > li .submenu-child > li {
 .block-hero__content__navigation.is-sticky{
   position: fixed;
   top: 0;
-  left: 0;          /* si nav est full width */
-  right: 0;         /* si nav est full width */
-  z-index: 1000;
-  background: #fff; /* évite voir derrière */
-  box-shadow: 0 2px 8px rgba(0,0,0,.08); /* optionnel */
+  left: 0;         
+  right: 0;        
+  z-index: 1000 !important;
+  background: #fff; 
+  box-shadow: 0 2px 8px rgba(0,0,0,.08); 
       width: 100% !important;
 }
 .block-hero__content__navigation.is-sticky nav > ul > li > a {
