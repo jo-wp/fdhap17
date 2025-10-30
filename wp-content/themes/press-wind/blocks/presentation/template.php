@@ -119,7 +119,8 @@ if ($type_block_presentation == 'default') {
         [&_h2]:font-[600] [&_h1]:font-[600] [&_h2]:font-ivymode [&_h1]:font-ivymode [&_h2_sub]:font-arial [&_h1_sub]:font-arial  [&_h2_sub]:font-[400] [&_h1_sub]:font-[400]
          max-md:[&_h2]:text-center [&_h2_sub]:text-[20px] max-md:[&_h1]:text-center [&_h1_sub]:text-[20px] 
          max-md:text-center
-         md:[&_h2_sub]:text-[32px] md:[&_h1_sub]:text-[32px]" template="<?= htmlspecialchars(json_encode($template)); ?>"
+         md:[&_h2_sub]:text-[32px] md:[&_h1_sub]:text-[32px]
+         md:pl-[70px]" template="<?= htmlspecialchars(json_encode($template)); ?>"
         allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
     </div>
   </div>
