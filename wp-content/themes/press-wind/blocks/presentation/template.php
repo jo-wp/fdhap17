@@ -120,7 +120,7 @@ if ($type_block_presentation == 'default') {
          max-md:[&_h2]:text-center [&_h2_sub]:text-[20px] max-md:[&_h1]:text-center [&_h1_sub]:text-[20px] 
          max-md:text-center
          md:[&_h2_sub]:text-[32px] md:[&_h1_sub]:text-[32px]
-         md:pl-[70px]" template="<?= htmlspecialchars(json_encode($template)); ?>"
+         <?= ($inverse_presentation)? 'md:pl-[70px]' : ''; ?>" template="<?= htmlspecialchars(json_encode($template)); ?>"
         allowedBlocks="<?= htmlspecialchars(json_encode($allowedBlocks)); ?>" />
     </div>
   </div>
