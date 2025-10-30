@@ -39,7 +39,7 @@ $template = [
     <?php if ($items_reassurance): ?>
       <ul class="max-md:mx-[35px] max-md:p-0">
         <?php foreach ($items_reassurance as $item): ?>
-          <li class="animateFade fadeOutAnimation flex flex-row items-center justify-center gap-[34px] mb-[60px] last:mb-0">
+          <li class="animateFade fadeOutAnimation flex flex-row items-center justify-start gap-[34px] mb-[60px] last:mb-0">
             <img src="<?= esc_url($item['image']); ?>" alt="Icon Réassurance <?= $item['titre']; ?>" />
             <h3 class="font-arial text-[14px] md:text-[20px] font-[700] max-w-[305px]"><?= esc_html($item['titre']); ?></h3>
           </li>
