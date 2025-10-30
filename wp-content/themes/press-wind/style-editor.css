@@ -241,14 +241,14 @@
 .z-\[1000\]{
   z-index: 1000;
 }
-.z-\[19\]{
-  z-index: 19;
-}
 .z-\[9999\]{
   z-index: 9999;
 }
 .z-\[999\]{
   z-index: 999;
+}
+.z-\[9\]{
+  z-index: 9;
 }
 .col-span-1{
   grid-column: span 1 / span 1;
