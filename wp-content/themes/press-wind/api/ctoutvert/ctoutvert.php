@@ -103,7 +103,7 @@ class Ctoutvert
     $wsdl = 'https://webservices.secureholiday.net/v3/engine.asmx?wsdl';
     $username = 'redpanda';
     $password = 'MAf#$ma$kECQt';
-    $id_engine = 702;
+    $id_engine = 1704;
 
     try {
       $client = new SoapClient($wsdl, [
@@ -164,7 +164,7 @@ public static function ctoutvert_search_holidays($dateFilter = [], $productTypes
       ],
       'language'   => 'FR',
       // !!! clé correcte (singulier)
-      'dateFilter' => $dateFilter,
+      // 'dateFilter' => $dateFilter,
     ];
 
     if ($onlyWithOffer) {
@@ -245,15 +245,16 @@ public static function ctoutvert_search_holidays($dateFilter = [], $productTypes
 if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
 
   // $data = Ctoutvert::get_camping_ctoutvert(14166);
-  // $data = Ctoutvert::ctoutvert_get_specialoffer(1563506);
+  // $data = Ctoutvert::ctoutvert_get_specialoffer(1657081);
   // $data = Ctoutvert::ctoutvert_get_active_keys_from_engine();
   // $dateFilters = [
-  //   'startDate' => '2026-01-05',
-  //   'endDate' => '2026-01-10'
+  //   'startDate' => '2026-08-05',
+  //   'endDate' => '2026-08-15'
   // ];
-  // $data = Ctoutvert::ctoutvert_search_holidays( null,null,true);
+  // $data = Ctoutvert::ctoutvert_search_holidays( $dateFilters,null,false);
   // echo '<pre>';
   // print_r($data);
   // echo '</pre>';
+  // die();
   // die();
 }
