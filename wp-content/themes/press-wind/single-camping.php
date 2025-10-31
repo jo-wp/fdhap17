@@ -459,12 +459,12 @@ $deals_camping = get_field('deals_camping');
             $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
             ?>
 
-            <div class="flex flex-col bloc-sidebar-promo-date ">
-              <button type="button" class="js-pdf-btn js-coupon  cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
-          " data-filename="<?php echo esc_attr($pdf_filename); ?>"
+            <div class="flex flex-col bloc-sidebar-promo-date js-coupon " data-filename="<?php echo esc_attr($pdf_filename); ?>"
                 data-camping="<?php echo esc_attr($camping_name); ?>" data-title="<?php echo esc_attr($titre); ?>"
                 data-desc="<?php echo esc_attr($desc_plain); ?>" data-code="<?php echo esc_attr($code); ?>"
                 data-dates="<?php echo esc_attr($dates_str); ?>">
+              <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
+          " >
                 <?= __('Imprimer ce bon', 'fdhpa17') ?>
               </button>
 
