@@ -5,7 +5,7 @@
     const root = container.querySelector('.js-countdown');
     if (!root) return;
 
-    const endMs = Number(root.dataset.end || 0) * 1000;
+    const endMs  = Number(root.dataset.end || 0) * 1000;
     const daysEl = root.querySelector('.js-countdown-days');
     const timeEl = root.querySelector('.js-countdown-time');
     if (!daysEl || !timeEl) return;
@@ -32,106 +32,97 @@
     document.querySelectorAll('.js-coupon').forEach(renderCountdown);
   }
 
-// ---- PDF en texte pur (version robuste, détection automatique jsPDF) ----
-async function generateCouponPDF(container, btn) {
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.classList.add('is-loading');
-  btn.innerHTML = `
-    <span class="spinner" style="
-      display:inline-block;width:16px;height:16px;border:2px solid currentColor;
-      border-right-color:transparent;border-radius:50%;margin-right:8px;vertical-align:middle;
-      animation:spin 0.7s linear infinite;"></span>
-    Génération...
-  `;
+  // -------- Génération "PDF" la plus simple : nouvelle fenêtre + print() --------
+  async function generateCouponPDF(container, btn) {
+    // Loader ON
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.classList.add('is-loading');
+    btn.innerHTML = `
+      <span class="spinner" style="
+        display:inline-block;width:16px;height:16px;border:2px solid currentColor;
+        border-right-color:transparent;border-radius:50%;margin-right:8px;vertical-align:middle;
+        animation:spin 0.7s linear infinite;"></span>
+      Génération...
+    `;
 
-  try {
-    // Récup données
-    const camping  = container.dataset.camping || '';
-    const title    = container.dataset.title   || '';
-    const desc     = container.dataset.desc    || '';
-    const code     = container.dataset.code    || '';
-    const dates    = container.dataset.dates   || '';
-    const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
+    try {
+      // Récup données depuis data-*
+      const camping  = container.dataset.camping  || '';
+      const title    = container.dataset.title    || '';
+      const desc     = container.dataset.desc     || '';
+      const code     = container.dataset.code     || '';
+      const dates    = container.dataset.dates    || '';
+      const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
 
-    // ✅ Détection robuste de jsPDF (peu importe le bundle)
-    const jsPDF =
-      (window.jspdf && window.jspdf.jsPDF)
-      || window.jsPDF
-      || (window.html2pdf && window.html2pdf.jsPDF);
+      // Fenêtre d'impression
+      const w = window.open('', '_blank');
+      if (!w) {
+        alert("Impossible d'ouvrir la fenêtre d'impression (popup bloqué ?).");
+        return;
+      }
 
-    if (typeof jsPDF !== 'function') {
-      console.error('❌ jsPDF introuvable : vérifie le chargement de html2pdf.bundle.min.js');
-      alert('Impossible de générer le PDF (jsPDF non disponible).');
-      return;
+      // HTML minimal, lisible, en noir sur fond blanc
+      const esc = (s) => String(s).replace(/[<>&]/g, (m)=>({ '<':'&lt;','>':'&gt;','&':'&amp;' }[m]));
+      const html = `<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>${esc(camping)}${title ? ' — ' + esc(title) : ''}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @page { size: A4; margin: 12mm; }
+    body { font-family: Arial, Helvetica, sans-serif; color:#111; background:#fff; }
+    .wrap { line-height:1.5; }
+    h1 { margin:0 0 12px 0; font-size:22px; font-weight:700; }
+    p { margin:0 0 10px 0; font-size:14px; }
+    .meta { margin-top:8px; }
+    .label { font-weight:700; }
+    .hr { margin:14px 0; height:1px; background:#ddd; border:0; }
+    .footer { margin-top:20px; font-size:11px; color:#777; }
+    /* Impression auto propre */
+    @media print {
+      .no-print { display:none !important; }
     }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>${esc(camping)}${title ? ' — ' + esc(title) : ''}</h1>
+    ${desc ? `<p>${esc(desc)}</p>` : ''}
+    ${code ? `<p class="meta"><span class="label">Code :</span> ${esc(code)}</p>` : ''}
+    ${dates ? `<p class="meta"><span class="label">Validité :</span> ${esc(dates)}</p>` : ''}
+    <div class="hr"></div>
+    <div class="footer">Document généré automatiquement — ${new Date().toLocaleDateString('fr-FR')}</div>
+  </div>
+  <script>
+    // Petite pause pour que le moteur de rendu peaufine
+    window.addEventListener('load', function () {
+      setTimeout(function(){
+        document.title = ${JSON.stringify(filename)}; // titre proposé au "Enregistrer en PDF"
+        window.focus();
+        window.print();
+        window.close();
+      }, 150);
+    });
+  </script>
+</body>
+</html>`;
 
-    // Création du PDF
-    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-    const W = doc.internal.pageSize.getWidth();
-    const H = doc.internal.pageSize.getHeight();
-    const M = 15;
-    const maxW = W - M * 2;
-    let y = M;
+      // Écrit et ferme le flux
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
 
-    // Fond blanc explicite
-    doc.setFillColor(255, 255, 255);
-    doc.rect(0, 0, W, H, 'F');
-
-    // Styles
-    const setH1 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(17, 17, 17); };
-    const setH2 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(17, 17, 17); };
-    const setP  = () => { doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(17, 17, 17); };
-
-    // Titre
-    setH1();
-    const titleText = [camping, title && `— ${title}`].filter(Boolean).join(' ') || 'Bon';
-    const titleLines = doc.splitTextToSize(titleText, maxW);
-    doc.text(titleLines, M, y);
-    y += 10 + (titleLines.length - 1) * 6;
-
-    // Description
-    if (desc) {
-      setP();
-      const descLines = doc.splitTextToSize(desc, maxW);
-      doc.text(descLines, M, y);
-      y += descLines.length * 6 + 4;
+    } finally {
+      // Loader OFF
+      btn.disabled = false;
+      btn.classList.remove('is-loading');
+      btn.innerHTML = originalHTML;
     }
-
-    // Code
-    if (code) {
-      setH2(); doc.text('Code :', M, y);
-      setP();  doc.text(String(code), M + 25, y);
-      y += 8;
-    }
-
-    // Dates
-    if (dates) {
-      setH2(); doc.text('Validité :', M, y);
-      setP();  doc.text(doc.splitTextToSize(dates, maxW - 25), M + 25, y);
-      y += 10;
-    }
-
-    // Pied de page
-    doc.setDrawColor(200);
-    doc.line(M, H - 20, W - M, H - 20);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(120, 120, 120);
-    doc.text('Document généré automatiquement', M, H - 12);
-
-    // Sauvegarde
-    doc.save(`${filename}.pdf`);
-  } catch (e) {
-    console.error(e);
-    alert('Erreur pendant la génération du PDF.');
-  } finally {
-    btn.disabled = false;
-    btn.classList.remove('is-loading');
-    btn.innerHTML = originalText;
   }
-}
 
-
-  // ---- Boot ----
+  // ---- Boot (compteurs + clic bouton) ----
   document.addEventListener('DOMContentLoaded', () => {
     tickAll();
     if (window._couponTimer) clearInterval(window._couponTimer);
