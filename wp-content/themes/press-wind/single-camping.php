@@ -427,7 +427,7 @@ $deals_camping = get_field('deals_camping');
 
           <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
           <div
-            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px] js-coupon"
+            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px]"
             data-filename="<?= esc_attr($pdf_filename); ?>">
 
             <div class="flex flex-col">
