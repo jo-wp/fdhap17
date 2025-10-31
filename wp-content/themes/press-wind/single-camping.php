@@ -425,23 +425,7 @@ $deals_camping = get_field('deals_camping');
             </div>
           </div>
 
-          <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
-          <div
-            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px] js-coupon"
-            data-filename="<?= esc_attr($pdf_filename); ?>">
-
-            <div class="flex flex-col">
-              <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
-                n°<?= esc_html($deal['code']); ?>
-              </div>
-              <div class="mt-[10px]">
-                <img src="<?= esc_url(get_bloginfo('template_directory') . '/assets/media/icon-time.svg'); ?>"
-                  alt="Icon Expiration offre du camping <?= esc_attr(get_the_title()); ?>" />
-                <p class="m-0 max-md:text-[13px] text-[13px]"><?= __('Cette offre expire dans :', 'fdhpa17') ?></p>
-              </div>
-            </div>
-
-            <?php
+                  <?php
             // Prépares tes valeurs
             $camping_name = get_the_title();
             $titre = $deal['titre'] ?? '';
@@ -458,6 +442,29 @@ $deals_camping = get_field('deals_camping');
             // (optionnel) nom de fichier
             $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
             ?>
+
+          <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
+          <div
+            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px] js-coupon"
+            data-filename="<?= esc_attr($pdf_filename); ?>"
+            data-filename="<?php echo esc_attr($pdf_filename); ?>"
+                data-camping="<?php echo esc_attr($camping_name); ?>" data-title="<?php echo esc_attr($titre); ?>"
+                data-desc="<?php echo esc_attr($desc_plain); ?>" data-code="<?php echo esc_attr($code); ?>"
+                data-dates="<?php echo esc_attr($dates_str); ?>
+            >
+
+            <div class="flex flex-col">
+              <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
+                n°<?= esc_html($deal['code']); ?>
+              </div>
+              <div class="mt-[10px]">
+                <img src="<?= esc_url(get_bloginfo('template_directory') . '/assets/media/icon-time.svg'); ?>"
+                  alt="Icon Expiration offre du camping <?= esc_attr(get_the_title()); ?>" />
+                <p class="m-0 max-md:text-[13px] text-[13px]"><?= __('Cette offre expire dans :', 'fdhpa17') ?></p>
+              </div>
+            </div>
+
+    
 
             <div class="flex flex-col bloc-sidebar-promo-date js-coupon ">
               <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
