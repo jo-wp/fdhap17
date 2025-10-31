@@ -32,14 +32,13 @@
     document.querySelectorAll('.js-coupon').forEach(renderCountdown);
   }
 
-  // ---- Génération PDF visible avec loader ----
+  // ---- Génération PDF avec fond noir + texte blanc ----
   async function generateCouponPDF(container, btn) {
     if (typeof window.html2pdf !== 'function') {
       console.error('html2pdf non chargé.');
       return;
     }
 
-    // Loader visuel
     const originalText = btn.innerHTML;
     btn.disabled = true;
     btn.classList.add('is-loading');
@@ -57,7 +56,6 @@
       Génération...
     `;
 
-    // Données
     const camping  = container.dataset.camping || '';
     const title    = container.dataset.title || '';
     const desc     = container.dataset.desc || '';
@@ -65,35 +63,34 @@
     const dates    = container.dataset.dates || '';
     const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
 
-    // ✅ Élément temporaire VISIBLE (ne surtout pas display:none)
+    // ✅ Élément temporaire visible + fond noir + texte blanc
     const wrapper = document.createElement('div');
     wrapper.style.position = 'fixed';
     wrapper.style.left = '0';
     wrapper.style.top = '0';
-    wrapper.style.zIndex = '-1';
-    wrapper.style.opacity = '0'; // invisible à l’œil mais rendu OK
+    wrapper.style.zIndex = '9999';
+    wrapper.style.opacity = '1';
     wrapper.style.pointerEvents = 'none';
     wrapper.style.width = '800px';
-    wrapper.style.background = '#fff';
+    wrapper.style.background = '#000'; // fond noir
+    wrapper.style.color = '#fff'; // texte blanc
     wrapper.innerHTML = `
-      <div style="font-family: Arial, Helvetica, sans-serif; color:#111; padding:32px; line-height:1.5;color: #111 !important;">
-        <h1 style="margin:0 0 16px 0; font-size:22px; font-weight:700;">
+      <div style="font-family: Arial, Helvetica, sans-serif; padding:40px; line-height:1.5;">
+        <h1 style="margin:0 0 16px 0; font-size:22px; font-weight:700; color:#fff;">
           ${camping ? camping.replace(/</g, '&lt;') : ''}${title ? ' — ' + title.replace(/</g, '&lt;') : ''}
         </h1>
-        ${desc ? `<p style="margin:0 0 12px 0; font-size:14px;">${desc.replace(/</g, '&lt;')}</p>` : ''}
-        ${code ? `<p style="margin:0 0 6px 0; font-size:14px;"><strong>Code :</strong> ${String(code).replace(/</g, '&lt;')}</p>` : ''}
-        ${dates ? `<p style="margin:0; font-size:14px;"><strong>Validité :</strong> ${dates.replace(/</g, '&lt;')}</p>` : ''}
+        ${desc ? `<p style="margin:0 0 12px 0; font-size:14px; color:#fff;">${desc.replace(/</g, '&lt;')}</p>` : ''}
+        ${code ? `<p style="margin:0 0 6px 0; font-size:14px; color:#fff;"><strong>Code :</strong> ${String(code).replace(/</g, '&lt;')}</p>` : ''}
+        ${dates ? `<p style="margin:0; font-size:14px; color:#fff;"><strong>Validité :</strong> ${dates.replace(/</g, '&lt;')}</p>` : ''}
       </div>
     `;
     document.body.appendChild(wrapper);
 
     try {
-      // Attendre le chargement des polices
       if (document.fonts && document.fonts.ready) {
         try { await document.fonts.ready; } catch (e) {}
       }
 
-      // Options de rendu
       const opt = {
         margin: [10, 10, 10, 10],
         filename: `${filename}.pdf`,
@@ -101,7 +98,7 @@
         html2canvas: {
           scale: 2,
           useCORS: true,
-          backgroundColor: '#ffffff',
+          backgroundColor: '#000000',
           logging: false,
           windowWidth: 800,
           windowHeight: wrapper.scrollHeight + 100
@@ -109,7 +106,6 @@
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      // Attendre la génération
       await window.html2pdf().set(opt).from(wrapper).save();
     } catch (err) {
       console.error('Erreur PDF :', err);
