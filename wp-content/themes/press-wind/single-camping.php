@@ -93,6 +93,9 @@ if ($selected) {
 
 //FAQ 
 $items_answer = get_field('items_answer');
+
+//Deals
+$deals_camping = get_field('deals_camping');
 ?>
 <div class="container-huge">
   <div class="title-stars flex max-md:flex-col md:flex-row items-center justify-start gap-[0px] md:gap-[30px]">
@@ -121,25 +124,24 @@ $items_answer = get_field('items_answer');
     </div>
   </div>
   <div class="galerie-photo relative ">
-              <a id="open-all" class=" hover:no-underline cursor-pointer rounded-[5px] font-arial px-[15px] py-[10px] flex flex-row items-center gap-2 justify-center bg-white/80 text-[16px] text-black absolute left-[15px] top-[30px]"><img src="<?= get_template_directory_uri() ?>/assets/media/icon-gallery.svg">Voir les photos (<?= count($photos) ?>)</a>
+    <a id="open-all"
+      class=" hover:no-underline cursor-pointer rounded-[5px] font-arial px-[15px] py-[10px] flex flex-row items-center gap-2 justify-center bg-white/80 text-[16px] text-black absolute left-[15px] top-[30px]"><img
+        src="<?= get_template_directory_uri() ?>/assets/media/icon-gallery.svg">Voir les photos
+      (<?= count($photos) ?>)</a>
 
-      <div data-featherlight-gallery class="grid md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2 gap-[15px] mb-[50px]" id="gallery">
+    <div data-featherlight-gallery class="grid md:grid-cols-[2fr_1fr_1fr] md:grid-rows-2 gap-[15px] mb-[50px]"
+      id="gallery">
 
-    <?php $i = 0;
-   foreach ($photos as $photo): ?>
-  <img 
-    href="<?= $photo['url']; ?>" 
-    src="<?= $photo['url_thumbnail']; ?>" 
-    alt="<?= $photo['caption']; ?>"
-    class="fl-item w-full h-full cursor-pointer object-cover rounded-[20px]
+      <?php $i = 0;
+      foreach ($photos as $photo): ?>
+        <img href="<?= $photo['url']; ?>" src="<?= $photo['url_thumbnail']; ?>" alt="<?= $photo['caption']; ?>" class="fl-item w-full h-full cursor-pointer object-cover rounded-[20px]
       <?= ($i == 0) ? 'col-span-1 row-span-2 md:max-h-[500px]' : ''; ?>
       <?= ($i >= 1) ? 'max-md:hidden md:max-h-[240px]' : ''; ?>
-      <?= ($i >= 5) ? 'hidden' : ''; ?>"
-  >
-  <?php $i++;
-endforeach; ?>
-      </div>
-    
+      <?= ($i >= 5) ? 'hidden' : ''; ?>">
+        <?php $i++;
+      endforeach; ?>
+    </div>
+
   </div>
   <div class="blocs flex max-md:flex-col md:flex-row items-start justify-between gap-[70px]">
     <div class="bloc-content-camping ">
@@ -371,7 +373,7 @@ endforeach; ?>
 
                   echo '<div class="paiement-item">';
                   echo '<img title="' . $term->name . '" src="' . esc_url($icon_url) . '" alt="' . esc_attr($term->name) . '" class="paiement-icon" />';
-                  
+
                   echo '</div>';
                 }
 
@@ -391,38 +393,95 @@ endforeach; ?>
           <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?>
         </p>
       </div>
-      <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
-        <p class=" font-ivymode text-[36px] font-[700] m-0">-20 %</p>
-        <p class="font-arial text-[16px] font-[700]">-20% : Offre spéciale Août Durée minimale de séjour : 3 La
-          réduction s'applique sur : Forfait uniquement</p>
-        <div class=" border-2 border-solid border-white rounded-full ">Bon plan valable du <br />2 août 2025 au 31 août
-          2025</div>
-      </div>
-      <div
-        class="hidden bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px]  flex-row items-start justify-center gap-[25px]">
-        <div class="flex flex-col">
-          <div class=" border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
-            n°3AE7FE21</div>
-          <div class="mt-[10px]">
-            <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-time.svg"
-              alt="Icon Expiration offre du camping <?= get_the_title(); ?>" />
-            <p class="m-0 max-md:text-[14px]"><?= __('Cette offre expire dans :','fdhpa17') ?></p>
+      <?php if ($deals_camping): ?>
+        <?php foreach ($deals_camping as $deal): ?>
+          <?php
+          // Dates lisibles (d/m/Y -> "31 août 2026")
+          $date_start = DateTime::createFromFormat('d/m/Y', $deal['date_debut']);
+          $date_end = DateTime::createFromFormat('d/m/Y', $deal['date_fin']);
+          $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'Europe/Paris', IntlDateFormatter::GREGORIAN, 'd MMMM yyyy');
+
+          // Expiration -> timestamp (fin de journée si heure absente)
+          $exp = DateTime::createFromFormat('d/m/Y H:i:s', $deal['date_fin'])
+            ?: DateTime::createFromFormat('d/m/Y', $deal['date_fin']);
+          if ($exp && $exp->format('H:i:s') === '00:00:00') {
+            $exp->setTime(23, 59, 59);
+          }
+          $expiration_ts = $exp ? $exp->getTimestamp() : 0;
+
+          // Nom de fichier PDF
+          $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
+          ?>
+
+          <!-- Carte orange (infos offre) -->
+          <div class="bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
+            <p class="font-ivymode text-[36px] font-[700] m-0"><?= esc_html($deal['titre']); ?></p>
+            <p class="font-arial text-[16px] font-[700]"><?= wp_kses_post($deal['description']); ?></p>
+            <div class="border-2 border-solid border-white rounded-full">
+              Bon plan valable du<br>
+              <?= $date_start ? esc_html($formatter->format($date_start)) : ''; ?>
+              au
+              <?= $date_end ? esc_html($formatter->format($date_end)) : ''; ?>
+            </div>
           </div>
-        </div>
-        <div class="flex flex-col ">
+
+          <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
           <div
-            class="border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]">
-            <?= __('Imprimer ce bon','fdhpa17') ?></div>
-          <div class="flex flex-row items-center justify-center mt-[20px] gap-[5px]">
-            <div
-              class="border border-solid border-white rounded-[10px] p-[12px] font-ivymode max-md:text-[20px] md:text-[24px] font-[700]">
-              13</div>
-            <div
-              class="border border-solid border-white rounded-[10px] p-[12px] font-ivymode max-md:text-[20px] md:text-[24px] font-[700]">
-              15:13:30</div>
+            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px] js-coupon"
+            data-filename="<?= esc_attr($pdf_filename); ?>">
+
+            <div class="flex flex-col">
+              <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
+                n°<?= esc_html($deal['code']); ?>
+              </div>
+              <div class="mt-[10px]">
+                <img src="<?= esc_url(get_bloginfo('template_directory') . '/assets/media/icon-time.svg'); ?>"
+                  alt="Icon Expiration offre du camping <?= esc_attr(get_the_title()); ?>" />
+                <p class="m-0 max-md:text-[13px] text-[13px]"><?= __('Cette offre expire dans :', 'fdhpa17') ?></p>
+              </div>
+            </div>
+
+            <?php
+            // Prépares tes valeurs
+            $camping_name = get_the_title();
+            $titre = $deal['titre'] ?? '';
+            $desc_plain = wp_strip_all_tags($deal['description'] ?? '');
+            $code = $deal['code'] ?? '—';
+
+            $date_start = DateTime::createFromFormat('d/m/Y', $deal['date_debut']);
+            $date_end = DateTime::createFromFormat('d/m/Y', $deal['date_fin']);
+            $fmt = new IntlDateFormatter('fr_FR', IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'Europe/Paris', IntlDateFormatter::GREGORIAN, 'd MMMM yyyy');
+            $du = $date_start ? $fmt->format($date_start) : '';
+            $au = $date_end ? $fmt->format($date_end) : '';
+            $dates_str = trim("du $du au $au");
+
+            // (optionnel) nom de fichier
+            $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
+            ?>
+
+            <div class="flex flex-col bloc-sidebar-promo-date js-coupon ">
+              <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
+          " data-filename="<?php echo esc_attr($pdf_filename); ?>"
+                data-camping="<?php echo esc_attr($camping_name); ?>" data-title="<?php echo esc_attr($titre); ?>"
+                data-desc="<?php echo esc_attr($desc_plain); ?>" data-code="<?php echo esc_attr($code); ?>"
+                data-dates="<?php echo esc_attr($dates_str); ?>">
+                <?= __('Imprimer ce bon', 'fdhpa17') ?>
+              </button>
+
+              <div class="flex flex-row items-center justify-center mt-[20px] gap-[5px] js-countdown"
+                data-end="<?= (int) $expiration_ts; ?>">
+                <div
+                  class="border border-solid border-white rounded-[10px] p-[12px] font-ivymode max-md:text-[20px] md:text-[24px] font-[700] js-countdown-days">
+                  00</div>
+                <div
+                  class="border border-solid border-white rounded-[10px] p-[12px] font-ivymode max-md:text-[20px] md:text-[24px] font-[700] js-countdown-time">
+                  00:00:00</div>
+              </div>
+            </div>
+
           </div>
-        </div>
-      </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
       <?php $website = get_post_meta($post->ID, 'site_web', true); ?>
       <?php if ($price_mini_mobilhomes || $url_reservation_direct || $website): ?>
         <div class="bloc-sidebar-price p-[40px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
@@ -521,9 +580,9 @@ endforeach; ?>
           </div>
           <p class="text-center !font-body !text-[13px]"><?= __('Mis à jour le ', 'fdhpa17'); ?>
             <?= get_the_modified_date('r', $post->ID); ?><br />
-            <?= __('par Fédération de l\'Hôtellerie de Plein Air de Charente','fdhpa17') ?><br />
-            <?= __('Maritime','fdhpa17') ?><br />
-            (<?= __('Identifiant de l\'offre','fdhpa17') ?>: <?= get_post_meta($post->ID,'apidae_id',true); ?>)
+            <?= __('par Fédération de l\'Hôtellerie de Plein Air de Charente', 'fdhpa17') ?><br />
+            <?= __('Maritime', 'fdhpa17') ?><br />
+            (<?= __('Identifiant de l\'offre', 'fdhpa17') ?>: <?= get_post_meta($post->ID, 'apidae_id', true); ?>)
           </p>
         </div>
       </div>
@@ -612,16 +671,11 @@ endforeach; ?>
                       <?= __('À partir de', 'fdhpa17'); ?>         <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
                     </span>
                   <?php endif; ?>
-                 <a href="#"
-   class="camping-fav-btn"
-   data-camping-id="<?php echo get_the_ID(); ?>"
-   data-label-add="Ajouter aux favoris"
-   data-label-remove="Retirer des favoris"
-   aria-pressed="false">
-   <img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
-        alt="icon ajouter aux favoris">
-   <span class="txt" style="display:none;">Ajouter aux favoris</span>
-</a>
+                  <a href="#" class="camping-fav-btn" data-camping-id="<?php echo get_the_ID(); ?>"
+                    data-label-add="Ajouter aux favoris" data-label-remove="Retirer des favoris" aria-pressed="false">
+                    <img src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>" alt="icon ajouter aux favoris">
+                    <span class="txt" style="display:none;">Ajouter aux favoris</span>
+                  </a>
                 </div>
               </div>
               <div class="informations mt-[20px]">
@@ -666,4 +720,5 @@ endforeach; ?>
     </div>
   <?php endif; ?>
 </div>
+
 <?php get_footer(); ?>

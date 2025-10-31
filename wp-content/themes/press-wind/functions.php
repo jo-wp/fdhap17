@@ -918,3 +918,27 @@ add_action('wp_head', function () {
         }
     }
 }, 20);
+
+
+add_action('wp_enqueue_scripts', function () {
+  if (is_singular('camping')) {
+    // html2pdf (cdn)
+    wp_enqueue_script(
+      'html2pdf',
+      'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
+      [],
+      null,
+      true
+    );
+
+    // ton script de page
+    $path = get_stylesheet_directory() . '/assets/js/camping-coupon.js';
+    wp_enqueue_script(
+      'camping-coupon',
+      get_stylesheet_directory_uri() . '/assets/js/camping-coupon.js',
+      ['html2pdf'],
+      file_exists($path) ? filemtime($path) : null,
+      true
+    );
+  }
+});
