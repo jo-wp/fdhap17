@@ -738,3 +738,183 @@ add_action('wp_head', function () {
         . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
         . '</script>' . "\n";
 }, 20);
+
+/**
+ * Helpers communs pour JSON-LD ItemList de campings
+ */
+if (!function_exists(__NAMESPACE__ . '\\fdhpa17_jsonld_clean')) {
+    function fdhpa17_jsonld_clean($value) {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $v = fdhpa17_jsonld_clean($v);
+                if ($v === null || $v === '' || $v === []) {
+                    unset($value[$k]);
+                } else {
+                    $value[$k] = $v;
+                }
+            }
+            return $value;
+        }
+        return ($value === '' || $value === null) ? null : $value;
+    }
+}
+
+if (!function_exists('fdhpa17_build_lodging_from_post')) {
+    function fdhpa17_build_lodging_from_post($pid) {
+        $meta = function($key, $default = '') use ($pid) {
+            $v = get_post_meta($pid, $key, true);
+            return $v !== '' ? $v : $default;
+        };
+        $to_float = function($v) { return is_numeric($v) ? (float) $v : null; };
+
+        $title = get_the_title($pid);
+        $url   = get_permalink($pid);
+        $img   = get_the_post_thumbnail_url($pid, 'full');
+        $desc  = has_excerpt($pid)
+            ? get_the_excerpt($pid)
+            : wp_trim_words(wp_strip_all_tags(strip_shortcodes(get_post_field('post_content', $pid))), 30);
+
+        $adresse = $meta('adresse');
+        $commune = $meta('commune');
+        $cp      = $meta('code_postal');
+        $tel     = $meta('telephone');
+        $lat     = $to_float($meta('latitude'));
+        $lng     = $to_float($meta('longitude'));
+        $pays    = $meta('pays', 'FR');
+
+        $price_min = $meta('price_mini');
+        $reserve   = $meta('url_reservation_direct') ?: $url;
+
+        $rating_value = $meta('rating_value');
+        $review_count = $meta('review_count');
+
+        $lodging = [
+            '@type'       => 'LodgingBusiness', // ou "Campground" si 100% campings
+            'name'        => $title,
+            'url'         => $url,
+            'image'       => $img,
+            'description' => $desc,
+            'telephone'   => $tel,
+            'address'     => [
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => $adresse,
+                'addressLocality' => $commune,
+                'postalCode'      => $cp,
+                'addressRegion'   => 'Nouvelle-Aquitaine',
+                'addressCountry'  => $pays,
+            ],
+            'geo' => ($lat !== null && $lng !== null) ? [
+                '@type'     => 'GeoCoordinates',
+                'latitude'  => $lat,
+                'longitude' => $lng,
+            ] : null,
+            'aggregateRating' => ($rating_value && $review_count) ? [
+                '@type'       => 'AggregateRating',
+                'ratingValue' => (string) $rating_value,
+                'reviewCount' => (string) $review_count,
+            ] : null,
+            'offers' => $price_min ? [
+                '@type'         => 'Offer',
+                'price'         => (string) $price_min,
+                'priceCurrency' => 'EUR',
+                'url'           => $reserve,
+                'availability'  => 'https://schema.org/InStock',
+                'description'   => 'Séjour à partir de ' . $price_min . ' € la nuit.',
+            ] : null,
+        ];
+
+        /**
+         * Permettre une surcouche si besoin
+         */
+        $lodging = apply_filters('fdhpa17_jsonld_lodging_from_post', $lodging, $pid);
+
+        return fdhpa17_jsonld_clean($lodging);
+    }
+}
+
+if (!function_exists('fdhpa17_emit_itemlist_jsonld')) {
+    function fdhpa17_emit_itemlist_jsonld($posts) {
+        $items = [];
+        $pos = 1;
+        foreach ($posts as $p) {
+            $items[] = [
+                '@type'    => 'ListItem',
+                'position' => $pos++,
+                'item'     => fdhpa17_build_lodging_from_post($p->ID),
+            ];
+        }
+
+        $data = [
+            '@context'        => 'https://schema.org',
+            '@type'           => 'ItemList',
+            'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+            'numberOfItems'   => count($items),
+            'itemListElement' => $items,
+        ];
+
+        $data = apply_filters('fdhpa17_jsonld_itemlist', $data, $posts);
+
+        echo '<script type="application/ld+json">'
+            . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . '</script>' . "\n";
+    }
+}
+
+/**
+ * Injection sur :
+ * - Taxos (equipement, atout, etoile, aquatique, service, label, hebergement, cible, groupe, confort)
+ * - Home (is_front_page() ou is_home())
+ * - Page /carte-camping/
+ */
+add_action('wp_head', function () {
+    if (is_admin()) return;
+
+    $taxos = ['equipement','atout','etoile','aquatique','service','label','hebergement','cible','groupe','confort'];
+
+    // 1) Pages de taxonomie ciblées
+    if (is_tax($taxos)) {
+        $term = get_queried_object();
+        if ($term && !is_wp_error($term)) {
+            $campings = get_posts([
+                'post_type'      => 'camping',
+                'post_status'    => 'publish',
+                'posts_per_page' => 20, // mettez une limite si vous avez des centaines d’items (ex. 300)
+                'no_found_rows'  => true,
+                'tax_query'      => [[
+                    'taxonomy' => $term->taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $term->term_id,
+                ]],
+            ]);
+            if ($campings) {
+                fdhpa17_emit_itemlist_jsonld($campings);
+            }
+        }
+    }
+
+    // 2) Home (page d’accueil ou page des articles)
+    if (is_front_page() || is_home()) {
+        $campings = get_posts([
+            'post_type'      => 'camping',
+            'post_status'    => 'publish',
+            'posts_per_page' => 20,
+            'no_found_rows'  => true,
+        ]);
+        if ($campings) {
+            fdhpa17_emit_itemlist_jsonld($campings);
+        }
+    }
+
+    // 3) Page /carte-camping/
+    if (is_page('carte-camping')) {
+        $campings = get_posts([
+            'post_type'      => 'camping',
+            'post_status'    => 'publish',
+            'posts_per_page' => 20,
+            'no_found_rows'  => true,
+        ]);
+        if ($campings) {
+            fdhpa17_emit_itemlist_jsonld($campings);
+        }
+    }
+}, 20);
