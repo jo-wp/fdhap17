@@ -32,9 +32,8 @@
     document.querySelectorAll('.js-coupon').forEach(renderCountdown);
   }
 
-  // ---- Génération PDF avec fond noir + texte blanc ----
+// ---- PDF en texte pur (version robuste, détection automatique jsPDF) ----
 async function generateCouponPDF(container, btn) {
-  // Loader ON
   const originalText = btn.innerHTML;
   btn.disabled = true;
   btn.classList.add('is-loading');
@@ -55,15 +54,19 @@ async function generateCouponPDF(container, btn) {
     const dates    = container.dataset.dates   || '';
     const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
 
-    // jsPDF depuis le bundle html2pdf
-    const jsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
-    if (!jsPDF) {
-      console.error('jsPDF introuvable (via html2pdf.bundle).');
-      alert('Génération PDF indisponible.');
+    // ✅ Détection robuste de jsPDF (peu importe le bundle)
+    const jsPDF =
+      (window.jspdf && window.jspdf.jsPDF)
+      || window.jsPDF
+      || (window.html2pdf && window.html2pdf.jsPDF);
+
+    if (typeof jsPDF !== 'function') {
+      console.error('❌ jsPDF introuvable : vérifie le chargement de html2pdf.bundle.min.js');
+      alert('Impossible de générer le PDF (jsPDF non disponible).');
       return;
     }
 
-    // Doc A4 portrait
+    // Création du PDF
     const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
@@ -71,16 +74,16 @@ async function generateCouponPDF(container, btn) {
     const maxW = W - M * 2;
     let y = M;
 
-    // Fond blanc explicite (évite tout “blanc transparent”)
+    // Fond blanc explicite
     doc.setFillColor(255, 255, 255);
     doc.rect(0, 0, W, H, 'F');
 
-    // Helpers style
-    const setH1 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(17,17,17); };
-    const setH2 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(17,17,17); };
-    const setP  = () => { doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(17,17,17); };
+    // Styles
+    const setH1 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(17, 17, 17); };
+    const setH2 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(17, 17, 17); };
+    const setP  = () => { doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(17, 17, 17); };
 
-    // Titre principal
+    // Titre
     setH1();
     const titleText = [camping, title && `— ${title}`].filter(Boolean).join(' ') || 'Bon';
     const titleLines = doc.splitTextToSize(titleText, maxW);
@@ -97,7 +100,7 @@ async function generateCouponPDF(container, btn) {
 
     // Code
     if (code) {
-      setH2(); doc.text('Code :', M, y); 
+      setH2(); doc.text('Code :', M, y);
       setP();  doc.text(String(code), M + 25, y);
       y += 8;
     }
@@ -112,21 +115,21 @@ async function generateCouponPDF(container, btn) {
     // Pied de page
     doc.setDrawColor(200);
     doc.line(M, H - 20, W - M, H - 20);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(120,120,120);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(120, 120, 120);
     doc.text('Document généré automatiquement', M, H - 12);
 
     // Sauvegarde
     doc.save(`${filename}.pdf`);
   } catch (e) {
     console.error(e);
-    alert('Une erreur est survenue lors de la génération du PDF.');
+    alert('Erreur pendant la génération du PDF.');
   } finally {
-    // Loader OFF
     btn.disabled = false;
     btn.classList.remove('is-loading');
     btn.innerHTML = originalText;
   }
 }
+
 
   // ---- Boot ----
   document.addEventListener('DOMContentLoaded', () => {
