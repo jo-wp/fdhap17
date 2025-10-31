@@ -417,3 +417,324 @@ add_action('wp_head', function () {
          wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .
          '</script>' . "\n";
 }, 6);
+
+
+
+add_action('wp_head', function () {
+    if (is_admin()) return;
+
+    // Page : /nous-contacter/
+    if (is_page('nous-contacter')) {
+        $data = [
+            '@context'   => 'https://schema.org',
+            '@type'      => 'ContactPage',
+            'name'       => 'Contact FDHPA17',
+            'description'=> 'Prenez contact avec la Fédération Départementale de l’Hôtellerie de Plein Air de Charente-Maritime.',
+            'url'        => 'https://www.fdhpa17.com/nous-contacter/',
+        ];
+
+        echo '<script type="application/ld+json">' 
+            . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . '</script>' . "\n";
+    }
+
+    // Page : /fdhpa-17/qui-sommes-nous/
+    if (is_page('qui-sommes-nous') && strpos($_SERVER['REQUEST_URI'], '/fdhpa-17/') !== false) {
+        $data = [
+            '@context'   => 'https://schema.org',
+            '@type'      => 'AboutPage',
+            'name'       => 'À propos de la FDHPA17',
+            'description'=> 'La FDHPA17 accompagne les campings de Charente-Maritime dans leur développement et leur promotion touristique.',
+            'url'        => 'https://www.fdhpa17.com/fdhpa-17/qui-sommes-nous/',
+        ];
+
+        echo '<script type="application/ld+json">' 
+            . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . '</script>' . "\n";
+    }
+
+}, 20);
+
+
+/**
+ * JSON-LD LodgingBusiness pour les single de CPT "camping"
+ */
+add_action('wp_head', function () {
+    if (is_admin() || !is_singular('camping')) return;
+
+    $post_id = get_queried_object_id();
+
+    // Utilitaires
+    $meta = function($key, $default = '') use ($post_id) {
+        $v = get_post_meta($post_id, $key, true);
+        return $v !== '' ? $v : $default;
+    };
+    $float = function($v) {
+        return is_numeric($v) ? (float) $v : null;
+    };
+    $clean = function ($value) use (&$clean) {
+        if (is_array($value)) {
+            $value = array_filter(array_map($clean, $value), function ($v) {
+                return $v !== null && $v !== '' && $v !== [];
+            });
+            return $value;
+        }
+        return ($value === '' || $value === null) ? null : $value;
+    };
+
+    // Données de base
+    $name        = get_the_title($post_id);
+    $permalink   = get_permalink($post_id);
+    $image       = get_the_post_thumbnail_url($post_id, 'full'); // tombe à null si pas d'image
+    $description = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags(strip_shortcodes(get_post_field('post_content', $post_id))), 40);
+
+    // Metas saisis via votre metabox
+    $telephone = $meta('telephone');
+    $adresse   = $meta('adresse');
+    $commune   = $meta('commune');
+    $cp        = $meta('code_postal');
+    $pays      = $meta('pays') ?: 'FR';
+    $lat       = $float($meta('latitude'));
+    $lng       = $float($meta('longitude'));
+    $price_min = $meta('price_mini');
+    $price_cur = 'EUR';
+    $reserve   = $meta('url_reservation_direct') ?: $permalink;
+
+    // (Optionnel) Si vous stockez des avis : créez des metas "rating_value" et "review_count"
+    $rating_value = $meta('rating_value');
+    $review_count = $meta('review_count');
+
+    // Construction JSON-LD
+    $data = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'LodgingBusiness', // vous pouvez passer à "Campground" si tous sont des campings
+        'name'        => $name,
+        'image'       => $image,
+        'description' => $description,
+        'url'         => $permalink,
+        'telephone'   => $telephone,
+        'address'     => [
+            '@type'            => 'PostalAddress',
+            'streetAddress'    => $adresse,
+            'addressLocality'  => $commune,
+            'postalCode'       => $cp,
+            'addressRegion'    => 'Nouvelle-Aquitaine',
+            'addressCountry'   => $pays,
+        ],
+        'geo' => ($lat !== null && $lng !== null) ? [
+            '@type'     => 'GeoCoordinates',
+            'latitude'  => $lat,
+            'longitude' => $lng,
+        ] : null,
+        'offers' => $price_min ? [
+            '@type'         => 'Offer',
+            'price'         => (string) $price_min,
+            'priceCurrency' => $price_cur,
+            'url'           => $reserve,
+            'availability'  => 'https://schema.org/InStock',
+            'description'   => 'Séjour à partir de ' . $price_min . ' € la nuit.',
+        ] : null,
+        'containedInPlace' => $commune ? [
+            '@type' => 'Place',
+            'name'  => $commune,
+            'containedInPlace' => [
+                '@type' => 'Place',
+                'name'  => 'Charente-Maritime',
+            ],
+        ] : null,
+        // Ajout "AggregateRating" seulement si complet
+        'aggregateRating' => ($rating_value && $review_count) ? [
+            '@type'       => 'AggregateRating',
+            'ratingValue' => (string) $rating_value,
+            'reviewCount' => (string) $review_count,
+        ] : null,
+    ];
+
+    // Nettoyage récursif des champs vides
+    $data = $clean($data);
+
+    // Point d’extension si vous voulez surcharger depuis un plugin/thème enfant
+    $data = apply_filters('fdhpa17_camping_jsonld', $data, $post_id);
+
+    if (!empty($data)) {
+        echo '<script type="application/ld+json">'
+            . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . '</script>' . "\n";
+    }
+}, 20);
+
+
+
+/**
+ * JSON-LD @graph pour les pages de la taxonomie "destination"
+ * - TouristDestination (name, description, geo si dispo)
+ * - Place (Charente-Maritime -> Nouvelle-Aquitaine) [valeurs fixes]
+ * - ItemList des campings de la destination
+ */
+add_action('wp_head', function () {
+    if (is_admin() || !is_tax('destination')) return;
+
+    $term = get_queried_object();
+    if (!$term || is_wp_error($term)) return;
+
+    $term_id   = $term->term_id;
+    $name      = $term->name;
+    $desc_term = term_description($term_id, $term->taxonomy);
+    $desc_term = $desc_term ? wp_strip_all_tags($desc_term) : "Découvrez les meilleurs campings de {$name}.";
+
+    // Récup des metas éventuelles sur la taxonomie (ajustez les clés si besoin)
+    $lat = get_term_meta($term_id, 'latitude', true);
+    $lng = get_term_meta($term_id, 'longitude', true);
+    if ($lat === '' || $lat === null) $lat = get_term_meta($term_id, 'lat', true);
+    if ($lng === '' || $lng === null) $lng = get_term_meta($term_id, 'lng', true);
+    $lat = is_numeric($lat) ? (float) $lat : null;
+    $lng = is_numeric($lng) ? (float) $lng : null;
+
+    // Récup des campings de cette destination (limite raisonnable pour éviter un JSON gigantesque)
+    $campings = get_posts([
+        'post_type'      => 'camping',
+        'posts_per_page' => -1, // mettez un cap si nécessaire (ex. 200)
+        'no_found_rows'  => true,
+        'tax_query'      => [[
+            'taxonomy' => 'destination',
+            'field'    => 'term_id',
+            'terms'    => $term_id,
+        ]],
+    ]);
+
+    // Utilitaires
+    $meta = function($post_id, $key, $default = '') {
+        $v = get_post_meta($post_id, $key, true);
+        return $v !== '' ? $v : $default;
+    };
+    $float = function($v) {
+        return is_numeric($v) ? (float) $v : null;
+    };
+    $clean = function ($value) use (&$clean) {
+        if (is_array($value)) {
+            $value = array_filter(array_map($clean, $value), function ($v) {
+                return $v !== null && $v !== '' && $v !== [];
+            });
+            return $value;
+        }
+        return ($value === '' || $value === null) ? null : $value;
+    };
+
+    // Construire ItemListElement
+    $items = [];
+    $position = 1;
+    foreach ($campings as $post) {
+        $pid   = $post->ID;
+        $title = get_the_title($pid);
+        $url   = get_permalink($pid);
+        $img   = get_the_post_thumbnail_url($pid, 'full');
+        $desc  = has_excerpt($pid)
+            ? get_the_excerpt($pid)
+            : wp_trim_words(wp_strip_all_tags(strip_shortcodes(get_post_field('post_content', $pid))), 30);
+
+        // Metas issues de votre metabox CPT
+        $adresse = $meta($pid, 'adresse');
+        $commune = $meta($pid, 'commune');
+        $cp      = $meta($pid, 'code_postal');
+        $tel     = $meta($pid, 'telephone');
+        $lat_c   = $float($meta($pid, 'latitude'));
+        $lng_c   = $float($meta($pid, 'longitude'));
+        $pays    = $meta($pid, 'pays', 'FR');
+
+        $price_min = $meta($pid, 'price_mini');
+        $reserve   = $meta($pid, 'url_reservation_direct') ?: $url;
+
+        $rating_value = $meta($pid, 'rating_value');
+        $review_count = $meta($pid, 'review_count');
+
+        $lodging = [
+            '@type'       => 'LodgingBusiness', // vous pouvez passer à "Campground" si 100% campings
+            'name'        => $title,
+            'url'         => $url,
+            'image'       => $img,
+            'description' => $desc,
+            'telephone'   => $tel,
+            'address'     => [
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => $adresse,
+                'addressLocality' => $commune,
+                'postalCode'      => $cp,
+                'addressRegion'   => 'Nouvelle-Aquitaine',
+                'addressCountry'  => $pays,
+            ],
+            'geo' => ($lat_c !== null && $lng_c !== null) ? [
+                '@type'     => 'GeoCoordinates',
+                'latitude'  => $lat_c,
+                'longitude' => $lng_c,
+            ] : null,
+            'aggregateRating' => ($rating_value && $review_count) ? [
+                '@type'       => 'AggregateRating',
+                'ratingValue' => (string) $rating_value,
+                'reviewCount' => (string) $review_count,
+            ] : null,
+            'offers' => $price_min ? [
+                '@type'         => 'Offer',
+                'price'         => (string) $price_min,
+                'priceCurrency' => 'EUR',
+                'url'           => $reserve,
+                'availability'  => 'https://schema.org/InStock',
+                'description'   => 'Séjour à partir de ' . $price_min . ' € la nuit.',
+            ] : null,
+        ];
+
+        $items[] = [
+            '@type'    => 'ListItem',
+            'position' => $position++,
+            'item'     => $clean($lodging),
+        ];
+    }
+
+    // @graph
+    $graph = [];
+
+    // TouristDestination
+    $graph[] = $clean([
+        '@type'       => 'TouristDestination',
+        'name'        => $name,
+        'description' => $desc_term,
+        'geo' => ($lat !== null && $lng !== null) ? [
+            '@type'     => 'GeoCoordinates',
+            'latitude'  => $lat,
+            'longitude' => $lng,
+        ] : null,
+    ]);
+
+    // Place (fixe) Charente-Maritime -> Nouvelle-Aquitaine
+    $graph[] = [
+        '@type' => 'Place',
+        'name'  => 'Charente-Maritime',
+        'containedInPlace' => [
+            '@type' => 'Place',
+            'name'  => 'Nouvelle-Aquitaine',
+        ],
+    ];
+
+    // ItemList
+    $graph[] = $clean([
+        '@type'          => 'ItemList',
+        'itemListOrder'  => 'https://schema.org/ItemListOrderAscending',
+        'name'           => 'Liste des campings FDHPA17 - ' . $name,
+        'description'    => 'Découvrez les campings et hébergements de plein air membres de la FDHPA17 situés à ' . $name . '.',
+        'numberOfItems'  => count($items),
+        'itemListElement'=> $items,
+    ]);
+
+    $data = [
+        '@context' => 'https://schema.org',
+        '@graph'   => $graph,
+    ];
+
+    // Point d’extension si besoin
+    $data = apply_filters('fdhpa17_destination_jsonld', $data, $term);
+
+    echo '<script type="application/ld+json">'
+        . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        . '</script>' . "\n";
+}, 20);
