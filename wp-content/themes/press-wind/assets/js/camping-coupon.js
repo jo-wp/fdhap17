@@ -76,7 +76,7 @@
     wrapper.style.width = '800px';
     wrapper.style.background = '#fff';
     wrapper.innerHTML = `
-      <div style="font-family: Arial, Helvetica, sans-serif; color:#111; padding:32px; line-height:1.5;">
+      <div style="font-family: Arial, Helvetica, sans-serif; color:#111; padding:32px; line-height:1.5;color: #111 !important;">
         <h1 style="margin:0 0 16px 0; font-size:22px; font-weight:700;">
           ${camping ? camping.replace(/</g, '&lt;') : ''}${title ? ' — ' + title.replace(/</g, '&lt;') : ''}
         </h1>
