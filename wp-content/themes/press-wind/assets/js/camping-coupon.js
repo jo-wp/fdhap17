@@ -33,90 +33,100 @@
   }
 
   // ---- Génération PDF avec fond noir + texte blanc ----
-  async function generateCouponPDF(container, btn) {
-    if (typeof window.html2pdf !== 'function') {
-      console.error('html2pdf non chargé.');
+async function generateCouponPDF(container, btn) {
+  // Loader ON
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.classList.add('is-loading');
+  btn.innerHTML = `
+    <span class="spinner" style="
+      display:inline-block;width:16px;height:16px;border:2px solid currentColor;
+      border-right-color:transparent;border-radius:50%;margin-right:8px;vertical-align:middle;
+      animation:spin 0.7s linear infinite;"></span>
+    Génération...
+  `;
+
+  try {
+    // Récup données
+    const camping  = container.dataset.camping || '';
+    const title    = container.dataset.title   || '';
+    const desc     = container.dataset.desc    || '';
+    const code     = container.dataset.code    || '';
+    const dates    = container.dataset.dates   || '';
+    const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
+
+    // jsPDF depuis le bundle html2pdf
+    const jsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+    if (!jsPDF) {
+      console.error('jsPDF introuvable (via html2pdf.bundle).');
+      alert('Génération PDF indisponible.');
       return;
     }
 
-    const originalText = btn.innerHTML;
-    btn.disabled = true;
-    btn.classList.add('is-loading');
-    btn.innerHTML = `
-      <span class="spinner" style="
-        display:inline-block;
-        width:16px;
-        height:16px;
-        border:2px solid currentColor;
-        border-right-color:transparent;
-        border-radius:50%;
-        margin-right:8px;
-        vertical-align:middle;
-        animation:spin 0.7s linear infinite;"></span>
-      Génération...
-    `;
+    // Doc A4 portrait
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const W = doc.internal.pageSize.getWidth();
+    const H = doc.internal.pageSize.getHeight();
+    const M = 15;
+    const maxW = W - M * 2;
+    let y = M;
 
-    const camping  = container.dataset.camping || '';
-    const title    = container.dataset.title || '';
-    const desc     = container.dataset.desc || '';
-    const code     = container.dataset.code || '';
-    const dates    = container.dataset.dates || '';
-    const filename = (container.dataset.filename || 'bon').replace(/\s+/g, '-').toLowerCase();
+    // Fond blanc explicite (évite tout “blanc transparent”)
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, W, H, 'F');
 
-    // ✅ Élément temporaire visible + fond noir + texte blanc
-    const wrapper = document.createElement('div');
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '0';
-    wrapper.style.top = '0';
-    wrapper.style.zIndex = '9999';
-    wrapper.style.opacity = '1';
-    wrapper.style.pointerEvents = 'none';
-    wrapper.style.width = '800px';
-    wrapper.style.background = '#000'; // fond noir
-    wrapper.style.color = '#fff'; // texte blanc
-    wrapper.innerHTML = `
-      <div style="font-family: Arial, Helvetica, sans-serif; padding:40px; line-height:1.5;">
-        <h1 style="margin:0 0 16px 0; font-size:22px; font-weight:700; color:#fff;">
-          ${camping ? camping.replace(/</g, '&lt;') : ''}${title ? ' — ' + title.replace(/</g, '&lt;') : ''}
-        </h1>
-        ${desc ? `<p style="margin:0 0 12px 0; font-size:14px; color:#fff;">${desc.replace(/</g, '&lt;')}</p>` : ''}
-        ${code ? `<p style="margin:0 0 6px 0; font-size:14px; color:#fff;"><strong>Code :</strong> ${String(code).replace(/</g, '&lt;')}</p>` : ''}
-        ${dates ? `<p style="margin:0; font-size:14px; color:#fff;"><strong>Validité :</strong> ${dates.replace(/</g, '&lt;')}</p>` : ''}
-      </div>
-    `;
-    document.body.appendChild(wrapper);
+    // Helpers style
+    const setH1 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(17,17,17); };
+    const setH2 = () => { doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(17,17,17); };
+    const setP  = () => { doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(17,17,17); };
 
-    try {
-      if (document.fonts && document.fonts.ready) {
-        try { await document.fonts.ready; } catch (e) {}
-      }
+    // Titre principal
+    setH1();
+    const titleText = [camping, title && `— ${title}`].filter(Boolean).join(' ') || 'Bon';
+    const titleLines = doc.splitTextToSize(titleText, maxW);
+    doc.text(titleLines, M, y);
+    y += 10 + (titleLines.length - 1) * 6;
 
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: `${filename}.pdf`,
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#000000',
-          logging: false,
-          windowWidth: 800,
-          windowHeight: wrapper.scrollHeight + 100
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      await window.html2pdf().set(opt).from(wrapper).save();
-    } catch (err) {
-      console.error('Erreur PDF :', err);
-      alert('Une erreur est survenue lors de la génération du PDF.');
-    } finally {
-      document.body.removeChild(wrapper);
-      btn.disabled = false;
-      btn.classList.remove('is-loading');
-      btn.innerHTML = originalText;
+    // Description
+    if (desc) {
+      setP();
+      const descLines = doc.splitTextToSize(desc, maxW);
+      doc.text(descLines, M, y);
+      y += descLines.length * 6 + 4;
     }
+
+    // Code
+    if (code) {
+      setH2(); doc.text('Code :', M, y); 
+      setP();  doc.text(String(code), M + 25, y);
+      y += 8;
+    }
+
+    // Dates
+    if (dates) {
+      setH2(); doc.text('Validité :', M, y);
+      setP();  doc.text(doc.splitTextToSize(dates, maxW - 25), M + 25, y);
+      y += 10;
+    }
+
+    // Pied de page
+    doc.setDrawColor(200);
+    doc.line(M, H - 20, W - M, H - 20);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(120,120,120);
+    doc.text('Document généré automatiquement', M, H - 12);
+
+    // Sauvegarde
+    doc.save(`${filename}.pdf`);
+  } catch (e) {
+    console.error(e);
+    alert('Une erreur est survenue lors de la génération du PDF.');
+  } finally {
+    // Loader OFF
+    btn.disabled = false;
+    btn.classList.remove('is-loading');
+    btn.innerHTML = originalText;
   }
+}
 
   // ---- Boot ----
   document.addEventListener('DOMContentLoaded', () => {
