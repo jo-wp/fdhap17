@@ -578,6 +578,9 @@
 .min-w-\[100\%\]{
   min-width: 100%;
 }
+.min-w-\[120px\]{
+  min-width: 120px;
+}
 .min-w-\[250px\]{
   min-width: 250px;
 }
@@ -2993,6 +2996,41 @@ select,
   .splide-carousel-block-search-camping .splide__pagination__page.is-active::before{
     color: #fff !important; 
   }
+}
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox{
+appearance: none;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #e9b237;
+        border-radius: 50%;
+        outline: none;
+        width: 0px;
+        height: 20px;
+        transition: background .2s, border-color .2s;
+        position: relative;
+        display: flex;
+        align-items: center;
+}
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
+    width: 280px;
+    display: inline-block;
+    text-align: left;
+    padding-left: 15px;
+}
+@media(min-width:768px){
+  .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
+      width: auto;  
+  }
+}
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-counter{
+  display: none ;
+}
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox.checked{
+          background: #e9b237;
+        border-color: #e9b237;
+}
+.page-template-template-recherche .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
+  color: #333;
 }
 @media(max-width:768px){
   .instagram-gallery-feed .instagram-gallery-list .instagram-gallery-item:first-child{
@@ -5415,6 +5453,36 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 }
 .\[\&\>\*\:nth-child\(3\)\]\:row-start-2>*:nth-child(3){
   grid-row-start: 2;
+}
+.\[\&_\.facetwp-display-value\]\:m-0 .facetwp-display-value{
+  margin: 0px;
+}
+.\[\&_\.facetwp-display-value\]\:p-0 .facetwp-display-value{
+  padding: 0px;
+}
+.\[\&_\.facetwp-display-value\]\:font-arial .facetwp-display-value{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.\[\&_\.facetwp-display-value\]\:text-\[14px\] .facetwp-display-value{
+  font-size: 14px;
+}
+.\[\&_\.facetwp-display-value\]\:font-\[400\] .facetwp-display-value{
+  font-weight: 400;
+}
+.\[\&_\.facetwp-display-value\]\:text-white .facetwp-display-value{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+@media not all and (min-width: 768px){
+  .max-md\:\[\&_\.facetwp-display-value\]\:text-center .facetwp-display-value{
+    text-align: center;
+  }
+}
+@media (min-width: 768px){
+  .md\:\[\&_\.facetwp-display-value\]\:text-\[\#757575\] .facetwp-display-value{
+    --tw-text-opacity: 1;
+    color: rgb(117 117 117 / var(--tw-text-opacity));
+  }
 }
 .\[\&_\.facetwp-dropdown\]\:max-w-\[160px\] .facetwp-dropdown{
   max-width: 160px;

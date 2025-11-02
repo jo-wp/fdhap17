@@ -41,11 +41,9 @@ $destinations = get_terms([
       </select>
     </div>
     <div
-      class="items-search-bar max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[15px] py-[5px]">
-      <input type="checkbox" name="online-reservation" id="" />
-      <p class="font-arial max-md:text-center text-white md:text-[#757575] text-[14px] font-[400] m-0 p-0">
-        <?= __('Réservable sur Campings.online', 'fdhpa17'); ?>
-      </p>
+      class="items-search-bar max-w-[230px] min-w-[120px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[20px] py-[10px]
+      [&_.facetwp-display-value]:font-arial max-md:[&_.facetwp-display-value]:text-center [&_.facetwp-display-value]:text-white md:[&_.facetwp-display-value]:text-[#757575] [&_.facetwp-display-value]:text-[14px] [&_.facetwp-display-value]:font-[400] [&_.facetwp-display-value]:m-0 [&_.facetwp-display-value]:p-0">
+      <?= do_shortcode('[facetwp facet="ctoutvert_checkbox"]') ?>
     </div>
     <div class="items-search-bar md:max-w-[230px] flex flex-row items-center rounded-[40px] tax-destination  py-[5px]">
       <input type="submit" data-href="/carte-camping/" name="online-reservation" id="" value="Rechercher" class="!bg-orange border-0 w-[56px] h-[56px]

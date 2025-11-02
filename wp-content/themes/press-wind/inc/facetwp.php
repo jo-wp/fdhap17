@@ -267,3 +267,28 @@ add_filter('facetwp_is_main_query', function ($is_main, $query) {
     }
     return $is_main;
 }, 10, 2);
+
+add_filter('facetwp_index_row', function ($params, $class) {
+    if ('ctoutvert_checkbox' !== $params['facet_name']) {
+        return $params;
+    }
+
+    $post_id = (int) $params['post_id'];
+    $raw     = get_post_meta($post_id, 'id_reservation_ctoutvert', true);
+
+    // Normalisation (au cas où ce soit un array)
+    if (is_array($raw)) {
+        $raw = implode(',', array_filter($raw));
+    }
+    $value = trim((string) $raw);
+
+    if ($value !== '') {
+        // On indexe une valeur constante "has" si la méta est renseignée
+        $params['facet_value']         = 'has';
+        $params['facet_display_value'] = 'Réservable sur Campings.online';
+        return $params;
+    }
+
+    // IMPORTANT : ne rien indexer pour ce post
+    return false;
+}, 10, 2);
