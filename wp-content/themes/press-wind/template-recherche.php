@@ -34,18 +34,12 @@ get_header();
              || 'ctoutvert_checkbox' === $facet['name']) {
             continue;
           }
-echo '<div class="facet-block">';
-
-// Enregistre puis traduit le label
-do_action('wpml_register_single_string', 'FacetWP Labels', 'facet_label_' . $facet['name'], $facet['label']);
-$label_i18n = apply_filters('wpml_translate_single_string', $facet['label'], 'FacetWP Labels', 'facet_label_' . $facet['name']);
-
-echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($label_i18n) . '</p>';
-
-echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px]">';
-echo do_shortcode('[facetwp facet="' . esc_attr($facet['name']) . '"]');
-echo '</div>';
-echo '</div>';
+          echo '<div class="facet-block">';
+          echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($facet['label']) . '</p>';
+          echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px]">';
+          echo do_shortcode('[facetwp facet="' . esc_attr($facet['name']) . '"]');
+          echo '</div>';
+          echo '</div>';
         }
       }
       ?>
