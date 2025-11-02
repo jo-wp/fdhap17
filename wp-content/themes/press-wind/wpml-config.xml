@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<wpml-config>
+  <custom-fields>
+    <custom-field action="copy" key="apidae_id"/>
+    <custom-field action="copy" key="apidae_identifier"/>
+    <custom-field action="copy" key="adresse"/>
+    <custom-field action="copy" key="commune"/>
+    <custom-field action="copy" key="code_postal"/>
+    <custom-field action="copy" key="pays"/>
+    <custom-field action="copy" key="latitude"/>
+    <custom-field action="copy" key="longitude"/>
+    <custom-field action="copy" key="telephone"/>
+    <custom-field action="copy" key="email"/>
+    <custom-field action="copy" key="site_web"/>
+    <custom-field action="copy" key="hotellerie_type"/>
+    <custom-field action="copy" key="numero_classement"/>
+    <custom-field action="copy" key="date_classement"/>
+    <custom-field action="copy" key="classement"/>
+    <custom-field action="copy" key="chaines"/>
+    <custom-field action="copy" key="type"/>
+    <custom-field action="copy" key="presentation_complement"/>
+    <custom-field action="copy" key="nb_real"/>
+    <custom-field action="copy" key="nb_mobilhomes"/>
+    <custom-field action="copy" key="nb_bungalows"/>
+    <custom-field action="copy" key="nb_insolites"/>
+    <custom-field action="copy" key="empl_campingcars"/>
+    <custom-field action="copy" key="empl_caravanes"/>
+    <custom-field action="copy" key="empl_tentes"/>
+    <custom-field action="copy" key="superficie"/>
+    <custom-field action="copy" key="ouverture"/>
+    <custom-field action="copy" key="fermeture"/>
+    <custom-field action="copy" key="id_reservation_direct"/>
+    <custom-field action="copy" key="url_reservation_direct"/>
+    <custom-field action="copy" key="langues"/>
+    <custom-field action="copy" key="periodes_date_debut"/>
+    <custom-field action="copy" key="periodes_date_fin"/>
+    <custom-field action="copy" key="periodes_type"/>
+    <custom-field action="copy" key="price_mini"/>
+    <custom-field action="copy" key="price_max"/>
+    <custom-field action="copy" key="price_mini_mobilhomes"/>
+    <custom-field action="copy" key="price_max_mobilhomes"/>
+    <!-- Les clés dynamiques "capacite_*" ne peuvent pas être wildcard ici : gérées au point 2/3 -->
+  </custom-fields>
+</wpml-config>
