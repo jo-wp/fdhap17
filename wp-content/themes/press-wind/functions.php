@@ -943,3 +943,10 @@ add_action('wp_enqueue_scripts', function () {
   }
 });
 
+add_filter( 'facetwp_query_args', function( $args) {
+  $http = FWP()->facet->http_params;
+  if ( isset( $http['lang'] ) ) {
+    do_action( 'wpml_switch_language', $http['lang'] );
+  }
+  return $args;
+}, 11 );
