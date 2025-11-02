@@ -970,19 +970,14 @@ add_filter('facetwp_query_args', function ($args) {
 }, 11);
 
 
-/**
- * Traduction des labels FacetWP via facetwp_i18n
- * Corrige l'erreur "Too few arguments" en rendant $args optionnel.
- */
 add_filter('facetwp_i18n', function ($text, $args = []) {
-    // Langue active (WPML). Fallback sur le préfixe de locale si besoin.
+    // Langue active (WPML) + fallback locale
     $lang = apply_filters('wpml_current_language', null);
     if (empty($lang)) {
         $locale = get_locale();
-        $lang = substr($locale, 0, 2); // ex: 'fr_FR' -> 'fr'
+        $lang = substr($locale, 0, 2);
     }
 
-    // Map de traductions
     $map = [
         'fr' => [
             'classement' => [ 'label' => 'Classement' ],
@@ -1014,14 +1009,13 @@ add_filter('facetwp_i18n', function ($text, $args = []) {
         ],
     ];
 
-    // Sécurise l'accès aux clés
-    $facet = is_array($args) && isset($args['facet']) ? $args['facet'] : null;
-    $key   = is_array($args) && isset($args['key'])   ? $args['key']   : 'label';
+    $facet = (is_array($args) && isset($args['facet'])) ? $args['facet'] : null;
+    $key   = (is_array($args) && isset($args['key']))   ? $args['key']   : 'label';
 
-    if ($facet && isset($map[$lang]) && isset($map[$lang][$facet]) && isset($map[$lang][$facet][$key])) {
+    if ($facet && isset($map[$lang][$facet][$key])) {
         return $map[$lang][$facet][$key];
     }
-
     return $text;
 }, 10, 2);
+
 

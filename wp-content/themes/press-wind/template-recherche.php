@@ -35,7 +35,13 @@ get_header();
             continue;
           }
           echo '<div class="facet-block">';
-          echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($facet['label']) . '</p>';
+$label_i18n = apply_filters('facetwp_i18n', $facet['label'], [
+  'source' => 'facet',
+  'facet'  => $facet['name'], // slug FacetWP (ex: 'services', 'hebergement', etc.)
+  'key'    => 'label',
+]);
+
+echo '<p class="ctitle text-orange font-arial text-[15px] font-[700] m-0 mb-[15px]">' . esc_html($label_i18n) . '</p>';
           echo '<div class="facet-wrapper [&_span]:text-[#7F7F7F] [&_span]:font-arial [&_span]:text-[13px]">';
           echo do_shortcode('[facetwp facet="' . esc_attr($facet['name']) . '"]');
           echo '</div>';
