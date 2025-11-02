@@ -107,6 +107,7 @@ class CPT_CAMPING
       'fermeture' => 'Fermeture',
       'id_reservation_direct' => 'ID de réservation Direct',
       'url_reservation_direct' => 'URL de réservation Direct',
+      'id_reservation_ctoutvert' => 'ID de réservation CTOUTVERT',
       'langues' => 'Langues parlées',
       'periodes_date_debut' => 'Date de début',
       'periodes_date_fin' => 'Date de fin',
