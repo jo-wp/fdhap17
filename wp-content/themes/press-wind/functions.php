@@ -971,90 +971,57 @@ add_filter('facetwp_query_args', function ($args) {
 
 
 /**
- * Traduction des labels FacetWP selon la langue via le hook facetwp_i18n
+ * Traduction des labels FacetWP via facetwp_i18n
+ * Corrige l'erreur "Too few arguments" en rendant $args optionnel.
  */
-add_filter('facetwp_i18n', function ($text, $args) {
-    // Récupération de la langue active (WPML)
-    $lang = apply_filters('wpml_current_language', null); // ex: 'fr', 'en', 'nl', 'de'
+add_filter('facetwp_i18n', function ($text, $args = []) {
+    // Langue active (WPML). Fallback sur le préfixe de locale si besoin.
+    $lang = apply_filters('wpml_current_language', null);
+    if (empty($lang)) {
+        $locale = get_locale();
+        $lang = substr($locale, 0, 2); // ex: 'fr_FR' -> 'fr'
+    }
 
+    // Map de traductions
     $map = [
         'fr' => [
-            'classement' => [
-                'label' => 'Classement',
-            ],
-            'label' => [
-                'label' => 'Label',
-            ],
-            'hebergement' => [
-                'label' => 'Hébergement',
-            ],
-            'services' => [
-                'label' => 'Services',
-            ],
-            'equipements_aquatiques' => [
-                'label' => 'Équipements aquatiques',
-            ],
+            'classement' => [ 'label' => 'Classement' ],
+            'label' => [ 'label' => 'Label' ],
+            'hebergement' => [ 'label' => 'Hébergement' ],
+            'services' => [ 'label' => 'Services' ],
+            'equipements_aquatiques' => [ 'label' => 'Équipements aquatiques' ],
         ],
         'en' => [
-            'classement' => [
-                'label' => 'Ranking',
-            ],
-            'label' => [
-                'label' => 'Label',
-            ],
-            'hebergement' => [
-                'label' => 'Accommodation',
-            ],
-            'services' => [
-                'label' => 'Services',
-            ],
-            'equipements_aquatiques' => [
-                'label' => 'Aquatic equipment',
-            ],
+            'classement' => [ 'label' => 'Ranking' ],
+            'label' => [ 'label' => 'Label' ],
+            'hebergement' => [ 'label' => 'Accommodation' ],
+            'services' => [ 'label' => 'Services' ],
+            'equipements_aquatiques' => [ 'label' => 'Aquatic equipment' ],
         ],
         'nl' => [
-            'classement' => [
-                'label' => 'Classificatie',
-            ],
-            'label' => [
-                'label' => 'Label',
-            ],
-            'hebergement' => [
-                'label' => 'Accommodatie',
-            ],
-            'services' => [
-                'label' => 'Diensten',
-            ],
-            'equipements_aquatiques' => [
-                'label' => 'Waterfaciliteiten',
-            ],
+            'classement' => [ 'label' => 'Classificatie' ],
+            'label' => [ 'label' => 'Label' ],
+            'hebergement' => [ 'label' => 'Accommodatie' ],
+            'services' => [ 'label' => 'Diensten' ],
+            'equipements_aquatiques' => [ 'label' => 'Waterfaciliteiten' ],
         ],
         'de' => [
-            'classement' => [
-                'label' => 'Bewertung',
-            ],
-            'label' => [
-                'label' => 'Label',
-            ],
-            'hebergement' => [
-                'label' => 'Unterkunft',
-            ],
-            'services' => [
-                'label' => 'Dienstleistungen',
-            ],
-            'equipements_aquatiques' => [
-                'label' => 'Wasserausstattung',
-            ],
+            'classement' => [ 'label' => 'Bewertung' ],
+            'label' => [ 'label' => 'Label' ],
+            'hebergement' => [ 'label' => 'Unterkunft' ],
+            'services' => [ 'label' => 'Dienstleistungen' ],
+            'equipements_aquatiques' => [ 'label' => 'Wasserausstattung' ],
         ],
     ];
 
-    // Si on trouve une traduction correspondante
-    if (!empty($args['facet']) && !empty($args['key'])) {
-        if (isset($map[$lang][$args['facet']][$args['key']])) {
-            return $map[$lang][$args['facet']][$args['key']];
-        }
+    // Sécurise l'accès aux clés
+    $facet = is_array($args) && isset($args['facet']) ? $args['facet'] : null;
+    $key   = is_array($args) && isset($args['key'])   ? $args['key']   : 'label';
+
+    if ($facet && isset($map[$lang]) && isset($map[$lang][$facet]) && isset($map[$lang][$facet][$key])) {
+        return $map[$lang][$facet][$key];
     }
 
-    // Par défaut : renvoyer la chaîne originale
     return $text;
 }, 10, 2);
+
