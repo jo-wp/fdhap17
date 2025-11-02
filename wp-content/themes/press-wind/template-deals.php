@@ -30,7 +30,8 @@ get_header();
           || 'services_block' === $facet['name']
           || 'hebergements_block' === $facet['name']
           || 'expriences_block' === $facet['name']
-          || 'input_text_block' === $facet['name'] ) {
+          || 'input_text_block' === $facet['name']
+             || 'ctoutvert_checkbox' === $facet['name'] ) {
             continue;
           }
           echo '<div class="facet-block">';

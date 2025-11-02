@@ -74,6 +74,7 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
             || 'hebergements_block' === $facet['name']
             || 'expriences_block' === $facet['name']
             || 'input_text_block' === $facet['name']
+             || 'ctoutvert_checkbox' === $facet['name']
           ) {
             continue;
           }
