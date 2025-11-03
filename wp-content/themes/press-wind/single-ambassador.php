@@ -52,7 +52,7 @@ get_header();
     </div>
   </div>
   <div class="single-author__about bg-bgOrange mb-[50px] rounded-[20px] p-[50px] ">
-    <h2 class="text-center text-[32px] mb-[50px]"><?= __('À propos de '); ?><?= $first_name; ?></h2>
+    <h2 class="text-center text-[32px] mb-[50px]"><?= __('À propos de ','fdhpa17'); ?><?= $first_name; ?></h2>
     <div
       class="single-author__about__items max-w-[890px] mx-auto flex md:flex-row flex-wrap items-center justify-center md:items-start md:justify-between">
       <?php foreach ($about as $item): ?>
