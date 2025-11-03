@@ -371,6 +371,7 @@ $deals_camping = get_field('deals_camping');
                 foreach ($terms as $term) {
                   if (function_exists('apply_filters')) {
                     $fr_term_id = apply_filters('wpml_object_id', $term->term_id, 'paiement', true, 'fr');
+                    var_dump($fr_term_id);
                     $fr_term = get_term($fr_term_id, 'paiement');
                     var_dump($fr_term);
                   } else {
