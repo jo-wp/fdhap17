@@ -371,9 +371,8 @@ $deals_camping = get_field('deals_camping');
                 foreach ($terms as $term) {
                   if (function_exists('apply_filters')) {
                     $fr_term_id = apply_filters('wpml_object_id', $term->term_id, 'paiement', true, 'fr');
-                    var_dump($fr_term_id);
                     $fr_term = get_term($fr_term_id, 'paiement');
-                    $icon_slug = $fr_term && !is_wp_error($fr_term) ? $fr_term->slug : $term->slug;
+                    var_dump($fr_term);
                   } else {
                     $icon_slug = $term->slug;
                   }
