@@ -274,21 +274,44 @@ add_filter('facetwp_index_row', function ($params, $class) {
     }
 
     $post_id = (int) $params['post_id'];
-    $raw     = get_post_meta($post_id, 'id_reservation_ctoutvert', true);
 
-    // Normalisation (au cas où ce soit un array)
+    // 1) Récupère la méta sur le post courant
+    $raw = get_post_meta($post_id, 'id_reservation_ctoutvert', true);
+
+    // 2) Si vide, tente la méta sur le post ORIGINE (langue par défaut WPML)
+    if (empty($raw) && function_exists('apply_filters')) {
+        $default_lang = apply_filters('wpml_default_language', null);
+        if ($default_lang) {
+            $source_id = apply_filters('wpml_object_id', $post_id, get_post_type($post_id), false, $default_lang);
+            if (!empty($source_id) && $source_id !== $post_id) {
+                $raw = get_post_meta($source_id, 'id_reservation_ctoutvert', true);
+            }
+        }
+    }
+
+    // Normalisation si array
     if (is_array($raw)) {
         $raw = implode(',', array_filter($raw));
     }
     $value = trim((string) $raw);
 
-    if ($value !== '') {
-        // On indexe une valeur constante "has" si la méta est renseignée
+    if ('' !== $value) {
+        // Libellé traduisible via WPML String Translation
+        // (une fois : enregistre la chaîne par défaut)
+        if (function_exists('do_action')) {
+            do_action('wpml_register_single_string', 'facetwp', 'ctoutvert_checkbox_label', 'Réservable sur Campings.online');
+        }
+        // puis récupère la traduction
+        $label = 'Réservable sur Campings.online';
+        if (function_exists('apply_filters')) {
+            $label = apply_filters('wpml_translate_single_string', $label, 'facetwp', 'ctoutvert_checkbox_label');
+        }
+
         $params['facet_value']         = 'has';
-        $params['facet_display_value'] = 'Réservable sur Campings.online';
+        $params['facet_display_value'] = $label;
         return $params;
     }
 
-    // IMPORTANT : ne rien indexer pour ce post
+    // Ne rien indexer si pas de méta
     return false;
 }, 10, 2);
