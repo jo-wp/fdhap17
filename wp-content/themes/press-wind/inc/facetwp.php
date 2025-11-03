@@ -285,7 +285,7 @@ add_filter('facetwp_index_row', function ($params, $class) {
     if ($value !== '') {
         // On indexe une valeur constante "has" si la méta est renseignée
         $params['facet_value']         = 'has';
-        $params['facet_display_value'] = __('Réservable sur Campings.online','fhpa17');
+        $params['facet_display_value'] = __('Réservable sur Campings.online','fdhpa17');
         return $params;
     }
 
