@@ -369,19 +369,32 @@ $deals_camping = get_field('deals_camping');
                 echo '<div class="paiements-wrap flex flex-row flex-wrap gap-[5px]">';
 
                 foreach ($terms as $term) {
-                  if (function_exists('apply_filters')) {
-                    $fr_term_id = apply_filters('wpml_object_id', $term->term_id, 'paiement', true, 'fr');
-                    var_dump($fr_term_id);
-                    $fr_term = get_term($fr_term_id, 'paiement');
-                    var_dump($fr_term);
-                  } else {
-                    $icon_slug = $term->slug;
+                  // Fallback par défaut
+                  $icon_slug = $term->slug;
+
+                  if (has_filter('wpml_object_id')) {
+                    // 1) Bon element_type pour une taxo : "tax_{taxonomy}"
+                    $fr_term_id = apply_filters('wpml_object_id', $term->term_id, 'tax_paiement', true, 'fr');
+
+                    if ($fr_term_id) {
+                      // 2) On switch en FR pour empêcher WPML de réécrire vers la langue courante
+                      $current_lang = apply_filters('wpml_current_language', null);
+                      do_action('wpml_switch_language', 'fr');
+
+                      $fr_term = get_term($fr_term_id, 'paiement');
+                      if ($fr_term && !is_wp_error($fr_term)) {
+                        $icon_slug = $fr_term->slug; // <- slug FR garanti
+                      }
+
+                      // On revient à la langue initiale
+                      do_action('wpml_switch_language', $current_lang);
+                    }
                   }
 
                   $icon_url = get_stylesheet_directory_uri() . '/assets/media/icon_' . $icon_slug . '.png';
 
                   echo '<div class="paiement-item">';
-                  echo '<img title="' . $term->name . '" src="' . esc_url($icon_url) . '" alt="' . esc_attr($term->name) . '" class="paiement-icon" />';
+                  echo '<img title="' . esc_attr($term->name) . '" src="' . esc_url($icon_url) . '" alt="' . esc_attr($term->name) . '" class="paiement-icon" />';
                   echo '</div>';
                 }
 
