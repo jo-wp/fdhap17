@@ -1019,26 +1019,51 @@ add_filter('facetwp_i18n', function ($text, $args = []) {
 }, 10, 2);
 
 
+add_filter('wpseo_breadcrumb_links', function ($links) {
+  if (!is_tax()) {
+    return $links;
+  }
 
-// add_filter('wpseo_breadcrumb_links', function ($links) {
-//   if (is_tax()) {
-//     $q = get_queried_object();
-//     if ($q && isset($q->taxonomy)) {
-//       $flat_tax = ['destination','equipement','atout','etoile','aquatique','service','label','hebergement','cible','groupe','confort','paiement'];
-//       if (in_array($q->taxonomy, $flat_tax, true)) {
-//         // On garde Accueil (index 0) + l’archive de la taxo (si présente) + le terme courant
-//         $new = [];
-//         foreach ($links as $i => $link) {
-//           // Conserve "Accueil"
-//           if ($i === 0) { $new[] = $link; continue; }
-//           // Conserve uniquement le dernier élément (terme courant) et éventuellement l’archive
-//           if (!empty($link['term']) || !empty($link['ptarchive'])) {
-//             $new[] = $link;
-//           }
-//         }
-//         return $new;
-//       }
-//     }
-//   }
-//   return $links;
-// });
+  $q = get_queried_object();
+  if (!$q || empty($q->taxonomy)) {
+    return $links;
+  }
+
+  $flat_tax = ['destination','equipement','atout','etoile','aquatique','service','label','hebergement','cible','groupe','confort','paiement'];
+  if (!in_array($q->taxonomy, $flat_tax, true)) {
+    return $links;
+  }
+
+  $new = [];
+  $last_index = count($links) - 1;
+
+  foreach ($links as $i => $link) {
+
+    // 1) Conserve "Accueil"
+    if ($i === 0) {
+      $new[] = $link;
+      continue;
+    }
+
+    // 2) Conserve l’archive de la taxonomie si Yoast l’a mise
+    if (!empty($link['ptarchive'])) {
+      $new[] = $link;
+      continue;
+    }
+
+    // 3) Conserve TOUJOURS le dernier crumb (terme courant)
+    if ($i === $last_index) {
+      // Sécurise le libellé si Yoast ne l’a pas fourni
+      if (empty($link['text']) && !empty($q->name)) {
+        $link['text'] = $q->name;
+      }
+      // Le dernier n’a souvent pas d’URL (page courante) → ok
+      $new[] = $link;
+      continue;
+    }
+
+    // Tous les autres (parents) sont supprimés pour un breadcrumb "plat"
+  }
+
+  return $new;
+});
