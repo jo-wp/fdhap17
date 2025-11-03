@@ -369,38 +369,17 @@ $deals_camping = get_field('deals_camping');
                 echo '<div class="paiements-wrap flex flex-row flex-wrap gap-[5px]">';
 
                 foreach ($terms as $term) {
-                  // Par défaut : slug courant (au cas où WPML n'est pas là)
-                  $icon_slug = $term->slug;
-
-                  // Si WPML est actif, on force le slug de la traduction FR du terme
                   if (function_exists('apply_filters')) {
-                    $default_lang = apply_filters('wpml_default_language', null) ?: 'fr';
-
-                    // Pour les termes, le "element_type" WPML est "tax_{taxonomy}"
-                    $element_type = 'tax_paiement';
-
-                    // Récupère le TRID (groupe de traductions) du terme courant
-                    $trid = apply_filters('wpml_element_trid', null, $term->term_id, $element_type);
-
-                    if ($trid) {
-                      // Récupère toutes les traductions
-                      $translations = apply_filters('wpml_get_element_translations', null, $trid, $element_type);
-
-                      if (is_array($translations) && !empty($translations[$default_lang]->element_id)) {
-                        $fr_term_id = (int) $translations[$default_lang]->element_id;
-                        $fr_term = get_term($fr_term_id, 'paiement');
-
-                        if ($fr_term && !is_wp_error($fr_term)) {
-                          $icon_slug = $fr_term->slug; // => slug FR garanti
-                        }
-                      }
-                    }
+                    $fr_term_id = apply_filters('wpml_object_id', $term->term_id, 'paiement', true, 'fr');
+                    $fr_term = get_term($fr_term_id, 'paiement');
+                    $icon_slug = $fr_term && !is_wp_error($fr_term) ? $fr_term->slug : $term->slug;
+                  } else {
+                    $icon_slug = $term->slug;
                   }
 
                   $icon_url = get_stylesheet_directory_uri() . '/assets/media/icon_' . $icon_slug . '.png';
 
                   echo '<div class="paiement-item">';
-                  // On garde name traduit pour title/alt, mais l'icône reste sur le slug FR
                   echo '<img title="' . $term->name . '" src="' . esc_url($icon_url) . '" alt="' . esc_attr($term->name) . '" class="paiement-icon" />';
                   echo '</div>';
                 }
@@ -409,8 +388,6 @@ $deals_camping = get_field('deals_camping');
               endif;
               ?>
             </div>
-
-
           </div>
         </div>
       </div>
