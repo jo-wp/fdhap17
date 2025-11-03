@@ -66,7 +66,7 @@ class CPT_CAMPING
         'hierarchical' => true,
         'rewrite'      => [
           'slug'         => $taxonomy,
-          'hierarchical' => true, // <<< clé magique pour l’URL
+          'hierarchical' => false, // <<< clé magique pour l’URL
           'with_front'   => false,
         ],
         'show_in_rest' => true,

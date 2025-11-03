@@ -1019,3 +1019,26 @@ add_filter('facetwp_i18n', function ($text, $args = []) {
 }, 10, 2);
 
 
+
+add_filter('wpseo_breadcrumb_links', function ($links) {
+  if (is_tax()) {
+    $q = get_queried_object();
+    if ($q && isset($q->taxonomy)) {
+      $flat_tax = ['destination','equipement','atout','etoile','aquatique','service','label','hebergement','cible','groupe','confort','paiement'];
+      if (in_array($q->taxonomy, $flat_tax, true)) {
+        // On garde Accueil (index 0) + l’archive de la taxo (si présente) + le terme courant
+        $new = [];
+        foreach ($links as $i => $link) {
+          // Conserve "Accueil"
+          if ($i === 0) { $new[] = $link; continue; }
+          // Conserve uniquement le dernier élément (terme courant) et éventuellement l’archive
+          if (!empty($link['term']) || !empty($link['ptarchive'])) {
+            $new[] = $link;
+          }
+        }
+        return $new;
+      }
+    }
+  }
+  return $links;
+});
