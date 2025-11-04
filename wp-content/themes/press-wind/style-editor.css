@@ -1721,6 +1721,13 @@ h2 {
   margin-top: 5rem;
   text-align: center;
 }
+body.home .site-footer{
+  margin-top: 0px;
+  text-align: center;
+}
+body.home .instagram-gallery__actions{
+  display: none;
+}
 .site-footer > p > a{
   display: inline-flex;
 }
