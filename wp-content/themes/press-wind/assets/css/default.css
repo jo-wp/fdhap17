@@ -79,6 +79,13 @@ h2 {
 .site-footer {
   @apply mt-20 text-center;
 }
+body.home .site-footer{
+    @apply mt-0 text-center;
+}
+
+body.home .instagram-gallery__actions{
+  @apply hidden;
+}
 
 .site-footer > p > a {
   @apply inline-flex after:content-[''] after:ml-2 after:block after:bg-wp-performance after:bg-contain after:bg-no-repeat after:w-5 after:h-5 after:mt-1;
