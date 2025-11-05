@@ -40,7 +40,7 @@ if (!$disabled_auto_carousel) {
     ]);
 
     if ($q->have_posts()) {
-      $items_selected = $q->posts; 
+      $items_selected = $q->posts;
     }
     wp_reset_postdata();
   }
@@ -97,22 +97,36 @@ $block_id = $block['id'];
           </button>
         </div>
         <div class="splide__track">
-          <ul class="splide__list max-md:!flex max-md:flex-row max-md:flex-nowrap max-md:gap-[15px] max-md:overflow-x-scroll max-md:w-full">
+          <ul
+            class="splide__list max-md:!flex max-md:flex-row max-md:flex-nowrap max-md:gap-[15px] max-md:overflow-x-scroll max-md:w-full">
             <?php foreach ($items_selected as $item):
               $image_featured = get_the_post_thumbnail_url($item->ID, 'full');
-              $url = ($disabled_auto_carousel)?  tp_get_term_url_by_term_page($item->ID) : get_permalink($item->ID) ;
+
+              // On vérifie le post type de l'item (et on gère le cas où $item n'est pas un WP_Post)
+              $post_type = ($item instanceof WP_Post) ? get_post_type($item) : get_post_type($item->ID);
+
+              $url = $disabled_auto_carousel
+                ? ($post_type === 'camping'
+                  ? get_permalink($item->ID)
+                  : tp_get_term_url_by_term_page($item->ID)
+                )
+                : get_permalink($item->ID);
               ?>
-              <li class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px] max-md:w-[70%] max-md:h-[320px] max-md:pl-[20px]">
-                <div class="image_featured min-h-[calc(100%-40px)] bg-cover  bg-no-repeat rounded-[20px] relative"
+              <li
+                class="splide__slide h-[62vw] md:h-[40vw] lg:h-[25vw] lg:max-h-[385px] max-md:w-[70%] max-md:h-[320px] max-md:pl-[20px]">
+                <div class="image_featured min-h-[calc(100%-40px)] bg-cover bg-no-repeat rounded-[20px] relative"
                   style="background-image:url('<?= $image_featured ?>');">
-                  <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline "
+                  <a class="absolute w-full h-full -bottom-[30px] md:-bottom-[43px] left-0 flex items-end justify-start hover:no-underline no-underline"
                     href="<?= $url; ?>">
                     <span
-                      class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w-[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]"><?= get_the_title($item->ID); ?></span>
+                      class="px-[40px] text-center flex items-center h-[60px] md:h-[85px] box-border bg-bgGreen max-w=[260px] font-arial text-[14px] md:text-[20px] font-[700] rounded-ee-[20px] <?= $type_color; ?> mt-[20px]">
+                      <?= get_the_title($item->ID); ?>
+                    </span>
                   </a>
                 </div>
               </li>
             <?php endforeach; ?>
+
           </ul>
         </div>
       </section>
@@ -142,7 +156,7 @@ $block_id = $block['id'];
             arrows: slidesCount > 2 // adapte pour tablette
           },
           768: {
-            destroy:true
+            destroy: true
           }
         }
       })
