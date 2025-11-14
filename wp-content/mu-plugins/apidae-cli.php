@@ -328,6 +328,11 @@ class APIDAE_Service
       update_post_meta($post_id, 'apidae_identifier', $item['identifier']);
     }
 
+    // Date Update 
+    if(isset($item['gestion']['dateModification'])){
+      update_post_meta($post_id, 'apidae_update_date_modification', $item['gestion']['dateModification']);
+    }
+
     // 🏠 Localisation
     $adresse = $item['localisation']['adresse']['adresse1'] ?? '';
     $commune = $item['localisation']['adresse']['commune']['nom'] ?? '';
@@ -1141,7 +1146,7 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --id manquant.');
       }
 
-      $fields = 'id,nom,localisation.adresse,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
+      $fields = 'id,nom,gestion,localisation.adresse,reservation.organismes,illustrations,prestations.conforts,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.periodes,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts,identifier,type,localisation.geolocalisation.complement';
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
         'responseFields' => $fields,
         'locales' => 'fr',
@@ -1183,7 +1188,8 @@ if (defined('WP_CLI') && WP_CLI) {
         || empty($item['reservation']['organismes'])
         || empty($item['ouverture']['periodesOuvertures'])
         || empty($item['descriptionTarif']['periodes'])
-        || empty($item['descriptionTarif']['modesPaiement']);
+        || empty($item['descriptionTarif']['modesPaiement'])
+        || empty($item['gestion']);
 
       if (!$need) {
         return $item;
@@ -1193,6 +1199,7 @@ if (defined('WP_CLI') && WP_CLI) {
 
       $fields = implode(',', [
         'id',
+        'gestion',
         'nom',
         'type',
         'identifier',
