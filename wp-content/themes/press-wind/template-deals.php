@@ -14,7 +14,7 @@ get_header();
       max-md:h-[100vh]
       max-md:[&.active]:-left-0
       ">
-    <div class="md:sticky top-4 max-md:overflow-y-scroll max-md:max-h-[90vh]">
+    <div class="md:relative top-4 max-md:overflow-y-scroll max-md:max-h-[90vh]">
       <p>
         <?=  facetwp_display( 'counts' ); ?>
       </p>

@@ -662,9 +662,6 @@
 .max-w-\[230px\]{
   max-width: 230px;
 }
-.max-w-\[260px\]{
-  max-width: 260px;
-}
 .max-w-\[305px\]{
   max-width: 305px;
 }
@@ -4752,6 +4749,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 @media (min-width: 768px){
   .md\:\!absolute{
     position: absolute !important;
+  }
+  .md\:relative{
+    position: relative;
   }
   .md\:sticky{
     position: sticky;
