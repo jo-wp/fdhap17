@@ -70,41 +70,91 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $args['tax_query']['relation'] = 'AND';
     }
 
+    return $args;
+}, 10, 2);
+
+add_filter('facetwp_query_args', function ($args, $class) {
+
+    // Ne s'applique qu'au CPT camping
+    $post_types = (array) ($args['post_type'] ?? []);
+    if (empty($post_types) || !in_array('camping', $post_types, true)) {
+        return $args;
+    }
+
+    // Si FacetWP a déjà défini un ordre (facet de tri), on ne touche pas
+    if (!empty($args['orderby'])) {
+        return $args;
+    }
+
+    // S'assurer que meta_query est un tableau
+    if (empty($args['meta_query']) || !is_array($args['meta_query'])) {
+        $args['meta_query'] = [];
+    }
+
+    // On force l'existence de la meta pour avoir le JOIN
     $args['meta_query'][] = [
         'key'     => 'apidae_update_date_modification',
         'compare' => 'EXISTS',
     ];
 
-   add_filter('posts_orderby', function($orderby, $query) {
-
-        if (! $query->get('facetwp')) {
-            return $orderby; // n'affecte que FacetWP
-        }
-
-        global $wpdb;
-
-        // Parse série des étoiles sous forme : 5,4,3,2,1, puis naturel puis non-classe
-        $orderby = "
-            STR_TO_DATE({$wpdb->postmeta}.meta_value, '%Y-%m-%dT%H:%i:%s') DESC,
-            CASE
-                WHEN tt.slug = '5-etoiles' THEN 6
-                WHEN tt.slug = '4-etoiles' THEN 5
-                WHEN tt.slug = '3-etoiles' THEN 4
-                WHEN tt.slug = '2-etoiles' THEN 3
-                WHEN tt.slug = '1-etoile'  THEN 2
-                WHEN tt.slug = 'aire-naturelle-camping' THEN 1
-                WHEN tt.slug = 'non-classe' THEN 0
-                ELSE -1
-            END DESC
-        ";
-
-        return $orderby;
-
-    }, 20, 2);
-
+    // Tri par fraicheur (le format ISO 8601 se trie très bien en CHAR)
+    $args['meta_key']   = 'apidae_update_date_modification';
+    $args['orderby']    = 'meta_value';
+    $args['order']      = 'DESC';
+    $args['meta_type']  = 'CHAR';
 
     return $args;
-}, 10, 2);
+
+}, 20, 2);
+
+add_filter('posts_clauses', function ($clauses, $query) {
+    // Ne s'applique qu'aux requêtes FacetWP
+    if (!$query->get('facetwp')) {
+        return $clauses;
+    }
+
+    $post_types = (array) $query->get('post_type');
+    if (empty($post_types) || !in_array('camping', $post_types, true)) {
+        return $clauses;
+    }
+
+    global $wpdb;
+
+    // JOIN sur la taxonomy 'etoile'
+    $clauses['join'] .= "
+        LEFT JOIN {$wpdb->term_relationships} tr_etoile
+            ON ({$wpdb->posts}.ID = tr_etoile.object_id)
+        LEFT JOIN {$wpdb->term_taxonomy} tt_etoile
+            ON (tr_etoile.term_taxonomy_id = tt_etoile.term_taxonomy_id
+                AND tt_etoile.taxonomy = 'etoile')
+        LEFT JOIN {$wpdb->terms} t_etoile
+            ON (tt_etoile.term_id = t_etoile.term_id)
+    ";
+
+    // CASE de classement
+    $case_sql = "
+        CASE
+            WHEN t_etoile.slug = '5-etoiles' THEN 6
+            WHEN t_etoile.slug = '4-etoiles' THEN 5
+            WHEN t_etoile.slug = '3-etoiles' THEN 4
+            WHEN t_etoile.slug = '2-etoiles' THEN 3
+            WHEN t_etoile.slug = '1-etoile'  THEN 2
+            WHEN t_etoile.slug = 'aire-naturelle-camping' THEN 1
+            WHEN t_etoile.slug = 'non-classe' THEN 0
+            ELSE -1
+        END
+    ";
+
+    // On ajoute ce tri APRES l'orderby existant (fraîcheur)
+    if (!empty($clauses['orderby'])) {
+        $clauses['orderby'] .= ', ';
+    }
+
+    $clauses['orderby'] .= $case_sql . ' DESC';
+
+    return $clauses;
+
+}, 20, 2);
 
 
 add_action('wp_footer', function () {
