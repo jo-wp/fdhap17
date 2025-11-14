@@ -17,8 +17,6 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $path = trim(wp_parse_url($uri, PHP_URL_PATH), '/'); // enlève / début/fin si présents
         $parts = explode('/', $path);
 
-    
-
         $idx = array_search('destination', $parts, true);
 
         if ($idx !== false && isset($parts[$idx + 1])) {
@@ -70,91 +68,33 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $args['tax_query']['relation'] = 'AND';
     }
 
+    /**
+     * Tri par fraîcheur de fiche (meta apidae_update_date_modification)
+     * => uniquement pour les CPT "camping"
+     */
+    $post_types = (array) ($args['post_type'] ?? []);
+    if (in_array('camping', $post_types, true)) {
+
+        // S'assurer que meta_query est un tableau
+        if (empty($args['meta_query']) || !is_array($args['meta_query'])) {
+            $args['meta_query'] = [];
+        }
+
+        // On force l'existence de la meta pour avoir le JOIN et pouvoir trier dessus
+        $args['meta_query'][] = [
+            'key'     => 'apidae_update_date_modification',
+            'compare' => 'EXISTS',
+        ];
+
+        // Tri par fraîcheur : les plus récentes d'abord
+        $args['meta_key']  = 'apidae_update_date_modification';
+        $args['orderby']   = 'meta_value';
+        $args['order']     = 'DESC';
+        $args['meta_type'] = 'CHAR'; // format ISO 8601, le tri lexicographique fonctionne
+    }
+
     return $args;
 }, 10, 2);
-
-add_filter('facetwp_query_args', function ($args, $class) {
-
-    // Ne s'applique qu'au CPT camping
-    $post_types = (array) ($args['post_type'] ?? []);
-    if (empty($post_types) || !in_array('camping', $post_types, true)) {
-        return $args;
-    }
-
-    // Si FacetWP a déjà défini un ordre (facet de tri), on ne touche pas
-    if (!empty($args['orderby'])) {
-        return $args;
-    }
-
-    // S'assurer que meta_query est un tableau
-    if (empty($args['meta_query']) || !is_array($args['meta_query'])) {
-        $args['meta_query'] = [];
-    }
-
-    // On force l'existence de la meta pour avoir le JOIN
-    $args['meta_query'][] = [
-        'key'     => 'apidae_update_date_modification',
-        'compare' => 'EXISTS',
-    ];
-
-    // Tri par fraicheur (le format ISO 8601 se trie très bien en CHAR)
-    $args['meta_key']   = 'apidae_update_date_modification';
-    $args['orderby']    = 'meta_value';
-    $args['order']      = 'DESC';
-    $args['meta_type']  = 'CHAR';
-
-    return $args;
-
-}, 20, 2);
-
-add_filter('posts_clauses', function ($clauses, $query) {
-    // Ne s'applique qu'aux requêtes FacetWP
-    if (!$query->get('facetwp')) {
-        return $clauses;
-    }
-
-    $post_types = (array) $query->get('post_type');
-    if (empty($post_types) || !in_array('camping', $post_types, true)) {
-        return $clauses;
-    }
-
-    global $wpdb;
-
-    // JOIN sur la taxonomy 'etoile'
-    $clauses['join'] .= "
-        LEFT JOIN {$wpdb->term_relationships} tr_etoile
-            ON ({$wpdb->posts}.ID = tr_etoile.object_id)
-        LEFT JOIN {$wpdb->term_taxonomy} tt_etoile
-            ON (tr_etoile.term_taxonomy_id = tt_etoile.term_taxonomy_id
-                AND tt_etoile.taxonomy = 'etoile')
-        LEFT JOIN {$wpdb->terms} t_etoile
-            ON (tt_etoile.term_id = t_etoile.term_id)
-    ";
-
-    // CASE de classement
-    $case_sql = "
-        CASE
-            WHEN t_etoile.slug = '5-etoiles' THEN 6
-            WHEN t_etoile.slug = '4-etoiles' THEN 5
-            WHEN t_etoile.slug = '3-etoiles' THEN 4
-            WHEN t_etoile.slug = '2-etoiles' THEN 3
-            WHEN t_etoile.slug = '1-etoile'  THEN 2
-            WHEN t_etoile.slug = 'aire-naturelle-camping' THEN 1
-            WHEN t_etoile.slug = 'non-classe' THEN 0
-            ELSE -1
-        END
-    ";
-
-    // On ajoute ce tri APRES l'orderby existant (fraîcheur)
-    if (!empty($clauses['orderby'])) {
-        $clauses['orderby'] .= ', ';
-    }
-
-    $clauses['orderby'] .= $case_sql . ' DESC';
-
-    return $clauses;
-
-}, 20, 2);
 
 
 add_action('wp_footer', function () {
