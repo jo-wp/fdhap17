@@ -70,6 +70,39 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $args['tax_query']['relation'] = 'AND';
     }
 
+    $args['meta_query'][] = [
+        'key'     => 'apidae_update_date_modification',
+        'compare' => 'EXISTS',
+    ];
+
+   add_filter('posts_orderby', function($orderby, $query) {
+
+        if (! $query->get('facetwp')) {
+            return $orderby; // n'affecte que FacetWP
+        }
+
+        global $wpdb;
+
+        // Parse série des étoiles sous forme : 5,4,3,2,1, puis naturel puis non-classe
+        $orderby = "
+            STR_TO_DATE({$wpdb->postmeta}.meta_value, '%Y-%m-%dT%H:%i:%s') DESC,
+            CASE
+                WHEN tt.slug = '5-etoiles' THEN 6
+                WHEN tt.slug = '4-etoiles' THEN 5
+                WHEN tt.slug = '3-etoiles' THEN 4
+                WHEN tt.slug = '2-etoiles' THEN 3
+                WHEN tt.slug = '1-etoile'  THEN 2
+                WHEN tt.slug = 'aire-naturelle-camping' THEN 1
+                WHEN tt.slug = 'non-classe' THEN 0
+                ELSE -1
+            END DESC
+        ";
+
+        return $orderby;
+
+    }, 20, 2);
+
+
     return $args;
 }, 10, 2);
 
