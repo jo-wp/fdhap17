@@ -16,7 +16,7 @@ export default function blockSearch() {
             640: {
               perPage: 3,
               direction: 'ttb',
-              height: '1400px',
+              height: '1390px',
               wheel: false,
               fixedHeight: '450px',
               drag: false,
