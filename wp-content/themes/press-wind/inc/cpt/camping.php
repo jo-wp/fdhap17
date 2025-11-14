@@ -79,6 +79,7 @@ class CPT_CAMPING
     $fields = [
       'apidae_id' => 'ID Apidae',
       'apidae_identifier' => 'Identifiant Apidae',
+      'apidae_update_date_modification' => 'Mise à jour APIDAE',
       'adresse' => 'Adresse',
       'commune' => 'Commune',
       'code_postal' => 'Code Postal',
@@ -153,6 +154,7 @@ class CPT_CAMPING
     $fields = [
       'apidae_id',
       'apidae_identifier',
+      'apidae_update_date_modification',
       'adresse',
       'commune',
       'code_postal',

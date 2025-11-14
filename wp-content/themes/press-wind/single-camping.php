@@ -96,6 +96,29 @@ $items_answer = get_field('items_answer');
 
 //Deals
 $deals_camping = get_field('deals_camping');
+
+$apidae_raw = get_post_meta($post->ID, 'apidae_update_date_modification', true);
+
+// Si la date existe
+if ($apidae_raw) {
+
+  // Convertir la date en objet DateTime compatible
+  try {
+    $date = new DateTime($apidae_raw);
+    // Appliquer le fuseau horaire du site WordPress
+    $date->setTimezone(new DateTimeZone(wp_timezone_string()));
+
+    // Reformater : "28 juin 2025 à 16:12"
+    $formatted_date = date_i18n('j F Y à H:i', $date->getTimestamp());
+
+  } catch (Exception $e) {
+    $formatted_date = ''; // fallback si erreur
+  }
+
+} else {
+  $formatted_date = ''; // pas de date Apidae
+}
+
 ?>
 <div class="container-huge">
   <div class="title-stars flex max-md:flex-col md:flex-row items-center justify-start gap-[0px] md:gap-[30px]">
@@ -596,7 +619,7 @@ $deals_camping = get_field('deals_camping');
             <img src="<?= get_bloginfo('template_directory') ?>/assets/media/apidae.svg" alt="Icon" />
           </div>
           <p class="text-center !font-body !text-[13px]"><?= __('Mis à jour le ', 'fdhpa17'); ?>
-            <?= get_the_modified_date('r', $post->ID); ?><br />
+            <?= $formatted_date ?><br />
             <?= __('par Fédération de l\'Hôtellerie de Plein Air de Charente', 'fdhpa17') ?><br />
             <?= __('Maritime', 'fdhpa17') ?><br />
             (<?= __('Identifiant de l\'offre', 'fdhpa17') ?>: <?= get_post_meta($post->ID, 'apidae_id', true); ?>)

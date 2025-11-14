@@ -312,12 +312,12 @@ class APIDAE
 // APIDAE::delete_import_apidae_camping();
 
 // $result = APIDAE::connect_to_apidae('/objet-touristique/get-by-id/5752954',[
-//   'responseFields' => 'id,illustrations,descriptionTarif.periodes,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
+//   'responseFields' => 'id,gestion,illustrations,descriptionTarif.periodes,informationsHotelleriePleinAir.labels,informationsHotelleriePleinAir.chaines,informationsHotelleriePleinAir.hotelleriePleinAirType,informations.moyensCommunication,informationsHotelleriePleinAir.classement,presentation.descriptifCourt,presentation.descriptifDetaille,localisation.geolocalisation.geoJson.coordinates,localisation.geolocalisation.geoJson.coordinates,localisation.environnements,localisation.perimetreGeographique,localisation.territoiresAffectes,prestations.equipements,prestations.services,prestations.conforts,prestations.activites,prestations.languesParlees,prestations.animauxAcceptes,ouverture.periodesOuvertures,descriptionTarif.tarifsEnClair,descriptionTarif.modesPaiement,reservation.organismes,informations.informationsLegales.siret,contacts',
 //   'locales' => 'fr'
 // ]);
 
 // echo'<pre>';
-// print_r($result['data']['descriptionTarif']['modesPaiement']);
+// print_r($result);
 // echo'</pre>';
 // die();
 
@@ -353,7 +353,13 @@ class APIDAE
 //   'GET',
 //   true
 // );
+// echo '<pre>';
+// var_dump($result['data']['objetsTouristiques'][0]);
+// echo '</pre>';
 // foreach ($result['data']['objetsTouristiques'] as $item) {
+//   echo '<pre>';
+//   var_dump($item);
+//   echo '</pre>';
 //   if (!$item) {
 //   } else {
 
