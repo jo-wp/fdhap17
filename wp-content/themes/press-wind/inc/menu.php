@@ -55,7 +55,7 @@ class CM17_Menu_Walker extends Walker_Nav_Menu {
             max-md:leading-[initial] max-md:py-[15px] max-md:w-full max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:border-b max-md:border-black/10 max-md:border-solid";
 
     // Classes <a> top-level
-    $a_classes_top = trim(($this->text_color_class ? $this->text_color_class : '') . " max-md:font-[700] max-md:text-[16px] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] ");
+    $a_classes_top = trim(($this->text_color_class ? $this->text_color_class : '') . " max-md:font-[700] max-md:text-[16px] max-[1140px]:text-[13px] text-[16px] relative block font-arial hover:no-underline after:content-[''] max-[1200px]:after:hidden after:bg-arrow-menu after:w-[12px] after:h-[7px] after:block after:absolute after:-right-[20px] after:top-[45%] block group");
 
     // Profondeur 0 : on retient le titre pour l’entête mobile du sous-menu
     if ($depth === 0) {
