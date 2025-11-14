@@ -49,7 +49,7 @@ switch ($type_block_editorial) {
         $size_blocks_image = 'max-md:w-full md:w-[50%] ';
 		    $size_image = 'max-md:min-w-full md:min-w-[720px] w-full md:min-h-[720px] object-cover object-center';
         $class_innerblock = '[&_p]:text-center md:[&_p]:text-left [&_h2]:text-center md:[&_h2]:text-left [&_h1]:text-center md:[&_h1]:text-left  mb-[40px] [&_h2]:mb-[50px] [&_h1]:mb-[50px]';
-        $class_block_editorial_texte = '-m-[50px] bg-white px-[30px] md:px-[73px] py-[25px] md:py-[100px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)]';
+        $class_block_editorial_texte = '-m-[50px] bg-white px-[30px] md:px-[73px] py-[25px] md:py-[100px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)] z-20';
         $class_block_editorial = 'flex max-md:flex-col md:flex-row-reverse ';
 		break;
     case 'image_big_btn':
