@@ -1298,13 +1298,13 @@
   font-family: Arial, Helvetica, sans-serif !important;
 }
 .\!font-body{
-  font-family: Roboto !important;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 .font-arial{
   font-family: Arial, Helvetica, sans-serif;
 }
 .font-body{
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .font-ivymode{
   font-family: IvyMode;
@@ -1879,7 +1879,7 @@ section{
   padding-right: 65px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
   --tw-text-opacity: 1;
@@ -1910,7 +1910,7 @@ section{
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
   --tw-text-opacity: 1;
@@ -1941,7 +1941,7 @@ section{
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
   --tw-text-opacity: 1;
@@ -1976,7 +1976,7 @@ section{
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 700;
   --tw-text-opacity: 1;
@@ -2517,7 +2517,7 @@ nav .submenu > li .submenu-child > li{
   display: flex;
   justify-content: center;
   gap: 0px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
   line-height: 1.5rem;
 }
@@ -3639,7 +3639,7 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
   --tw-text-opacity: 1;
@@ -6006,7 +6006,7 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   font-family: Arial, Helvetica, sans-serif;
 }
 .\[\&_li\]\:font-body li{
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .\[\&_li\]\:text-\[15px\] li{
   font-size: 15px;
@@ -6079,7 +6079,7 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   font-family: Arial, Helvetica, sans-serif;
 }
 .\[\&_p\]\:font-body p{
-  font-family: Roboto;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .\[\&_p\]\:text-\[12px\] p{
   font-size: 12px;

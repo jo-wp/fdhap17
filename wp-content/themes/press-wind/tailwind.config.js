@@ -22,7 +22,7 @@ module.exports = {
       display: ['PlayfairDisplay'],
       jakarta: ['Plus Jakarta Sans', 'sans-serif'],
       montserrat: ['Montserrat'],
-      body: ['Roboto'],
+      body: ['Arial', 'Helvetica', 'sans-serif'],
       ivymode: ['IvyMode'],
       arial: ['Arial', 'Helvetica', 'sans-serif'],
       marcellus :['Marcellus', 'serif']
