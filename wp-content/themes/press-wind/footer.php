@@ -31,7 +31,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 	</div>
 	<div class="flex max-md:flex-col md:flex-row items-start justify-around gap-[30px] md:gap-[70px]">
 		<div class="logo-newsletter">
-			<a href="<?= get_bloginfo('url') ?>/">
+			<a href="<?= get_bloginfo('url') ?>">
 				<img class=" max-md:max-w-full" src="<?= get_field('logo_footer', 'option') ?>"
 					alt="Logo footer <?= get_bloginfo('title'); ?>">
 			</a>
