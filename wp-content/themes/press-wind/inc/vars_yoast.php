@@ -101,6 +101,12 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
         // Réindexe proprement le tableau
         $links = array_values( $links );
     }
+    // Si on est sur un single de "ambassador"
+        if ( is_singular( 'ambassador' ) ) {
+        // Supprime l’élément archive (toujours en 1 après l’accueil)
+        unset( $links[1] );
+        $links = array_values( $links );
+    }
     return $links;
 });
 
