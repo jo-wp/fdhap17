@@ -219,17 +219,53 @@ class APIDAE_Service
       $name = $it['name'];
       $slug = $it['slug'] ?: sanitize_title($name);
 
-      // D’abord par slug
-      $existing = term_exists($slug, $taxonomy);
-      if (!$existing) {
-        // fallback par nom
-        $existing = term_exists($name, $taxonomy);
+      // Slug "de base" généré depuis le nom
+      $base_slug = sanitize_title($name);
+
+      // On prépare une liste de slugs possibles à tester
+      $candidate_slugs = [];
+
+      // Cas particulier : taxonomie "destination"
+      // → on teste d’abord la version SEO "camping-..."
+      if ($taxonomy === 'destination') {
+        $candidate_slugs[] = 'camping-' . $base_slug;
       }
 
+      // Slug venant des données APIDAE
+      $candidate_slugs[] = $slug;
+
+      // On ajoute aussi le slug de base si différent
+      if ($base_slug !== $slug) {
+        $candidate_slugs[] = $base_slug;
+      }
+
+      // On enlève les doublons éventuels
+      $candidate_slugs = array_values(array_unique($candidate_slugs));
+
+      // 1) On tente de trouver un term existant par slug
+      $existing = false;
+      foreach ($candidate_slugs as $cand_slug) {
+        $test = term_exists($cand_slug, $taxonomy);
+        if ($test && !is_wp_error($test)) {
+          $existing = $test;
+          break;
+        }
+      }
+
+      // 2) Si rien trouvé, on tente par NOM (vrai name)
+      if (!$existing || is_wp_error($existing)) {
+        $term_obj = get_term_by('name', $name, $taxonomy);
+        if ($term_obj && !is_wp_error($term_obj)) {
+          $existing = $term_obj->term_id;
+        }
+      }
+
+      // 3) Soit on réutilise, soit on crée
       if ($existing && !is_wp_error($existing)) {
         $term_ids[] = (int) ($existing['term_id'] ?? $existing);
       } else {
-        $created = wp_insert_term($name, $taxonomy, ['slug' => $slug]);
+        // On choisit le slug que l’on veut pour la création
+        $created = wp_insert_term($name, $taxonomy, ['slug' => $base_slug]);
         if (!is_wp_error($created)) {
           $term_ids[] = (int) $created['term_id'];
         } else {
@@ -329,7 +365,7 @@ class APIDAE_Service
     }
 
     // Date Update 
-    if(isset($item['gestion']['dateModification'])){
+    if (isset($item['gestion']['dateModification'])) {
       update_post_meta($post_id, 'apidae_update_date_modification', $item['gestion']['dateModification']);
     }
 
@@ -484,7 +520,6 @@ class APIDAE_Service
         update_post_meta($post_id, 'price_mini_mobilhomes', $min);
         update_post_meta($post_id, 'price_max_mobilhomes', $max);
       }
-
     }
 
 
@@ -536,205 +571,205 @@ class APIDAE_Service
   // 1) Une map par TAXONOMIE SOURCE (tu mets ici tes règles)
   protected static function service_redirect_map(): array
   {
-  return [
-    // --- existant (pêche, bien-être, cibles, hébergements) ---
-    'vente-de-cartes-de-peche'      => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'vente-de-materiel-de-peche'    => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'massages-modelages'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'soins-esthetiques'             => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'espace-coworking'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
-    'accessible-en-poussette'       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+    return [
+      // --- existant (pêche, bien-être, cibles, hébergements) ---
+      'vente-de-cartes-de-peche'      => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'vente-de-materiel-de-peche'    => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'massages-modelages'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'soins-esthetiques'             => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'espace-coworking'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+      'accessible-en-poussette'       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
 
-    'hebergement-locatif-climatise' => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé',      'slug' => 'mobil-home-clim'],
-    'location-de-mobilhome'         => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home',                'slug' => 'mobil-home'],
-    'location-bungatoile'           => ['taxonomy' => 'hebergement', 'name' => 'Insolite',                  'slug' => 'logement-insolite'],
-    'location-caravanes'            => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
-    'location-hll-chalet'           => ['taxonomy' => 'hebergement', 'name' => 'Chalet',                    'slug' => 'chalet'],
-    'location-tentes'               => ['taxonomy' => 'hebergement', 'name' => 'Tente prête à camper',      'slug' => 'tente-prete-a-camper'],
-    'camping-cars-autorises'        => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+      'hebergement-locatif-climatise' => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé',      'slug' => 'mobil-home-clim'],
+      'location-de-mobilhome'         => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home',                'slug' => 'mobil-home'],
+      'location-bungatoile'           => ['taxonomy' => 'hebergement', 'name' => 'Insolite',                  'slug' => 'logement-insolite'],
+      'location-caravanes'            => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+      'location-hll-chalet'           => ['taxonomy' => 'hebergement', 'name' => 'Chalet',                    'slug' => 'chalet'],
+      'location-tentes'               => ['taxonomy' => 'hebergement', 'name' => 'Tente prête à camper',      'slug' => 'tente-prete-a-camper'],
+      'camping-cars-autorises'        => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
 
-    // --- aquatiques ---
-    'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
-    'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
-    'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
-    'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      // --- aquatiques ---
+      'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
+      'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
+      'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
+      'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
 
-    // --- atouts ---
-    'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'equipements-developpement-durable'=> ['taxonomy'=>'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      // --- atouts ---
+      'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'equipements-developpement-durable' => ['taxonomy' => 'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
 
-    // --- cibles ---
-    'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
-    'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+      // --- cibles ---
+      'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+      'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
 
-    // --- services (regroupements/renommages) ---
-    'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service','name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      // --- services (regroupements/renommages) ---
+      'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service', 'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
 
-    'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
-    'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
-                                   => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
-    'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
-    'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
-    'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
-    'borne-de-recharge-pour-2-roues-electriques'
-                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
-    'bornes-de-recharge-pour-vehicules-electriques'
-                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
-    'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
-    'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
-    'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
-  ];
+      'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
+      'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
+      => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
+      'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
+      'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
+      'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+      'borne-de-recharge-pour-2-roues-electriques'
+      => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+      'bornes-de-recharge-pour-vehicules-electriques'
+      => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+      'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
+      'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+      'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
+    ];
   }
 
   protected static function equipement_redirect_map(): array
   {
- return [
-    // --- aquatiques ---
-    'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
-    'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
-    'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
-    'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
-    'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
-    'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
-    'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+    return [
+      // --- aquatiques ---
+      'solarium'                      => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'bains-a-remous'                => ['taxonomy' => 'aquatique',   'name' => 'Jacuzzi',                   'slug' => 'jacuzzi'],
+      'bain-nordique'                 => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'balneotherapie'                => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'douche-sensorielle'            => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'espace-aquatique-ludique'      => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'espace-spa'                    => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'hammam'                        => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
+      'pataugeoire'                   => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'piscine'                       => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'piscine-chauffee'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine chauffée',          'slug' => 'piscine-chauffee'],
+      'piscine-collective'            => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'piscine-couverte'              => ['taxonomy' => 'aquatique',   'name' => 'Piscine couverte',          'slug' => 'piscine-couverte'],
+      'piscine-enfants'               => ['taxonomy' => 'aquatique',   'name' => 'Pataugeoire',               'slug' => 'pataugeoire'],
+      'piscine-plein-air'             => ['taxonomy' => 'aquatique',   'name' => 'Piscine',                   'slug' => 'piscine'],
+      'sauna'                         => ['taxonomy' => 'aquatique',   'name' => 'Spa',                       'slug' => 'spa'],
 
-    // --- atouts ---
-    'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'equipements-developpement-durable'=> ['taxonomy'=>'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
-    'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
-    'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      // --- atouts ---
+      'depot-des-dechets-menagers'    => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'equipements-developpement-durable' => ['taxonomy' => 'atout',      'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'etang-de-peche'                => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'gestion-des-dechets'           => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'panneau-photovoltaique'        => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
+      'ponton-de-peche'               => ['taxonomy' => 'atout',       'name' => 'Etang de pêche',            'slug' => 'etang-peche'],
+      'recuperateurs-deau-de-pluie'   => ['taxonomy' => 'atout',       'name' => 'Ecologique',                'slug' => 'ecologique'],
 
-    // --- cibles ---
-    'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
-    'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
+      // --- cibles ---
+      'salle-de-reunion'              => ['taxonomy' => 'cible',       'name' => 'Entreprise',                'slug' => 'entreprise'],
+      'nursery'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',                 'slug' => 'camping-avec-bebe'],
 
-    // --- hebergements ---
-    'emplacement-grand-confort'     => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
-    'emplacements-nus'              => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+      // --- hebergements ---
+      'emplacement-grand-confort'     => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
+      'emplacements-nus'              => ['taxonomy' => 'hebergement', 'name' => 'Emplacement',               'slug' => 'emplacement'],
 
-    // --- services (regroupements/renommages) ---
-    'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service','name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
-    'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      // --- services (regroupements/renommages) ---
+      'aire-de-stationnement-camping-cars' => ['taxonomy' => 'service', 'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'camping-car'                   => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'borne-de-service-camping-cars' => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'branchements-deau'             => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'branchements-electriques'      => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'vidange-des-eaux-grises'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
+      'vidange-des-eaux-noires'       => ['taxonomy' => 'service',     'name' => 'Aire vidange camping car',  'slug' => 'aire-vidange-camping-car'],
 
-    'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
-    'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
-                                   => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
-    'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
-    'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
-    'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
-    'borne-de-recharge-pour-2-roues-electriques'
-                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
-    'bornes-de-recharge-pour-vehicules-electriques'
-                                   => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
-    'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
-    'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
-    'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
-  ];
+      'minigolf'                      => ['taxonomy' => 'service',     'name' => 'Mini golf',                 'slug' => 'mini-golf'],
+      'boulodrome-terrain-de-petanque-terrain-de-boule-de-fort'
+      => ['taxonomy' => 'service',     'name' => 'Terrain pétanque',          'slug' => 'terrain-petanque'],
+      'discotheque'                   => ['taxonomy' => 'service',     'name' => 'Discothèque',               'slug' => 'discotheque'],
+      'terrain-de-tennis'             => ['taxonomy' => 'service',     'name' => 'Terrain de tennis',         'slug' => 'terrain-tennis'],
+      'bar'                           => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+      'borne-de-recharge-pour-2-roues-electriques'
+      => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+      'bornes-de-recharge-pour-vehicules-electriques'
+      => ['taxonomy' => 'service',     'name' => 'Borne de recharge',         'slug' => 'borne-recharge-electrique'],
+      'laverie'                       => ['taxonomy' => 'service',     'name' => 'Laverie',                   'slug' => 'laverie'],
+      'restaurant'                    => ['taxonomy' => 'service',     'name' => 'Bar-Restaurant',            'slug' => 'restauration'],
+      'salle-de-reception'            => ['taxonomy' => 'service',     'name' => 'Location de salles',        'slug' => 'location-de-salles'],
+    ];
   }
 
   protected static function atout_redirect_map(): array
   {
-  return [
-    // ---- Coeur de ville ----
-    'centre-village'                 => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
-    'centre-ville'                   => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
-    'en-ville'                       => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
-    'en-centre-historique'           => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+    return [
+      // ---- Coeur de ville ----
+      'centre-village'                 => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+      'centre-ville'                   => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+      'en-ville'                       => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
+      'en-centre-historique'           => ['taxonomy' => 'atout', 'name' => 'Coeur de ville', 'slug' => 'ville'],
 
-    // ---- Nature ----
-    'en-foret'                       => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
-    'espace-naturel-sensible'        => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
-    'isole'                          => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
-    'vue-sur-le-vignoble'            => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+      // ---- Nature ----
+      'en-foret'                       => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+      'espace-naturel-sensible'        => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+      'isole'                          => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
+      'vue-sur-le-vignoble'            => ['taxonomy' => 'atout', 'name' => 'Nature',         'slug' => 'nature'],
 
-    // ---- Bord de lac ----
-    'vue-lac'                        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
-    'lac-ou-plan-deau-a-5-km'        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
-    'lac-ou-plan-deau-a-moins-de-300-m' => ['taxonomy' => 'atout', 'name' => 'Bord de lac','slug' => 'bord-de-lac'],
+      // ---- Bord de lac ----
+      'vue-lac'                        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
+      'lac-ou-plan-deau-a-5-km'        => ['taxonomy' => 'atout', 'name' => 'Bord de lac',    'slug' => 'bord-de-lac'],
+      'lac-ou-plan-deau-a-moins-de-300-m' => ['taxonomy' => 'atout', 'name' => 'Bord de lac', 'slug' => 'bord-de-lac'],
 
-    // ---- Bord de rivière ----
-    'halte-fluviale-a-moins-de-500-m'=> ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
-    'riviere-ou-fleuve-a-moins-de-300-m'=> ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
-    'vue-sur-fleuve-ou-riviere'      => ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
-    'riviere-a-5-km'                 => ['taxonomy' => 'atout', 'name' => 'Bord de rivière','slug' => 'bord-de-riviere'],
+      // ---- Bord de rivière ----
+      'halte-fluviale-a-moins-de-500-m' => ['taxonomy' => 'atout', 'name' => 'Bord de rivière', 'slug' => 'bord-de-riviere'],
+      'riviere-ou-fleuve-a-moins-de-300-m' => ['taxonomy' => 'atout', 'name' => 'Bord de rivière', 'slug' => 'bord-de-riviere'],
+      'vue-sur-fleuve-ou-riviere'      => ['taxonomy' => 'atout', 'name' => 'Bord de rivière', 'slug' => 'bord-de-riviere'],
+      'riviere-a-5-km'                 => ['taxonomy' => 'atout', 'name' => 'Bord de rivière', 'slug' => 'bord-de-riviere'],
 
-    // ---- Bord de mer ----
-    'les-pieds-dans-leau-mer'        => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
-    'les-pieds-dans-leau-plage'      => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
-    'mer-a-moins-de-300-m'           => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
-    'plage-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+      // ---- Bord de mer ----
+      'les-pieds-dans-leau-mer'        => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+      'les-pieds-dans-leau-plage'      => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+      'mer-a-moins-de-300-m'           => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
+      'plage-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Bord de mer',    'slug' => 'bord-de-mer'],
 
-    // ---- Etang de pêche ----
-    'etang-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
-    'les-pieds-dans-leau-etang'      => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
-    'etang-a-moins-de-5-km'          => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
-  ];
+      // ---- Etang de pêche ----
+      'etang-a-moins-de-300-m'         => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+      'les-pieds-dans-leau-etang'      => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+      'etang-a-moins-de-5-km'          => ['taxonomy' => 'atout', 'name' => 'Etang de pêche', 'slug' => 'etang-peche'],
+    ];
   }
 
   protected static function confort_redirect_map(): array
   {
-  return [
-    // ---- Accès Internet / Wifi → Services > Accès Internet Wifi (wifi)
-    'acces-internet-privatif-wifi'          => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
-    'acces-internet-privatif-wifi-gratuit'  => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
-    'acces-internet-privatif-wifi-payant'   => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+    return [
+      // ---- Accès Internet / Wifi → Services > Accès Internet Wifi (wifi)
+      'acces-internet-privatif-wifi'          => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+      'acces-internet-privatif-wifi-gratuit'  => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
+      'acces-internet-privatif-wifi-payant'   => ['taxonomy' => 'service',     'name' => 'Accès Internet Wifi', 'slug' => 'wifi'],
 
-    // ---- Laverie → Services > Laverie
-    'lave-linge-collectif'                  => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
-    'seche-linge-collectif'                 => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
+      // ---- Laverie → Services > Laverie
+      'lave-linge-collectif'                  => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
+      'seche-linge-collectif'                 => ['taxonomy' => 'service',     'name' => 'Laverie',             'slug' => 'laverie'],
 
-    // ---- Avec bébé → Cibles > Avec bébé (camping-avec-bebe)
-    'baignoire-bebe'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'chaise-bebe'                           => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'chauffe-biberon'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'lit-bebe'                              => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'materiel-bebe'                         => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'poussette'                             => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
-    'table-a-langer'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      // ---- Avec bébé → Cibles > Avec bébé (camping-avec-bebe)
+      'baignoire-bebe'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'chaise-bebe'                           => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'chauffe-biberon'                       => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'lit-bebe'                              => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'materiel-bebe'                         => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'poussette'                             => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
+      'table-a-langer'                        => ['taxonomy' => 'cible',       'name' => 'Avec bébé',           'slug' => 'camping-avec-bebe'],
 
-    // ---- Locatif climatisé → Hebergements > Mobil-home climatisé
-    'locatif-climatise'                     => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé','slug' => 'mobil-home-clim'],
-  ];
+      // ---- Locatif climatisé → Hebergements > Mobil-home climatisé
+      'locatif-climatise'                     => ['taxonomy' => 'hebergement', 'name' => 'Mobil-home climatisé', 'slug' => 'mobil-home-clim'],
+    ];
   }
 
   protected static function redirect_map_for(string $source_tax): array
