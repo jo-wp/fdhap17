@@ -69,7 +69,9 @@ $under_title = get_field('sous_titre');
   [&_p]:text-black [&_p]:text-[15px]
    [&_p]:font-[400] [&_p]:font-arial
    [&_a]:font-arial [&_a]:text-green [&_a]:underline [&_a]:font-[700]
-   [&_img]:rounded-[20px] [&_iframe]:rounded-[20px]">
+   [&_img]:rounded-[20px] [&_iframe]:rounded-[20px]
+   [&_h3]:text-[22px]
+   [&_li]:text-[15px]">
     <?= apply_filters('the_content', $post->post_content); ?>
     <?= get_template_part('partials/single/article','navigation'); ?>
     <?= get_template_part('partials/single/article','campings',array('items' => '')); ?>

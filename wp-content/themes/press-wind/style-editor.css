@@ -5920,6 +5920,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
     color: inherit;
   }
 }
+.\[\&_h3\]\:text-\[22px\] h3{
+  font-size: 22px;
+}
 .\[\&_iframe\]\:rounded-\[20px\] iframe{
   border-radius: 20px;
 }
