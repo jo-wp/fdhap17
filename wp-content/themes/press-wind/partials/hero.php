@@ -113,7 +113,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         </form>
       </div>
       <?php do_action('wpml_add_language_selector'); ?>
-      <a href="/wishlist/" class="flex items-center">
+      <a href="<?= apply_filters( 'wpml_permalink', site_url('/wishlist/'), ICL_LANGUAGE_CODE );  ?>" class="flex items-center">
         <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
           alt="Icon wishlist">
       </a>
@@ -135,7 +135,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
           <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
         </a>
         <div class="block-hero__content__mobile__actions flex flex-row gap-[15px]">
-          <a href="/wishlist" class="flex items-center">
+          <a href="<?= apply_filters( 'wpml_permalink', site_url('/wishlist/'), ICL_LANGUAGE_CODE );  ?>" class="flex items-center">
             <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
               alt="Icon wishlist">
           </a>
