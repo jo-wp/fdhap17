@@ -58,7 +58,7 @@ switch ($type_block_editorial) {
         $size_blocks_image = 'max-md:w-full md:w-[65%] ';
         $class_innerblock = '[&_p]:text-center [&_h2]:text-center [&_h1]:text-center [&_a]:underline mb-0 [&_h2]:mb-[35px] [&_h1]:mb-[35px]';
         $size_image = 'w-full h-full object-cover object-center';
-        $class_block_editorial_texte = 'md:-ml-[17%] bg-white px-[15px] lg:px-[62px] py-[70px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)]';
+        $class_block_editorial_texte = 'md:-ml-[17%] bg-white px-[15px] lg:px-[62px] py-[70px] rounded-[10px] shadow-[1px_8px_30px_0_rgba(186,186,186,0.18)] z-20';
         $class_block_editorial = 'flex max-md:flex-col md:flex-row-reverse ';
         break;
 

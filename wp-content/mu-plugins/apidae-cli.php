@@ -322,6 +322,7 @@ class APIDAE_Service
 
 
 
+
     $title = $item['nom']['libelleFr'] ?? 'Camping sans nom';
     $description = (!empty($item['presentation']['descriptifDetaille']['libelleFr'])) ? $item['presentation']['descriptifDetaille']['libelleFr'] : $item['presentation']['descriptifCourt']['libelleFr'];
 
@@ -1224,7 +1225,8 @@ if (defined('WP_CLI') && WP_CLI) {
         || empty($item['ouverture']['periodesOuvertures'])
         || empty($item['descriptionTarif']['periodes'])
         || empty($item['descriptionTarif']['modesPaiement'])
-        || empty($item['gestion']);
+        || empty($item['gestion'])
+        || empty($item['presentation']['descriptifDetaille']);
 
       if (!$need) {
         return $item;
@@ -1250,7 +1252,8 @@ if (defined('WP_CLI') && WP_CLI) {
         'reservation.organismes',
         'ouverture.periodesOuvertures',
         'descriptionTarif.periodes',
-        'descriptionTarif.modesPaiement'
+        'descriptionTarif.modesPaiement',
+        'presentation.descriptifDetaille'
       ]);
 
       $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . (int) $item['id'], [
