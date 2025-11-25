@@ -1,7 +1,5 @@
 <?php
-
 add_filter('facetwp_query_args', function ($args, $class) {
-
 
     // S'assurer que tax_query est un tableau
     if (empty($args['tax_query']) || !is_array($args['tax_query'])) {
@@ -13,53 +11,57 @@ add_filter('facetwp_query_args', function ($args, $class) {
     // 1) Essayer depuis l'URI : ex. "destination/camping-la-rochelle"
     $uri = isset($class->ajax_params['http_params']['uri']) ? $class->ajax_params['http_params']['uri'] : '';
     if (!empty($uri)) {
-        // Normaliser puis chercher la partie après "destination/"
-        $path = trim(wp_parse_url($uri, PHP_URL_PATH), '/'); // enlève / début/fin si présents
+        $path  = trim(wp_parse_url($uri, PHP_URL_PATH), '/');
         $parts = explode('/', $path);
 
         $idx = array_search('destination', $parts, true);
 
         if ($idx !== false && isset($parts[$idx + 1])) {
-            // slug attendu : "camping-la-rochelle"
             $slug = sanitize_title(urldecode($parts[$idx + 1]));
 
             if (!empty($slug)) {
                 $term = get_term_by('slug', $slug, 'destination');
                 if ($term && !is_wp_error($term)) {
                     $args['tax_query'][] = [
-                        'taxonomy' => 'destination',
-                        'field' => 'term_id',
-                        'terms' => [(int) $term->term_id],
-                        'include_children' => true,
+                        'taxonomy'        => 'destination',
+                        'field'           => 'term_id',
+                        'terms'           => [(int) $term->term_id],
+                        'include_children'=> true,
                     ];
                 }
             }
         }
     }
 
-    // 2) Fallback : si un term_id est passé via extras et qu'on n'a rien ajouté
+    // 2) Fallback : utiliser destination_term_id UNIQUEMENT s'il correspond VRAIMENT à un terme 'destination'
     if (
         isset($class->ajax_params['extras']['destination_term_id']) &&
         (int) $class->ajax_params['extras']['destination_term_id'] > 0
     ) {
         $term_id = (int) $class->ajax_params['extras']['destination_term_id'];
 
-        // N'ajoute le fallback que si aucun filtre 'destination' n'a déjà été ajouté
-        $has_destination = false;
-        foreach ($args['tax_query'] as $q) {
-            if (is_array($q) && isset($q['taxonomy']) && $q['taxonomy'] === 'destination') {
-                $has_destination = true;
-                break;
-            }
-        }
+        // vérifier que c'est bien un terme de la taxo 'destination'
+        $dest_term = get_term($term_id, 'destination');
 
-        if (!$has_destination) {
-            $args['tax_query'][] = [
-                'taxonomy' => 'destination',
-                'field' => 'term_id',
-                'terms' => [$term_id],
-                'include_children' => true,
-            ];
+        if ($dest_term && !is_wp_error($dest_term)) {
+
+            // N'ajoute le fallback que si aucun filtre 'destination' n'a déjà été ajouté
+            $has_destination = false;
+            foreach ($args['tax_query'] as $q) {
+                if (is_array($q) && isset($q['taxonomy']) && $q['taxonomy'] === 'destination') {
+                    $has_destination = true;
+                    break;
+                }
+            }
+
+            if (!$has_destination) {
+                $args['tax_query'][] = [
+                    'taxonomy'        => 'destination',
+                    'field'           => 'term_id',
+                    'terms'           => [$term_id],
+                    'include_children'=> true,
+                ];
+            }
         }
     }
 
@@ -68,63 +70,28 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $args['tax_query']['relation'] = 'AND';
     }
 
-    /**
-     * Tri par fraîcheur de fiche (meta apidae_update_date_modification)
-     * => uniquement pour les CPT "camping"
-     */
+    // Tri par fraîcheur pour le CPT "camping"
     $post_types = (array) ($args['post_type'] ?? []);
     if (in_array('camping', $post_types, true)) {
 
-        // S'assurer que meta_query est un tableau
         if (empty($args['meta_query']) || !is_array($args['meta_query'])) {
             $args['meta_query'] = [];
         }
 
-        // On force l'existence de la meta pour avoir le JOIN et pouvoir trier dessus
         $args['meta_query'][] = [
             'key'     => 'apidae_update_date_modification',
             'compare' => 'EXISTS',
         ];
 
-        // Tri par fraîcheur : les plus récentes d'abord
         $args['meta_key']  = 'apidae_update_date_modification';
         $args['orderby']   = 'meta_value';
         $args['order']     = 'DESC';
-        $args['meta_type'] = 'CHAR'; // format ISO 8601, le tri lexicographique fonctionne
+        $args['meta_type'] = 'CHAR';
     }
 
     return $args;
 }, 10, 2);
 
-
-add_action('wp_footer', function () {
-    if (is_tax()): ?>
-        <script>
-            document.addEventListener('facetwp-refresh', function () {
-                FWP.extras.destination_term_id = <?php echo (int) get_queried_object_id() ?>;
-            });
-        </script>
-    <?php endif;
-}, 100);
-
-
-
-add_filter('facetwp_result_count', function ($output, $params) {
-    $output = '<p class="font-arial text-[14px] text-[#7F7F7F]">' . $params['lower'] . ' à ' . $params['upper'] . ' résultat(s) sur ' . $params['total'] . '</p>';
-    return $output;
-}, 100, 2);
-
-
-add_filter('gettext', function ($translated_text, $text, $domain) {
-    if ('fwp-front' == $domain) {
-        if ('See {num} more' == $text) {
-            $translated_text = '+ Afficher plus';
-        } elseif ('See less' == $text) {
-            $translated_text = '- Afficher moins';
-        }
-    }
-    return $translated_text;
-}, 10, 3);
 
 
 /**
