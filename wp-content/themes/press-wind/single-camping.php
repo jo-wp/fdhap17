@@ -454,7 +454,7 @@ if ($apidae_raw) {
           ?>
 
           <!-- Carte orange (infos offre) -->
-          <div class="bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
+          <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
             <p class="font-ivymode text-[36px] font-[700] m-0"><?= esc_html($deal['titre']); ?></p>
             <p class="font-arial text-[16px] font-[700]"><?= wp_kses_post($deal['description']); ?></p>
             <div class="border-2 border-solid border-white rounded-full">
@@ -467,7 +467,7 @@ if ($apidae_raw) {
 
           <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
           <div
-            class="bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px] flex flex-row items-start justify-center gap-[25px]"
+            class="hidden flex-row bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px]   items-start justify-center gap-[25px]"
             data-filename="<?= esc_attr($pdf_filename); ?>">
 
             <div class="flex flex-col">
@@ -499,7 +499,7 @@ if ($apidae_raw) {
             $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
             ?>
 
-            <div class="flex flex-col bloc-sidebar-promo-date js-coupon "
+            <div class="hidden  flex-col bloc-sidebar-promo-date js-coupon "
               data-filename="<?php echo esc_attr($pdf_filename); ?>" data-camping="<?php echo esc_attr($camping_name); ?>"
               data-title="<?php echo esc_attr($titre); ?>" data-desc="<?php echo esc_attr($desc_plain); ?>"
               data-code="<?php echo esc_attr($code); ?>" data-dates="<?php echo esc_attr($dates_str); ?>">
