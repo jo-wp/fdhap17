@@ -53,7 +53,9 @@ function menuMobileToggle() {
     openBtn.addEventListener('click', function (e) {
       e.preventDefault();
 
-      navigationWrapper.style.zIndex = '9999';
+      if (navigationWrapper) {
+        navigationWrapper.style.zIndex = '9999';
+      }
 
       targetNav.classList.add('active');
       openBtn.classList.add('hidden');
@@ -71,7 +73,9 @@ function menuMobileToggle() {
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      navigationWrapper.style.zIndex = '2';
+      if (navigationWrapper) {
+        navigationWrapper.style.zIndex = '2';
+      }
 
       targetNav.classList.remove('active');
       closeBtn.classList.add('hidden');

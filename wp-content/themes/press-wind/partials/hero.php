@@ -318,7 +318,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
             <a href="<?php the_permalink($id); ?>">fdhpa-17</a>
           </li>
           <li class="font-bold tracking-wider">
-            <?= __('Accueil', 'fdhpa17') ?>
+              <?= get_the_title(); ?>
           </li>
         </ol>
       </nav>
