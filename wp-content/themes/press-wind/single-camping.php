@@ -110,11 +110,9 @@ if ($apidae_raw) {
 
     // Reformater : "28 juin 2025 à 16:12"
     $formatted_date = date_i18n('j F Y à H:i', $date->getTimestamp());
-
   } catch (Exception $e) {
     $formatted_date = ''; // fallback si erreur
   }
-
 } else {
   $formatted_date = ''; // pas de date Apidae
 }
@@ -161,7 +159,7 @@ if ($apidae_raw) {
       <?= ($i == 0) ? 'col-span-1 row-span-2 md:max-h-[500px]' : ''; ?>
       <?= ($i >= 1) ? 'max-md:hidden md:max-h-[240px]' : ''; ?>
       <?= ($i >= 5) ? 'hidden' : ''; ?>">
-        <?php $i++;
+      <?php $i++;
       endforeach; ?>
     </div>
 
@@ -201,10 +199,10 @@ if ($apidae_raw) {
         <?php endif; ?>
       </div>
       <?php if ($id_reservation_direct): ?>
-        <div>
+        <div class="hidden">
 
           <script>
-            setTimeout(function () {
+            setTimeout(function() {
               document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability></ctv-availability>"
             });
           </script>
@@ -217,13 +215,13 @@ if ($apidae_raw) {
               url: 'https://bookingpremium.secureholiday.net/widgets/'
             };
 
-            (function (w, d, s, ctv, r, js, fjs) {
+            (function(w, d, s, ctv, r, js, fjs) {
               r = new XMLHttpRequest();
               r.open('GET', w[ctv].url + 'js/src.json');
               r.responseType = 'json';
               r.json = true;
               r.send();
-              r.onload = function () {
+              r.onload = function() {
                 w[ctv].src = r.responseType == 'json' ? r.response : JSON.parse(r.response);
                 js.src = w[ctv].src[0];
                 fjs.parentNode.insertBefore(js, fjs);
@@ -241,24 +239,24 @@ if ($apidae_raw) {
         class="bloc-camping-informations md:gap-[60px] flex flex-wrap flex-col md:flex-row py-[40px] max-md:px-[20px] md:px-[60px] bg-bgGreen rounded-[20px] [&_p]:font-body [&_p]:text-[15px]">
         <div class="flex-1 flex flex-wrap flex-col md:flex-row">
           <?php if ($capacite_nombreLocationMobilhomes): ?>
-          <div class="bloc-camping-informations__item">
-            <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
-            <ul
-              class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
-              <?php if ($capacite_nombreLocationMobilhomes): ?>
-                <li
-                  class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
-                  <?= $capacite_nombreLocationMobilhomes ?> Mobil homes
-                </li>
-              <?php endif; ?>
-            </ul>
-          </div>
-              <?php endif; ?>
+            <div class="bloc-camping-informations__item">
+              <h3 class="font-arial text-[23px] text-black"><?= __('Disposition', 'fdhpa17'); ?></h3>
+              <ul
+                class="list-none [&_li]:font-body [&_li]:text-[16px] [&_li]:text-black [&_li]:font-[300] md:grid grid-cols-2 gap-x-[60px] ">
+                <?php if ($capacite_nombreLocationMobilhomes): ?>
+                  <li
+                    class="relative  before:content-[''] before:absolute before:-left-[30px] before:top-1 before:w-5 before:h-5 before:bg-check before:bg-contain before:bg-no-repeat">
+                    <?= $capacite_nombreLocationMobilhomes ?> Mobil homes
+                  </li>
+                <?php endif; ?>
+              </ul>
+            </div>
+          <?php endif; ?>
           <?php
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'confort');
           if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
+          ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Confort', 'fdhpa17'); ?></h3>
               <ul
@@ -276,7 +274,7 @@ if ($apidae_raw) {
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'equipement');
           if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
+          ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Equipements', 'fdhpa17'); ?></h3>
               <ul
@@ -295,7 +293,7 @@ if ($apidae_raw) {
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'service');
           if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
+          ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Services', 'fdhpa17'); ?></h3>
               <ul
@@ -339,7 +337,7 @@ if ($apidae_raw) {
           //get terms from taxonomy confort 
           $confort_terms = get_the_terms(get_the_ID(), 'atout');
           if ($confort_terms && !is_wp_error($confort_terms)):
-            ?>
+          ?>
             <div class="bloc-camping-informations__item">
               <h3 class="font-arial text-[23px] text-black"><?= __('Environnement', 'fdhpa17'); ?></h3>
               <div class="bloc-camping-informations__item__content">
@@ -406,7 +404,7 @@ if ($apidae_raw) {
 
                       $fr_term = get_term($fr_term_id, 'paiement');
                       if ($fr_term && !is_wp_error($fr_term)) {
-                        $icon_slug = $fr_term->slug; 
+                        $icon_slug = $fr_term->slug;
                       }
 
                       do_action('wpml_switch_language', $current_lang);
@@ -703,14 +701,14 @@ if ($apidae_raw) {
             }
 
             $image_featured_item = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
-            ?>
+      ?>
             <div class="bloc-camping-associated__items__item ">
               <div class="image-featured min-h-[290px] min-w-[250px] bg-center bg-cover rounded-[10px]"
                 style="background-image:url('<?= $image_featured_item; ?>');">
                 <div class="flex flex-row justify-between items-center py-[12px] px-[14px]">
                   <?php if ($prix_mini): ?>
                     <span class="bg-green text-white font-arial text-[14px] px-[20px] py-[8px] rounded-full">
-                      <?= __('À partir de', 'fdhpa17'); ?>         <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
+                      <?= __('À partir de', 'fdhpa17'); ?> <?= $prix_mini ?>€/<?= __('nuits', 'fdhpa17'); ?>
                     </span>
                   <?php endif; ?>
                   <a href="#" class="camping-fav-btn" data-camping-id="<?php echo get_the_ID(); ?>"
@@ -745,7 +743,7 @@ if ($apidae_raw) {
                 </div>
               </div>
             </div>
-            <?php
+      <?php
           }
         }
 
@@ -756,7 +754,7 @@ if ($apidae_raw) {
   </div>
   <?php
   if ($items_answer):
-    ?>
+  ?>
     <div class="mt-[50px] md:mt-[100px]">
       <?= get_template_part('blocks/faq/template'); ?>
     </div>
