@@ -13,7 +13,7 @@
 
 <head>
 
-	<?php if(WP_ENV!='development'): ?>
+	<?php if (WP_ENV != 'development'): ?>
 
 		<!-- Matomo -->
 		<script>
@@ -22,11 +22,15 @@
 			_paq.push(['trackPageView']);
 			_paq.push(['enableLinkTracking']);
 			(function() {
-				var u="//analytics.beecommunication.fr/";
-				_paq.push(['setTrackerUrl', u+'matomo.php']);
+				var u = "//analytics.beecommunication.fr/";
+				_paq.push(['setTrackerUrl', u + 'matomo.php']);
 				_paq.push(['setSiteId', '74']);
-				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-				g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+				var d = document,
+					g = d.createElement('script'),
+					s = d.getElementsByTagName('script')[0];
+				g.async = true;
+				g.src = u + 'matomo.js';
+				s.parentNode.insertBefore(g, s);
 			})();
 		</script>
 		<!-- End Matomo Code -->
@@ -37,20 +41,45 @@
 		<!-- End CMP -->
 
 		<!-- Google Tag Manager -->
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-W68ZGXC3');</script>
+		<script>
+			(function(w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({
+					'gtm.start': new Date().getTime(),
+					event: 'gtm.js'
+				});
+				var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s),
+					dl = l != 'dataLayer' ? '&l=' + l : '';
+				j.async = true;
+				j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-W68ZGXC3');
+		</script>
 		<!-- End Google Tag Manager -->
-		
+
 		<!-- Google Tag Manager (noscript) -->
 		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W68ZGXC3"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+				height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
 		<!-- BING -->
-		<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"17571109", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
+		<script>
+			(function(w, d, t, r, u) {
+				var f, n, i;
+				w[u] = w[u] || [], f = function() {
+					var o = {
+						ti: "17571109",
+						enableAutoSpaTracking: true
+					};
+					o.q = w[u], w[u] = new UET(o), w[u].push("pageLoad")
+				}, n = d.createElement(t), n.src = r, n.async = 1, n.onload = n.onreadystatechange = function() {
+					var s = this.readyState;
+					s && s !== "loaded" && s !== "complete" || (f(), n.onload = n.onreadystatechange = null)
+				}, i = d.getElementsByTagName(t)[0], i.parentNode.insertBefore(n, i)
+			})(window, document, "script", "//bat.bing.com/bat.js", "uetq");
+		</script>
 		<!-- End BING -->
 	<?php endif; ?>
 
@@ -60,16 +89,49 @@
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
-	<?php if(WP_ENV!='development'): ?>
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1017019547"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
+	<?php if (WP_ENV != 'development'): ?>
+		<!-- Facebook Pixel Code -->
+		<script>
+			! function(f, b, e, v, n, t, s) {
+				if (f.fbq) return;
+				n = f.fbq = function() {
+					n.callMethod ?
+						n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+				};
+				if (!f._fbq) f._fbq = n;
+				n.push = n;
+				n.loaded = !0;
+				n.version = '2.0';
+				n.queue = [];
+				t = b.createElement(e);
+				t.async = !0;
+				t.src = v;
+				s = b.getElementsByTagName(e)[0];
+				s.parentNode.insertBefore(t, s)
+			}(window, document, 'script',
+				'https://connect.facebook.net/en_US/fbevents.js');
+			fbq('init', '903540876433032');
+			fbq('track', 'PageView');
+		</script>
+		<noscript>
+			<img height="1" width="1" src="https://www.facebook.com/tr?id=903540876433032&ev=PageView&noscript=1" />
+		</noscript>
 
-		gtag('config', 'AW-1017019547');
-	</script>
+		<!-- End Facebook Pixel Code -->
+
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1017019547"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'AW-1017019547');
+		</script>
 	<?php endif; ?>
 </head>
 
@@ -84,11 +146,11 @@
 			$mini_site = get_field('mini_site', $ref_id);
 			$logo = get_field('mini_site_logo', $ref_id);
 
-      $hero_is = get_field('hero_type', $current_id);
+			$hero_is = get_field('hero_type', $current_id);
 
 			if ($mini_site) {
-				?>
-				<section class="max-md:hidden minisite-subheader bg-orange container-huge mb-[4px] flex justify-end items-center <?php  if($hero_is != "none") { ?>absolute left-0 right-0  z-[1000]<?php } ?>">
+			?>
+				<section class="max-md:hidden minisite-subheader bg-orange container-huge mb-[4px] flex justify-end items-center <?php if ($hero_is != "none") { ?>absolute left-0 right-0  z-[1000]<?php } ?>">
 					<?php
 					wp_nav_menu([
 						'theme_location' => 'minisite-preheader',
@@ -96,29 +158,29 @@
 						'menu_class' => 'flex justify-end gap-4 px-4 py-[14px] list-none m-0 text-white text-[15px] font-montserrat',
 					]);
 					?>
-                    <div class="mr-4">
-                        <?php do_action( 'wpml_add_language_selector' ); ?>
-                    </div>
+					<div class="mr-4">
+						<?php do_action('wpml_add_language_selector'); ?>
+					</div>
 
 				</section>
 				<section
-					class="max-md:bg-white px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php  if($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
+					class="max-md:bg-white px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php if ($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
 
 					<a class="flex" href="<?php echo the_permalink($ref_id) ?>">
 						<img src="<?php echo $logo['url'] ?>" width="140" class="max-md:w-[100px]" />
 					</a>
 
-                    <div class="md:hidden">
+					<div class="md:hidden">
 
-                        <div class="absolute right-14 top-2">
-                            <?php do_action( 'wpml_add_language_selector' ); ?>
-                        </div>
+						<div class="absolute right-14 top-2">
+							<?php do_action('wpml_add_language_selector'); ?>
+						</div>
 
-                        <a href="#" class="open-menu-mobile block">
-                            <img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
-                                 alt="button mobile menu">
-                        </a>
-                    </div>
+						<a href="#" class="open-menu-mobile block">
+							<img class="" src="<?= get_bloginfo('template_directory') ?>/assets/media/button-mobile-menu.svg"
+								alt="button mobile menu">
+						</a>
+					</div>
 
 					<a href="#" class="close-menu-mobile hidden ">
 						<img class="mt-2" src="<?= get_bloginfo('template_directory') ?>/assets/media/close-menu-mobile.svg"
@@ -155,24 +217,24 @@
 				<?php
 			}
 
-            if($hero_is != "none") {
-                get_template_part('partials/hero');
-            } else {
-                if ($mini_site) {
-                    ?>
-                    <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
-                        <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
-                            <li>
-                                <a href="<?php the_permalink($ref_id); ?>">fdhpa-17</a>
-                            </li>
-                            <li class="font-bold tracking-wider">
-                                <?php the_title() ?>
-                            </li>
-                        </ol>
-                    </nav>
-                    <?php
-                }
-            }
+			if ($hero_is != "none") {
+				get_template_part('partials/hero');
+			} else {
+				if ($mini_site) {
+				?>
+					<nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
+						<ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
+							<li>
+								<a href="<?php the_permalink($ref_id); ?>">fdhpa-17</a>
+							</li>
+							<li class="font-bold tracking-wider">
+								<?php the_title() ?>
+							</li>
+						</ol>
+					</nav>
+			<?php
+				}
+			}
 
 			?>
 			<a href="/carte-camping/" id="cta-button" class="cta-button opacity-0 translate-y-5 md:hidden z-[999]
@@ -182,6 +244,6 @@
          max-md:py-[10px] max-md:bottom-[20px]
          transition-all duration-500 ease-out [&.show]:opacity-100 [&.show]:translate-y-0">
 				<img src="<?= get_stylesheet_directory_uri() ?>/assets/media/icon-button-calendar.svg" alt="Button Voir dispo">
-				<?= __('Voir les disponibilités','fdhpa17'); ?>
-					</a>
+				<?= __('Voir les disponibilités', 'fdhpa17'); ?>
+			</a>
 		</header>
