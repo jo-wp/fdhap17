@@ -548,6 +548,7 @@ if ($apidae_raw) {
           </div>
         </div>
       <?php endif; ?>
+      <?php if(get_post_meta($post->ID,'email',true)): ?>
       <div class="bloc-sidebar-contact px-[40px] py-[12px] border border-solid border-[#DDD] rounded-[20px] mb-[26px]">
         <div>
           <p class="m-0 text-center font-arial text-[16px] font-[400] text-[#777777] leading-[24px] mb-[10px]">
@@ -557,14 +558,16 @@ if ($apidae_raw) {
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
             <a href="#" class="button button--bg-orange max-md:px-[20px]"
               data-featherlight="#contactFeatherlight"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+              
+                <?= do_shortcode('[ninja_form id=2]'); ?>
             <div class=" hidden ">
               <div id="contactFeatherlight">
-                <?= do_shortcode('[ninja_form id=2]'); ?>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <?php endif; ?>
       <div class="bloc-sidebar-map rounded-[20px]">
         <div id="map" class="max-w-full min-h-[290px] rounded-[20px]"
           data-longitude="<?= get_post_meta($post->ID, 'longitude', true) ?>"
