@@ -6,7 +6,7 @@ $under_title = get_field('sous_titre');
   <div class="single-header__timeline flex flex-row flex-wrap gap-[60px] items-center justify-center md:mb-[50px]">
     <div class="time flex flex-row flex-wrap gap-3 items-center justify-center">
       <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-time.svg" />
-      <p class=" font-arial text-[14px] text-black font-[700]">5 minutes</p>
+      <p class=" font-arial text-[14px] text-black font-[700]"><?= \PressWindStarter\get_reading_time(); ?> minutes</p>
     </div>
     <div class="date flex flex-row flex-wrap gap-3 items-center justify-center">
       <img src="<?= get_bloginfo('template_directory') ?>/assets/media/icon-calendar.svg">
@@ -47,13 +47,6 @@ $under_title = get_field('sous_titre');
             href="https://t.me/share/url?url=<?= get_permalink($post->ID); ?>&text=<?= get_the_title($post->ID); ?>" target="_blank">
             <img src="<?= get_bloginfo('template_directory') ?>/assets/media/logo-telegram.svg"
               alt="Icon de partager l'article <?= $post->post_title; ?> par mail" />
-          </a>
-        </li>
-        <li class="hover:-translate-y-1 transition-all duration-300">
-          <a class=" hover:no-underline "
-            href="<?= get_permalink($post->ID); ?>" target="_blank">
-            <img src="<?= get_bloginfo('template_directory') ?>/assets/media/mdi_instagram.svg"
-              alt="Icon de partager l'article <?= $post->post_title; ?> avec Instagram" />
           </a>
         </li>
       </ul>

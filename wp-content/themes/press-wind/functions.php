@@ -1067,3 +1067,16 @@ add_filter('wpseo_breadcrumb_links', function ($links) {
 
   return $new;
 });
+
+function get_reading_time($post_id = null, $wpm = 200) {
+    $post_id = $post_id ?: get_the_ID();
+    $content = get_post_field('post_content', $post_id);
+
+    $clean_content = wp_strip_all_tags(strip_shortcodes($content));
+
+    $word_count = str_word_count($clean_content);
+
+    $time = ceil($word_count / $wpm);
+
+    return $time;
+}
