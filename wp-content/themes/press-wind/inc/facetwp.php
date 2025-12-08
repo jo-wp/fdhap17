@@ -83,7 +83,7 @@ add_filter('facetwp_query_args', function ($args, $class) {
             $context_slug = $parts[count($parts) - 1]; // ex: "piscine" ou "ville"
 
             // On évite destination / liste
-            if (taxonomy_exists($context_tax) && !in_array($context_tax, ['destination', 'liste'], true)) {
+            if (taxonomy_exists($context_tax) && !in_array($context_tax, ['liste'], true)) {
 
                 $context_term = get_term_by('slug', $context_slug, $context_tax);
 
