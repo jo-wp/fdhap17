@@ -13,20 +13,23 @@ function shortcode_featured_campings()
 }
 add_shortcode('featured_campings', 'shortcode_featured_campings');
 
-function camping_title_shortcode( $atts ) {
-    // Récupère le post courant
-    global $post;
-
-    if ( ! $post ) {
-        return '';
+add_filter('ninja_forms_render_default_value', function ($default, $field) {
+    // Vérifie si on est sur une page avec un post
+    if (!is_singular()) {
+        return $default;
     }
 
-    // Optionnel : on vérifie qu'on est bien sur un CPT "camping"
-    if ( get_post_type( $post ) !== 'camping' ) {
-        return '';
+    // Clé de champ Ninja Forms
+    if ($field['key'] === 'hidden_1') {
+        return get_the_title();
     }
 
-    // Renvoie le title du camping
-    return get_the_title( $post );
-}
-add_shortcode( 'camping_title', 'camping_title_shortcode' );
+    return $default;
+}, 10, 2);
+
+add_filter('ninja_forms_merge_tag_data', function ($tags) {
+    if (is_singular()) {
+        $tags['post:title'] = get_the_title();
+    }
+    return $tags;
+});
