@@ -1778,6 +1778,7 @@ if (defined('WP_CLI') && WP_CLI) {
      * 
      * @subcommand sync-lists-from-terms
      */
+
     public function sync_lists_from_terms($args, $assoc_args)
     {
       $tax_slug = 'liste';
@@ -1785,10 +1786,6 @@ if (defined('WP_CLI') && WP_CLI) {
       if (! taxonomy_exists($tax_slug)) {
         \WP_CLI::error("La taxonomie '{$tax_slug}' n'existe pas.");
       }
-
-      // if (! function_exists('get_field')) {
-      //   \WP_CLI::error("ACF n'est pas disponible (get_field() manquant).");
-      // }
 
       // Meta key pour retrouver le camping à partir de l'ID APIDAE
       $meta_key = isset($assoc_args['meta-key']) ? sanitize_key($assoc_args['meta-key']) : 'apidae_id';
@@ -1855,6 +1852,34 @@ if (defined('WP_CLI') && WP_CLI) {
         }
 
         \WP_CLI::log("Terme {$term_label} : traitement de la sélection APIDAE {$selection_id}…");
+
+        // Préparer la map des ID de termes par langue pour CE terme (si WPML)
+        $term_ids_by_lang = [
+          'default' => (int) $term->term_id,
+        ];
+
+        if (defined('ICL_SITEPRESS_VERSION')) {
+          $term_element_type = apply_filters('wpml_element_type', $tax_slug);
+          $term_trid = apply_filters('wpml_element_trid', null, (int) $term->term_id, $term_element_type);
+
+          if ($term_trid) {
+            $term_translations = (array) apply_filters(
+              'wpml_get_element_translations',
+              [],
+              $term_trid,
+              $term_element_type
+            );
+
+            if (! empty($term_translations)) {
+              $term_ids_by_lang = [];
+              foreach ($term_translations as $lang_code => $translation) {
+                if (! empty($translation->element_id)) {
+                  $term_ids_by_lang[$lang_code] = (int) $translation->element_id;
+                }
+              }
+            }
+          }
+        }
 
         $first      = 0;
         $numFound   = null;
@@ -1931,18 +1956,101 @@ if (defined('WP_CLI') && WP_CLI) {
 
             $post_id = (int) $q->posts[0];
 
-            if ($dry) {
-              \WP_CLI::log("    [DRY-RUN] Attacher le terme {$term_label} au camping #{$post_id} (APIDAE {$apidae_id}).");
-            } else {
-              $r = wp_set_object_terms($post_id, $term->term_id, $tax_slug, true);
-              if (is_wp_error($r)) {
-                $global_errors++;
-                \WP_CLI::warning("    Erreur wp_set_object_terms pour le camping #{$post_id} : " . $r->get_error_message());
+            /**
+             * À partir d'ici : gestion WPML
+             * - On récupère toutes les traductions du camping (post)
+             * - On récupère le bon terme dans la langue du post (si taxo traduite)
+             * - On attache le(s) terme(s) à toutes les traductions
+             */
+
+            // Liste des posts concernés : post trouvé + ses traductions
+            $post_ids_for_terms = [$post_id];
+
+            if (defined('ICL_SITEPRESS_VERSION')) {
+              $post_type         = get_post_type($post_id);
+              $post_element_type = apply_filters('wpml_element_type', $post_type);
+              $post_trid         = apply_filters('wpml_element_trid', null, $post_id, $post_element_type);
+
+              if ($post_trid) {
+                $post_translations = (array) apply_filters(
+                  'wpml_get_element_translations',
+                  [],
+                  $post_trid,
+                  $post_element_type
+                );
+
+                if (! empty($post_translations)) {
+                  $post_ids_for_terms = [];
+                  foreach ($post_translations as $lang_code => $translation) {
+                    if (! empty($translation->element_id)) {
+                      $post_ids_for_terms[] = (int) $translation->element_id;
+                    }
+                  }
+                  $post_ids_for_terms = array_values(array_unique($post_ids_for_terms));
+                }
+              }
+            }
+
+            // On applique maintenant le terme sur toutes les traductions du camping
+            foreach ($post_ids_for_terms as $translated_post_id) {
+
+              if ($dry) {
+                \WP_CLI::log(
+                  sprintf(
+                    '    [DRY-RUN] Attacher le terme %s (%d) au camping #%d (APIDAE %d).',
+                    $term->name,
+                    $term->term_id,
+                    $translated_post_id,
+                    $apidae_id
+                  )
+                );
                 continue;
               }
+
+              // Par défaut on attache le terme original
+              $term_id_to_attach = (int) $term->term_id;
+
+              // Si WPML est actif, on essaie de prendre le terme dans la langue du post
+              if (defined('ICL_SITEPRESS_VERSION')) {
+
+                $lang_details = apply_filters('wpml_post_language_details', null, $translated_post_id);
+                $lang_code    = (is_array($lang_details) && ! empty($lang_details['language_code']))
+                  ? $lang_details['language_code']
+                  : null;
+
+                if ($lang_code && isset($term_ids_by_lang[$lang_code])) {
+                  $term_id_to_attach = $term_ids_by_lang[$lang_code];
+                } elseif (isset($term_ids_by_lang['default'])) {
+                  $term_id_to_attach = $term_ids_by_lang['default'];
+                }
+              }
+
+              $r = wp_set_object_terms($translated_post_id, $term_id_to_attach, $tax_slug, true);
+
+              if (is_wp_error($r)) {
+                $global_errors++;
+                \WP_CLI::warning(
+                  sprintf(
+                    '    Erreur wp_set_object_terms pour le camping #%d : %s',
+                    $translated_post_id,
+                    $r->get_error_message()
+                  )
+                );
+                continue;
+              }
+
               $attached++;
               $global_attached++;
-              \WP_CLI::log("    OK : camping #{$post_id} attaché au terme {$term_label} (APIDAE {$apidae_id}).");
+
+              \WP_CLI::log(
+                sprintf(
+                  '    OK : camping #%d attaché au terme %s (%d) (APIDAE %d).',
+                  $translated_post_id,
+                  $term->name,
+                  $term_id_to_attach,
+                  $apidae_id
+                )
+              );
             }
           }
 
