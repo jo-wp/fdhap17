@@ -52,7 +52,8 @@ class CPT_CAMPING
       'cible',
       'groupe',
       'confort',
-      'paiement'
+      'paiement',
+      'liste'
     ];
 
     foreach ($taxonomies as $taxonomy) {

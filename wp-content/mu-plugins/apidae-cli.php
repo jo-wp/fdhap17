@@ -1742,6 +1742,230 @@ if (defined('WP_CLI') && WP_CLI) {
 
       WP_CLI::success("Fini. ok=$ok noid=$noid noimg=$noimg errors=$err");
     }
+
+    /**
+     * Attache les campings existants aux termes de la taxonomie "liste"
+     * à partir de l'ACF "apidae_id_list_selection" sur chaque terme.
+     *
+     * Pour chaque terme "liste" :
+     * - lit le champ ACF "apidae_id_list_selection" (ID de sélection APIDAE)
+     * - récupère tous les objets touristiques de cette sélection
+     * - pour chaque objet, trouve le camping existant via une meta (par défaut "apidae_id")
+     * - ajoute le terme "liste" au camping (sans créer de camping)
+     *
+     * ## OPTIONS
+     *
+     * [--liste-ids=<ids>]
+     * : Liste d'IDs de termes "liste" séparés par virgules. Par défaut : tous les termes.
+     *
+     * [--meta-key=<meta_key>]
+     * : Meta key utilisée pour stocker l'ID APIDAE sur les campings (défaut: apidae_id).
+     *
+     * [--count=<n>]
+     * : Nombre max d'objets par page APIDAE (1–200,  défaut 200).
+     *
+     * [--sleep=<sec>]
+     * : Pause (en secondes) entre les pages APIDAE (défaut 0).
+     *
+     * [--dry-run]
+     * : N'effectue pas les mises à jour, affiche seulement ce qui serait fait.
+     *
+     * ## EXAMPLES
+     *
+     *   wp apidae sync-lists-from-terms
+     *   wp apidae sync-lists-from-terms --liste-ids=10,12
+     *   wp apidae sync-lists-from-terms --meta-key=apidae_obj_id --dry-run
+     * 
+     * @subcommand sync-lists-from-terms
+     */
+    public function sync_lists_from_terms($args, $assoc_args)
+    {
+      $tax_slug = 'liste';
+
+      if (! taxonomy_exists($tax_slug)) {
+        \WP_CLI::error("La taxonomie '{$tax_slug}' n'existe pas.");
+      }
+
+      // if (! function_exists('get_field')) {
+      //   \WP_CLI::error("ACF n'est pas disponible (get_field() manquant).");
+      // }
+
+      // Meta key pour retrouver le camping à partir de l'ID APIDAE
+      $meta_key = isset($assoc_args['meta-key']) ? sanitize_key($assoc_args['meta-key']) : 'apidae_id';
+
+      // Taille de page APIDAE (1–200)
+      $count = isset($assoc_args['count']) ? (int) $assoc_args['count'] : 200;
+      if ($count <= 0 || $count > 200) {
+        $count = 200;
+      }
+
+      $sleep = isset($assoc_args['sleep']) ? (int) $assoc_args['sleep'] : 0;
+      $dry   = isset($assoc_args['dry-run']);
+
+      // Sélection des termes "liste" à traiter
+      $include_ids = [];
+      if (! empty($assoc_args['liste-ids'])) {
+        $include_ids = array_filter(array_map('intval', explode(',', $assoc_args['liste-ids'])));
+      }
+
+      $term_args = [
+        'taxonomy'   => $tax_slug,
+        'hide_empty' => false,
+      ];
+
+      if (! empty($include_ids)) {
+        $term_args['include'] = $include_ids;
+      }
+
+      $terms = get_terms($term_args);
+
+      if (is_wp_error($terms) || empty($terms)) {
+        \WP_CLI::warning('Aucun terme "liste" trouvé à traiter.');
+        return;
+      }
+
+      \WP_CLI::log(sprintf('Nombre de termes "%s" à traiter : %d', $tax_slug, count($terms)));
+
+      $global_attached        = 0;
+      $global_skipped_no_term = 0;
+      $global_skipped_no_post = 0;
+      $global_errors          = 0;
+
+      foreach ($terms as $term) {
+
+        $term_label = sprintf('%s (%d)', $term->name, $term->term_id);
+
+        // ACF sur le terme : apidae_id_list_selection
+        // $field_key   = $tax_slug . '_' . $term->term_id;
+        // $selection_id = get_field('apidae_id_list_selection', $field_key);
+
+        $selection_id = get_term_meta($term->term_id, 'apidae_id_list_selection', true);
+
+        if (empty($selection_id)) {
+          \WP_CLI::log("Terme {$term_label} : pas de apidae_id_list_selection, on saute.");
+          $global_skipped_no_term++;
+          continue;
+        }
+
+        $selection_id = (int) $selection_id;
+        if ($selection_id <= 0) {
+          \WP_CLI::log("Terme {$term_label} : apidae_id_list_selection invalide ({$selection_id}), on saute.");
+          $global_skipped_no_term++;
+          continue;
+        }
+
+        \WP_CLI::log("Terme {$term_label} : traitement de la sélection APIDAE {$selection_id}…");
+
+        $first      = 0;
+        $numFound   = null;
+        $attached   = 0;
+        $no_post    = 0;
+        $page_index = 0;
+
+        do {
+          $params = [
+            'selectionIds' => [$selection_id],
+            'count'        => $count,
+            'first'        => $first,
+          ];
+
+          $res = \APIDAE_Service::connect_to_apidae(
+            '/recherche/list-objets-touristiques',
+            $params,
+            'GET',
+            true
+          );
+
+          if (! $res['success']) {
+            \WP_CLI::warning("Terme {$term_label} : erreur APIDAE : " . $res['message']);
+            $global_errors++;
+            break;
+          }
+
+          $data = $res['data'] ?? [];
+
+          if (null === $numFound) {
+            $numFound = (int) ($data['numFound'] ?? 0);
+            \WP_CLI::log("  → numFound = {$numFound}");
+            if (0 === $numFound) {
+              break;
+            }
+          }
+
+          $items = $data['objetsTouristiques'] ?? [];
+
+          if (empty($items)) {
+            break;
+          }
+
+          $page_index++;
+          \WP_CLI::log(sprintf('  Page %d (first=%d, count=%d)', $page_index, $first, $count));
+
+          foreach ($items as $item) {
+            if (empty($item) || empty($item['id'])) {
+              continue;
+            }
+
+            $apidae_id = (int) $item['id'];
+
+            // On cherche le camping existant à partir de la meta apidae_id (ou autre meta-key)
+            $q = new \WP_Query([
+              'post_type'      => 'camping',
+              'post_status'    => 'any',
+              'fields'         => 'ids',
+              'posts_per_page' => 1,
+              'meta_query'     => [
+                [
+                  'key'   => $meta_key,
+                  'value' => $apidae_id,
+                ],
+              ],
+            ]);
+
+            if (empty($q->posts)) {
+              $no_post++;
+              $global_skipped_no_post++;
+              \WP_CLI::log("    APIDAE {$apidae_id} : aucun camping trouvé (meta {$meta_key}), on saute.");
+              continue;
+            }
+
+            $post_id = (int) $q->posts[0];
+
+            if ($dry) {
+              \WP_CLI::log("    [DRY-RUN] Attacher le terme {$term_label} au camping #{$post_id} (APIDAE {$apidae_id}).");
+            } else {
+              $r = wp_set_object_terms($post_id, $term->term_id, $tax_slug, true);
+              if (is_wp_error($r)) {
+                $global_errors++;
+                \WP_CLI::warning("    Erreur wp_set_object_terms pour le camping #{$post_id} : " . $r->get_error_message());
+                continue;
+              }
+              $attached++;
+              $global_attached++;
+              \WP_CLI::log("    OK : camping #{$post_id} attaché au terme {$term_label} (APIDAE {$apidae_id}).");
+            }
+          }
+
+          $first += $count;
+
+          if ($sleep > 0) {
+            sleep($sleep);
+          }
+        } while ($first < $numFound);
+
+        \WP_CLI::log("Résumé terme {$term_label} : attachés={$attached}, sans camping correspondant={$no_post}");
+      }
+
+      \WP_CLI::success(
+        sprintf(
+          'Terminé. Total attachés=%d, termes sans sélection valide=%d, objets sans camping=%d, erreurs=%d',
+          $global_attached,
+          $global_skipped_no_term,
+          $global_skipped_no_post,
+          $global_errors
+        )
+      );
+    }
   }
 
   WP_CLI::add_command('apidae', 'APIDAE_CLI_Command');

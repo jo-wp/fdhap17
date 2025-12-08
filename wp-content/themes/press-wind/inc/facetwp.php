@@ -23,10 +23,10 @@ add_filter('facetwp_query_args', function ($args, $class) {
                 $term = get_term_by('slug', $slug, 'destination');
                 if ($term && !is_wp_error($term)) {
                     $args['tax_query'][] = [
-                        'taxonomy'        => 'destination',
-                        'field'           => 'term_id',
-                        'terms'           => [(int) $term->term_id],
-                        'include_children'=> true,
+                        'taxonomy'         => 'destination',
+                        'field'            => 'term_id',
+                        'terms'            => [(int) $term->term_id],
+                        'include_children' => true,
                     ];
                 }
             }
@@ -56,14 +56,95 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
             if (!$has_destination) {
                 $args['tax_query'][] = [
-                    'taxonomy'        => 'destination',
-                    'field'           => 'term_id',
-                    'terms'           => [$term_id],
-                    'include_children'=> true,
+                    'taxonomy'         => 'destination',
+                    'field'            => 'term_id',
+                    'terms'            => [$term_id],
+                    'include_children' => true,
                 ];
             }
         }
     }
+
+
+    /*
+     * 3) NOUVELLE VERSION : on se base UNIQUEMENT sur l’URI
+     *    /aquatique/piscine/ → taxo = "aquatique", slug = "piscine"
+     *    si le term a un ACF "apidae_list_selection" NON VIDE,
+     *    on supprime le filtre sur cette taxo et on ajoute un filtre sur "liste".
+     */
+
+    if (!empty($uri) && function_exists('get_field')) {
+
+        $path  = trim(wp_parse_url($uri, PHP_URL_PATH), '/');
+        $parts = explode('/', $path);
+
+        if (count($parts) >= 2) {
+            $context_tax  = $parts[count($parts) - 2]; // ex: "aquatique" ou "atout"
+            $context_slug = $parts[count($parts) - 1]; // ex: "piscine" ou "ville"
+
+            // On évite destination / liste
+            if (taxonomy_exists($context_tax) && !in_array($context_tax, ['destination', 'liste'], true)) {
+
+                $context_term = get_term_by('slug', $context_slug, $context_tax);
+
+                if ($context_term && !is_wp_error($context_term)) {
+
+                    $field_key   = $context_term->taxonomy . '_' . $context_term->term_id;
+                    $liste_value = get_field('apidae_list_selection', $field_key);
+
+                    if (!empty($liste_value)) {
+
+                        $apidae_terms = [];
+
+                        if (is_array($liste_value)) {
+                            foreach ($liste_value as $val) {
+                                if (is_object($val) && isset($val->term_id)) {
+                                    $apidae_terms[] = (int) $val->term_id;
+                                } else {
+                                    $apidae_terms[] = (int) $val;
+                                }
+                            }
+                        } elseif (is_object($liste_value) && isset($liste_value->term_id)) {
+                            $apidae_terms[] = (int) $liste_value->term_id;
+                        } else {
+                            $apidae_terms[] = (int) $liste_value;
+                        }
+
+                        $apidae_terms = array_values(array_unique(array_filter(array_map('intval', $apidae_terms))));
+
+                        if (!empty($apidae_terms)) {
+
+                            // 1) On supprime les tax_query sur la taxo de contexte (aquatique / atout, etc.)
+                            if (!empty($args['tax_query']) && is_array($args['tax_query'])) {
+                                foreach ($args['tax_query'] as $k => $tax_query_item) {
+                                    if (!is_array($tax_query_item)) {
+                                        continue;
+                                    }
+                                    if (isset($tax_query_item['taxonomy']) && $tax_query_item['taxonomy'] === $context_tax) {
+                                        unset($args['tax_query'][$k]);
+                                    }
+                                }
+                            }
+
+                            // 2) On supprime la query_var brute éventuelle (ex: $args['aquatique'] = 'piscine')
+                            if (isset($args[$context_tax])) {
+                                unset($args[$context_tax]);
+                            }
+
+                            // 3) On AJOUTE un filtre sur la taxo "liste" (sans toucher aux facets / destination)
+                            $args['tax_query'][] = [
+                                'taxonomy'         => 'liste',
+                                'field'            => 'term_id',
+                                'terms'            => $apidae_terms,
+                                'include_children' => true,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     // Si plusieurs conditions taxo existent, définir une relation par défaut
     if (!empty($args['tax_query']) && is_array($args['tax_query']) && !isset($args['tax_query']['relation'])) {
@@ -90,7 +171,7 @@ add_filter('facetwp_query_args', function ($args, $class) {
     }
 
     return $args;
-}, 10, 2);
+}, 999, 2);
 
 
 

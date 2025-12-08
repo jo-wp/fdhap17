@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Variable Yoast: %%campings_count%%
@@ -7,28 +8,67 @@ add_action('wpseo_register_extra_replacements', function () {
 
     $count_campings = function ($term_id, $taxonomy, $post_type = 'camping') {
 
-
         if (empty($term_id) || empty($taxonomy)) {
             return 0;
+        }
+
+        /**
+         * SURSURFACE "liste"
+         * ------------------
+         * Si on n’est pas déjà sur la taxo "liste", on vérifie si le terme courant
+         * a un champ ACF (par ex. "apidae_list_selection") qui pointe vers un terme
+         * de la taxonomie "liste". Si oui, on compte les campings liés à cette "liste"
+         * plutôt que ceux liés au terme d’origine.
+         */
+        if ('liste' !== $taxonomy && function_exists('get_field')) {
+
+            // format attendu par ACF pour un term : "taxonomy_termId"
+            $field_key   = $taxonomy . '_' . $term_id;
+            $liste_value = get_field('apidae_list_selection', $field_key);
+
+            if (!empty($liste_value)) {
+
+                // Normaliser en ID de terme de la taxo "liste"
+                $liste_term_id = null;
+
+                if (is_array($liste_value)) {
+                    // Si plusieurs valeurs, on prend la première
+                    $first = reset($liste_value);
+                    if (is_object($first) && isset($first->term_id)) {
+                        $liste_term_id = (int) $first->term_id;
+                    } else {
+                        $liste_term_id = (int) $first;
+                    }
+                } elseif (is_object($liste_value) && isset($liste_value->term_id)) {
+                    $liste_term_id = (int) $liste_value->term_id;
+                } else {
+                    $liste_term_id = (int) $liste_value;
+                }
+
+                if ($liste_term_id > 0) {
+                    // On bascule le comptage sur la taxo "liste"
+                    $term_id  = $liste_term_id;
+                    $taxonomy = 'liste';
+                }
+            }
         }
 
         $q = new WP_Query([
             'post_type'      => $post_type,
             'post_status'    => 'publish',
             'tax_query'      => [[
-                'taxonomy' => $taxonomy,
-                'terms'    => (int) $term_id,
-                'field'    => 'term_id',
-                'include_children' => true,
+                'taxonomy'        => $taxonomy,
+                'terms'           => (int) $term_id,
+                'field'           => 'term_id',
+                'include_children'=> true,
             ]],
             'fields'         => 'ids',
-            'posts_per_page' => 1,     
-            'no_found_rows'  => false,  
+            'posts_per_page' => 1,
+            'no_found_rows'  => false,
             'update_post_term_cache' => false,
             'update_post_meta_cache' => false,
             'ignore_sticky_posts'    => true,
         ]);
-
 
         return (int) $q->found_posts;
     };
@@ -39,14 +79,11 @@ add_action('wpseo_register_extra_replacements', function () {
             $obj = get_queried_object();
  
             if ($obj && !empty($obj->term_id) && !empty($obj->taxonomy)) {
-       
                 return [$obj->term_id, $obj->taxonomy];
             }
         }
 
-    
         if (is_admin()) {
-         
             $term_id = isset($_GET['tag_ID']) ? (int) $_GET['tag_ID'] : 0;
             $tax     = isset($_GET['taxonomy']) ? sanitize_key($_GET['taxonomy']) : '';
             if ($term_id && $tax) {
@@ -62,9 +99,6 @@ add_action('wpseo_register_extra_replacements', function () {
         function () use ($resolve_current_term, $count_campings) {
             list($term_id, $taxonomy) = $resolve_current_term();
 
-      
-
-          
             $post_type = 'camping';
 
             $count = $count_campings($term_id, $taxonomy, $post_type);
@@ -72,7 +106,7 @@ add_action('wpseo_register_extra_replacements', function () {
             return (string) $count;
         },
         'advanced',
-        'Nombre de contenus "camping" liés au terme de taxonomie courant.'
+        'Nombre de contenus "camping" liés au terme de taxonomie courant (ou à sa liste associée).'
     );
 
     wpseo_register_var_replacement(
@@ -91,6 +125,7 @@ add_action('wpseo_register_extra_replacements', function () {
         'Nombre de "camping(s)" avec gestion singulier/pluriel.'
     );
 });
+
 
 
 add_filter( 'wpseo_breadcrumb_links', function( $links ) {
@@ -187,4 +222,4 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
     }
 
     return $links;
-}, 9999); // très tard, pour passer après tes autres filtres
+}, 9999); 

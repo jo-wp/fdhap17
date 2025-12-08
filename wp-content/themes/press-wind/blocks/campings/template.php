@@ -29,27 +29,67 @@ $template = [
 
 $campings_count = 0;
 
-
 if ($term && isset($term->term_id, $term->taxonomy)) {
+
+  // Taxonomie + terms utilisés pour la requête
+  $taxonomy = $term->taxonomy;
+  $term_ids = [$term->term_id];
+
+  /**
+   * Si on n’est pas déjà sur la taxo "liste", on regarde si le term courant
+   * possède un champ ACF (ex: "apidae_list_selection") qui pointe vers
+   * un ou plusieurs termes de la taxonomie "liste".
+   * Si oui, on compte les campings liés à cette/ces "liste(s)" à la place.
+   */
+  if ('liste' !== $taxonomy && function_exists('get_field')) {
+    // Clé ACF pour un term : "taxonomy_termId"
+    $field_key   = $taxonomy . '_' . $term->term_id;
+    $liste_value = get_field('apidae_list_selection', $field_key);
+
+    if (!empty($liste_value)) {
+      $liste_ids = [];
+
+      if (is_array($liste_value)) {
+        foreach ($liste_value as $val) {
+          if (is_object($val) && isset($val->term_id)) {
+            $liste_ids[] = (int) $val->term_id;
+          } else {
+            $liste_ids[] = (int) $val;
+          }
+        }
+      } elseif (is_object($liste_value) && isset($liste_value->term_id)) {
+        $liste_ids[] = (int) $liste_value->term_id;
+      } else {
+        $liste_ids[] = (int) $liste_value;
+      }
+
+      $liste_ids = array_values(array_unique(array_filter($liste_ids)));
+
+      if (!empty($liste_ids)) {
+        $taxonomy = 'liste';   // ⚠️ slug de ta taxonomie liste
+        $term_ids = $liste_ids;
+      }
+    }
+  }
+
   $q = new WP_Query([
-    'post_type' => 'camping',
-    'post_status' => 'publish',
-    'posts_per_page' => 1,
-    'no_found_rows' => false,
-    'tax_query' => [
-      [
-        'taxonomy' => $term->taxonomy,
-        'field' => 'term_id',
-        'terms' => [$term->term_id],
-        'include_children' => true,
-        'operator' => 'IN',
-      ]
-    ],
-    'fields' => 'ids',
+    'post_type'           => 'camping',
+    'post_status'         => 'publish',
+    'posts_per_page'      => 1,
+    'no_found_rows'       => false,
+    'fields'              => 'ids',
+    'ignore_sticky_posts' => true,
+    'tax_query'           => [[
+      'taxonomy'         => $taxonomy,
+      'field'            => 'term_id',
+      'terms'            => $term_ids,
+      'include_children' => true,
+      'operator'         => 'IN',
+    ]],
   ]);
+
   $campings_count = (int) $q->found_posts;
   wp_reset_postdata();
-
 }
 ?>
 <section <?= get_block_wrapper_attributes(["class" => 'container-huge block-campings bg-bgOrange rounded-[100px] p-[40px] md:p-[100px]']); ?>>

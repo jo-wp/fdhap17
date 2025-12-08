@@ -1,0 +1,56 @@
+{
+    "key": "group_6935bfa1c4535",
+    "title": "Liste de sélection (Apidae)",
+    "fields": [
+        {
+            "key": "field_6935c14e485ba",
+            "label": "Choisissez une liste de selection (apidae)",
+            "name": "apidae_list_selection",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "liste",
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "all"
+            },
+            {
+                "param": "taxonomy",
+                "operator": "!=",
+                "value": "liste"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1765144974
+}
