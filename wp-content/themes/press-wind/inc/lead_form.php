@@ -58,7 +58,6 @@ function rp_lead_form_cm_shortcode($atts)
                 <label for="6897428">En famille</label>
               </div>
             </fieldset>
-
             <div class="mt-[20px] md:mt-[50px]">
               <div>
                 <div>

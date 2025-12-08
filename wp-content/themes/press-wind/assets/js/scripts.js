@@ -2,13 +2,13 @@ import importObserver from './importObserver.js'
 import displayCardMapCamping from './campings/map.js'
 import generateSummary from './articles/main.js'
 import instagramOverride from './instagram/main.js'
-import filtreMobile from './facetwp/mobile.js';
-import menuMobile from './menu/main.js';
-import ctaMobile from './menu/cta.js';
-import displayCardMapSearchCampings from './campings/block-search-campings.js';
+import filtreMobile from './facetwp/mobile.js'
+import menuMobile from './menu/main.js'
+import ctaMobile from './menu/cta.js'
+import displayCardMapSearchCampings from './campings/block-search-campings.js'
 import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
-import isSticky from './menu/sticky.js';
+import isSticky from './menu/sticky.js'
 import Splide from '@splidejs/splide'
 
 window.Splide = Splide
@@ -39,60 +39,76 @@ function menuToggle() {
 }
 
 function menuMobileToggle() {
-  const openBtn = document.querySelector('.open-menu-mobile');
-  const closeBtn = document.querySelector('.close-menu-mobile');
-  const navigationWrapper = document.querySelector('.block-hero__content__navigation');
-  const navigation = document.querySelector('.block-hero__content__navigation > div');
-  const navigationMiniSite = document.querySelector('.block-minisite__menu');
-  const targetNav = navigation || navigationMiniSite;
+  const openBtn = document.querySelector('.open-menu-mobile')
+  const closeBtn = document.querySelector('.close-menu-mobile')
+  const navigationWrapper = document.querySelector(
+    '.block-hero__content__navigation',
+  )
+  const navigation = document.querySelector(
+    '.block-hero__content__navigation > div',
+  )
+  const navigationMiniSite = document.querySelector('.block-minisite__menu')
+  const targetNav = navigation || navigationMiniSite
 
-  let scrollY = 0; // pour mémoriser la position avant blocage
+  let scrollY = 0 // pour mémoriser la position avant blocage
 
   if (openBtn && closeBtn && targetNav) {
     // Ouvrir le menu
     openBtn.addEventListener('click', function (e) {
-      e.preventDefault();
+      e.preventDefault()
 
       if (navigationWrapper) {
-        navigationWrapper.style.zIndex = '9999';
+        navigationWrapper.style.zIndex = '9999'
       }
 
-      targetNav.classList.add('active');
-      openBtn.classList.add('hidden');
-      closeBtn.classList.remove('hidden');
+      targetNav.classList.add('active')
+      openBtn.classList.add('hidden')
+      closeBtn.classList.remove('hidden')
 
       // 🔒 Bloquer le scroll (mobile + desktop)
-      scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
-    });
+      scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.left = '0'
+      document.body.style.right = '0'
+      document.body.style.width = '100%'
+    })
 
     // Fermer le menu
     closeBtn.addEventListener('click', function (e) {
-      e.preventDefault();
+      e.preventDefault()
       if (navigationWrapper) {
-        navigationWrapper.style.zIndex = '2';
+        navigationWrapper.style.zIndex = '2'
       }
 
-      targetNav.classList.remove('active');
-      closeBtn.classList.add('hidden');
-      openBtn.classList.remove('hidden');
+      targetNav.classList.remove('active')
+      closeBtn.classList.add('hidden')
+      openBtn.classList.remove('hidden')
 
       // 🔓 Réactiver le scroll
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
-      window.scrollTo(0, scrollY); // revenir à la position précédente
-    });
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.right = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollY) // revenir à la position précédente
+    })
   }
 }
 
-
+function revealPhone() {
+  const phones = document.querySelectorAll('.reveal-phone')
+  if (!phones || phones.length === 0) return
+  phones.forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      if (!el.classList.contains('revealed')) {
+        e.preventDefault() 
+        el.textContent = el.dataset.full
+        el.classList.add('revealed')
+      }
+    })
+  })
+}
 
 function splideJsBlockIdea() {
   const carousel = document.querySelector('.splide__carousel__block_idea')
@@ -162,7 +178,6 @@ function splideJsBlockIdea() {
     initFilter()
   }
 }
-
 
 // function expandFAQItem() {
 //   const questions = document.querySelectorAll('.block-faq li h3')
@@ -295,50 +310,52 @@ function animationBlock() {
   fadeElms.forEach((el) => observer.observe(el))
 }
 
-
-(function () {
-  const searchBar = document.querySelector('.search-bar');
+;(function () {
+  const searchBar = document.querySelector('.search-bar')
 
   function isSearchBarInBottomHalf() {
-    if (!searchBar) return false;
-    const r = searchBar.getBoundingClientRect();
-    const middleY = r.top + r.height / 2;
-    return middleY > window.innerHeight / 2;
+    if (!searchBar) return false
+    const r = searchBar.getBoundingClientRect()
+    const middleY = r.top + r.height / 2
+    return middleY > window.innerHeight / 2
   }
 
   function applyAboveBelow() {
-    const cal = document.querySelector('.fdate-wrap.opened'); // calendrier visible
-    if (!searchBar || !cal) return;
+    const cal = document.querySelector('.fdate-wrap.opened') // calendrier visible
+    if (!searchBar || !cal) return
 
-    const bottomHalf = isSearchBarInBottomHalf();
+    const bottomHalf = isSearchBarInBottomHalf()
 
     // toggle sur la search-bar
-    searchBar.classList.toggle('above', bottomHalf);
+    searchBar.classList.toggle('above', bottomHalf)
 
     // toggle sur le calendrier
-    cal.classList.toggle('above', bottomHalf);
-    cal.classList.toggle('below', !bottomHalf);
+    cal.classList.toggle('above', bottomHalf)
+    cal.classList.toggle('below', !bottomHalf)
   }
 
   // écoute les changements
-  window.addEventListener('scroll', applyAboveBelow, { passive: true });
-  window.addEventListener('resize', applyAboveBelow);
+  window.addEventListener('scroll', applyAboveBelow, { passive: true })
+  window.addEventListener('resize', applyAboveBelow)
 
   // détecte ouverture du calendrier
-  const mo = new MutationObserver(() => applyAboveBelow());
-  mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+  const mo = new MutationObserver(() => applyAboveBelow())
+  mo.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class'],
+  })
 
   // init
-  applyAboveBelow();
-})();
-
-
+  applyAboveBelow()
+})()
 
 // carouselDescription()
 
 document.addEventListener('DOMContentLoaded', () => {
   splideJsBlockIdea()
-  
+
   // expandFAQItem()
   carouselDescription()
   menuToggle()
@@ -355,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
   menuMobile()
   ctaMobile()
   isSticky()
+  revealPhone()
   //Import
   const map = document.querySelector('#map')
   if (map) {
