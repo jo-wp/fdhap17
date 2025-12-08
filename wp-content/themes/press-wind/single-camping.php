@@ -558,10 +558,9 @@ if ($apidae_raw) {
           <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
             <a href="#" class="button button--bg-orange max-md:px-[20px]"
               data-featherlight="#contactFeatherlight"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
-              
-                <?= do_shortcode('[ninja_form id=2]'); ?>
             <div class=" hidden ">
               <div id="contactFeatherlight">
+                <?= do_shortcode('[ninja_form id=2]'); ?>
               </div>
             </div>
           </div>
