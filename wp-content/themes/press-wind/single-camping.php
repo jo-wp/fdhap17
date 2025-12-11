@@ -199,8 +199,8 @@ if ($apidae_raw) {
           <?= apply_filters('the_content', get_the_content()); ?>
         <?php endif; ?>
       </div>
-      <?php if ($id_reservation_direct): ?>
-        <div class="hidden">
+      <?php if ($id_reservation_ctoutvert): ?>
+        <div class="">
 
           <script>
             setTimeout(function() {
@@ -211,7 +211,7 @@ if ($apidae_raw) {
 
           <script>
             window.ctoutvert = {
-              id: <?= $id_reservation_direct; ?>,
+              id: <?= $id_reservation_ctoutvert; ?>,
               lang: 'auto',
               url: 'https://bookingpremium.secureholiday.net/widgets/'
             };
