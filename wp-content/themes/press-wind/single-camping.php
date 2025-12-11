@@ -27,6 +27,7 @@ $image_featured_caption = get_the_post_thumbnail_caption(get_the_ID());
 $galerie_photo_camping = get_field('galerie_photo_camping', get_the_ID());
 
 $id_reservation_direct = get_post_meta($post->ID, 'id_reservation_direct', true);
+$id_reservation_ctoutvert = get_post_meta($post->ID, 'id_reservation_ctoutvert', true);
 $url_reservation_direct = get_post_meta($post->ID, 'url_reservation_direct', true);
 
 $nb_real = get_post_meta($post->ID, 'nb_real', true);
@@ -540,9 +541,38 @@ if ($apidae_raw) {
                 <a href="<?= $website; ?>" target="_blank"
                   class="button button--bg-green"><?= __('Voir tous les tarifs', 'fdhpa17'); ?></a>
               <?php endif; ?>
-              <?php if ($url_reservation_direct): ?>
-                <a href="<?= $url_reservation_direct; ?>" target="_blank"
-                  class="button button--bg-orange"><?= __('Réserver', 'fdhpa17'); ?></a>
+              <?php
+
+              $reservation_url = '';
+
+              if (! empty($id_reservation_ctoutvert)) {
+
+                $id_reservation_ctoutvert = trim($id_reservation_ctoutvert, " \t\n\r\0\x0B/");
+
+                $reservation_url = 'https://reservation.secureholiday.net/fr/' . $id_reservation_ctoutvert . '/';
+              } elseif (! empty($url_reservation_direct)) {
+
+                $value = trim($url_reservation_direct);
+
+                $is_email = filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+
+                $is_phone = preg_match('/^\+?[0-9 .\-()]{6,}$/', $value);
+
+                if (! $is_email && ! $is_phone) {
+                  $url = $value;
+                  if (! preg_match('#^https?://#i', $url)) {
+                    $url = 'https://' . $url;
+                  }
+
+                  if (filter_var($url, FILTER_VALIDATE_URL)) {
+                    $reservation_url = $url;
+                  }
+                }
+              }
+              if ($reservation_url) : ?>
+                <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange">
+                  <?= __('Réserver', 'fdhpa17'); ?>
+                </a>
               <?php endif; ?>
             </div>
           </div>

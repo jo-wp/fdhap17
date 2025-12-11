@@ -133,73 +133,73 @@ class Ctoutvert
     }
   }
 
-public static function ctoutvert_search_holidays($dateFilter = [], $productTypes = [], $onlyWithOffer = false)
-{
-  $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
-  $username = CTOUTVERT_USERNAME;
-  $password = CTOUTVERT_PASSWORD;
-  $id_engine = CTOUTVERT_ID_ENGINE;
+  public static function ctoutvert_search_holidays($dateFilter = [], $productTypes = [], $onlyWithOffer = false)
+  {
+    $wsdl = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+    $username = CTOUTVERT_USERNAME;
+    $password = CTOUTVERT_PASSWORD;
+    $id_engine = CTOUTVERT_ID_ENGINE;
 
-  try {
-    $client = new SoapClient($wsdl, [
-      'trace'      => 1,
-      'exceptions' => true,
-      // utile quand on envoie des listes
-      'features'   => SOAP_SINGLE_ELEMENT_ARRAYS,
-    ]);
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace'      => 1,
+        'exceptions' => true,
+        // utile quand on envoie des listes
+        'features'   => SOAP_SINGLE_ELEMENT_ARRAYS,
+      ]);
 
-    // Par sécurité, assure des dates valides si rien n’est passé
-    if (empty($dateFilter)) {
-      $dateFilter = [
-        'startDate' => date('Y-m-d', strtotime('+1 day')),
-        'endDate'   => date('Y-m-d', strtotime('+3 years')),
+      // Par sécurité, assure des dates valides si rien n’est passé
+      if (empty($dateFilter)) {
+        $dateFilter = [
+          'startDate' => date('Y-m-d', strtotime('+1 day')),
+          'endDate'   => date('Y-m-d', strtotime('+3 years')),
+        ];
+      }
+
+      $params = [
+        'user' => [
+          'user'     => $username,
+          'password' => $password,
+          'idEngine' => $id_engine,
+        ],
+        'language'   => 'FR',
+        // !!! clé correcte (singulier)
+        // 'dateFilter' => $dateFilter,
       ];
+
+      if ($onlyWithOffer) {
+        // N’envoie pas les champs obsolètes
+        $params['specialOfferFilter'] = [
+          // 'ExcludeNonOffer'     => false,   // uniquement des séjours avec offre
+          // 'IncludeClassicOffers'=> false,   // inclure les offres "classiques"
+          'lastMinute' => true,
+          'weekEnd' => true,
+          'flash' => true,
+          'exclusive' => true
+          // 'offerTypes' => ['Classic', 'Injected'], // exemple si tu veux cibler
+          // 'campaignWSCode' => 'XXX',              // optionnel
+          // 'DiscountCode'   => 'PROMO2025',        // optionnel
+        ];
+      }
+
+      // Optionnel : filtrer des types de produits
+      if (!empty($productTypes)) {
+        $params['productFilter'] = [
+          'productTypes' => $productTypes, // vérifie le nom exact attendu par le WSDL
+        ];
+      }
+
+      $result = $client->__soapCall('engine_returnAvailabilityAdvanced', [$params]);
+
+      // DEBUG utile: vérifie ce qui a été réellement envoyé
+      // error_log($client->__getLastRequest());
+
+      return $result;
+    } catch (Exception $e) {
+      error_log('Erreur appel engine_returnAvailabilityAdvanced : ' . $e->getMessage());
+      return $e->getMessage();
     }
-
-    $params = [
-      'user' => [
-        'user'     => $username,
-        'password' => $password,
-        'idEngine' => $id_engine,
-      ],
-      'language'   => 'FR',
-      // !!! clé correcte (singulier)
-      // 'dateFilter' => $dateFilter,
-    ];
-
-    if ($onlyWithOffer) {
-      // N’envoie pas les champs obsolètes
-      $params['specialOfferFilter'] = [
-        // 'ExcludeNonOffer'     => false,   // uniquement des séjours avec offre
-        // 'IncludeClassicOffers'=> false,   // inclure les offres "classiques"
-        'lastMinute'=>true,
-        'weekEnd'=>true,
-        'flash'=>true,
-        'exclusive'=>true
-        // 'offerTypes' => ['Classic', 'Injected'], // exemple si tu veux cibler
-        // 'campaignWSCode' => 'XXX',              // optionnel
-        // 'DiscountCode'   => 'PROMO2025',        // optionnel
-      ];
-    }
-
-    // Optionnel : filtrer des types de produits
-    if (!empty($productTypes)) {
-      $params['productFilter'] = [
-        'productTypes' => $productTypes, // vérifie le nom exact attendu par le WSDL
-      ];
-    }
-
-    $result = $client->__soapCall('engine_returnAvailabilityAdvanced', [$params]);
-
-    // DEBUG utile: vérifie ce qui a été réellement envoyé
-    // error_log($client->__getLastRequest());
-
-    return $result;
-  } catch (Exception $e) {
-    error_log('Erreur appel engine_returnAvailabilityAdvanced : ' . $e->getMessage());
-    return $e->getMessage();
   }
-}
 
 
 
@@ -244,7 +244,7 @@ public static function ctoutvert_search_holidays($dateFilter = [], $productTypes
     }
   }
 
-    public static function ctoutvert_get_discountcode($campingId)
+  public static function ctoutvert_get_discountcode($campingId)
   {
     $wsdl      = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
     $username  = CTOUTVERT_USERNAME;
@@ -284,6 +284,75 @@ public static function ctoutvert_search_holidays($dateFilter = [], $productTypes
       return false;
     }
   }
+
+  public static function ctoutvert_get_discounts($campingId, $language = 'FR')
+  {
+    // ⚠️ À ADAPTER : mets ici le bon WSDL pour le service de pricing des offres spéciales
+    $wsdl      = 'https://webservices.secureholiday.net/v2/engine.asmx?wsdl';
+    $username  = CTOUTVERT_USERNAME;   // correspond à <tem:Login>
+    $password  = CTOUTVERT_PASSWORD;   // correspond à <tem:Password>
+    $id_engine = (int) CTOUTVERT_ID_ENGINE; // correspond à <tem:EngineId>
+
+    try {
+      $client = new SoapClient($wsdl, [
+        'trace'              => 1,
+        'exceptions'         => true,
+        'cache_wsdl'         => WSDL_CACHE_NONE,
+        'connection_timeout' => 15,
+        'soap_version'       => SOAP_1_1,
+        'features'           => SOAP_SINGLE_ELEMENT_ARRAYS,
+      ]);
+
+      // === HEADER SOAP (équivalent de ton XML) =========================
+      // <soapenv:Header>
+      //    <tem:Password>passwordtest</tem:Password>
+      //    <tem:Login>usertest</tem:Login>
+      //    <tem:EngineId>702</tem:EngineId>
+      // </soapenv:Header>
+
+      $ns = 'http://tempuri.org/';
+
+      $headers = [
+        new SoapHeader($ns, 'Password', $password, false),
+        new SoapHeader($ns, 'Login', $username, false),
+        new SoapHeader($ns, 'EngineId', $id_engine, false),
+      ];
+
+      $client->__setSoapHeaders($headers);
+
+      // === BODY SOAP (équivalent de ton XML) ===========================
+      // <soapenv:Body>
+      //    <tem:SpecialOffersPricingParameter>
+      //       <tem:EstablishmentId>14525</tem:EstablishmentId>
+      //       <tem:Language>FR</tem:Language>
+      //    </tem:SpecialOffersPricingParameter>
+      // </soapenv:Body>
+
+      $params = [
+        'SpecialOffersPricingParameter' => [
+          'EstablishmentId' => (int) $campingId,
+          'Language'        => $language,
+        ]
+      ];
+
+      // Le nom de la méthode SOAP (à vérifier dans le WSDL)
+      $response = $client->__soapCall('SpecialOffersPricing', [$params]);
+
+      // Debug si besoin :
+      // error_log("REQUEST:\n" . $client->__getLastRequest());
+      // error_log("RESPONSE:\n" . $client->__getLastResponse());
+
+      return $response;
+    } catch (SoapFault $e) {
+      error_log('SoapFault SpecialOffersPricing : ' . $e->faultcode . ' - ' . $e->getMessage());
+      // error_log("REQUEST:\n" . $client->__getLastRequest());
+      // error_log("RESPONSE:\n" . $client->__getLastResponse());
+      return false;
+    } catch (Exception $e) {
+      error_log('Erreur appel SpecialOffersPricing : ' . $e->getMessage());
+      return false;
+    }
+  }
 }
 
 
@@ -295,12 +364,34 @@ if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
   //   'startDate' => '2026-08-05',
   //   'endDate' => '2026-08-15'
   // ];
-  // $data = Ctoutvert::ctoutvert_search_holidays( $dateFilters,null,true);
-  
+  // $data = Ctoutvert::ctoutvert_search_holidays($dateFilters, null, true);
+
+  // $data = Ctoutvert::ctoutvert_get_specialoffer(7624);
+  // echo'<pre>';
+  // var_dump($data);
+  // echo'</pre>';
+  // die();
+
   // $data = Ctoutvert::ctoutvert_get_specialoffer(7624);
   // echo '<pre>';
   // var_dump($data->establishment_returnSpecialOffersResult->establishmentsSpecialOfferList->establishmentSpecialOfferList[0]->SpecialOfferList);
-  // echo '</pre>';
+  //var_dump($data->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations[0]);
+  // $i = 1;
+  // foreach ($data->engine_returnAvailabilityAdvancedResult->availabilityInformationList->availabilityInformations as $item):
+  //   echo $i;
+  //   // var_dump($item->establishmentInformation);
+  //   echo '<br/>';
+  //   echo $item->establishmentInformation->establishmentId;
+  //   echo '<br/>';
+  //   echo $item->establishmentInformation->name;
+  //   echo '<br/>';
+  //   echo $item->establishmentInformation->postalCode;
+  //   echo '<br/>';
+  //   echo $item->establishmentInformation->town;
+  //   echo '<hr>';
+  //   $i++;
+  // endforeach;
+  // // echo '</pre>';
   // die();
 
 
