@@ -1270,6 +1270,20 @@ if (defined('WP_CLI') && WP_CLI) {
       return $item;
     }
 
+    private static function cli_send_mail($to, $subject, $html, $dry = false)
+    {
+      if ($dry) {
+        WP_CLI::log("[dry-run] Mail non envoyé à {$to} — subject: {$subject}");
+        return true;
+      }
+
+      $headers = ['Content-Type: text/html; charset=UTF-8'];
+      $ok = wp_mail($to, $subject, $html, $headers);
+
+      if (!$ok) WP_CLI::warning("Échec envoi mail à {$to}");
+      return $ok;
+    }
+
 
     /**
      * Importe une sélection APIDAE (list-objets-touristiques) en lot.
@@ -1293,15 +1307,19 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::error('Paramètre --selection-ids manquant ou vide.');
       }
 
+      // ✅ Mail options
+      $mailEnabled = isset($assoc_args['mail']);
+      $mailTo = $assoc_args['mail-to'] ?? get_option('admin_email');
+      $mailSubject = $assoc_args['mail-subject'] ?? 'APIDAE import-selection: terminé';
+
       // count demandé par l’utilisateur (plafonné à 200 par l’API)
       $requestedCount = (int) ($assoc_args['count'] ?? 200);
-      $pageCount = max(0, min($requestedCount, 200)); // <= 200 sinon l’API le plafonne
-      if ($pageCount === 0)
-        $pageCount = 200; // doc: défaut 20, mais on choisit 200 pour efficacité
+      $pageCount = max(0, min($requestedCount, 200));
+      if ($pageCount === 0) $pageCount = 200;
 
       // bornes
-      $cliOffset = (int) ($assoc_args['offset'] ?? 0); // décalage global demandé
-      $cliLimit = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null; // max d’items à traiter
+      $cliOffset = (int) ($assoc_args['offset'] ?? 0);
+      $cliLimit = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null;
       $mode = $assoc_args['mode'] ?? 'upsert';
       $sleep = (int) ($assoc_args['sleep'] ?? 0);
       $dry = isset($assoc_args['dry-run']);
@@ -1309,19 +1327,53 @@ if (defined('WP_CLI') && WP_CLI) {
       // 1er appel pour connaître numFound
       $params = ['selectionIds' => $selection_ids, 'count' => $pageCount, 'first' => $cliOffset];
       $res = APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
-      if (!$res['success'])
+
+      if (!$res['success']) {
+        // ✅ Mail en cas d'erreur bloquante
+        if ($mailEnabled) {
+          $html = "<p><strong>Import APIDAE interrompu</strong></p>"
+            . "<p>Erreur API: " . esc_html($res['message']) . "</p>"
+            . "<p>selectionIds: " . esc_html(implode(',', $selection_ids)) . "<br>"
+            . "offset: " . (int)$cliOffset . "<br>"
+            . "count: " . (int)$pageCount . "<br>"
+            . "mode: " . esc_html($mode) . "<br>"
+            . "dry-run: " . ($dry ? 'oui' : 'non') . "</p>";
+
+          self::cli_send_mail($mailTo, 'APIDAE import-selection: ERREUR', $html, $dry);
+        }
         WP_CLI::error('APIDAE error: ' . $res['message']);
+      }
 
       $numFound = (int) ($res['data']['numFound'] ?? 0);
       if ($numFound === 0) {
         WP_CLI::log('Aucun résultat.');
+
+        // ✅ Mail "aucun résultat"
+        if ($mailEnabled) {
+          $html = "<p><strong>Import APIDAE terminé</strong> — aucun résultat.</p>"
+            . "<p>selectionIds: " . esc_html(implode(',', $selection_ids)) . "<br>"
+            . "offset: " . (int)$cliOffset . "<br>"
+            . "limit: " . esc_html($cliLimit !== null ? (string)$cliLimit : '∞') . "<br>"
+            . "mode: " . esc_html($mode) . "<br>"
+            . "dry-run: " . ($dry ? 'oui' : 'non') . "</p>";
+
+          self::cli_send_mail($mailTo, $mailSubject, $html, $dry);
+        }
         return;
       }
 
-      // combien on va traiter au total (respecte limit si fournie)
       $remainingToProcess = $cliLimit !== null ? min($cliLimit, $numFound - $cliOffset) : ($numFound - $cliOffset);
       if ($remainingToProcess <= 0) {
         WP_CLI::log("Rien à traiter (offset dépasse numFound).");
+
+        if ($mailEnabled) {
+          $html = "<p><strong>Import APIDAE terminé</strong> — rien à traiter.</p>"
+            . "<p>numFound: {$numFound}<br>"
+            . "offset: " . (int)$cliOffset . "<br>"
+            . "limit: " . esc_html($cliLimit !== null ? (string)$cliLimit : '∞') . "</p>";
+
+          self::cli_send_mail($mailTo, $mailSubject, $html, $dry);
+        }
         return;
       }
 
@@ -1329,15 +1381,12 @@ if (defined('WP_CLI') && WP_CLI) {
 
       $done = $created = $updated = $skipped = $errors = 0;
 
-      // On réutilise la 1ère page si elle existe déjà
       $first = $cliOffset;
       $processPage = function ($data) use (&$done, &$created, &$updated, &$skipped, &$errors, $mode, $dry, $sleep, &$remainingToProcess) {
         $items = $data['objetsTouristiques'] ?? [];
         foreach ($items as $item) {
-          if ($remainingToProcess <= 0)
-            break;
-          if (!$item)
-            continue;
+          if ($remainingToProcess <= 0) break;
+          if (!$item) continue;
 
           $item = self::ensure_full_item($item);
           $r = APIDAE_Service::import_apidae_camping($item, $mode, $dry);
@@ -1359,18 +1408,15 @@ if (defined('WP_CLI') && WP_CLI) {
             WP_CLI::log(sprintf("[%d] %s — %s", $done, $item['id'], $r['action'] ?? ($r['skipped'] ?? 'ok')));
           }
 
-          if ($sleep)
-            sleep($sleep);
+          if ($sleep) sleep($sleep);
         }
       };
 
-      // Traite la première réponse
       $processPage($res['data']);
       $first += $pageCount;
 
-      // Boucle de pagination tant qu’il reste à traiter
       while ($remainingToProcess > 0 && $first < $numFound) {
-        $batchCount = min($pageCount, $remainingToProcess); // on peut réduire la dernière page
+        $batchCount = min($pageCount, $remainingToProcess);
         $params = ['selectionIds' => $selection_ids, 'count' => $batchCount, 'first' => $first];
         $res = APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
         if (!$res['success']) {
@@ -1382,7 +1428,24 @@ if (defined('WP_CLI') && WP_CLI) {
       }
 
       WP_CLI::success("Terminé. created=$created updated=$updated skipped=$skipped errors=$errors");
+
+      // ✅ Mail récap de fin
+      if ($mailEnabled) {
+        $html = "<p><strong>Import APIDAE terminé</strong></p>"
+          . "<ul>"
+          . "<li>selectionIds: " . esc_html(implode(',', $selection_ids)) . "</li>"
+          . "<li>numFound: {$numFound}</li>"
+          . "<li>offset: " . (int)$cliOffset . "</li>"
+          . "<li>limit: " . esc_html($cliLimit !== null ? (string)$cliLimit : '∞') . "</li>"
+          . "<li>mode: " . esc_html($mode) . "</li>"
+          . "<li>dry-run: " . ($dry ? 'oui' : 'non') . "</li>"
+          . "</ul>"
+          . "<p><strong>Résultat:</strong> done={$done} created={$created} updated={$updated} skipped={$skipped} errors={$errors}</p>";
+
+        self::cli_send_mail($mailTo, $mailSubject, $html, $dry);
+      }
     }
+
 
     /**
      * Met à jour les illustrations ACF pour un camping par ID APIDAE.
