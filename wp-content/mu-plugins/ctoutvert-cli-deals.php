@@ -1,27 +1,28 @@
 <?php
+
 /**
  * Plugin Name: Ctoutvert Deals CLI
  */
 
-if ( ! defined('WP_CLI') || ! WP_CLI ) {
+if (! defined('WP_CLI') || ! WP_CLI) {
   return;
 }
 
 /**
  * Charge la classe Ctoutvert depuis le thème (WP-CLI ne charge pas forcément le thème).
  */
-WP_CLI::add_hook( 'before_wp_load', function() {
+WP_CLI::add_hook('before_wp_load', function () {
 
   $file = WP_CONTENT_DIR . '/themes/press-wind/api/ctoutvert/ctoutvert.php';
 
-  if ( file_exists( $file ) ) {
+  if (file_exists($file)) {
     require_once $file;
   } else {
     WP_CLI::warning("Fichier Ctoutvert introuvable : {$file}");
     return;
   }
 
-  if ( class_exists('Ctoutvert') && method_exists('Ctoutvert', 'init') ) {
+  if (class_exists('Ctoutvert') && method_exists('Ctoutvert', 'init')) {
     // si ton init fait des hooks / setup
     Ctoutvert::init();
   }
@@ -30,17 +31,42 @@ WP_CLI::add_hook( 'before_wp_load', function() {
 /**
  * Commande CLI
  */
-class Ctoutvert_Deals_CLI_Command {
+class Ctoutvert_Deals_CLI_Command
+{
 
-  public function sync_deals( $args, $assoc_args ) {
+  public function sync_deals($args, $assoc_args)
+  {
 
-    if ( ! class_exists('Ctoutvert') ) {
-      WP_CLI::error("La classe Ctoutvert n'est pas chargée. Vérifie le require_once du fichier.");
+    // ---- Options mail (comme ton autre commande)
+    $send_mail = isset($assoc_args['mail']);
+    $mail_to   = $assoc_args['mail-to'] ?? '';
+    $mail_to_list = [];
+
+    if ($send_mail) {
+      if (! empty($mail_to)) {
+        $mail_to_list = array_filter(array_map('trim', explode(',', $mail_to)));
+      }
+
+      // fallback si --mail sans --mail-to
+      if (empty($mail_to_list)) {
+        $admin_email = get_option('admin_email');
+        if (! empty($admin_email)) $mail_to_list = [$admin_email];
+      }
+    }
+
+    $t0 = microtime(true);
+    $errors = [];
+    $total_deals = 0;
+
+    if (! class_exists('Ctoutvert')) {
+      $msg = "La classe Ctoutvert n'est pas chargée. Vérifie le require_once du fichier.";
+      WP_CLI::error($msg);
       return;
     }
 
-    if ( ! function_exists('update_field') ) {
-      WP_CLI::error("ACF n'est pas chargé (update_field introuvable). Active ACF sur ce WP ou charge-le.");
+    if (! function_exists('update_field')) {
+      $msg = "ACF n'est pas chargé (update_field introuvable). Active ACF sur ce WP ou charge-le.";
+      WP_CLI::error($msg);
       return;
     }
 
@@ -58,24 +84,40 @@ class Ctoutvert_Deals_CLI_Command {
       ],
     ]);
 
-    if ( ! $query->have_posts() ) {
+    if (! $query->have_posts()) {
       WP_CLI::warning("Aucun post trouvé avec id_reservation_ctoutvert.");
+
+      // Mail "aucun post" (optionnel mais utile)
+      if ($send_mail && ! empty($mail_to_list)) {
+        wp_mail(
+          $mail_to_list,
+          "[SYNC DEALS] Aucun camping à traiter ({$post_type})",
+          "Aucun post trouvé avec la meta id_reservation_ctoutvert.\n\nDate: " . date('Y-m-d H:i:s')
+        );
+      }
       return;
     }
 
     $updated = 0;
 
-    foreach ( $query->posts as $post ) {
+    foreach ($query->posts as $post) {
       $post_id = $post->ID;
 
       $ctv_id = get_post_meta($post_id, 'id_reservation_ctoutvert', true);
-      if ( empty($ctv_id) ) {
+      if (empty($ctv_id)) {
         continue;
       }
 
       WP_CLI::log("Camping #{$post_id} -> Ctoutvert {$ctv_id}");
 
-      $data = Ctoutvert::ctoutvert_get_specialoffer( (int) $ctv_id );
+      // On capture les erreurs par camping sans casser tout le run
+      try {
+        $data = Ctoutvert::ctoutvert_get_specialoffer((int) $ctv_id);
+      } catch (\Throwable $e) {
+        $errors[] = "Camping #{$post_id} (Ctoutvert {$ctv_id}) : " . $e->getMessage();
+        WP_CLI::warning(" - erreur Ctoutvert: " . $e->getMessage());
+        continue;
+      }
 
       // Si pas d'offres : on vide deals_camping
       if (
@@ -92,8 +134,8 @@ class Ctoutvert_Deals_CLI_Command {
       $offers = $establishments[0]->SpecialOfferList->specialOffers->specialOffer ?? [];
 
       // Normalise array
-      if ( is_object($offers) ) $offers = [ $offers ];
-      if ( empty($offers) ) {
+      if (is_object($offers)) $offers = [$offers];
+      if (empty($offers)) {
         update_field('deals_camping', [], $post_id);
         $updated++;
         WP_CLI::log(" - aucune offre -> deals_camping vidé");
@@ -102,16 +144,16 @@ class Ctoutvert_Deals_CLI_Command {
 
       $rows = [];
 
-      foreach ( $offers as $item ) {
+      foreach ($offers as $item) {
         $titre = (string) ($item->shortName ?? '');
-        if ( $titre === '' ) continue;
+        if ($titre === '') continue;
 
         // Description = dbName + conditions
         $desc = [];
-        if ( ! empty($item->dbName) ) $desc[] = (string) $item->dbName;
+        if (! empty($item->dbName)) $desc[] = (string) $item->dbName;
 
-        if ( ! empty($item->conditionsOS->conditionOS) ) {
-          foreach ( (array) $item->conditionsOS->conditionOS as $c ) {
+        if (! empty($item->conditionsOS->conditionOS)) {
+          foreach ((array) $item->conditionsOS->conditionOS as $c) {
             $desc[] = (string) $c;
           }
         }
@@ -121,21 +163,21 @@ class Ctoutvert_Deals_CLI_Command {
         $date_debut = '';
         $date_fin   = '';
 
-        if ( ! empty($item->offerPeriods->offerPeriod) ) {
+        if (! empty($item->offerPeriods->offerPeriod)) {
           $periods = $item->offerPeriods->offerPeriod;
-          if ( is_object($periods) ) $periods = [ $periods ];
+          if (is_object($periods)) $periods = [$periods];
 
           $min_begin = null;
           $max_end   = null;
 
-          foreach ( $periods as $p ) {
-            if ( ! empty($p->dateBegin) ) {
+          foreach ($periods as $p) {
+            if (! empty($p->dateBegin)) {
               $d = substr((string)$p->dateBegin, 0, 10);
-              if ( $min_begin === null || $d < $min_begin ) $min_begin = $d;
+              if ($min_begin === null || $d < $min_begin) $min_begin = $d;
             }
-            if ( ! empty($p->dateEnd) ) {
+            if (! empty($p->dateEnd)) {
               $d = substr((string)$p->dateEnd, 0, 10);
-              if ( $max_end === null || $d > $max_end ) $max_end = $d;
+              if ($max_end === null || $d > $max_end) $max_end = $d;
             }
           }
 
@@ -152,14 +194,41 @@ class Ctoutvert_Deals_CLI_Command {
         ];
       }
 
-      // Supprime les anciens champs -> en pratique, update_field écrase le répéteur
       update_field('deals_camping', $rows, $post_id);
 
-      WP_CLI::log(' - ' . count($rows) . ' deal(s) enregistré(s)');
+      $count_rows = count($rows);
+      $total_deals += $count_rows;
+
+      WP_CLI::log(' - ' . $count_rows . ' deal(s) enregistré(s)');
       $updated++;
     }
 
+    $duration = round(microtime(true) - $t0, 2);
+
     WP_CLI::success("Terminé. {$updated} camping(s) mis à jour.");
+
+    // ---- Mail récap
+    if ($send_mail && ! empty($mail_to_list)) {
+      $subject = "[SYNC DEALS] OK - {$updated} camping(s)";
+
+      if (! empty($errors)) {
+        $subject = "[SYNC DEALS] PARTIEL - {$updated} camping(s), " . count($errors) . " erreur(s)";
+      }
+
+      $body  = "Sync deals terminée.\n";
+      $body .= "Post type: {$post_type}\n";
+      $body .= "Campings traités: {$updated}\n";
+      $body .= "Deals total enregistrés: {$total_deals}\n";
+      $body .= "Durée: {$duration}s\n";
+      $body .= "Date: " . date('Y-m-d H:i:s') . "\n";
+
+      if (! empty($errors)) {
+        $body .= "\nErreurs:\n- " . implode("\n- ", array_slice($errors, 0, 20));
+        if (count($errors) > 20) $body .= "\n... (+" . (count($errors) - 20) . " autres)";
+      }
+
+      wp_mail($mail_to_list, $subject, $body);
+    }
   }
 }
 
