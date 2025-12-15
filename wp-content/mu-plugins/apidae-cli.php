@@ -1846,8 +1846,28 @@ if (defined('WP_CLI') && WP_CLI) {
     {
       $tax_slug = 'liste';
 
+      // ---- Options mail
+      $send_mail = isset($assoc_args['mail']);
+      $mail_to   = $assoc_args['mail-to'] ?? '';
+      $mail_to_list = [];
+
+      if ($send_mail) {
+        if (!empty($mail_to)) {
+          $mail_to_list = array_filter(array_map('trim', explode(',', $mail_to)));
+        }
+        if (empty($mail_to_list)) {
+          $admin_email = get_option('admin_email');
+          if (!empty($admin_email)) $mail_to_list = [$admin_email];
+        }
+      }
+
+      $t0 = microtime(true);
+      $errors = []; // on stocke quelques erreurs pour le mail
+
       if (! taxonomy_exists($tax_slug)) {
-        \WP_CLI::error("La taxonomie '{$tax_slug}' n'existe pas.");
+        $msg = "La taxonomie '{$tax_slug}' n'existe pas.";
+        \WP_CLI::error($msg);
+        return;
       }
 
       // Meta key pour retrouver le camping à partir de l'ID APIDAE
@@ -1881,6 +1901,14 @@ if (defined('WP_CLI') && WP_CLI) {
 
       if (is_wp_error($terms) || empty($terms)) {
         \WP_CLI::warning('Aucun terme "liste" trouvé à traiter.');
+
+        if ($send_mail && !empty($mail_to_list)) {
+          wp_mail(
+            $mail_to_list,
+            "[SYNC LISTES] Aucun terme à traiter",
+            "Aucun terme \"{$tax_slug}\" trouvé.\nDate: " . date('Y-m-d H:i:s')
+          );
+        }
         return;
       }
 
@@ -1890,14 +1918,14 @@ if (defined('WP_CLI') && WP_CLI) {
       $global_skipped_no_term = 0;
       $global_skipped_no_post = 0;
       $global_errors          = 0;
+      $global_terms_processed = 0;
+      $global_items_seen      = 0;
 
       foreach ($terms as $term) {
 
-        $term_label = sprintf('%s (%d)', $term->name, $term->term_id);
+        $global_terms_processed++;
 
-        // ACF sur le terme : apidae_id_list_selection
-        // $field_key   = $tax_slug . '_' . $term->term_id;
-        // $selection_id = get_field('apidae_id_list_selection', $field_key);
+        $term_label = sprintf('%s (%d)', $term->name, $term->term_id);
 
         $selection_id = get_term_meta($term->term_id, 'apidae_id_list_selection', true);
 
@@ -1965,8 +1993,10 @@ if (defined('WP_CLI') && WP_CLI) {
           );
 
           if (! $res['success']) {
-            \WP_CLI::warning("Terme {$term_label} : erreur APIDAE : " . $res['message']);
+            $msg = "Terme {$term_label} : erreur APIDAE : " . ($res['message'] ?? 'Erreur inconnue');
+            \WP_CLI::warning($msg);
             $global_errors++;
+            $errors[] = $msg;
             break;
           }
 
@@ -1994,9 +2024,9 @@ if (defined('WP_CLI') && WP_CLI) {
               continue;
             }
 
+            $global_items_seen++;
             $apidae_id = (int) $item['id'];
 
-            // On cherche le camping existant à partir de la meta apidae_id (ou autre meta-key)
             $q = new \WP_Query([
               'post_type'      => 'camping',
               'post_status'    => 'any',
@@ -2018,13 +2048,6 @@ if (defined('WP_CLI') && WP_CLI) {
             }
 
             $post_id = (int) $q->posts[0];
-
-            /**
-             * À partir d'ici : gestion WPML
-             * - On récupère toutes les traductions du camping (post)
-             * - On récupère le bon terme dans la langue du post (si taxo traduite)
-             * - On attache le(s) terme(s) à toutes les traductions
-             */
 
             // Liste des posts concernés : post trouvé + ses traductions
             $post_ids_for_terms = [$post_id];
@@ -2054,7 +2077,6 @@ if (defined('WP_CLI') && WP_CLI) {
               }
             }
 
-            // On applique maintenant le terme sur toutes les traductions du camping
             foreach ($post_ids_for_terms as $translated_post_id) {
 
               if ($dry) {
@@ -2070,12 +2092,9 @@ if (defined('WP_CLI') && WP_CLI) {
                 continue;
               }
 
-              // Par défaut on attache le terme original
               $term_id_to_attach = (int) $term->term_id;
 
-              // Si WPML est actif, on essaie de prendre le terme dans la langue du post
               if (defined('ICL_SITEPRESS_VERSION')) {
-
                 $lang_details = apply_filters('wpml_post_language_details', null, $translated_post_id);
                 $lang_code    = (is_array($lang_details) && ! empty($lang_details['language_code']))
                   ? $lang_details['language_code']
@@ -2092,13 +2111,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
               if (is_wp_error($r)) {
                 $global_errors++;
-                \WP_CLI::warning(
-                  sprintf(
-                    '    Erreur wp_set_object_terms pour le camping #%d : %s',
-                    $translated_post_id,
-                    $r->get_error_message()
-                  )
+                $msg = sprintf(
+                  'Erreur wp_set_object_terms pour le camping #%d : %s',
+                  $translated_post_id,
+                  $r->get_error_message()
                 );
+                \WP_CLI::warning('    ' . $msg);
+                $errors[] = $msg;
                 continue;
               }
 
@@ -2127,6 +2146,8 @@ if (defined('WP_CLI') && WP_CLI) {
         \WP_CLI::log("Résumé terme {$term_label} : attachés={$attached}, sans camping correspondant={$no_post}");
       }
 
+      $duration = round(microtime(true) - $t0, 2);
+
       \WP_CLI::success(
         sprintf(
           'Terminé. Total attachés=%d, termes sans sélection valide=%d, objets sans camping=%d, erreurs=%d',
@@ -2136,6 +2157,34 @@ if (defined('WP_CLI') && WP_CLI) {
           $global_errors
         )
       );
+
+      // ---- Mail récap
+      if ($send_mail && !empty($mail_to_list)) {
+
+        $subject = "[SYNC LISTES] OK - attachés={$global_attached}";
+        if ($global_errors > 0) {
+          $subject = "[SYNC LISTES] PARTIEL - attachés={$global_attached}, erreurs={$global_errors}";
+        }
+
+        $body  = "Sync listes (depuis termes) terminée.\n";
+        $body .= "Taxonomie: {$tax_slug}\n";
+        $body .= "Termes traités: {$global_terms_processed}\n";
+        $body .= "Objets APIDAE vus: {$global_items_seen}\n";
+        $body .= "Total attachés: {$global_attached}\n";
+        $body .= "Termes sans sélection valide: {$global_skipped_no_term}\n";
+        $body .= "Objets sans camping: {$global_skipped_no_post}\n";
+        $body .= "Erreurs: {$global_errors}\n";
+        $body .= "Dry-run: " . ($dry ? 'oui' : 'non') . "\n";
+        $body .= "Durée: {$duration}s\n";
+        $body .= "Date: " . date('Y-m-d H:i:s') . "\n";
+
+        if (!empty($errors)) {
+          $body .= "\nDétails erreurs (max 20):\n- " . implode("\n- ", array_slice($errors, 0, 20));
+          if (count($errors) > 20) $body .= "\n... (+" . (count($errors) - 20) . " autres)";
+        }
+
+        wp_mail($mail_to_list, $subject, $body);
+      }
     }
   }
 
