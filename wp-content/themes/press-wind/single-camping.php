@@ -472,9 +472,11 @@ if ($apidae_raw) {
             data-filename="<?= esc_attr($pdf_filename); ?>">
 
             <div class="flex flex-col">
+              <?php if($deal['code']): ?>
               <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
                 n°<?= esc_html($deal['code']); ?>
               </div>
+              <?php endif; ?>
               <div class="mt-[10px]">
                 <img src="<?= esc_url(get_bloginfo('template_directory') . '/assets/media/icon-time.svg'); ?>"
                   alt="Icon Expiration offre du camping <?= esc_attr(get_the_title()); ?>" />
@@ -500,15 +502,16 @@ if ($apidae_raw) {
             $pdf_filename = 'bon-' . sanitize_title(($deal['code'] ?? '') . '-' . ($deal['titre'] ?? ''));
             ?>
 
-            <div class="hidden  flex-col bloc-sidebar-promo-date js-coupon "
+            <div class=" flex-col bloc-sidebar-promo-date js-coupon "
               data-filename="<?php echo esc_attr($pdf_filename); ?>" data-camping="<?php echo esc_attr($camping_name); ?>"
               data-title="<?php echo esc_attr($titre); ?>" data-desc="<?php echo esc_attr($desc_plain); ?>"
               data-code="<?php echo esc_attr($code); ?>" data-dates="<?php echo esc_attr($dates_str); ?>">
+              <?php if($code): ?>
               <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
           ">
                 <?= __('Imprimer ce bon', 'fdhpa17') ?>
               </button>
-
+              <?php endif; ?>
               <div class="flex flex-row items-center justify-center mt-[20px] gap-[5px] js-countdown"
                 data-end="<?= (int) $expiration_ts; ?>">
                 <div
