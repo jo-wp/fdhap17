@@ -455,7 +455,7 @@ if ($apidae_raw) {
           ?>
 
           <!-- Carte orange (infos offre) -->
-          <div class="hidden bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
+          <div class="bloc-sidebar-promo-price bg-orange p-[40px] text-white text-center rounded-[20px] mb-[15px] ">
             <p class="font-ivymode text-[36px] font-[700] m-0"><?= esc_html($deal['titre']); ?></p>
             <p class="font-arial text-[16px] font-[700]"><?= wp_kses_post($deal['description']); ?></p>
             <div class="border-2 border-solid border-white rounded-full">
@@ -468,7 +468,7 @@ if ($apidae_raw) {
 
           <!-- Bon vert exportable (tout ce bloc sera capturé en PDF) -->
           <div
-            class="hidden flex-row bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px]   items-start justify-center gap-[25px]"
+            class="flex-row bloc-sidebar-promo-date bg-green p-[40px] text-white text-center rounded-[20px] mb-[15px]   items-start justify-center gap-[25px]"
             data-filename="<?= esc_attr($pdf_filename); ?>">
 
             <div class="flex flex-col">
