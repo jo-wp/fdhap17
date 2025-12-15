@@ -367,9 +367,9 @@ if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
   // $data = Ctoutvert::ctoutvert_search_holidays($dateFilters, null, true);
 
   // $data = Ctoutvert::ctoutvert_get_specialoffer(7624);
-  // echo'<pre>';
-  // var_dump($data);
-  // echo'</pre>';
+  // foreach($data->establishment_returnSpecialOffersResult->establishmentsSpecialOfferList->establishmentSpecialOfferList[0]->SpecialOfferList->specialOffers->specialOffer as $item):
+  //  echo '<pre>'; var_dump($item); echo '</pre>';
+  // endforeach;
   // die();
 
   // $data = Ctoutvert::ctoutvert_get_specialoffer(7624);
