@@ -1832,7 +1832,13 @@ if (defined('WP_CLI') && WP_CLI) {
      *
      * [--dry-run]
      * : N'effectue pas les mises à jour, affiche seulement ce qui serait fait.
+     * 
+     * [--mail]
+     * : Envoie un mail récapitulatif en fin d'exécution.
      *
+     * [--mail-to=<emails>]
+     * : Destinataires (séparés par des virgules).
+     * 
      * ## EXAMPLES
      *
      *   wp apidae sync-lists-from-terms
