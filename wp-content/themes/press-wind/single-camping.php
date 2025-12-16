@@ -430,7 +430,7 @@ if ($apidae_raw) {
     <div class="bloc-sidebar-camping max-md:w-full md:min-w-[460px]">
       <div class="bloc-sidebar-open-close mb-[30px]">
         <p
-          class="relative m-0 ml-[20px] md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] max-md:text-center before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
+          class="hidden  m-0 ml-[20px] md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] max-md:text-center before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
           <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?>
         </p>
       </div>
