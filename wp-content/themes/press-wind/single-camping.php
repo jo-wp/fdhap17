@@ -431,7 +431,12 @@ if ($apidae_raw) {
       <div class="bloc-sidebar-open-close mb-[30px]">
         <p
           class="hidden  m-0 ml-[20px] md:ml-[40px] before:content-[''] before:absolute before:-left-[20px] before:top-[40%] max-md:text-center before:w-2 before:h-2 before:bg-green before:rounded-full font-body text-[16px] text-green uppercase font-[500]">
-          <?= __('Ouvert Aujourd\'hui', 'fdhpa17'); ?>
+          <?php
+          $today = date('Y-m-d');
+          if ($today >= $periodes_dateDebut && $today <= $periodes_dateFin) {
+            echo __('Ouvert Aujourd\'hui', 'fdhpa17');
+          }
+          ?>
         </p>
       </div>
       <?php if ($deals_camping): ?>
@@ -472,10 +477,10 @@ if ($apidae_raw) {
             data-filename="<?= esc_attr($pdf_filename); ?>">
 
             <div class="flex flex-col">
-              <?php if($deal['code']): ?>
-              <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
-                n°<?= esc_html($deal['code']); ?>
-              </div>
+              <?php if ($deal['code']): ?>
+                <div class="border border-solid border-white rounded-full px-[25px] py-[5px] font-[700] max-md:text-[14px]">
+                  n°<?= esc_html($deal['code']); ?>
+                </div>
               <?php endif; ?>
               <div class="mt-[10px]">
                 <img src="<?= esc_url(get_bloginfo('template_directory') . '/assets/media/icon-time.svg'); ?>"
@@ -506,11 +511,11 @@ if ($apidae_raw) {
               data-filename="<?php echo esc_attr($pdf_filename); ?>" data-camping="<?php echo esc_attr($camping_name); ?>"
               data-title="<?php echo esc_attr($titre); ?>" data-desc="<?php echo esc_attr($desc_plain); ?>"
               data-code="<?php echo esc_attr($code); ?>" data-dates="<?php echo esc_attr($dates_str); ?>">
-              <?php if($code): ?>
-              <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
+              <?php if ($code): ?>
+                <button type="button" class="js-pdf-btn cursor-pointer border border-solid border-white rounded-full bg-white text-green text-center px-[25px] py-[5px] max-md:text-[14px]
           ">
-                <?= __('Imprimer ce bon', 'fdhpa17') ?>
-              </button>
+                  <?= __('Imprimer ce bon', 'fdhpa17') ?>
+                </button>
               <?php endif; ?>
               <div class="flex flex-row items-center justify-center mt-[20px] gap-[5px] js-countdown"
                 data-end="<?= (int) $expiration_ts; ?>">
