@@ -69,8 +69,8 @@ $tabLangues = array_map(
   explode(",", $langues)
 );
 
-$periodes_dateDebut = get_post_meta($post->ID, 'periodes_dateDebut', true);
-$periodes_dateFin = get_post_meta($post->ID, 'periodes_dateFin', true);
+$periodes_dateDebut = get_post_meta($post->ID, 'periodes_date_debut', true);
+$periodes_dateFin = get_post_meta($post->ID, 'periodes_date_fin', true);
 $periodes_type = get_post_meta($post->ID, 'periodes_type', true);
 
 $price_mini_mobilhomes = get_post_meta($post->ID, 'price_mini_mobilhomes', true);
