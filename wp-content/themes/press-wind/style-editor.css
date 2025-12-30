@@ -2184,6 +2184,7 @@ nav .submenu > li{
 @media not all and (min-width: 768px){
   nav .submenu > li{
     margin-bottom: 15px;
+    min-height: 20px;
     width: 100%;
   }
 }
