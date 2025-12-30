@@ -88,7 +88,7 @@ nav .submenu > li {
   @apply list-none  m-0 p-0 w-[50%] font-arial text-[16px] font-[700] text-black mb-[25px] pb-[11px]
   max-md:mb-[15px] no-underline
   border-b border-t-0 border-l-0 border-r-0 border-solid border-[#333333]
-  max-md:w-full;
+  max-md:w-full max-md:min-h-[20px];
 }
 nav .submenu > li.active {
   @apply border-b border-t-0 border-l-0 border-r-0 border-solid border-green;
