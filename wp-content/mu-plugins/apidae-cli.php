@@ -587,7 +587,8 @@ if ($has_any_image) {
 
       $merged = array_values(array_unique(array_merge($existing, $gallery_ids)));
       if ($merged !== $existing) {
-        update_field('gallery', $merged, $post_id);
+        // update_field('gallery', $merged, $post_id);
+        update_post_meta($post_id, 'gallery', $merged);
         $cli_log("Apidae {$apidae_id} / post {$post_id}: ACF gallery updated (" . count($merged) . " ids)");
       }
     } else {
