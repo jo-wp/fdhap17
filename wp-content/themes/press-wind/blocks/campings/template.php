@@ -136,7 +136,7 @@ if ($term && isset($term->term_id, $term->taxonomy)) {
     </div>
     <div class="md:min-w-[70%]">
       <h2 class="text-center text-[36px] leading-0"><?= esc_html($campings_count); ?>
-        camping<?= $campings_count > 1 ? 's' : '' ?><br/><?= get_field('titre_du_bloc_selection_campings'); ?></h2>
+        camping<?= $campings_count > 1 ? 's' : '' ?><br/><span class="font-arial text-[14px] font-[300] block mt-[20px] mb-[20px]"><?= get_field('titre_du_bloc_selection_campings'); ?></span></h2>
       <?= do_shortcode('[facetwp template="full"]'); ?>
     </div>
   </div>
