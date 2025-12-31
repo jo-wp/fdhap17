@@ -443,27 +443,160 @@ class APIDAE_Service
       }
     }
 
+   // 🖼️ Images — skip si le post a déjà des images (featured / attachments / ACF gallery)
+// ---- IMPORTANT en WP-CLI : assure les includes media ----
+if (!function_exists('media_handle_sideload')) {
+  require_once ABSPATH . 'wp-admin/includes/file.php';
+  require_once ABSPATH . 'wp-admin/includes/media.php';
+  require_once ABSPATH . 'wp-admin/includes/image.php';
+}
 
-    // 🖼️ Images (featured + galerie simple)
-    // $gallery_ids = [];
-    // if (!empty($item['illustrations'])) {
-    //   foreach ($item['illustrations'] as $index => $illustration) {
-    //     $image_url = $illustration['traductionFichiers'][0]['url'] ?? '';
-    //     if ($image_url) {
-    //       $image_id = media_sideload_image($image_url, $post_id, null, 'id');
-    //       if (!is_wp_error($image_id)) {
-    //         if ($index === 0) {
-    //           set_post_thumbnail($post_id, $image_id);
-    //         } else {
-    //           // $gallery_ids[] = $image_id;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // if (!empty($gallery_ids)) {
-    //   // update_post_meta($post_id, 'gallery', $gallery_ids);
-    // }
+// Helper : log en CLI
+$cli_log = function($msg) {
+  if (defined('WP_CLI') && WP_CLI) {
+    \WP_CLI::log($msg);
+  }
+};
+$cli_warn = function($msg) {
+  if (defined('WP_CLI') && WP_CLI) {
+    \WP_CLI::warning($msg);
+  }
+};
+
+// Helper : récup URL illustration Apidae (robuste)
+$get_apidae_image_url = function($illustration) {
+  if (!is_array($illustration)) return '';
+
+  // Cas le plus courant (celui que tu avais)
+  $u = $illustration['traductionFichiers'][0]['url'] ?? '';
+  if (is_string($u) && $u) return $u;
+
+  // Fallbacks possibles selon payload
+  $u = $illustration['traductionFichiers'][0]['urlFichier'] ?? '';
+  if (is_string($u) && $u) return $u;
+
+  $u = $illustration['fichiers'][0]['url'] ?? '';
+  if (is_string($u) && $u) return $u;
+
+  $u = $illustration['fichiers'][0]['urlFichier'] ?? '';
+  if (is_string($u) && $u) return $u;
+
+  $u = $illustration['url'] ?? '';
+  if (is_string($u) && $u) return $u;
+
+  return '';
+};
+
+// ---- Détection images existantes ----
+$gallery_ids = [];
+$already_imported = (bool) get_post_meta($post_id, 'apidae_images_imported', true);
+$thumb_id = (int) get_post_thumbnail_id($post_id);
+
+$attached_ids = get_posts([
+  'post_type'        => 'attachment',
+  'post_parent'      => $post_id,
+  'post_status'      => 'inherit',
+  'posts_per_page'   => 1,
+  'fields'           => 'ids',
+  'post_mime_type'   => 'image',
+  'no_found_rows'    => true,
+  'suppress_filters' => true,
+]);
+
+$acf_gallery_ids = [];
+if (function_exists('get_field')) {
+  $acf_gallery_ids = get_field('gallery', $post_id, false);
+  if (!is_array($acf_gallery_ids)) $acf_gallery_ids = [];
+  $acf_gallery_ids = array_values(array_filter(array_map('intval', $acf_gallery_ids)));
+}
+
+$has_any_image = ($thumb_id > 0) || !empty($attached_ids) || !empty($acf_gallery_ids);
+
+// Si déjà des images : bootstrap meta et STOP
+if ($has_any_image) {
+  if (!$already_imported) {
+    update_post_meta($post_id, 'apidae_images_imported', 1);
+    $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
+    if (!is_array($existing_urls)) update_post_meta($post_id, 'apidae_image_urls', []);
+  }
+  $cli_log("Post {$post_id}: images déjà présentes => skip import images");
+  // Si tu es dans une fonction, tu peux faire return;
+} else {
+
+  // ---- Import images ----
+  $apidae_id = $item['id'] ?? 'unknown';
+  $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
+  if (!is_array($existing_urls)) $existing_urls = [];
+
+  if (empty($item['illustrations']) || !is_array($item['illustrations'])) {
+    $cli_warn("Apidae {$apidae_id} / post {$post_id}: aucune illustration dans payload");
+  } else {
+
+    foreach ($item['illustrations'] as $index => $illustration) {
+      $image_url = $get_apidae_image_url($illustration);
+
+      if (!$image_url) {
+        $cli_warn("Apidae {$apidae_id} / post {$post_id}: illustration #{$index} => URL introuvable (structure différente)");
+        continue;
+      }
+
+      if (in_array($image_url, $existing_urls, true)) {
+        $cli_log("Apidae {$apidae_id} / post {$post_id}: image déjà importée => {$image_url}");
+        continue;
+      }
+
+      $cli_log("Apidae {$apidae_id} / post {$post_id}: sideload image #{$index} => {$image_url}");
+
+      // Sideload
+      $image_id = media_sideload_image($image_url, $post_id, null, 'id');
+
+      if (is_wp_error($image_id)) {
+        $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => " . $image_id->get_error_message());
+        continue;
+      }
+
+      $image_id = (int) $image_id;
+      if ($image_id <= 0) {
+        $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => returned 0");
+        continue;
+      }
+
+      // Featured = première image si pas déjà de thumbnail
+      if ($index === 0 && !$thumb_id) {
+        set_post_thumbnail($post_id, $image_id);
+        $thumb_id = $image_id;
+        $cli_log("Apidae {$apidae_id} / post {$post_id}: set FEATURED => attachment {$image_id}");
+      } else {
+        $gallery_ids[] = $image_id;
+        $cli_log("Apidae {$apidae_id} / post {$post_id}: add GALLERY => attachment {$image_id}");
+      }
+
+      $existing_urls[] = $image_url;
+    }
+  }
+
+  update_post_meta($post_id, 'apidae_image_urls', array_values(array_unique($existing_urls)));
+  update_post_meta($post_id, 'apidae_images_imported', 1);
+
+  // ---- Update ACF gallery (si ACF chargé) ----
+  if (!empty($gallery_ids)) {
+    if (function_exists('get_field') && function_exists('update_field')) {
+      $existing = get_field('gallery', $post_id, false);
+      if (!is_array($existing)) $existing = [];
+      $existing = array_values(array_filter(array_map('intval', $existing)));
+
+      $merged = array_values(array_unique(array_merge($existing, $gallery_ids)));
+      if ($merged !== $existing) {
+        update_field('gallery', $merged, $post_id);
+        $cli_log("Apidae {$apidae_id} / post {$post_id}: ACF gallery updated (" . count($merged) . " ids)");
+      }
+    } else {
+      $cli_warn("Apidae {$apidae_id} / post {$post_id}: ACF non chargé => impossible d'update la gallery");
+    }
+  }
+}
+
+
 
     // ✅ Type + compléments
     update_post_meta($post_id, 'type', $item['type'] ?? '');
