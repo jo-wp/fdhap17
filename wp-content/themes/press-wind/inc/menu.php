@@ -67,7 +67,8 @@ class CM17_Menu_Walker extends Walker_Nav_Menu {
       $li_class = $has_children ? $li_classes_top_with_children : $li_classes_top_no_children;
     } elseif ($depth === 1) {
       // Items du 1er sous-menu
-      $li_class = " md:active [&.active]:text-green max-md:[&.active]:text-black max-md:w-full ";
+      $nochildren = ($has_children)? 'button-has-children' :'button-no-children';
+      $li_class = " md:active [&.active]:text-green max-md:[&.active]:text-black max-md:w-full ".$nochildren." ";
       // Si l’item courant => on peut ajouter la classe "active"
       if ($is_current) {
         $li_class .= " active";
