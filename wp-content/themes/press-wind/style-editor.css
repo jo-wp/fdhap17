@@ -2079,7 +2079,7 @@ nav .submenu{
     transition-duration: 500ms;
   }
 }
-nav > ul > li .submenu li.button-no-children{
+nav > ul > li .submenu li.button-no-children a{
   --tw-text-opacity: 1;
   color: rgb(81 171 126 / var(--tw-text-opacity));
 }

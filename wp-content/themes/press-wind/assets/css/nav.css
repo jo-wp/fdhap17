@@ -32,7 +32,7 @@ nav > ul > li:hover .submenu {
   @apply md:opacity-100 md:visible md:duration-500 md:pointer-events-auto ;
 }
 
-nav > ul > li .submenu li.button-no-children{
+nav > ul > li .submenu li.button-no-children a{
   @apply text-green;
 }
 nav > ul > li .submenu li.button-no-children::before{
