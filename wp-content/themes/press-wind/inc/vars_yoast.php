@@ -222,3 +222,14 @@ add_filter( 'wpseo_breadcrumb_links', function( $links ) {
 
     return $links;
 }, 9999); 
+
+
+add_filter( 'wpseo_sitemap_exclude_taxonomy', function( $exclude, $taxonomy ) {
+
+    if ( $taxonomy === 'liste' ) {
+        return true;
+    }
+
+    return $exclude;
+
+}, 10, 2 );
