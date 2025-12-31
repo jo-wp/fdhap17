@@ -96,6 +96,9 @@ $under_menu_links = get_field('under_menu_links','option');
 
 
 $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
+$wishlist_page_id = 33603; 
+$translated_id = apply_filters('wpml_object_id', $wishlist_page_id, 'page', true);
+$wishlist_url = get_permalink($translated_id);
 
 
 ?>
@@ -113,7 +116,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
         </form>
       </div>
       <?php do_action('wpml_add_language_selector'); ?>
-      <a href="<?= apply_filters('wpml_permalink', site_url('/wishlist/'), apply_filters('wpml_current_language', NULL)); ?>" class="flex items-center">
+      <a href="<?=  $wishlist_url ?>" class="flex items-center">
         <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
           alt="Icon wishlist">
       </a>
@@ -135,7 +138,7 @@ $mb_section = (is_front_page()) ? 'md:mb-[100px] ' : 'mb-[30px]';
           <img src="<?= $logo_tiny; ?>" alt="Logo" class="max-w-[170px]" />
         </a>
         <div class="block-hero__content__mobile__actions flex flex-row gap-[15px]">
-          <a href="<?= apply_filters('wpml_permalink', site_url('/wishlist/'), apply_filters('wpml_current_language', NULL)); ?>" class="flex items-center">
+          <a href="<?=  $wishlist_url ?>" class="flex items-center">
             <img class="w-[22px] h-[22px]" src="<?= esc_url(get_theme_file_uri('/assets/media/heart.png')) ?>"
               alt="Icon wishlist">
           </a>
