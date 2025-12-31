@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Variable Yoast: %%campings_count%%
