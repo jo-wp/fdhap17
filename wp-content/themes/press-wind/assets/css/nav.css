@@ -32,6 +32,13 @@ nav > ul > li:hover .submenu {
   @apply md:opacity-100 md:visible md:duration-500 md:pointer-events-auto ;
 }
 
+nav > ul > li .submenu li.button-no-children{
+
+}
+nav > ul > li .submenu li.button-no-children::before{
+  @apply hidden;
+}
+
 /* Items du submenu */
 nav .submenu li {
   @apply opacity-0 translate-y-2 transition-all duration-0

@@ -2079,6 +2079,12 @@ nav .submenu{
     transition-duration: 500ms;
   }
 }
+nav > ul > li .submenu li.button-no-children{
+
+}
+nav > ul > li .submenu li.button-no-children::before{
+  display: none;
+}
 /* Items du submenu */
 nav .submenu li{
   --tw-translate-y: 0.5rem;
