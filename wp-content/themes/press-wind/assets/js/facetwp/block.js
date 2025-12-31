@@ -171,3 +171,24 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 })
+
+
+document.addEventListener('facetwp-loaded', function() {
+
+    const container = document.querySelector('.facetwp-template');
+    if (!container) return;
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.facetwp-page');
+        if (!btn) return;
+
+        setTimeout(function() {
+            const offset = container.getBoundingClientRect().top + window.pageYOffset - 120; 
+            window.scrollTo({
+                top: offset,
+                behavior: 'smooth'
+            });
+        }, 100); 
+    });
+
+});
