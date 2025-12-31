@@ -33,7 +33,7 @@ nav > ul > li:hover .submenu {
 }
 
 nav > ul > li .submenu li.button-no-children{
-
+  @apply text-green;
 }
 nav > ul > li .submenu li.button-no-children::before{
   @apply hidden;

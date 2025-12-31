@@ -2080,7 +2080,8 @@ nav .submenu{
   }
 }
 nav > ul > li .submenu li.button-no-children{
-
+  --tw-text-opacity: 1;
+  color: rgb(81 171 126 / var(--tw-text-opacity));
 }
 nav > ul > li .submenu li.button-no-children::before{
   display: none;
