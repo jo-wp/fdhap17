@@ -642,7 +642,7 @@ if ($apidae_raw) {
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/www.svg"
             alt="Icon www du camping <?= get_the_title(); ?>">
           <div class="bloc-sidebar-informations__item__content">
-            <p><a href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
+            <p><a class="sitecamping" href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
                 target="_blank"><?= get_post_meta($post->ID, 'site_web', true); ?></a></p>
           </div>
         </div>
