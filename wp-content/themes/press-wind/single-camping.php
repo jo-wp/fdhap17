@@ -580,7 +580,7 @@ if ($apidae_raw) {
               }
               if ($reservation_url) : ?>
                 <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange"
-                onclick="return gtag_conv_buy_fiche(this.href);">
+                onclick="uet_event('Bouton Acheter - Fiche', 'Clic sortant');  return gtag_conv_buy_fiche(this.href);">
                   <?= __('Réserver', 'fdhpa17'); ?>
                 </a>
               <?php endif; ?>
@@ -598,7 +598,7 @@ if ($apidae_raw) {
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <a href="#" class="button button--bg-orange max-md:px-[20px]"
                 data-featherlight="#contactFeatherlight"
-                 onclick="gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+                 onclick="uet_event('Envoyer message', 'Contact'); gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
               <div class=" hidden ">
                 <div id="contactFeatherlight">
                   <?= do_shortcode('[ninja_form id=2]'); ?>
@@ -635,7 +635,7 @@ if ($apidae_raw) {
               <a href="tel:<?= $phone; ?>"
                 class="reveal-phone"
                 data-full="<?= $phone; ?>"
-                onclick="return gtag_conv_phone('tel:<?= $phone; ?>');">
+                onclick="uet_event('Telephone', 'Contact'); return gtag_conv_phone('tel:<?= $phone; ?>');">
                 <?= $masked; ?>
               </a>
             </p>
@@ -646,6 +646,7 @@ if ($apidae_raw) {
             alt="Icon www du camping <?= get_the_title(); ?>">
           <div class="bloc-sidebar-informations__item__content">
             <p><a class="sitecamping" href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
+            onclick="uet_event('Lien Camping', 'Clic sortant'); return gtag_conv_camping_link(this.href);"
                 target="_blank"><?= get_post_meta($post->ID, 'site_web', true); ?></a></p>
           </div>
         </div>

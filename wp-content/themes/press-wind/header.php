@@ -81,6 +81,16 @@
 			})(window, document, "script", "//bat.bing.com/bat.js", "uetq");
 		</script>
 		<!-- End BING -->
+
+		<script>
+			function uet_event(label, category) {
+				window.uetq = window.uetq || [];
+				window.uetq.push("event", "Clic", {
+					"event_label": label,
+					"event_category": category
+				});
+			}
+		</script>
 	<?php endif; ?>
 
 
@@ -182,6 +192,7 @@
 					'send_to': 'AW-1017019547/JaPaCJHAs8wYEJv5-eQD'
 				});
 			}
+
 			function gtag_conv_buy_fiche(url) {
 				return gtag_report_conversion('AW-1017019547/6xkxCJTAs8wYEJv5-eQD', url);
 			}
