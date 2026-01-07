@@ -632,7 +632,8 @@ if ($apidae_raw) {
             <p class="text-[16px] underline">
               <a href="tel:<?= $phone; ?>"
                 class="reveal-phone"
-                data-full="<?= $phone; ?>">
+                data-full="<?= $phone; ?>"
+                  onclick="return gtag_report_conversion('tel:<?= $phone; ?>');">
                 <?= $masked; ?>
               </a>
             </p>
