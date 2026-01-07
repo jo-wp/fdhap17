@@ -163,17 +163,49 @@
 		</script>
 
 		<script>
-			function gtag_report_conversion(url) {
+			// Helper commun (avec redirection optionnelle)
+			function gtag_report_conversion(sendTo, url) {
 				var callback = function() {
-					if (typeof(url) != 'undefined') {
+					if (typeof url !== 'undefined' && url) {
 						window.location = url;
 					}
 				};
+
 				gtag('event', 'conversion', {
-					'send_to': 'AW-1017019547/FvhaCNjDrcwYEJv5-eQD',
+					'send_to': sendTo,
 					'event_callback': callback
 				});
+
+				// Si on passe une url, on bloque la navigation immédiate,
+				// et on laisse le callback rediriger.
 				return false;
+			}
+
+			// 1) Envoyer email / message (ouvre une modale -> pas de redirection)
+			function gtag_conv_email() {
+				gtag('event', 'conversion', {
+					'send_to': 'AW-1017019547/JaPaCJHAs8wYEJv5-eQD'
+				});
+			}
+
+			// 2) Acheter - Fiche
+			function gtag_conv_buy_fiche(url) {
+				return gtag_report_conversion('AW-1017019547/6xkxCJTAs8wYEJv5-eQD', url);
+			}
+
+			// 3) Acheter - Liste
+			function gtag_conv_buy_liste(url) {
+				return gtag_report_conversion('AW-1017019547/j8HJCJfAs8wYEJv5-eQD', url);
+			}
+
+			// 4) Clic sur lien du camping
+			function gtag_conv_camping_link(url) {
+				return gtag_report_conversion('AW-1017019547/31ujCI7As8wYEJv5-eQD', url);
+			}
+
+			// 5) Clic téléphone
+			function gtag_conv_phone(url) {
+				return gtag_report_conversion('AW-1017019547/FvhaCNjDrcwYEJv5-eQD', url);
 			}
 		</script>
 

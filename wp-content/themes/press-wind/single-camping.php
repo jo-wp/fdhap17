@@ -579,7 +579,8 @@ if ($apidae_raw) {
                 }
               }
               if ($reservation_url) : ?>
-                <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange">
+                <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange"
+                onclick="return gtag_conv_buy_fiche(this.href);">
                   <?= __('Réserver', 'fdhpa17'); ?>
                 </a>
               <?php endif; ?>
@@ -596,7 +597,8 @@ if ($apidae_raw) {
             <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <a href="#" class="button button--bg-orange max-md:px-[20px]"
-                data-featherlight="#contactFeatherlight"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+                data-featherlight="#contactFeatherlight"
+                 onclick="gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
               <div class=" hidden ">
                 <div id="contactFeatherlight">
                   <?= do_shortcode('[ninja_form id=2]'); ?>
@@ -633,7 +635,7 @@ if ($apidae_raw) {
               <a href="tel:<?= $phone; ?>"
                 class="reveal-phone"
                 data-full="<?= $phone; ?>"
-                  onclick="return gtag_report_conversion('tel:<?= $phone; ?>');">
+                onclick="return gtag_conv_phone('tel:<?= $phone; ?>');">
                 <?= $masked; ?>
               </a>
             </p>
