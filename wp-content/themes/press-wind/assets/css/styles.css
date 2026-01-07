@@ -27,6 +27,7 @@
 @import './favoris.css';
 @import './wpml.css';
 @import './page.css';
+@import './modal.css';
 
 /** FONT IMPORT CDN */
 @import 'https://use.typekit.net/kcm1lom.css';

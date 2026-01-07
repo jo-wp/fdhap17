@@ -10,6 +10,8 @@ import { ensureMap, rebuildMarkers, initFacetwpLeaflet } from './facetwp/map.js'
 import blockSearch from './facetwp/block.js'
 import isSticky from './menu/sticky.js'
 import Splide from '@splidejs/splide'
+import initFDHPAModal from './campings/modal.js'
+
 
 window.Splide = Splide
 
@@ -373,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ctaMobile()
   isSticky()
   revealPhone()
+  initFDHPAModal()
   //Import
   const map = document.querySelector('#map')
   if (map) {
