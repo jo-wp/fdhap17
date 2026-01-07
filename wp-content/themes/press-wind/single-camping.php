@@ -596,6 +596,7 @@ if ($apidae_raw) {
             </p>
             <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
+              <?= do_shortcode('[ninja_form id=2]'); ?>
               <a href="#" class="button button--bg-orange max-md:px-[20px]"
 
                 data-modal-open="contactModal"
@@ -607,7 +608,6 @@ if ($apidae_raw) {
                     ×
                   </button>
                   <div class="fdhpa-modal__content" id="contactModalContent">
-                    <?= do_shortcode('[ninja_form id=2]'); ?>
                   </div>
                 </div>
               </div>
