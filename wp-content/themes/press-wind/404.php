@@ -15,9 +15,10 @@ $relationned_404 = get_field('relationned_404', 'option');
 <div class="container-huge ">
   <div class="max-w-[1565px] mx-auto flex flex-col md:flex-row flex-wrap items-center justify-center gap-[50px] md:gap-[20px]">
     <?php foreach ($relationned_404 as $item): ?>
+      <?php $url = tp_get_term_url_by_term_page($item->ID); ?>
       <?php $imageBackground = get_the_post_thumbnail_url($item->ID, 'full'); ?>
-      <a class="!no-underline aspect-[2/1] w-full md:w-[32%] h-full block" href="<?= get_permalink($item->ID) ?>">
-        <div class=" h-[90%] md:h-full w-full rounded-[20px] bg-cover" style="background-image:url('<?= $imageBackground; ?>')"></div>
+      <a class="!no-underline aspect-[2/1] w-full md:w-[32%] h-full block" href="<?= $url; ?>">
+        <div class=" h-[90%] md:h-full w-full rounded-[20px] bg-cover bg-center" style="background-image:url('<?= $imageBackground; ?>')"></div>
         <p class="no-underline font-arial text-[24px] font-[600]"><?= $item->post_title; ?></p>
       </a>
     <?php endforeach; ?>
