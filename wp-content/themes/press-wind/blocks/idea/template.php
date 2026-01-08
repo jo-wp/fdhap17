@@ -92,14 +92,18 @@ $template = [
                     <a href="<?=  $url; ?>" class="hover:no-underline">
                       <div
                         class="relative overflow-hidden min-h-full bg-cover rounded-[10px]
-after:content-[''] after:absolute after:left-0 after:bottom-0
-after:w-full after:h-[50%]
-after:bg-gradient-to-b after:from-transparent after:to-[#00000066]
-after:transition-all after:duration-500
 
-hover:after:h-full
-hover:after:from-[#00000055]
-hover:after:to-[#000000aa]
+after:content-['']
+after:absolute after:left-0 after:bottom-0
+after:w-full after:h-[50%]
+after:bg-gradient-to-b
+after:from-transparent
+after:to-[#00000066]
+
+after:opacity-80
+after:transition-opacity after:duration-300
+hover:after:opacity-100
+hover:after:to-[#00000088]
 
 flex flex-row justify-start items-end md:pl-5"
                         style="background-image: url('<?= $backgroundImage; ?>')">

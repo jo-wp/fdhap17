@@ -4039,9 +4039,19 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   --tw-gradient-to: #00000066 var(--tw-gradient-to-position);
 }
+.after\:opacity-80::after{
+  content: var(--tw-content);
+  opacity: 0.8;
+}
 .after\:transition-all::after{
   content: var(--tw-content);
   transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.after\:transition-opacity::after{
+  content: var(--tw-content);
+  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -4054,10 +4064,6 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .after\:duration-300::after{
   content: var(--tw-content);
   transition-duration: 300ms;
-}
-.after\:duration-500::after{
-  content: var(--tw-content);
-  transition-duration: 500ms;
 }
 .after\:content-\[\'\'\]::after{
   --tw-content: '';
@@ -4130,23 +4136,17 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   content: var(--tw-content);
   height: 3px;
 }
-.hover\:after\:h-full:hover::after{
-  content: var(--tw-content);
-  height: 100%;
-}
 .hover\:after\:w-\[100\%\]:hover::after{
   content: var(--tw-content);
   width: 100%;
 }
-.hover\:after\:from-\[\#00000055\]:hover::after{
+.hover\:after\:to-\[\#00000088\]:hover::after{
   content: var(--tw-content);
-  --tw-gradient-from: #00000055 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #00000088 var(--tw-gradient-to-position);
 }
-.hover\:after\:to-\[\#000000aa\]:hover::after{
+.hover\:after\:opacity-100:hover::after{
   content: var(--tw-content);
-  --tw-gradient-to: #000000aa var(--tw-gradient-to-position);
+  opacity: 1;
 }
 .hover\:after\:content-\[\'\'\]:hover::after{
   --tw-content: '';
