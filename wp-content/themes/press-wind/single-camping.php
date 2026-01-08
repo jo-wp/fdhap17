@@ -201,13 +201,7 @@ if ($apidae_raw) {
       </div>
       <?php if ($id_reservation_ctoutvert): ?>
         <div class="">
-
-          <script>
-            setTimeout(function() {
-              document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>" ></ctv-availability>"
-            });
-          </script>
-          <div id="ctv-gp1xa2z0ihv1rc5hog1yrs"></div>
+          <ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>" ></ctv-availability>
           <script>
             window.ctoutvert = {
               groupId: 137,

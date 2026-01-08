@@ -365,6 +365,8 @@ if (! is_admin() && ! (defined('WP_CLI') && WP_CLI)) {
   //   'endDate' => '2026-08-15'
   // ];
   // $data = Ctoutvert::ctoutvert_search_holidays($dateFilters, null, true);
+  // var_dump($data);
+  // die();
 
   // $data = Ctoutvert::ctoutvert_get_specialoffer(7624);
   // foreach($data->establishment_returnSpecialOffersResult->establishmentsSpecialOfferList->establishmentSpecialOfferList[0]->SpecialOfferList->specialOffers->specialOffer as $item):
