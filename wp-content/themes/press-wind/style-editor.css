@@ -2720,7 +2720,6 @@ nav .submenu > li .submenu-child > li{
   z-index: 2;
 }
 @media (max-width: 768px) {
-
   .block-hero__content::before {
     background: linear-gradient(
       180deg,
@@ -2739,6 +2738,9 @@ nav .submenu > li .submenu-child > li{
     position: absolute !important;
     bottom: 0px;
     top: initial;
+  }
+  .page-template-template-recherche #hero-carousel::after {
+    background: transparent;
   }
   .page-template-template-deals .search-bar,
   .page-template-template-recherche .search-bar {
@@ -2767,7 +2769,6 @@ nav .submenu > li .submenu-child > li{
     background: #e9b237;
     border-color: #e9b237;
   }
-
 }
 .block-campings .fwpl-layout{
   display: grid !important;
@@ -2850,6 +2851,24 @@ nav .submenu > li .submenu-child > li{
 @media (min-width: 768px){
   .block-search .facetwp-template > div{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media(max-width:960px){
+  .block-search .wrapper-filters.active{
+position: fixed;
+    top: 0px;
+    z-index: 99999;
+    width: 100vw;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 0;
+  }
+  .block-search .wrapper-filters.active > div{
+        background: #fff;
+    margin: 30px;
+    padding: 20px;
   }
 }
 .single-post h2{

@@ -33,7 +33,6 @@
 }
 
 @media (max-width: 768px) {
-
   .block-hero__content::before {
     background: linear-gradient(
       180deg,
@@ -52,6 +51,9 @@
     position: absolute !important;
     bottom: 0px;
     top: initial;
+  }
+  .page-template-template-recherche #hero-carousel::after {
+    background: transparent;
   }
   .page-template-template-deals .search-bar,
   .page-template-template-recherche .search-bar {
@@ -82,5 +84,4 @@
     background: #e9b237;
     border-color: #e9b237;
   }
-
 }
