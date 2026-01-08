@@ -77,4 +77,7 @@
     margin: 30px;
     padding: 20px;
   }
+  .block-search .wrapper-filters.active [data-button="filters"]{
+    margin-bottom: 80px;
+  }
 }

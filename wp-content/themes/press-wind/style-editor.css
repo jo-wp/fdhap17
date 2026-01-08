@@ -2886,6 +2886,9 @@ nav .submenu > li .submenu-child > li{
     margin: 30px;
     padding: 20px;
   }
+  .block-search .wrapper-filters.active [data-button="filters"]{
+    margin-bottom: 80px;
+  }
 }
 .single-post h2{
   margin-top: 20px !important;
