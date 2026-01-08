@@ -91,7 +91,7 @@ $template = [
                   <li class="splide__slide splide__slide-item max-md:min-h-[200px] animateFade fadeOutAnimation" data-taxonomie="<?= $item['filter-title']; ?>">
                     <a href="<?=  $url; ?>" class="hover:no-underline">
                       <div
-                        class="relative overflow-hidden min-h-full bg-cover rounded-[10px]
+                        class="relative group overflow-hidden min-h-full bg-cover rounded-[10px]
 
 after:content-['']
 after:absolute after:left-0 after:bottom-0
@@ -108,7 +108,13 @@ hover:after:to-[#00000088]
 flex flex-row justify-start items-end md:pl-5"
                         style="background-image: url('<?= $backgroundImage; ?>')">
                         <span
-                          class="text-white text-[20px] no-underline font-bold font-arial m-0 relative z-10 mb-[20px] max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0">
+                          class="text-white text-[20px] no-underline font-bold font-arial m-0 relative z-10 mb-[20px]
+         max-md:rounded-b-[10px] max-md:flex max-md:flex-col max-md:gap-1 max-md:items-center
+         max-md:justify-center max-md:text-black max-md:text-[16px] max-md:bg-white
+         max-md:w-full max-md:text-center max-md:h-[65px] max-md:mb-0
+         transition-transform duration-300 ease-out
+         group-hover:translate-x-[6px]
+         max-md:group-hover:translate-x-0">
                           <?= $item['article']->post_title; ?>
                 </span>
                       </div>
