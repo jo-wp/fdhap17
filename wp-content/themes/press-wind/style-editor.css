@@ -281,6 +281,9 @@
   margin-top: 0px;
   margin-bottom: 0px;
 }
+.-mb-\[1px\]{
+  margin-bottom: -1px;
+}
 .-mt-\[40px\]{
   margin-top: -40px;
 }
@@ -427,6 +430,9 @@
 }
 .mt-\[77px\]{
   margin-top: 77px;
+}
+.mt-\[8px\]{
+  margin-top: 8px;
 }
 .box-border{
   box-sizing: border-box;
@@ -5554,6 +5560,12 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&\>\*\:nth-child\(3\)\]\:row-start-2>*:nth-child(3){
   grid-row-start: 2;
 }
+.\[\&_\.facetwp-date-max\]\:-ml-\[2px\] .facetwp-date-max{
+  margin-left: -2px;
+}
+.\[\&_\.facetwp-date-min\]\:-ml-\[2px\] .facetwp-date-min{
+  margin-left: -2px;
+}
 .\[\&_\.facetwp-display-value\]\:m-0 .facetwp-display-value{
   margin: 0px;
 }
@@ -6295,6 +6307,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 .\[\&_p_span_span\]\:text-black p span span{
   --tw-text-opacity: 1;
   color: rgb(51 51 51 / var(--tw-text-opacity));
+}
+.\[\&_select\]\:-ml-\[4px\] select{
+  margin-left: -4px;
 }
 .\[\&_select\]\:w-full select{
   width: 100%;
