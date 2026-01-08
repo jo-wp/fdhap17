@@ -48,7 +48,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 							<div><input type="hidden" value="Newsletter" id="fielddtklkrk" maxlength="200" name="cm-f-dtklkrk"></div>
 							<div>
 								<div>
-									<div><input aria-required="" id="cm-privacy-consent" name="cm-privacy-consent" required=""
+									<div class="flex items-center justify-center mt-[20px]"><input aria-required="" id="cm-privacy-consent" name="cm-privacy-consent" required=""
 											type="checkbox" class="!bg-green border !border-white !border-solid checked:!bg-orange"><label class="text-[14px] text-white" for="cm-privacy-consent"><?= __('J’accepte de recevoir les informations de Campings
 											Atlantique','fdhpa17'); ?></label></div><input id="cm-privacy-consent-hidden" name="cm-privacy-consent-hidden"
 										type="hidden" value="true">
