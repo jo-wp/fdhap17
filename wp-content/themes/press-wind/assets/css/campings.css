@@ -1,22 +1,22 @@
-.block-campings .fwpl-layout{
-  @apply !grid !grid-cols-3; 
+.block-campings .fwpl-layout {
+  @apply !grid !grid-cols-3;
 }
-.block-campings .facetwp-checkbox{
-  @apply bg-checkbox bg-[length:16px_16px] pl-[20px] ;
+.block-campings .facetwp-checkbox {
+  @apply bg-checkbox bg-[length:16px_16px] pl-[20px];
 }
-.block-campings .facetwp-checkbox.checked{
+.block-campings .facetwp-checkbox.checked {
   @apply bg-checkbox-checked;
-} 
-.block-campings .facet-block{
+}
+.block-campings .facet-block {
   @apply pb-[20px] border-t-0 border-l-0 border-r-0 border-b border-solid border-[#757575] mb-[20px];
 }
-.block-campings .facetwp-facet{
+.block-campings .facetwp-facet {
   @apply mb-0;
 }
-.block-campings .facetwp-template .image-featured{
+.block-campings .facetwp-template .image-featured {
   @apply max-h-[290px] min-w-[auto] aspect-[3/2];
 }
-.block-campings .facetwp-template > div{
+.block-campings .facetwp-template > div {
   @apply grid-cols-1 md:grid-cols-3 gap-x-[30px] gap-y-[50px];
 }
 
@@ -26,27 +26,27 @@
   }
 } */
 
-.block-search .facetwp-checkbox{
-  @apply bg-checkbox bg-[length:16px_16px] pl-[20px] ;
+.block-search .facetwp-checkbox {
+  @apply bg-checkbox bg-[length:16px_16px] pl-[20px];
 }
-.block-search .facetwp-checkbox.checked{
+.block-search .facetwp-checkbox.checked {
   @apply bg-checkbox-checked;
 }
-.block-search .facet-block{
+.block-search .facet-block {
   @apply pb-[20px] border-t-0 border-l-0 border-r-0 border-b border-solid border-[#757575] mb-[20px];
 }
-.block-search .facetwp-facet{
+.block-search .facetwp-facet {
   @apply mb-0;
 }
-.block-search .facetwp-template .image-featured{
+.block-search .facetwp-template .image-featured {
   @apply max-h-[290px] min-w-[auto] aspect-[3/2];
 }
-.block-search .facetwp-template > div{
-  @apply grid-cols-1 md:grid-cols-2 gap-x-[30px] gap-y-[50px] ;
+.block-search .facetwp-template > div {
+  @apply grid-cols-1 md:grid-cols-2 gap-x-[30px] gap-y-[50px];
 }
-@media(max-width:960px){
-  .block-search .wrapper-filters.active{
-position: fixed;
+@media (max-width: 960px) {
+  .block-search .wrapper-filters.active {
+    position: fixed;
     top: 0px;
     z-index: 99999;
     width: 100vw;
@@ -56,8 +56,24 @@ position: fixed;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 0;
   }
-  .block-search .wrapper-filters.active > div{
-        background: #fff;
+  .block-search .wrapper-filters.active::after {
+  content: "✕";
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  color: #000;
+  font-size: 26px;
+  line-height: 42px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 100000;
+}
+  .block-search .wrapper-filters.active > div {
+    background: #fff;
     margin: 30px;
     padding: 20px;
   }

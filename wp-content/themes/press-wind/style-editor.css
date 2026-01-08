@@ -2853,9 +2853,9 @@ nav .submenu > li .submenu-child > li{
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media(max-width:960px){
-  .block-search .wrapper-filters.active{
-position: fixed;
+@media (max-width: 960px) {
+  .block-search .wrapper-filters.active {
+    position: fixed;
     top: 0px;
     z-index: 99999;
     width: 100vw;
@@ -2865,8 +2865,24 @@ position: fixed;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 0;
   }
-  .block-search .wrapper-filters.active > div{
-        background: #fff;
+  .block-search .wrapper-filters.active::after {
+  content: "✕";
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  color: #000;
+  font-size: 26px;
+  line-height: 42px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 100000;
+}
+  .block-search .wrapper-filters.active > div {
+    background: #fff;
     margin: 30px;
     padding: 20px;
   }
