@@ -314,11 +314,14 @@ $wishlist_url = get_permalink($translated_id);
     <?php
     $mini_site = get_field('mini_site', $id);
     if (!$mini_site) { // except home minisite
+			$current_id = get_the_ID();
+			$ref_id = wp_get_post_parent_id($current_id) ?: $current_id;
+      	$url_parent = get_permalink($ref_id);
       ?>
       <nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
         <ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
           <li>
-            <a href="<?php the_permalink($id); ?>">fdhpa-17</a>
+            <a href="<?= $url_parent  ?>">fdhpa-17</a>
           </li>
           <li class="font-bold tracking-wider">
               <?= get_the_title(); ?>

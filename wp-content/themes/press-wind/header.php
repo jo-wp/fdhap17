@@ -224,6 +224,8 @@
 			$mini_site = get_field('mini_site', $ref_id);
 			$logo = get_field('mini_site_logo', $ref_id);
 
+			$url_parent = get_permalink($ref_id);
+
 			$hero_is = get_field('hero_type', $current_id);
 
 			if ($mini_site) {
@@ -244,7 +246,7 @@
 				<section
 					class="max-md:bg-white px-[15px] minisite-header mb-6 max-w-[914px] mx-auto flex justify-between md:justify-center items-center md:items-end border-solid border-l-0 border-t-0 border-r-0 border-b-[2px] border-black/37 pb-3 <?php if ($hero_is != "none") { ?>minisite-header-fix absolute left-0 right-0 z-[1000] md:top-[90px]<?php } ?>">
 
-					<a class="flex" href="<?php echo the_permalink($ref_id) ?>">
+					<a class="flex" href="<?= $url_parent; ?>">
 						<img src="<?php echo $logo['url'] ?>" width="140" class="max-md:w-[100px]" />
 					</a>
 
@@ -303,7 +305,7 @@
 					<nav aria-label="Fil d’Ariane" class="minisite-breadcrumb mb-12">
 						<ol class="list-none flex gap-4 font-arial text-[13px] justify-center m-0 p-0">
 							<li>
-								<a href="<?php the_permalink($ref_id); ?>">fdhpa-17</a>
+								<a href="<?= $url_parent ?>">fdhpa-17</a>
 							</li>
 							<li class="font-bold tracking-wider">
 								<?php the_title() ?>
