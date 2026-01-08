@@ -10,6 +10,9 @@
   /** header **/
   --header-bg-color: var(--branding--color);
 }
+.hover\:bg-green:hover {
+      color: #fff;
+}
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1877,6 +1880,11 @@ section{
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+}
+.button--primary:hover {
+      color: #fff;
+}
+.button--primary{
   border-color: #51AB7E;
 }
 .button--primary:hover{
@@ -1968,16 +1976,17 @@ section{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
-.button--grey:hover{
-  border-width: 2px;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgb(81 171 126 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(81 171 126 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-  text-decoration-line: none;
+.button--grey:hover {
+      color: #fff;
+      border-width: 2px;
+      border-style: solid;
+      --tw-border-opacity: 1;
+      border-color: rgb(81 171 126 / var(--tw-border-opacity));
+      --tw-bg-opacity: 1;
+      background-color: rgb(81 171 126 / var(--tw-bg-opacity));
+      --tw-text-opacity: 1;
+      color: rgb(255 255 255 / var(--tw-text-opacity));
+      text-decoration-line: none;
 }
 .button--white{
   margin-left: auto;
@@ -2003,16 +2012,17 @@ section{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
-.button--white:hover{
-  border-width: 2px;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgb(81 171 126 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(81 171 126 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-  text-decoration-line: none;
+.button--white:hover {
+      color: #fff;
+      border-width: 2px;
+      border-style: solid;
+      --tw-border-opacity: 1;
+      border-color: rgb(81 171 126 / var(--tw-border-opacity));
+      --tw-bg-opacity: 1;
+      background-color: rgb(81 171 126 / var(--tw-bg-opacity));
+      --tw-text-opacity: 1;
+      color: rgb(255 255 255 / var(--tw-text-opacity));
+      text-decoration-line: none;
 }
 body.no-scroll {
   overflow: hidden;
