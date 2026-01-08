@@ -204,18 +204,16 @@ if ($apidae_raw) {
 
           <script>
             setTimeout(function() {
-              document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability></ctv-availability>"
+              document.getElementById("ctv-gp1xa2z0ihv1rc5hog1yrs").innerHTML = "<ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>" ></ctv-availability>"
             });
           </script>
           <div id="ctv-gp1xa2z0ihv1rc5hog1yrs"></div>
-
           <script>
             window.ctoutvert = {
-              id: <?= $id_reservation_ctoutvert; ?>,
+              groupId: 137,
               lang: 'auto',
-              url: 'https://bookingpremium.secureholiday.net/widgets/'
+              url: 'https://reservation.secureholiday.net/widgets/'
             };
-
             (function(w, d, s, ctv, r, js, fjs) {
               r = new XMLHttpRequest();
               r.open('GET', w[ctv].url + 'js/src.json');
@@ -597,7 +595,7 @@ if ($apidae_raw) {
             <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <a href="#" class="button button--bg-orange max-md:px-[20px]"
-    
+
                 data-modal-open="contactModal"
                 onclick="uet_event('Envoyer message', 'Contact'); gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
               <div id="contactModal" class="fdhpa-modal" aria-hidden="true" role="dialog" aria-modal="true">
