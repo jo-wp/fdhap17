@@ -173,9 +173,9 @@ if ($apidae_raw) {
           <a href=""
             class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline active  [&.active]:border-t-0 [&.active]:border-l-0 [&.active]:border-r-0 [&.active]:border-b [&.active]:border-[#333] [&.active]:border-solid">Présentation</a>
         </div>
-        <?php if ($id_reservation_direct): ?>
+        <?php if ($id_reservation_ctoutvert): ?>
           <div>
-            <a href=""
+            <a href="#disponibilites"
               class="text-green font-montserrat text-[16px] font-[500] pb-[19px] hover:no-underline"><?= __('Disponibilités', 'fdhpa17'); ?></a>
           </div>
         <?php endif; ?>
@@ -200,7 +200,7 @@ if ($apidae_raw) {
         <?php endif; ?>
       </div>
       <?php if ($id_reservation_ctoutvert): ?>
-        <div class="">
+        <div id="disponibilites" class="">
           <ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>" ></ctv-availability>
           <script>
             window.ctoutvert = {
