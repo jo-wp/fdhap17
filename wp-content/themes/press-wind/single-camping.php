@@ -547,10 +547,8 @@ if ($apidae_raw) {
               $reservation_url = '';
 
               if (! empty($id_reservation_ctoutvert)) {
-
                 $id_reservation_ctoutvert = trim($id_reservation_ctoutvert, " \t\n\r\0\x0B/");
-
-                $reservation_url = 'https://reservation.secureholiday.net/fr/' . $id_reservation_ctoutvert . '/';
+                $reservation_url = 'https://reservation.secureholiday.net/group/fr/137/search/estab-view/' . $id_reservation_ctoutvert . '/products?showMap=true';
               } elseif (! empty($url_reservation_direct)) {
 
                 $value = trim($url_reservation_direct);
