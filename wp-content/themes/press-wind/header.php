@@ -173,6 +173,61 @@
 		</script>
 
 		<script>
+			window.uetq = window.uetq || [];
+			window.uetq.push("event", "Clic", {
+				"event_label": "Redirection site web",
+				"event_category": "Clic sortant"
+			});
+		</script>
+
+		<script>
+			window.uetq = window.uetq || [];
+			window.uetq.push("event", "Clic", {
+				"event_label": "Envoyer email",
+				"event_category": "Clic sortant"
+			});
+		</script>
+
+		<script>
+			function uet_report_conversion() {
+				window.uetq = window.uetq || [];
+				window.uetq.push("event", "Clic", {
+					"event_label": "Envoyer email",
+					"event_category": "Clic sortant"
+				});
+			}
+		</script>
+
+		<script>
+			function uet_report_conversion() {
+				window.uetq = window.uetq || [];
+				window.uetq.push("event", "Clic", {
+					"event_label": "Redirection site web",
+					"event_category": "Clic sortant"
+				});
+			}
+		</script>
+
+		<script>
+			window.uetq = window.uetq || [];
+			window.uetq.push("event", "Clic", {
+				"event_label": "Bouton Acheter",
+				"event_category": "Clic sortant"
+			});
+		</script>
+
+		<script>
+			function uet_report_conversion() {
+				window.uetq = window.uetq || [];
+				window.uetq.push("event", "Clic", {
+					"event_label": "Bouton Acheter",
+					"event_category": "Clic sortant"
+				});
+			}
+		</script>
+
+
+		<script>
 			function gtag_report_conversion(sendTo, url) {
 				var callback = function() {
 					if (typeof url !== 'undefined' && url) {
