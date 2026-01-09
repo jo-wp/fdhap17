@@ -31,6 +31,11 @@ if (is_singular('ambassador')) {
   $hero_type = 'tiny';
 }
 
+if(is_search()) {
+  $hero_type = 'middle';
+}
+
+
 $activate_search = get_field('activate_search', $id);
 $carousel_images = get_field('carousel_images', $id) ?: [];
 $count_carousel_images = count($carousel_images);
@@ -51,7 +56,9 @@ if ($first['url']) {
 
 $center = get_field('center_hero', $id);
 
-
+if(is_search()){
+  $firstImage =  get_field('image_header_search_page', 'option');
+}
 
 //* LOGOS *//
 $logo = get_field('logo_header_hero', 'option');
@@ -65,6 +72,7 @@ $text_color = 'text-black md:text-white';
 $disabled_gradient = '';
 $border_color = 'border-[#ffffff36]';
 $gradient_full = '';
+
 
 switch ($hero_type) {
   case 'full':
