@@ -1093,7 +1093,7 @@ add_action('pre_get_posts', function($query) {
     }
 
     $exclude = [
-        'camping',
+        // 'camping',
         'term_page',
         'facetwp',
     ];
