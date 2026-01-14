@@ -14,7 +14,9 @@
             <h2 class="text-[24px] font-arial text-green mb-[15px]"><?php the_title(); ?></h2>
             <div class="[&_p]:m-0 text-[15px]"><?php the_excerpt(); ?></div>
             <div class="flex flex-row flex-wrap items-center justify-between">
+              <?php if(the_date()): ?>
               <span class="text-[15px] italic"><?= __('Publié le : ','fdhpa17'); ?> <?php the_date(); ?></span>
+              <?php endif; ?>
               <span><img class=" -rotate-90" src="<?= get_bloginfo('template_directory') ?>/assets/media/arrow-menu-orange.svg"></span>
             </div>
           </div>
