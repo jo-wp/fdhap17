@@ -177,7 +177,7 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
 /**
  * FacetWP : filtrer les CPT "camping"
- * - Afficher TOUJOURS les campings SANS meta 'id_reservation_direct'
+ * - Afficher TOUJOURS les campings SANS meta 'id_reservation_ctoutvert'
  * - Pour ceux QUI ONT la meta, n'afficher que si la valeur est dans la liste renvoyée par Ctoutvert::ctoutvert_search_holidays()
  */
 add_filter('facetwp_query_args', function ($args, $class) {
@@ -252,19 +252,19 @@ add_filter('facetwp_query_args', function ($args, $class) {
     $or_group = ['relation' => 'OR'];
 
     $or_group[] = [
-        'key' => 'id_reservation_direct',
+        'key' => 'id_reservation_ctoutvert',
         'compare' => 'NOT EXISTS',
     ];
 
     $or_group[] = [
-        'key' => 'id_reservation_direct',
+        'key' => 'id_reservation_ctoutvert',
         'value' => '',
         'compare' => '=',
     ];
 
     if (!empty($available_ids)) {
         $or_group[] = [
-            'key' => 'id_reservation_direct',
+            'key' => 'id_reservation_ctoutvert',
             'value' => $available_ids,
             'compare' => 'IN',
             'type' => 'NUMERIC',
