@@ -6,7 +6,7 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $args['tax_query'] = [];
     }
 
-    $args['posts_per_page'] = 12;
+    $args['posts_per_page'] = 100;
 
     // 1) Essayer depuis l'URI : ex. "destination/camping-la-rochelle"
     $uri = isset($class->ajax_params['http_params']['uri']) ? $class->ajax_params['http_params']['uri'] : '';
