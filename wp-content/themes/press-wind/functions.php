@@ -1039,30 +1039,24 @@ add_filter('wpseo_breadcrumb_links', function ($links) {
 
   foreach ($links as $i => $link) {
 
-    // 1) Conserve "Accueil"
     if ($i === 0) {
       $new[] = $link;
       continue;
     }
 
-    // 2) Conserve l’archive de la taxonomie si Yoast l’a mise
     if (!empty($link['ptarchive'])) {
       $new[] = $link;
       continue;
     }
 
-    // 3) Conserve TOUJOURS le dernier crumb (terme courant)
     if ($i === $last_index) {
-      // Sécurise le libellé si Yoast ne l’a pas fourni
       if (empty($link['text']) && !empty($q->name)) {
         $link['text'] = $q->name;
       }
-      // Le dernier n’a souvent pas d’URL (page courante) → ok
       $new[] = $link;
       continue;
     }
 
-    // Tous les autres (parents) sont supprimés pour un breadcrumb "plat"
   }
 
   return $new;
@@ -1080,3 +1074,38 @@ function get_reading_time($post_id = null, $wpm = 200) {
 
     return $time;
 }
+
+
+add_action('pre_get_posts', function($query) {
+
+    if (is_admin() || ! $query->is_main_query() || ! $query->is_search()) {
+        return;
+    }
+
+    $post_types = $query->get('post_type');
+
+    if (empty($post_types) || $post_types === 'any') {
+        $post_types = array_values(get_post_types(['public' => true], 'names'));
+    } elseif (is_string($post_types)) {
+        $post_types = [$post_types];
+    } else {
+        $post_types = (array) $post_types;
+    }
+
+    $exclude = [
+        'camping',
+        'term_page',
+        'facetwp',
+    ];
+
+    $post_types = array_values(array_diff($post_types, $exclude));
+
+    // Fallback 
+    if (empty($post_types)) {
+        $post_types = ['post', 'page'];
+    }
+
+    $query->set('post_type', $post_types);
+
+    $query->set('tax_query', []);
+});
