@@ -86,9 +86,25 @@
 			function uet_event(label, category) {
 				window.uetq = window.uetq || [];
 				window.uetq.push("event", "Clic", {
-					"event_label": label,
-					"event_category": category
+					event_label: label,
+					event_category: category
 				});
+			}
+
+			function uet_buy_fiche() {
+				uet_event("Bouton Acheter - Fiche", "Clic sortant");
+			}
+
+			function uet_buy_liste() {
+				uet_event("Bouton Acheter - Liste", "Clic sortant");
+			}
+
+			function uet_email() {
+				uet_event("Envoyer email", "Clic sortant");
+			}
+
+			function uet_site() {
+				uet_event("Redirection site web", "Clic sortant");
 			}
 		</script>
 	<?php endif; ?>
@@ -156,75 +172,6 @@
 		</script>
 
 
-		<script>
-			window.uetq = window.uetq || [];
-			window.uetq.push("event", "Clic", {
-				"event_category": "Clic sortant"
-			});
-		</script>
-
-		<script>
-			function uet_report_conversion() {
-				window.uetq = window.uetq || [];
-				window.uetq.push("event", "Clic", {
-					"event_category": "Clic sortant"
-				});
-			}
-		</script>
-
-		<script>
-			window.uetq = window.uetq || [];
-			window.uetq.push("event", "Clic", {
-				"event_label": "Redirection site web",
-				"event_category": "Clic sortant"
-			});
-		</script>
-
-		<script>
-			window.uetq = window.uetq || [];
-			window.uetq.push("event", "Clic", {
-				"event_label": "Envoyer email",
-				"event_category": "Clic sortant"
-			});
-		</script>
-
-		<script>
-			function uet_report_conversion() {
-				window.uetq = window.uetq || [];
-				window.uetq.push("event", "Clic", {
-					"event_label": "Envoyer email",
-					"event_category": "Clic sortant"
-				});
-			}
-		</script>
-
-		<script>
-			function uet_report_conversion() {
-				window.uetq = window.uetq || [];
-				window.uetq.push("event", "Clic", {
-					"event_label": "Redirection site web",
-					"event_category": "Clic sortant"
-				});
-			}
-		</script>
-
-		<script>
-			window.uetq = window.uetq || [];
-			window.uetq.push("event", "Clic", {
-				"event_label": "Bouton Acheter",
-				"event_category": "Clic sortant"
-			});
-		</script>
-
-		<script>
-			function uet_report_conversion() {
-				window.uetq = window.uetq || [];
-				window.uetq.push("event", "Clic", {
-					"event_label": "Bouton Acheter",
-					"event_category": "Clic sortant"
-				});
-			}
-		</script>
 
 
 		<script>

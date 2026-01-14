@@ -570,7 +570,7 @@ if ($apidae_raw) {
               }
               if ($reservation_url) : ?>
                 <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange"
-                  onclick="uet_event('Bouton Acheter - Fiche', 'Clic sortant');  return gtag_conv_buy_fiche(this.href);">
+                  onclick="uet_buy_fiche();  return gtag_conv_buy_fiche(this.href);">
                   <?= __('Réserver', 'fdhpa17'); ?>
                 </a>
               <?php endif; ?>
@@ -589,7 +589,7 @@ if ($apidae_raw) {
               <a href="#" class="button button--bg-orange max-md:px-[20px]"
 
                 data-modal-open="contactModal"
-                onclick="uet_event('Envoyer message', 'Contact'); gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+                onclick="uet_email(); gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
               <div id="contactModal" class="fdhpa-modal" aria-hidden="true" role="dialog" aria-modal="true">
                 <div class="fdhpa-modal__backdrop" data-modal-close></div>
                 <div class="fdhpa-modal__dialog" role="document">
@@ -643,7 +643,7 @@ if ($apidae_raw) {
             alt="Icon www du camping <?= get_the_title(); ?>">
           <div class="bloc-sidebar-informations__item__content">
             <p><a class="sitecamping" href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
-                onclick="uet_event('Lien Camping', 'Clic sortant'); return gtag_conv_camping_link(this.href);"
+                onclick="uet_site(); return gtag_conv_camping_link(this.href);"
                 target="_blank"><?= get_post_meta($post->ID, 'site_web', true); ?></a></p>
           </div>
         </div>
