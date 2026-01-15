@@ -349,7 +349,7 @@ function animationBlock() {
     attributeFilter: ['class'],
   })
 
-  // init
+  // init 
   applyAboveBelow()
 })()
 

@@ -363,3 +363,5 @@ add_filter('facetwp_index_row', function ($params, $class) {
     // IMPORTANT : ne rien indexer pour ce post
     return false;
 }, 10, 2);
+
+
