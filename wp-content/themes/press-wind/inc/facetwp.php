@@ -1,14 +1,12 @@
 <?php
 add_filter('facetwp_query_args', function ($args, $class) {
 
-    // S'assurer que tax_query est un tableau
     if (empty($args['tax_query']) || !is_array($args['tax_query'])) {
         $args['tax_query'] = [];
     }
 
     $args['posts_per_page'] = 12;
 
-    // 1) Essayer depuis l'URI : ex. "destination/camping-la-rochelle"
     $uri = isset($class->ajax_params['http_params']['uri']) ? $class->ajax_params['http_params']['uri'] : '';
     if (!empty($uri)) {
         $path  = trim(wp_parse_url($uri, PHP_URL_PATH), '/');
@@ -33,19 +31,16 @@ add_filter('facetwp_query_args', function ($args, $class) {
         }
     }
 
-    // 2) Fallback : utiliser destination_term_id UNIQUEMENT s'il correspond VRAIMENT à un terme 'destination'
     if (
         isset($class->ajax_params['extras']['destination_term_id']) &&
         (int) $class->ajax_params['extras']['destination_term_id'] > 0
     ) {
         $term_id = (int) $class->ajax_params['extras']['destination_term_id'];
 
-        // vérifier que c'est bien un terme de la taxo 'destination'
         $dest_term = get_term($term_id, 'destination');
 
         if ($dest_term && !is_wp_error($dest_term)) {
 
-            // N'ajoute le fallback que si aucun filtre 'destination' n'a déjà été ajouté
             $has_destination = false;
             foreach ($args['tax_query'] as $q) {
                 if (is_array($q) && isset($q['taxonomy']) && $q['taxonomy'] === 'destination') {
@@ -66,12 +61,7 @@ add_filter('facetwp_query_args', function ($args, $class) {
     }
 
 
-    /*
-     * 3) NOUVELLE VERSION : on se base UNIQUEMENT sur l’URI
-     *    /aquatique/piscine/ → taxo = "aquatique", slug = "piscine"
-     *    si le term a un ACF "apidae_list_selection" NON VIDE,
-     *    on supprime le filtre sur cette taxo et on ajoute un filtre sur "liste".
-     */
+
 
     if (!empty($uri) && function_exists('get_field')) {
 
@@ -79,10 +69,9 @@ add_filter('facetwp_query_args', function ($args, $class) {
         $parts = explode('/', $path);
 
         if (count($parts) >= 2) {
-            $context_tax  = $parts[count($parts) - 2]; // ex: "aquatique" ou "atout"
-            $context_slug = $parts[count($parts) - 1]; // ex: "piscine" ou "ville"
+            $context_tax  = $parts[count($parts) - 2]; 
+            $context_slug = $parts[count($parts) - 1]; 
 
-            // On évite destination / liste
             if (taxonomy_exists($context_tax) && !in_array($context_tax, ['liste'], true)) {
 
                 $context_term = get_term_by('slug', $context_slug, $context_tax);
@@ -114,7 +103,6 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
                         if (!empty($apidae_terms)) {
 
-                            // 1) On supprime les tax_query sur la taxo de contexte (aquatique / atout, etc.)
                             if (!empty($args['tax_query']) && is_array($args['tax_query'])) {
                                 foreach ($args['tax_query'] as $k => $tax_query_item) {
                                     if (!is_array($tax_query_item)) {
@@ -126,12 +114,10 @@ add_filter('facetwp_query_args', function ($args, $class) {
                                 }
                             }
 
-                            // 2) On supprime la query_var brute éventuelle (ex: $args['aquatique'] = 'piscine')
                             if (isset($args[$context_tax])) {
                                 unset($args[$context_tax]);
                             }
 
-                            // 3) On AJOUTE un filtre sur la taxo "liste" (sans toucher aux facets / destination)
                             $args['tax_query'][] = [
                                 'taxonomy'         => 'liste',
                                 'field'            => 'term_id',
@@ -146,12 +132,11 @@ add_filter('facetwp_query_args', function ($args, $class) {
     }
 
 
-    // Si plusieurs conditions taxo existent, définir une relation par défaut
     if (!empty($args['tax_query']) && is_array($args['tax_query']) && !isset($args['tax_query']['relation'])) {
         $args['tax_query']['relation'] = 'AND';
     }
 
-    // Tri par fraîcheur pour le CPT "camping"
+
     $post_types = (array) ($args['post_type'] ?? []);
     if (in_array('camping', $post_types, true)) {
 
@@ -175,20 +160,14 @@ add_filter('facetwp_query_args', function ($args, $class) {
 
 
 
-/**
- * FacetWP : filtrer les CPT "camping"
- * - Afficher TOUJOURS les campings SANS meta 'id_reservation_ctoutvert'
- * - Pour ceux QUI ONT la meta, n'afficher que si la valeur est dans la liste renvoyée par Ctoutvert::ctoutvert_search_holidays()
- */
+
 add_filter('facetwp_query_args', function ($args, $class) {
 
-    // Ne cible que le CPT "camping"
     $post_types = (array) ($args['post_type'] ?? []);
     if (empty($post_types) || !in_array('camping', $post_types, true)) {
         return $args;
     }
 
-    // --- 1) Appel API + cache (avec dates) ---
     $start_raw = isset($_GET['_date_arrive']) ? trim($_GET['_date_arrive']) : null;
     $end_raw = isset($_GET['_date_depart']) ? trim($_GET['_date_depart']) : null;
 
@@ -247,7 +226,6 @@ add_filter('facetwp_query_args', function ($args, $class) {
         set_transient($cache_key, $available_ids, $ttl);
     }
 
-    // --- 2) Construit la meta_query : (NOT EXISTS) OR ('' vide) OR (IN API) ---
     $meta_query = isset($args['meta_query']) && is_array($args['meta_query']) ? $args['meta_query'] : [];
     $or_group = ['relation' => 'OR'];
 
@@ -274,7 +252,6 @@ add_filter('facetwp_query_args', function ($args, $class) {
     $meta_query[] = $or_group;
     $args['meta_query'] = $meta_query;
 
-    // -- Nettoyage : retirer post__in s'il est vide ou ne contient que des valeurs "falsy"
     if (isset($args['post__in'])) {
         $post__in = (array) $args['post__in'];
         $post__in = array_filter($post__in, static function ($v) {
@@ -296,16 +273,16 @@ add_filter('facetwp_render_output', function ($output, $params) {
 
     if (isset($output['settings']['date_start'])) {
         if (0 == $output['settings']['date_start']['range']['min']['minDate']) {
-            $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; // start date min
+            $output['settings']['date_start']['range']['min']['minDate'] = '2023-01-01'; 
         }
         if (0 == $output['settings']['date_start']['range']['min']['maxDate']) {
-            $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; // start date max
+            $output['settings']['date_start']['range']['min']['maxDate'] = '2100-12-30'; 
         }
         if (0 == $output['settings']['date_start']['range']['max']['minDate']) {
-            $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; // End date min
+            $output['settings']['date_start']['range']['max']['minDate'] = '2023-01-02'; 
         }
         if (0 == $output['settings']['date_start']['range']['max']['maxDate']) {
-            $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; // End date max
+            $output['settings']['date_start']['range']['max']['maxDate'] = '2100-12-31'; 
         }
     }
 
@@ -317,18 +294,16 @@ add_filter('facetwp_is_enabled', function ($enabled) {
     if (is_search()) {
         foreach ($_GET as $key => $val) {
             if (0 === strpos($key, 'fwp_')) {
-                return true; // l'utilisateur utilise une facet -> ON
+                return true; 
             }
         }
-        return false; // aucune facet -> OFF
+        return false; 
     }
     return $enabled;
 }, 10, 1);
 
-// Ceinture et bretelles : FacetWP n’interfère pas avec la WP_Query principale des recherches
 add_filter('facetwp_is_main_query', function ($is_main, $query) {
     if ($query->is_search()) {
-        // si aucune facet n’est active, ne pas traiter la requête principale
         foreach ($_GET as $key => $val) {
             if (0 === strpos($key, 'fwp_')) {
                 return $is_main;
@@ -347,21 +322,82 @@ add_filter('facetwp_index_row', function ($params, $class) {
     $post_id = (int) $params['post_id'];
     $raw     = get_post_meta($post_id, 'id_reservation_ctoutvert', true);
 
-    // Normalisation (au cas où ce soit un array)
     if (is_array($raw)) {
         $raw = implode(',', array_filter($raw));
     }
     $value = trim((string) $raw);
 
     if ($value !== '') {
-        // On indexe une valeur constante "has" si la méta est renseignée
         $params['facet_value']         = 'has';
         $params['facet_display_value'] = __('Réservable sur Campings.online','fdhpa17');
         return $params;
     }
 
-    // IMPORTANT : ne rien indexer pour ce post
     return false;
 }, 10, 2);
+
+
+add_action( 'facetwp_scripts', function() {
+  ?>
+  <script>
+    (function() {
+
+      function addDays(dateStr, days) {
+        var parts = dateStr.split('-');
+        var d = new Date(parts[0], parts[1] - 1, parts[2]);
+        d.setDate(d.getDate() + days);
+
+        var y = d.getFullYear();
+        var m = ('0' + (d.getMonth() + 1)).slice(-2);
+        var day = ('0' + d.getDate()).slice(-2);
+        return y + '-' + m + '-' + day;
+      }
+
+      document.addEventListener('facetwp-refresh', function() {
+        if ('object' !== typeof FWP || !FWP.active_facet) return;
+
+        var activeName = fUtil(FWP.active_facet.nodes[0]).attr('data-name');
+        if (activeName !== 'date_start') return;
+
+        var startFacet = FWP.facets['date_start'] || [];
+        var startVal   = startFacet[0] || startFacet[1] || '';
+        if (!startVal) return;
+
+        var endPlus7 = addDays(startVal, 7);
+
+        var endWrap = document.querySelector('.facetwp-type-date_range[data-name="date_end"]');
+        var hasMax  = endWrap && endWrap.querySelector('input.facetwp-date-max');
+
+        var endFacet = FWP.facets['date_end'] || [];
+        if (!Array.isArray(endFacet) || endFacet.length < 2) {
+          endFacet = ['', ''];
+        }
+
+        if (hasMax) {
+          endFacet[1] = endPlus7;
+        } else {
+          endFacet[0] = endPlus7;
+        }
+
+        FWP.facets['date_end'] = endFacet;
+      });
+
+      document.addEventListener('facetwp-loaded', function() {
+        if ('object' !== typeof FWP) return;
+
+        var endFacet = FWP.facets['date_end'] || [];
+        var endVal   = endFacet[1] || endFacet[0] || '';
+        if (!endVal) return;
+
+        var endInput = document.querySelector('.facetwp-type-date_range[data-name="date_end"] input');
+        if (endInput && endInput.value !== endVal) {
+          endInput.value = endVal;
+        }
+      });
+
+    })();
+  </script>
+  <?php
+}, 100 );
 
 
