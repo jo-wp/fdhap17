@@ -570,7 +570,7 @@ if ($apidae_raw) {
               }
               if ($reservation_url) : ?>
                 <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange"
-                  onclick="uet_buy_fiche();  return gtag_conv_buy_fiche(this.href);">
+                 >
                   <?= __('Réserver', 'fdhpa17'); ?>
                 </a>
               <?php endif; ?>
