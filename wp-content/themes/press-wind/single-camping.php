@@ -201,7 +201,7 @@ if ($apidae_raw) {
       </div>
       <?php if ($id_reservation_ctoutvert): ?>
         <div id="disponibilites" class="">
-          <ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>" ></ctv-availability>
+          <ctv-availability data-background-color='#ffffff' data-id="<?= $id_reservation_ctoutvert; ?>"></ctv-availability>
           <script>
             window.ctoutvert = {
               groupId: 137,
@@ -569,8 +569,10 @@ if ($apidae_raw) {
                 }
               }
               if ($reservation_url) : ?>
-                <a href="<?= $reservation_url; ?>" target="_blank" class="button button--bg-orange"
-                  onclick="uet_buy_fiche();  return gtag_conv_buy_fiche(this.href);"> 
+                <a href="<?= $reservation_url; ?>"
+                  target="_blank"
+                  class="button button--bg-orange js-track"
+                  data-track="buy_fiche">
                   <?= __('Réserver', 'fdhpa17'); ?>
                 </a>
               <?php endif; ?>
@@ -586,10 +588,12 @@ if ($apidae_raw) {
             </p>
             <p class="m-0 text-center font-arial text-[24px] font-[400] mb-[10px] text-green"><?= get_the_title(); ?></p>
             <div class="flex flex-row flex-wrap items-center justify-center gap-[20px]">
-              <a href="#" class="button button--bg-orange max-md:px-[20px]"
-
-                data-modal-open="contactModal"
-                onclick="uet_email(); gtag_conv_email();"><?= __('Envoyer un message', 'fdhpa17'); ?></a>
+              <a href="#"
+                class="button button--bg-orange max-md:px-[20px] js-track"
+                data-track="email"
+                data-modal-open="contactModal">
+                <?= __('Envoyer un message', 'fdhpa17'); ?>
+              </a>
               <div id="contactModal" class="fdhpa-modal" aria-hidden="true" role="dialog" aria-modal="true">
                 <div class="fdhpa-modal__backdrop" data-modal-close></div>
                 <div class="fdhpa-modal__dialog" role="document">
@@ -630,9 +634,10 @@ if ($apidae_raw) {
             ?>
             <p class="text-[16px] underline">
               <a href="tel:<?= $phone; ?>"
-                class="reveal-phone"
-                data-full="<?= $phone; ?>"
-                onclick="uet_event('Telephone', 'Contact'); return gtag_conv_phone('tel:<?= $phone; ?>');">
+                class="reveal-phone js-track"
+                data-track="phone"
+                data-phone="<?= $phone; ?>"
+                data-full="<?= $phone; ?>">
                 <?= $masked; ?>
               </a>
             </p>
@@ -642,9 +647,14 @@ if ($apidae_raw) {
           <img src="<?= get_bloginfo('template_directory') ?>/assets/media/www.svg"
             alt="Icon www du camping <?= get_the_title(); ?>">
           <div class="bloc-sidebar-informations__item__content">
-            <p><a class="sitecamping" href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
-                onclick="uet_site(); return gtag_conv_camping_link(this.href);"
-                target="_blank"><?= get_post_meta($post->ID, 'site_web', true); ?></a></p>
+            <p>
+              <a class="sitecamping js-track"
+                href="<?= get_post_meta($post->ID, 'site_web', true); ?>"
+                target="_blank"
+                data-track="camping_link">
+                <?= get_post_meta($post->ID, 'site_web', true); ?>
+              </a>
+            </p>
           </div>
         </div>
         <div class="bloc-sidebar-informations__item !hidden">
