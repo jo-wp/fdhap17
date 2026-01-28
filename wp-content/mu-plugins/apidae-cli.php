@@ -1940,6 +1940,152 @@ if (defined('WP_CLI') && WP_CLI) {
       WP_CLI::success("Fini. ok=$ok noid=$noid noimg=$noimg errors=$err");
     }
 
+
+    /**
+ * Met en brouillon tous les campings dont l'apidae_id n'est PAS dans une sélection APIDAE.
+ *
+ * ## OPTIONS
+ * --selection-id=<id>      : ID de la sélection APIDAE (ex: 190549)
+ * [--meta-key=<meta_key>]  : meta key qui stocke l'id APIDAE (défaut: apidae_id)
+ * [--count=<n>]            : taille de page APIDAE (1–200, défaut 200)
+ * [--sleep=<sec>]          : pause entre pages (défaut 0)
+ * [--dry-run]              : n'écrit rien, log seulement
+ *
+ * ## EXAMPLE
+ *   wp apidae draft-not-in-selection --selection-id=190549
+ *
+ * @subcommand draft-not-in-selection
+ */
+public function draft_not_in_selection($args, $assoc_args)
+{
+  $selection_id = (int)($assoc_args['selection-id'] ?? 0);
+  if (!$selection_id) {
+    \WP_CLI::error('Paramètre --selection-id manquant.');
+  }
+
+  $meta_key = isset($assoc_args['meta-key']) ? sanitize_key($assoc_args['meta-key']) : 'apidae_id';
+  $count = isset($assoc_args['count']) ? (int)$assoc_args['count'] : 200;
+  if ($count <= 0 || $count > 200) $count = 200;
+
+  $sleep = isset($assoc_args['sleep']) ? (int)$assoc_args['sleep'] : 0;
+  $dry   = isset($assoc_args['dry-run']);
+
+  // 1) Récupérer tous les IDs APIDAE dans la sélection (pagination)
+  $allowed = [];
+  $first = 0;
+  $numFound = null;
+  $page = 0;
+
+  do {
+    $page++;
+    $params = [
+      'selectionIds' => [$selection_id],
+      'count' => $count,
+      'first' => $first,
+      // Pas besoin de responseFields lourds : id suffit
+    ];
+
+    $res = \APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
+    if (!$res['success']) {
+      \WP_CLI::error('APIDAE error: ' . ($res['message'] ?? 'unknown'));
+    }
+
+    $data = $res['data'] ?? [];
+    if ($numFound === null) {
+      $numFound = (int)($data['numFound'] ?? 0);
+      \WP_CLI::log("Sélection {$selection_id} — numFound={$numFound}");
+      if ($numFound === 0) break;
+    }
+
+    $items = $data['objetsTouristiques'] ?? [];
+    foreach ($items as $it) {
+      if (!empty($it['id'])) {
+        $allowed[(string)(int)$it['id']] = true;
+      }
+    }
+
+    $first += $count;
+
+    if ($sleep) sleep($sleep);
+
+  } while ($numFound !== null && $first < $numFound);
+
+  $allowed_count = count($allowed);
+  if ($allowed_count === 0) {
+    \WP_CLI::warning("Aucun ID trouvé dans la sélection {$selection_id}. Rien ne sera modifié.");
+    return;
+  }
+  \WP_CLI::log("IDs autorisés (dans la sélection) : {$allowed_count}");
+
+  // 2) Charger tous les campings ayant un apidae_id
+  $camping_ids = get_posts([
+    'post_type' => 'camping',
+    'posts_per_page' => -1,
+    'post_status' => 'any',
+    'fields' => 'ids',
+    'suppress_filters' => true,
+    'no_found_rows' => true,
+    'meta_key' => $meta_key,
+    'meta_compare' => 'EXISTS',
+  ]);
+
+  \WP_CLI::log("Campings trouvés avec meta {$meta_key}: " . count($camping_ids));
+
+  // 3) Draft ceux qui ne sont pas dans la sélection
+  $done = 0;
+  $drafted = 0;
+  $already_draft = 0;
+  $kept = 0;
+  $noid = 0;
+  $errors = 0;
+
+  foreach ($camping_ids as $post_id) {
+    $done++;
+    $apidae_id = (int)get_post_meta($post_id, $meta_key, true);
+    if (!$apidae_id) {
+      $noid++;
+      continue;
+    }
+
+    $in_selection = isset($allowed[(string)$apidae_id]);
+
+    if ($in_selection) {
+      $kept++;
+      continue;
+    }
+
+    $current_status = get_post_status($post_id);
+    if ($current_status === 'draft') {
+      $already_draft++;
+      \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) déjà en brouillon");
+      continue;
+    }
+
+    if ($dry) {
+      \WP_CLI::log("[$done] [DRY-RUN] Mettre en brouillon post {$post_id} (APIDAE {$apidae_id}) status={$current_status}");
+      $drafted++;
+      continue;
+    }
+
+    $r = wp_update_post([
+      'ID' => $post_id,
+      'post_status' => 'draft',
+    ], true);
+
+    if (is_wp_error($r)) {
+      $errors++;
+      \WP_CLI::warning("[$done] post {$post_id} (APIDAE {$apidae_id}) => erreur: " . $r->get_error_message());
+      continue;
+    }
+
+    $drafted++;
+    \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) => mis en brouillon");
+  }
+
+  \WP_CLI::success("Terminé. kept={$kept} drafted={$drafted} already_draft={$already_draft} noid={$noid} errors={$errors} dry-run=" . ($dry ? 'oui' : 'non'));
+}
+
+
     /**
      * Attache les campings existants aux termes de la taxonomie "liste"
      * à partir de l'ACF "apidae_id_list_selection" sur chaque terme.
