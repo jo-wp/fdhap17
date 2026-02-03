@@ -41,7 +41,7 @@ $destinations = get_terms([
       </select>
     </div>
     <div
-      class="items-search-bar max-w-[230px] min-w-[120px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[2px] py-[10px]
+      class="items-search-bar max-w-[230px] min-w-[120px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[2px] py-[10px] max-md:mx-auto
       [&_.facetwp-display-value]:font-arial max-md:[&_.facetwp-display-value]:text-center [&_.facetwp-display-value]:text-white md:[&_.facetwp-display-value]:text-[#757575] [&_.facetwp-display-value]:text-[14px] [&_.facetwp-display-value]:font-[400] [&_.facetwp-display-value]:m-0 [&_.facetwp-display-value]:p-0">
       <?= do_shortcode('[facetwp facet="ctoutvert_checkbox"]') ?>
     </div>
@@ -61,3 +61,5 @@ $destinations = get_terms([
     </div>
   </div>
 </div>
+
+

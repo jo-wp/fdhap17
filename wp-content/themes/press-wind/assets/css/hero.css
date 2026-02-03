@@ -99,3 +99,8 @@
     background-color: #3131311A;
     margin: auto 0;
 }
+@media(max-width:768px){
+  .after-right-bar::after{
+    display: none;
+  }
+}

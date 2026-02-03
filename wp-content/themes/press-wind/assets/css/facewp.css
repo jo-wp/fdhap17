@@ -167,6 +167,11 @@ select,
     align-items: center;
     width: 100%;
 }
+@media(max-width:768px){
+  .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox{
+    background-color: transparent;
+  }
+}
 .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
     /* width: 280px;
     display: inline-block;
