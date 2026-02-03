@@ -156,25 +156,22 @@ select,
 
 
 .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox{
--webkit-appearance: none;
-        appearance: none;
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #e9b237;
-        border-radius: 50%;
-        outline: none;
-        width: 0px;
-        height: 20px;
-        transition: background .2s, border-color .2s;
-        position: relative;
-        display: flex;
-        align-items: center;
+    appearance: none;
+    cursor: pointer;
+    background: #fff;
+    outline: none;
+    height: 20px;
+    /* transition: background .2s, border-color .2s; */
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
-    width: 280px;
+    /* width: 280px;
     display: inline-block;
     text-align: left;
-    padding-left: 15px;
+    padding-left: 15px; */
 }
 @media(min-width:768px){
   .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-display-value{
@@ -184,7 +181,21 @@ select,
 .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox .facetwp-counter{
   display: none ;
 }
-.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox.checked{
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: #F6F6F6;
+  border: 1px solid #757575; 
+}
+.facetwp-checkbox.checked{
+  background-image: none !important;
+}
+.facetwp-facet-ctoutvert_checkbox .facetwp-checkbox.checked::before{
           background: #e9b237;
         border-color: #e9b237;
 }

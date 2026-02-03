@@ -9,17 +9,17 @@ $destinations = get_terms([
 ]);
 ?>
 <div class="search-bar <?= $position_css ?> max-md:w-full  md:left-0 md:right-0 md:mx-[30px] <?= $margin_css; ?>">
-  <div class="<?= $bg_css; ?> max-md:[&_input]:bg-white [&_input]:bg-[#F6F6F6] [&_input]:border-0 max-md:[&_select]:bg-white  [&_select]:bg-[#F6F6F6] [&_select]:border-0 [&_select]:w-full text-[#333333] [&_.facetwp-facet]:mb-0 flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[960px]:gap-[5px] max-[1300px]:gap-[20px] max-md:gap-[7px] gap-[40px] max-md:mx-[40px] [&_select]:-ml-[4px] [&_.facetwp-date-min]:-ml-[2px] [&_.facetwp-date-max]:-ml-[2px]">
+  <div class="<?= $bg_css; ?> max-md:[&_input]:bg-white [&_input]:bg-[#F6F6F6] [&_input]:border-0 max-md:[&_select]:bg-white  [&_select]:bg-[#F6F6F6] [&_select]:border-0 [&_select]:w-full text-[#333333] [&_.facetwp-facet]:mb-0 flex flex-col md:flex-row justify-center md:justify-around max-w-[1300px] mx-auto rounded-[40px] p-[6px] max-[960px]:gap-[5px] max-[1300px]:gap-[20px] max-md:gap-[7px] gap-[38px] max-md:mx-[40px] [&_select]:-ml-[4px] [&_.facetwp-date-min]:-ml-[2px] [&_.facetwp-date-max]:-ml-[2px]">
     <div class="items-search-bar md:max-w-[230px] rounded-[10px] md:rounded-[40px] tax-destination max-md:bg-white bg-[#F6F6F6] max-[1100px]:px-[12px] px-[32px] py-[5px]">
       <p class="font-arial text-[14px] font-[700] m-0 p-0 max-md:hidden -mb-[7px] mt-[8px]"><?= __('Destination', 'fdhpa17'); ?></p>
       <?php  get_template_part('partials/search/fields/destinations'); ?>
     </div>
     <div class="items-search-bar tax-destination flex flex-col md:flex-row max-md:flex-wrap max-md:gap-[7px]">
-      <div class="max-[768px]:max-w-[100%] max-[1200px]:max-w-[100px] min-[1200px]:max-w-[230px] rounded-[10px] md:rounded-l-[40px] max-md:bg-white  bg-[#F6F6F6] max-[1100px]:px-[10px] px-[30px] py-[5px] max-md:w-[97%] max-md:[&_input]:w-full">
+      <div class="after-right-bar max-[768px]:max-w-[100%] max-[1200px]:max-w-[100px] min-[1200px]:max-w-[230px] rounded-[10px] md:rounded-l-[40px] md:rounded-tr-none md:rounded-br-none  max-md:bg-white  bg-[#F6F6F6] max-[1100px]:px-[10px] px-[30px] py-[5px] max-md:w-[97%] max-md:[&_input]:w-full">
         <p class="font-arial text-[14px] font-[700] m-0 p-0 max-md:hidden  -mb-[7px] mt-[8px]"><?= __('Arrivée', 'fdhpa17'); ?></p>
         <?= do_shortcode('[facetwp facet="date_start"]'); ?>
       </div>
-      <div class="max-[768px]:max-w-[100%] max-[1200px]:max-w-[100px] min-[1200px]:max-w-[230px] rounded-[10px] md:rounded-r-[40px] max-md:bg-white  bg-[#F6F6F6] max-[1100px]:px-[10px] px-[30px] py-[5px] max-md:w-[97%] max-md:[&_input]:w-full">
+      <div class="max-[768px]:max-w-[100%] max-[1200px]:max-w-[100px] min-[1200px]:max-w-[230px] rounded-[10px] md:rounded-r-[40px]  md:rounded-tl-none md:rounded-bl-none max-md:bg-white  bg-[#F6F6F6] max-[1100px]:px-[10px] px-[30px] py-[5px] max-md:w-[97%] max-md:[&_input]:w-full">
         <p class="font-arial text-[14px] font-[700] m-0 p-0 max-md:hidden  -mb-[7px] mt-[8px]"><?= __('Départ', 'fdhpa17'); ?></p>
         <?= do_shortcode('[facetwp facet="date_end"]'); ?>
       </div>
@@ -41,7 +41,7 @@ $destinations = get_terms([
       </select>
     </div>
     <div
-      class="items-search-bar max-w-[230px] min-w-[120px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[20px] py-[10px]
+      class="items-search-bar max-w-[230px] min-w-[120px] flex flex-row items-center rounded-[40px] tax-destination max-[900px]:px-[15px] px-[2px] py-[10px]
       [&_.facetwp-display-value]:font-arial max-md:[&_.facetwp-display-value]:text-center [&_.facetwp-display-value]:text-white md:[&_.facetwp-display-value]:text-[#757575] [&_.facetwp-display-value]:text-[14px] [&_.facetwp-display-value]:font-[400] [&_.facetwp-display-value]:m-0 [&_.facetwp-display-value]:p-0">
       <?= do_shortcode('[facetwp facet="ctoutvert_checkbox"]') ?>
     </div>

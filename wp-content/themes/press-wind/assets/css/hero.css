@@ -85,3 +85,17 @@
     border-color: #e9b237;
   }
 }
+.after-right-bar{ 
+  position: relative;
+}
+.after-right-bar::after{
+    position: absolute;
+    right: 0;
+    content: "";
+    top: 0;
+    bottom: 0;
+    height: 32px;
+    width: 1px;
+    background-color: #3131311A;
+    margin: auto 0;
+}
