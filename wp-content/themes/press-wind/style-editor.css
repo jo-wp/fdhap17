@@ -4288,6 +4288,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
 }
 @media (max-width: 1200px){
+  .max-\[1200px\]\:max-w-\[100px\]{
+    max-width: 100px;
+  }
   .max-\[1200px\]\:after\:hidden::after{
     content: var(--tw-content);
     display: none;
@@ -4296,6 +4299,16 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
 @media (max-width: 1140px){
   .max-\[1140px\]\:text-\[13px\]{
     font-size: 13px;
+  }
+}
+@media (max-width: 1100px){
+  .max-\[1100px\]\:px-\[10px\]{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .max-\[1100px\]\:px-\[12px\]{
+    padding-left: 12px;
+    padding-right: 12px;
   }
 }
 @media (max-width: 1090px){
@@ -4322,6 +4335,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .max-\[1020px\]\:mx-\[30px\]{
     margin-left: 30px;
     margin-right: 30px;
+  }
+}
+@media (max-width: 960px){
+  .max-\[960px\]\:gap-\[5px\]{
+    gap: 5px;
   }
 }
 @media (max-width: 900px){
@@ -4514,6 +4532,9 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .max-md\:w-\[90\%\]{
     width: 90%;
+  }
+  .max-md\:w-\[97\%\]{
+    width: 97%;
   }
   .max-md\:w-full{
     width: 100%;
@@ -4883,6 +4904,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .group:hover .max-md\:group-hover\:translate-x-0{
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+}
+@media (max-width: 768px){
+  .max-\[768px\]\:max-w-\[100\%\]{
+    max-width: 100%;
   }
 }
 @media (min-width: 640px){
@@ -5323,14 +5349,17 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   .md\:pl-5{
     padding-left: 1.25rem;
   }
-  .md\:pl-\[200px\]{
-    padding-left: 200px;
+  .md\:pl-\[60px\]{
+    padding-left: 60px;
   }
   .md\:pl-\[70px\]{
     padding-left: 70px;
   }
   .md\:pr-\[30px\]{
     padding-right: 30px;
+  }
+  .md\:pr-\[60px\]{
+    padding-right: 60px;
   }
   .md\:text-left{
     text-align: left;
@@ -5515,6 +5544,11 @@ background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 45.02%, rgba(0, 0,
   }
   .lg\:text-\[55px\]{
     font-size: 55px;
+  }
+}
+@media (min-width: 1200px){
+  .min-\[1200px\]\:max-w-\[230px\]{
+    max-width: 230px;
   }
 }
 @media (min-width: 1280px){

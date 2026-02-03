@@ -89,7 +89,7 @@ $copyrights_items = get_field('copyrights_items', 'option');
 			</div>
 		<?php endif; ?>
 	</div>
-	<div class="copyrights flex max-md:flex-col md:flex-row items-center justify-start gap-[30px] md:pl-[200px]">
+	<div class="copyrights flex max-md:flex-col md:flex-row items-center justify-start gap-[30px] md:pl-[60px] md:pr-[60px] md:justify-center">
 		<a class="text-white font-arial text-[16px] font-[400] animateFade fadeOutAnimation " href="javascript:window.Sddan.cmp.displayUI();">Cookies</a>
 		<?php foreach ($copyrights_items as $item): ?>
 			<a class="text-white font-arial text-[16px] font-[400] animateFade fadeOutAnimation "
