@@ -3105,7 +3105,7 @@ select,
 .facetwp-facet-ctoutvert_checkbox .facetwp-checkbox{
     appearance: none;
     cursor: pointer;
-    background: #fff;
+    background: transparent;
     outline: none;
     height: 20px;
     /* transition: background .2s, border-color .2s; */
