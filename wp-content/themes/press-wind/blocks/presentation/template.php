@@ -67,7 +67,7 @@ $wrapper_style   = $bg_url ? "background-image:url('{$bg_url}')" : '';
 
       <?php if ($type_block_presentation === 'default'): ?>
         <?php if (is_array($carousel_images) && count($carousel_images) > 0): ?>
-          <div class="carousel">
+          <div class="carousel md:h-[700px]">
             <ul class="carousel__list m-0 p-0 list-none max-md:mb-[20px]">
               <?php
               // on rend simplement tout ce qui est fourni (plus simple que 5 fixes)
