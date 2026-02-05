@@ -104,8 +104,7 @@ CSS;
 
       ob_start(); ?>
       <div class="camping-favs-wrap container-huge text-center" data-camping-favs>
-        <h2 class="text-center mb-[50px]"><?php echo esc_html($atts['title'] ?: __('Mes campings favoris', 'camping-favorites')); ?>
-          </h3>
+        <h1 class="text-center mb-[50px]"><?php echo esc_html($atts['title'] ?: __('Mes campings favoris', 'camping-favorites')); ?></h1>
           <div class="camping-favs-output">
             <p class="camping-favs-empty"><?php esc_html_e('Chargement...', 'camping-favorites'); ?></p>
           </div>
