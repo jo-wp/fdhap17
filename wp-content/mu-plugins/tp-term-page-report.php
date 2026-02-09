@@ -3,7 +3,7 @@
  * Plugin Name: TP Term Page Report (MU)
  * Description: Liste toutes les liaisons Term -> term_page (meta _linked_term_page_id) dans un tableau admin + export CSV.
  * Author: You
- * Version: 1.0.0
+ * Version: 1.1.0
  */
 
 if (!defined('ABSPATH')) exit;
@@ -17,7 +17,6 @@ if (!defined('TP_META_KEY')) {
 }
 
 if (!defined('TP_TAXONOMIES')) {
-  // Mets ici la même liste que dans ton plugin principal si besoin
   define('TP_TAXONOMIES', [
     'category',
     'destination',
@@ -38,11 +37,28 @@ if (!defined('TP_TAXONOMIES')) {
 function tp_report_get_taxonomies() {
   $tax = TP_TAXONOMIES;
   if (!is_array($tax)) $tax = [];
-  // On ne garde que les taxos existantes
   $tax = array_values(array_filter($tax, function($t){
     return is_string($t) && $t && taxonomy_exists($t);
   }));
   return $tax;
+}
+
+/**
+ * Liste des statuts (pour le filtre UI)
+ */
+function tp_report_get_status_options() {
+  // On met "all" à part, puis les statuts WP connus.
+  // (Tu peux en ajouter si tu as des custom status)
+  $opts = [
+    'all'     => 'Tous',
+    'publish' => 'publish',
+    'draft'   => 'draft',
+    'pending' => 'pending',
+    'private' => 'private',
+    'future'  => 'future',
+    'trash'   => 'trash',
+  ];
+  return $opts;
 }
 
 add_action('admin_menu', function () {
@@ -69,11 +85,13 @@ add_action('admin_init', function () {
   $tax = isset($_GET['tax']) ? sanitize_text_field($_GET['tax']) : 'all';
   $only_linked = !empty($_GET['only_linked']) ? 1 : 0;
   $s = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+  $post_status = isset($_GET['post_status']) ? sanitize_text_field($_GET['post_status']) : 'all';
 
   $rows = tp_report_collect_rows($taxonomies, [
     'tax' => $tax,
     'only_linked' => $only_linked,
     's' => $s,
+    'post_status' => $post_status,
     'paged' => 1,
     'per_page' => 999999, // export complet
   ]);
@@ -120,9 +138,11 @@ function tp_report_render_page() {
   if (!current_user_can('manage_options')) return;
 
   $taxonomies = tp_report_get_taxonomies();
+
   $tax = isset($_GET['tax']) ? sanitize_text_field($_GET['tax']) : 'all';
   $only_linked = !empty($_GET['only_linked']) ? 1 : 0;
   $s = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+  $post_status = isset($_GET['post_status']) ? sanitize_text_field($_GET['post_status']) : 'all';
 
   $paged = isset($_GET['paged']) ? max(1, (int)$_GET['paged']) : 1;
   $per_page = isset($_GET['per_page']) ? max(10, (int)$_GET['per_page']) : 50;
@@ -131,19 +151,21 @@ function tp_report_render_page() {
     'tax' => $tax,
     'only_linked' => $only_linked,
     's' => $s,
+    'post_status' => $post_status,
     'paged' => $paged,
     'per_page' => $per_page,
   ]);
 
-  $base_url = admin_url('tools.php?page=tp-term-page-report');
   $query_base = [
     'page' => 'tp-term-page-report',
     'tax' => $tax,
     'only_linked' => $only_linked ? 1 : 0,
     's' => $s,
+    'post_status' => $post_status,
     'per_page' => $per_page,
   ];
 
+  $status_opts = tp_report_get_status_options();
   ?>
   <div class="wrap">
     <h1>Term Pages – Liaison (terms ↔ term_page)</h1>
@@ -166,6 +188,17 @@ function tp_report_render_page() {
       <label style="margin-right:10px;">
         <input type="checkbox" name="only_linked" value="1" <?php checked($only_linked, 1); ?> />
         Liés uniquement
+      </label>
+
+      <label style="margin-right:10px;">
+        Statut :
+        <select name="post_status">
+          <?php foreach ($status_opts as $k => $label): ?>
+            <option value="<?php echo esc_attr($k); ?>" <?php selected($post_status, $k); ?>>
+              <?php echo esc_html($label); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </label>
 
       <label style="margin-right:10px;">
@@ -280,6 +313,8 @@ function tp_report_collect_rows(array $taxonomies, array $args) {
   $tax = isset($args['tax']) ? $args['tax'] : 'all';
   $only_linked = !empty($args['only_linked']);
   $s = isset($args['s']) ? (string)$args['s'] : '';
+  $post_status_filter = isset($args['post_status']) ? (string)$args['post_status'] : 'all';
+
   $paged = isset($args['paged']) ? max(1, (int)$args['paged']) : 1;
   $per_page = isset($args['per_page']) ? max(1, (int)$args['per_page']) : 50;
 
@@ -295,12 +330,12 @@ function tp_report_collect_rows(array $taxonomies, array $args) {
       'number'     => 0,
     ];
 
-    // Filtre search sur name/slug
+    // Filtre search sur name/slug (WP le fait sur name surtout, mais on garde)
     if ($s !== '') {
       $q['search'] = $s;
     }
 
-    // Filtre uniquement liés
+    // Filtre uniquement liés : meta existe
     if ($only_linked) {
       $q['meta_query'] = [[
         'key'     => TP_META_KEY,
@@ -325,6 +360,14 @@ function tp_report_collect_rows(array $taxonomies, array $args) {
         if (!$post_title) $post_title = '#'.$post_id;
         $post_status = get_post_status($post_id);
         $post_edit = get_edit_post_link($post_id, '');
+      }
+
+      // Filtre sur statut term_page
+      if ($post_status_filter !== 'all') {
+        // Si pas de page liée => exclu quand on filtre un statut précis
+        if (!$post_id) continue;
+        // Si statut introuvable ou différent => exclu
+        if (!$post_status || $post_status !== $post_status_filter) continue;
       }
 
       $term_link = '';
