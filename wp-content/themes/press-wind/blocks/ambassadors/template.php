@@ -26,7 +26,7 @@ $template = [
 // get posts ambassador
 $args = [
   'post_type' => 'ambassador',
-  'postsperpage' => 4,
+  'postsperpage' => -1,
   'suppress_filters' => false
 ];
 
