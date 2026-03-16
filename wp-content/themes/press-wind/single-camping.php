@@ -43,6 +43,15 @@ $capacite_nombreLocationMobilhomes = get_post_meta($post->ID, 'capacite_nombreLo
 
 
 $photos = [];
+
+if (!empty($image_featured_url)) {
+  $photos[] = [
+    'url_thumbnail' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
+    'url' => $image_featured_url,
+    'caption' => $image_featured_caption ?: get_the_title(),
+    'type' => 'photo'
+  ];
+}
 if (!empty($galerie_photo_camping)) {
   $i = 0;
   foreach ($galerie_photo_camping as $photo) {
