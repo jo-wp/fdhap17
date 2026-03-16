@@ -2931,15 +2931,19 @@ if (defined('WP_CLI') && WP_CLI) {
     public function sync_images_by_title($args, $assoc_args)
     {
       $acf_field = $assoc_args['acf-field'] ?? 'gallery';
-      $continue = isset($assoc_args['continue-on-error']);
-      $dry_run = isset($assoc_args['dry-run']);
+      $dry_run   = isset($assoc_args['dry-run']);
+      $sleep     = (int) ($assoc_args['sleep'] ?? 0);
+      $limit     = isset($assoc_args['limit']) ? (int) $assoc_args['limit'] : null;
+      $offset    = (int) ($assoc_args['offset'] ?? 0);
 
       $ids = [];
 
+      // --- Mode ciblé : --id
       if (!empty($assoc_args['id'])) {
         $ids[] = (int) $assoc_args['id'];
       }
 
+      // --- Mode ciblé : --ids=1,2,3
       if (!empty($assoc_args['ids'])) {
         $parts = preg_split('/[,\s;]+/', (string) $assoc_args['ids']);
         foreach ($parts as $p) {
@@ -2950,6 +2954,7 @@ if (defined('WP_CLI') && WP_CLI) {
         }
       }
 
+      // --- Mode ciblé : --ids-file=/path/file.txt
       if (!empty($assoc_args['ids-file'])) {
         $path = (string) $assoc_args['ids-file'];
         if (!is_readable($path)) {
@@ -2975,20 +2980,65 @@ if (defined('WP_CLI') && WP_CLI) {
 
       $ids = array_values(array_unique(array_filter($ids, fn($v) => (int) $v > 0)));
 
+      // --- Si aucun ID fourni => on check tous les campings avec apidae_id
       if (empty($ids)) {
-        WP_CLI::error('Paramètre manquant: utilise --id, --ids ou --ids-file.');
+        $post_ids = get_posts([
+          'post_type'              => 'camping',
+          'post_status'            => 'any',
+          'posts_per_page'         => -1,
+          'fields'                 => 'ids',
+          'suppress_filters'       => true,
+          'no_found_rows'          => true,
+          'update_post_meta_cache' => false,
+          'update_post_term_cache' => false,
+          'meta_query'             => [
+            [
+              'key'     => 'apidae_id',
+              'compare' => 'EXISTS',
+            ],
+          ],
+          'orderby'                => 'ID',
+          'order'                  => 'ASC',
+        ]);
+
+        if (!empty($post_ids)) {
+          foreach ($post_ids as $post_id) {
+            $apidae_id = (int) get_post_meta($post_id, 'apidae_id', true);
+            if ($apidae_id > 0) {
+              $ids[] = $apidae_id;
+            }
+          }
+        }
+
+        $ids = array_values(array_unique($ids));
+      }
+
+      if (empty($ids)) {
+        WP_CLI::warning("Aucun camping avec apidae_id trouvé.");
+        return;
+      }
+
+      // --- offset / limit pour cron ou batch
+      if ($offset > 0) {
+        $ids = array_slice($ids, $offset);
+      }
+      if ($limit !== null && $limit > 0) {
+        $ids = array_slice($ids, 0, $limit);
       }
 
       $fields = 'id,illustrations';
 
       $ok = 0;
       $fail = 0;
+      $done = 0;
 
-      WP_CLI::log('Traitement de ' . count($ids) . ' ID(s)...');
+      WP_CLI::log('Traitement de ' . count($ids) . ' camping(s)...');
 
       foreach ($ids as $apidae_id) {
+        $done++;
+
         try {
-          WP_CLI::log('> ID ' . $apidae_id . '...');
+          WP_CLI::log(sprintf('[%d/%d] ID APIDAE %d...', $done, count($ids), $apidae_id));
 
           $post_id = APIDAE_Service::find_post_id_by_apidae_id($apidae_id);
           if (!$post_id) {
@@ -2997,7 +3047,7 @@ if (defined('WP_CLI') && WP_CLI) {
 
           $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $apidae_id, [
             'responseFields' => $fields,
-            'locales' => 'fr',
+            'locales'        => 'fr',
           ]);
 
           if (!$res['success']) {
@@ -3018,7 +3068,7 @@ if (defined('WP_CLI') && WP_CLI) {
           $ok++;
 
           if ($dry_run) {
-            WP_CLI::success(sprintf(
+            WP_CLI::log(sprintf(
               'DRY RUN ID %d -> post_id=%d | same=%d | add=%d | delete=%d',
               $apidae_id,
               $post_id,
@@ -3027,7 +3077,7 @@ if (defined('WP_CLI') && WP_CLI) {
               count($r['to_delete_titles'] ?? [])
             ));
           } else {
-            WP_CLI::success(sprintf(
+            WP_CLI::log(sprintf(
               'OK ID %d -> post_id=%d | same=%d | added=%d | deleted=%d',
               $apidae_id,
               $post_id,
@@ -3039,10 +3089,11 @@ if (defined('WP_CLI') && WP_CLI) {
         } catch (\Throwable $e) {
           $fail++;
           WP_CLI::warning('KO ID ' . $apidae_id . ' : ' . $e->getMessage());
+          // En mode cron on continue toujours
+        }
 
-          if (!$continue) {
-            WP_CLI::error('Arrêt (utilise --continue-on-error pour ignorer les erreurs).');
-          }
+        if ($sleep > 0) {
+          sleep($sleep);
         }
       }
 
