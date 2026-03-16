@@ -443,159 +443,159 @@ class APIDAE_Service
       }
     }
 
-   // 🖼️ Images — skip si le post a déjà des images (featured / attachments / ACF gallery)
-// ---- IMPORTANT en WP-CLI : assure les includes media ----
-if (!function_exists('media_handle_sideload')) {
-  require_once ABSPATH . 'wp-admin/includes/file.php';
-  require_once ABSPATH . 'wp-admin/includes/media.php';
-  require_once ABSPATH . 'wp-admin/includes/image.php';
-}
-
-// Helper : log en CLI
-$cli_log = function($msg) {
-  if (defined('WP_CLI') && WP_CLI) {
-    \WP_CLI::log($msg);
-  }
-};
-$cli_warn = function($msg) {
-  if (defined('WP_CLI') && WP_CLI) {
-    \WP_CLI::warning($msg);
-  }
-};
-
-// Helper : récup URL illustration Apidae (robuste)
-$get_apidae_image_url = function($illustration) {
-  if (!is_array($illustration)) return '';
-
-  // Cas le plus courant (celui que tu avais)
-  $u = $illustration['traductionFichiers'][0]['url'] ?? '';
-  if (is_string($u) && $u) return $u;
-
-  // Fallbacks possibles selon payload
-  $u = $illustration['traductionFichiers'][0]['urlFichier'] ?? '';
-  if (is_string($u) && $u) return $u;
-
-  $u = $illustration['fichiers'][0]['url'] ?? '';
-  if (is_string($u) && $u) return $u;
-
-  $u = $illustration['fichiers'][0]['urlFichier'] ?? '';
-  if (is_string($u) && $u) return $u;
-
-  $u = $illustration['url'] ?? '';
-  if (is_string($u) && $u) return $u;
-
-  return '';
-};
-
-// ---- Détection images existantes ----
-$gallery_ids = [];
-$already_imported = (bool) get_post_meta($post_id, 'apidae_images_imported', true);
-$thumb_id = (int) get_post_thumbnail_id($post_id);
-
-$attached_ids = get_posts([
-  'post_type'        => 'attachment',
-  'post_parent'      => $post_id,
-  'post_status'      => 'inherit',
-  'posts_per_page'   => 1,
-  'fields'           => 'ids',
-  'post_mime_type'   => 'image',
-  'no_found_rows'    => true,
-  'suppress_filters' => true,
-]);
-
-$acf_gallery_ids = [];
-if (function_exists('get_field')) {
-  $acf_gallery_ids = get_field('gallery', $post_id, false);
-  if (!is_array($acf_gallery_ids)) $acf_gallery_ids = [];
-  $acf_gallery_ids = array_values(array_filter(array_map('intval', $acf_gallery_ids)));
-}
-
-$has_any_image = ($thumb_id > 0) || !empty($attached_ids) || !empty($acf_gallery_ids);
-
-// Si déjà des images : bootstrap meta et STOP
-if ($has_any_image) {
-  if (!$already_imported) {
-    update_post_meta($post_id, 'apidae_images_imported', 1);
-    $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
-    if (!is_array($existing_urls)) update_post_meta($post_id, 'apidae_image_urls', []);
-  }
-  $cli_log("Post {$post_id}: images déjà présentes => skip import images");
-  // Si tu es dans une fonction, tu peux faire return;
-} else {
-
-  // ---- Import images ----
-  $apidae_id = $item['id'] ?? 'unknown';
-  $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
-  if (!is_array($existing_urls)) $existing_urls = [];
-
-  if (empty($item['illustrations']) || !is_array($item['illustrations'])) {
-    $cli_warn("Apidae {$apidae_id} / post {$post_id}: aucune illustration dans payload");
-  } else {
-
-    foreach ($item['illustrations'] as $index => $illustration) {
-      $image_url = $get_apidae_image_url($illustration);
-
-      if (!$image_url) {
-        $cli_warn("Apidae {$apidae_id} / post {$post_id}: illustration #{$index} => URL introuvable (structure différente)");
-        continue;
-      }
-
-      if (in_array($image_url, $existing_urls, true)) {
-        $cli_log("Apidae {$apidae_id} / post {$post_id}: image déjà importée => {$image_url}");
-        continue;
-      }
-
-      $cli_log("Apidae {$apidae_id} / post {$post_id}: sideload image #{$index} => {$image_url}");
-
-      // Sideload
-      $image_id = media_sideload_image($image_url, $post_id, null, 'id');
-
-      if (is_wp_error($image_id)) {
-        $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => " . $image_id->get_error_message());
-        continue;
-      }
-
-      $image_id = (int) $image_id;
-      if ($image_id <= 0) {
-        $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => returned 0");
-        continue;
-      }
-
-      // Featured = première image si pas déjà de thumbnail
-      if ($index === 0 && !$thumb_id) {
-        set_post_thumbnail($post_id, $image_id);
-        $thumb_id = $image_id;
-        $cli_log("Apidae {$apidae_id} / post {$post_id}: set FEATURED => attachment {$image_id}");
-      } else {
-        $gallery_ids[] = $image_id;
-        $cli_log("Apidae {$apidae_id} / post {$post_id}: add GALLERY => attachment {$image_id}");
-      }
-
-      $existing_urls[] = $image_url;
+    // 🖼️ Images — skip si le post a déjà des images (featured / attachments / ACF gallery)
+    // ---- IMPORTANT en WP-CLI : assure les includes media ----
+    if (!function_exists('media_handle_sideload')) {
+      require_once ABSPATH . 'wp-admin/includes/file.php';
+      require_once ABSPATH . 'wp-admin/includes/media.php';
+      require_once ABSPATH . 'wp-admin/includes/image.php';
     }
-  }
 
-  update_post_meta($post_id, 'apidae_image_urls', array_values(array_unique($existing_urls)));
-  update_post_meta($post_id, 'apidae_images_imported', 1);
-
-  // ---- Update ACF gallery (si ACF chargé) ----
-  if (!empty($gallery_ids)) {
-    if (function_exists('get_field') && function_exists('update_field')) {
-      $existing = get_field('gallery', $post_id, false);
-      if (!is_array($existing)) $existing = [];
-      $existing = array_values(array_filter(array_map('intval', $existing)));
-
-      $merged = array_values(array_unique(array_merge($existing, $gallery_ids)));
-      if ($merged !== $existing) {
-        // update_field('gallery', $merged, $post_id);
-        update_post_meta($post_id, 'gallery', $merged);
-        $cli_log("Apidae {$apidae_id} / post {$post_id}: ACF gallery updated (" . count($merged) . " ids)");
+    // Helper : log en CLI
+    $cli_log = function ($msg) {
+      if (defined('WP_CLI') && WP_CLI) {
+        \WP_CLI::log($msg);
       }
+    };
+    $cli_warn = function ($msg) {
+      if (defined('WP_CLI') && WP_CLI) {
+        \WP_CLI::warning($msg);
+      }
+    };
+
+    // Helper : récup URL illustration Apidae (robuste)
+    $get_apidae_image_url = function ($illustration) {
+      if (!is_array($illustration)) return '';
+
+      // Cas le plus courant (celui que tu avais)
+      $u = $illustration['traductionFichiers'][0]['url'] ?? '';
+      if (is_string($u) && $u) return $u;
+
+      // Fallbacks possibles selon payload
+      $u = $illustration['traductionFichiers'][0]['urlFichier'] ?? '';
+      if (is_string($u) && $u) return $u;
+
+      $u = $illustration['fichiers'][0]['url'] ?? '';
+      if (is_string($u) && $u) return $u;
+
+      $u = $illustration['fichiers'][0]['urlFichier'] ?? '';
+      if (is_string($u) && $u) return $u;
+
+      $u = $illustration['url'] ?? '';
+      if (is_string($u) && $u) return $u;
+
+      return '';
+    };
+
+    // ---- Détection images existantes ----
+    $gallery_ids = [];
+    $already_imported = (bool) get_post_meta($post_id, 'apidae_images_imported', true);
+    $thumb_id = (int) get_post_thumbnail_id($post_id);
+
+    $attached_ids = get_posts([
+      'post_type'        => 'attachment',
+      'post_parent'      => $post_id,
+      'post_status'      => 'inherit',
+      'posts_per_page'   => 1,
+      'fields'           => 'ids',
+      'post_mime_type'   => 'image',
+      'no_found_rows'    => true,
+      'suppress_filters' => true,
+    ]);
+
+    $acf_gallery_ids = [];
+    if (function_exists('get_field')) {
+      $acf_gallery_ids = get_field('gallery', $post_id, false);
+      if (!is_array($acf_gallery_ids)) $acf_gallery_ids = [];
+      $acf_gallery_ids = array_values(array_filter(array_map('intval', $acf_gallery_ids)));
+    }
+
+    $has_any_image = ($thumb_id > 0) || !empty($attached_ids) || !empty($acf_gallery_ids);
+
+    // Si déjà des images : bootstrap meta et STOP
+    if ($has_any_image) {
+      if (!$already_imported) {
+        update_post_meta($post_id, 'apidae_images_imported', 1);
+        $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
+        if (!is_array($existing_urls)) update_post_meta($post_id, 'apidae_image_urls', []);
+      }
+      $cli_log("Post {$post_id}: images déjà présentes => skip import images");
+      // Si tu es dans une fonction, tu peux faire return;
     } else {
-      $cli_warn("Apidae {$apidae_id} / post {$post_id}: ACF non chargé => impossible d'update la gallery");
+
+      // ---- Import images ----
+      $apidae_id = $item['id'] ?? 'unknown';
+      $existing_urls = get_post_meta($post_id, 'apidae_image_urls', true);
+      if (!is_array($existing_urls)) $existing_urls = [];
+
+      if (empty($item['illustrations']) || !is_array($item['illustrations'])) {
+        $cli_warn("Apidae {$apidae_id} / post {$post_id}: aucune illustration dans payload");
+      } else {
+
+        foreach ($item['illustrations'] as $index => $illustration) {
+          $image_url = $get_apidae_image_url($illustration);
+
+          if (!$image_url) {
+            $cli_warn("Apidae {$apidae_id} / post {$post_id}: illustration #{$index} => URL introuvable (structure différente)");
+            continue;
+          }
+
+          if (in_array($image_url, $existing_urls, true)) {
+            $cli_log("Apidae {$apidae_id} / post {$post_id}: image déjà importée => {$image_url}");
+            continue;
+          }
+
+          $cli_log("Apidae {$apidae_id} / post {$post_id}: sideload image #{$index} => {$image_url}");
+
+          // Sideload
+          $image_id = media_sideload_image($image_url, $post_id, null, 'id');
+
+          if (is_wp_error($image_id)) {
+            $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => " . $image_id->get_error_message());
+            continue;
+          }
+
+          $image_id = (int) $image_id;
+          if ($image_id <= 0) {
+            $cli_warn("Apidae {$apidae_id} / post {$post_id}: sideload FAIL => returned 0");
+            continue;
+          }
+
+          // Featured = première image si pas déjà de thumbnail
+          if ($index === 0 && !$thumb_id) {
+            set_post_thumbnail($post_id, $image_id);
+            $thumb_id = $image_id;
+            $cli_log("Apidae {$apidae_id} / post {$post_id}: set FEATURED => attachment {$image_id}");
+          } else {
+            $gallery_ids[] = $image_id;
+            $cli_log("Apidae {$apidae_id} / post {$post_id}: add GALLERY => attachment {$image_id}");
+          }
+
+          $existing_urls[] = $image_url;
+        }
+      }
+
+      update_post_meta($post_id, 'apidae_image_urls', array_values(array_unique($existing_urls)));
+      update_post_meta($post_id, 'apidae_images_imported', 1);
+
+      // ---- Update ACF gallery (si ACF chargé) ----
+      if (!empty($gallery_ids)) {
+        if (function_exists('get_field') && function_exists('update_field')) {
+          $existing = get_field('gallery', $post_id, false);
+          if (!is_array($existing)) $existing = [];
+          $existing = array_values(array_filter(array_map('intval', $existing)));
+
+          $merged = array_values(array_unique(array_merge($existing, $gallery_ids)));
+          if ($merged !== $existing) {
+            // update_field('gallery', $merged, $post_id);
+            update_post_meta($post_id, 'gallery', $merged);
+            $cli_log("Apidae {$apidae_id} / post {$post_id}: ACF gallery updated (" . count($merged) . " ids)");
+          }
+        } else {
+          $cli_warn("Apidae {$apidae_id} / post {$post_id}: ACF non chargé => impossible d'update la gallery");
+        }
+      }
     }
-  }
-}
 
 
 
@@ -1282,6 +1282,367 @@ if ($has_any_image) {
 
     return $total_deleted;
   }
+
+  /**
+   * Update March 2026 - Mise à jour des images
+   */
+
+  protected static function normalize_image_label(string $label): string
+  {
+    $label = trim(wp_strip_all_tags($label));
+    $label = remove_accents($label);
+    $label = strtolower($label);
+
+    // retire extension si présente
+    $label = preg_replace('/\.(jpg|jpeg|png|webp|gif|avif)$/i', '', $label);
+
+    // remplace séparateurs
+    $label = str_replace(['_', '-'], ' ', $label);
+
+    // compacte espaces
+    $label = preg_replace('/\s+/', ' ', $label);
+
+    return trim($label);
+  }
+
+  protected static function get_apidae_image_title(array $illustration, string $fallback_url = ''): string
+  {
+    $candidates = [
+      $illustration['traductionFichiers'][0]['name'] ?? '',
+      $illustration['traductionFichiers'][0]['nom'] ?? '',
+      $illustration['traductionFichiers'][0]['libelleFr'] ?? '',
+      $illustration['traductionFichiers'][0]['title'] ?? '',
+      $illustration['fichiers'][0]['name'] ?? '',
+      $illustration['fichiers'][0]['nom'] ?? '',
+      $illustration['libelleFr'] ?? '',
+      $illustration['nom'] ?? '',
+      $illustration['title'] ?? '',
+    ];
+
+    foreach ($candidates as $candidate) {
+      if (is_string($candidate) && trim($candidate) !== '') {
+        return trim($candidate);
+      }
+    }
+
+    if ($fallback_url) {
+      $path = parse_url($fallback_url, PHP_URL_PATH);
+      if ($path) {
+        return basename($path);
+      }
+    }
+
+    return '';
+  }
+
+  public static function extract_apidae_images_with_titles(array $item): array
+  {
+    $out = [];
+
+    if (empty($item['illustrations']) || !is_array($item['illustrations'])) {
+      return [];
+    }
+
+    foreach ($item['illustrations'] as $index => $illustration) {
+      if (!is_array($illustration)) {
+        continue;
+      }
+
+      $url = $illustration['traductionFichiers'][0]['url']
+        ?? $illustration['traductionFichiers'][0]['urlFichier']
+        ?? $illustration['fichiers'][0]['url']
+        ?? $illustration['fichiers'][0]['urlFichier']
+        ?? $illustration['url']
+        ?? '';
+
+      $url = is_string($url) ? trim($url) : '';
+      if ($url === '') {
+        continue;
+      }
+
+      $title = self::get_apidae_image_title($illustration, $url);
+      if ($title === '') {
+        continue;
+      }
+
+      $normalized = self::normalize_image_label($title);
+
+      if ($normalized === '') {
+        continue;
+      }
+
+      $out[] = [
+        'index' => (int) $index,
+        'url' => $url,
+        'title' => $title,
+        'normalized_title' => $normalized,
+      ];
+    }
+
+    // dédup par normalized_title, on garde le premier
+    $seen = [];
+    $uniq = [];
+
+    foreach ($out as $img) {
+      if (!isset($seen[$img['normalized_title']])) {
+        $seen[$img['normalized_title']] = true;
+        $uniq[] = $img;
+      }
+    }
+
+    return $uniq;
+  }
+
+  protected static function get_post_attachments_by_title_map(int $post_id): array
+  {
+    $attachments = get_posts([
+      'post_type'        => 'attachment',
+      'post_parent'      => $post_id,
+      'post_status'      => 'inherit',
+      'posts_per_page'   => -1,
+      'fields'           => 'ids',
+      'post_mime_type'   => 'image',
+      'orderby'          => 'menu_order ID',
+      'order'            => 'ASC',
+      'no_found_rows'    => true,
+      'suppress_filters' => true,
+    ]);
+
+    $map = [];
+
+    foreach ($attachments as $attachment_id) {
+      $title = get_the_title($attachment_id);
+      $normalized = self::normalize_image_label((string) $title);
+
+      if ($normalized === '') {
+        continue;
+      }
+
+      // si doublon côté WP, on garde le premier
+      if (!isset($map[$normalized])) {
+        $map[$normalized] = (int) $attachment_id;
+      }
+    }
+
+    return $map;
+  }
+
+  protected static function delete_attachment_and_cleanup_gallery(int $attachment_id, int $post_id, string $gallery_field = 'gallery'): void
+  {
+    $thumb_id = (int) get_post_thumbnail_id($post_id);
+    if ($thumb_id === $attachment_id) {
+      delete_post_thumbnail($post_id);
+    }
+
+    $gallery_ids = [];
+
+    if (function_exists('get_field')) {
+      $gallery_ids = get_field($gallery_field, $post_id, false);
+    } else {
+      $gallery_ids = get_post_meta($post_id, $gallery_field, true);
+    }
+
+    if (!is_array($gallery_ids)) {
+      $gallery_ids = [];
+    }
+
+    $gallery_ids = array_values(array_filter(array_map('intval', $gallery_ids)));
+    $gallery_ids = array_values(array_diff($gallery_ids, [$attachment_id]));
+
+    if (function_exists('update_field')) {
+      $fo = function_exists('get_field_object') ? get_field_object($gallery_field, $post_id, false, false) : null;
+      $selector = (!empty($fo['key'])) ? $fo['key'] : $gallery_field;
+      update_field($selector, $gallery_ids, $post_id);
+    } else {
+      update_post_meta($post_id, $gallery_field, $gallery_ids);
+    }
+
+    wp_delete_attachment($attachment_id, true);
+  }
+
+  protected static function import_single_apidae_image_with_title(
+    string $url,
+    string $title,
+    int $post_id,
+    int $apidae_id,
+    int $index = 0
+  ) {
+    if (!function_exists('media_handle_sideload')) {
+      require_once ABSPATH . 'wp-admin/includes/file.php';
+      require_once ABSPATH . 'wp-admin/includes/media.php';
+      require_once ABSPATH . 'wp-admin/includes/image.php';
+    }
+
+    $image_id = media_sideload_image($url, $post_id, null, 'id');
+
+    if (is_wp_error($image_id)) {
+      return $image_id;
+    }
+
+    $image_id = (int) $image_id;
+    if ($image_id <= 0) {
+      return new WP_Error('invalid_attachment_id', 'media_sideload_image a retourné un ID invalide.');
+    }
+
+    // force le titre attachment = titre APIDAE
+    wp_update_post([
+      'ID' => $image_id,
+      'post_title' => $title,
+      'post_name' => sanitize_title($title),
+    ]);
+
+    update_post_meta($image_id, 'apidae_source_url', $url);
+    update_post_meta($image_id, 'apidae_object_id', $apidae_id);
+    update_post_meta($image_id, 'apidae_image_index', $index);
+    update_post_meta($image_id, 'apidae_image_title', $title);
+    update_post_meta($image_id, 'apidae_image_title_normalized', self::normalize_image_label($title));
+
+    return $image_id;
+  }
+
+  public static function sync_apidae_images_for_post_by_title(
+    int $post_id,
+    array $item,
+    string $gallery_field = 'gallery',
+    bool $dry_run = false
+  ): array {
+    $apidae_id = (int) ($item['id'] ?? 0);
+    if (!$apidae_id) {
+      return ['ok' => false, 'reason' => 'missing_apidae_id'];
+    }
+
+    $apidae_images = self::extract_apidae_images_with_titles($item);
+    $wp_map = self::get_post_attachments_by_title_map($post_id); // [normalized_title => attachment_id]
+
+    $apidae_map = [];
+    foreach ($apidae_images as $img) {
+      $apidae_map[$img['normalized_title']] = $img;
+    }
+
+    $apidae_titles = array_keys($apidae_map);
+    $wp_titles = array_keys($wp_map);
+
+    $to_delete_titles = array_values(array_diff($wp_titles, $apidae_titles));
+    $to_add_titles    = array_values(array_diff($apidae_titles, $wp_titles));
+    $same_titles      = array_values(array_intersect($apidae_titles, $wp_titles));
+
+    $deleted_ids = [];
+    $added_ids = [];
+    $kept_ids = [];
+
+    foreach ($same_titles as $title_key) {
+      if (!empty($wp_map[$title_key])) {
+        $kept_ids[] = (int) $wp_map[$title_key];
+      }
+    }
+
+    if ($dry_run) {
+      return [
+        'ok' => true,
+        'post_id' => $post_id,
+        'apidae_id' => $apidae_id,
+        'same' => count($same_titles),
+        'to_add_titles' => $to_add_titles,
+        'to_delete_titles' => $to_delete_titles,
+        'deleted_ids' => [],
+        'added_ids' => [],
+        'kept_ids' => $kept_ids,
+        'dry_run' => true,
+      ];
+    }
+
+    // 1) supprimer les images WP dont le titre n'existe plus sur APIDAE
+    foreach ($to_delete_titles as $title_key) {
+      $attachment_id = (int) ($wp_map[$title_key] ?? 0);
+      if ($attachment_id > 0) {
+        self::delete_attachment_and_cleanup_gallery($attachment_id, $post_id, $gallery_field);
+        $deleted_ids[] = $attachment_id;
+      }
+    }
+
+    // 2) reconstruire dans l'ordre APIDAE
+    $featured_id = 0;
+    $gallery_ids = [];
+
+    foreach ($apidae_images as $index => $img) {
+      $title_key = $img['normalized_title'];
+
+      if (isset($wp_map[$title_key]) && !in_array($title_key, $to_delete_titles, true)) {
+        $attachment_id = (int) $wp_map[$title_key];
+      } else {
+        $attachment_id = self::import_single_apidae_image_with_title(
+          $img['url'],
+          $img['title'],
+          $post_id,
+          $apidae_id,
+          $index
+        );
+
+        if (is_wp_error($attachment_id)) {
+          continue;
+        }
+
+        $attachment_id = (int) $attachment_id;
+        $added_ids[] = $attachment_id;
+      }
+
+      if ($index === 0) {
+        $featured_id = $attachment_id;
+      } else {
+        $gallery_ids[] = $attachment_id;
+      }
+    }
+
+    if ($featured_id > 0) {
+      set_post_thumbnail($post_id, $featured_id);
+    } else {
+      delete_post_thumbnail($post_id);
+    }
+
+    if (function_exists('update_field')) {
+      $fo = function_exists('get_field_object') ? get_field_object($gallery_field, $post_id, false, false) : null;
+      $selector = (!empty($fo['key'])) ? $fo['key'] : $gallery_field;
+      update_field($selector, $gallery_ids, $post_id);
+    } else {
+      update_post_meta($post_id, $gallery_field, $gallery_ids);
+    }
+
+    // stockage de suivi
+    update_post_meta($post_id, 'apidae_image_titles', wp_list_pluck($apidae_images, 'title'));
+    update_post_meta($post_id, 'apidae_image_urls', wp_list_pluck($apidae_images, 'url'));
+    update_post_meta($post_id, 'apidae_images_imported', 1);
+    update_post_meta($post_id, 'apidae_images_last_sync', current_time('mysql'));
+
+    return [
+      'ok' => true,
+      'post_id' => $post_id,
+      'apidae_id' => $apidae_id,
+      'same' => count($same_titles),
+      'to_add_titles' => $to_add_titles,
+      'to_delete_titles' => $to_delete_titles,
+      'deleted_ids' => $deleted_ids,
+      'added_ids' => $added_ids,
+      'kept_ids' => $kept_ids,
+      'featured_id' => $featured_id,
+      'gallery_ids' => $gallery_ids,
+      'dry_run' => false,
+    ];
+  }
+
+  public static function find_post_id_by_apidae_id(int $apidae_id): int
+  {
+    $posts = get_posts([
+      'post_type' => 'camping',
+      'meta_key' => 'apidae_id',
+      'meta_value' => $apidae_id,
+      'posts_per_page' => 1,
+      'fields' => 'ids',
+      'suppress_filters' => true,
+      'no_found_rows' => true,
+    ]);
+
+    return !empty($posts[0]) ? (int) $posts[0] : 0;
+  }
 }
 
 /**
@@ -1585,39 +1946,112 @@ if (defined('WP_CLI') && WP_CLI) {
      * Met à jour les illustrations ACF pour un camping par ID APIDAE.
      *
      * ## OPTIONS
-     * --id=<id>
+     * [--id=<id>]
+     * [--ids=<ids>] : liste CSV d'IDs (ex: 5752595,5752596)
+     * [--ids-file=<path>] : fichier contenant 1 ID par ligne
      * [--acf-field=<key>] : clé ACF galerie (defaut: galerie_photo_camping)
+     * [--continue-on-error] : continue même si un ID échoue
      *
-     * ## EXAMPLE
-     *   wp apidae update-images --id=5752595 --acf-field=galerie_photo_camping
+     * ## EXAMPLES
+     *   wp apidae update-images --id=5752595
+     *   wp apidae update-images --ids=5752595,5752596 --acf-field=galerie_photo_camping
+     *   wp apidae update-images --ids-file=/tmp/ids.txt --continue-on-error
      */
     public function update_images($args, $assoc_args)
     {
-      $id = (int) ($assoc_args['id'] ?? 0);
       $acf = $assoc_args['acf-field'] ?? 'galerie_photo_camping';
-      if (!$id) {
-        WP_CLI::error('Paramètre --id manquant.');
+      $continue = isset($assoc_args['continue-on-error']);
+
+      // 1) Récupère les IDs depuis --id, --ids, --ids-file
+      $ids = [];
+
+      if (!empty($assoc_args['id'])) {
+        $ids[] = (int) $assoc_args['id'];
+      }
+
+      if (!empty($assoc_args['ids'])) {
+        $parts = preg_split('/[,\s;]+/', (string) $assoc_args['ids']);
+        foreach ($parts as $p) {
+          $p = trim($p);
+          if ($p !== '') $ids[] = (int) $p;
+        }
+      }
+
+      if (!empty($assoc_args['ids-file'])) {
+        $path = (string) $assoc_args['ids-file'];
+        if (!is_readable($path)) {
+          WP_CLI::error('Fichier --ids-file illisible: ' . $path);
+        }
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+          $line = trim($line);
+          if ($line === '' || str_starts_with($line, '#')) continue; // accepte commentaires
+          // Si le fichier contient aussi des CSV, on gère
+          $more = preg_split('/[,\s;]+/', $line);
+          foreach ($more as $m) {
+            $m = trim($m);
+            if ($m !== '') $ids[] = (int) $m;
+          }
+        }
+      }
+
+      // Nettoyage
+      $ids = array_values(array_unique(array_filter($ids, fn($v) => (int)$v > 0)));
+
+      if (empty($ids)) {
+        WP_CLI::error('Paramètre manquant: utilise --id, --ids ou --ids-file.');
       }
 
       $fields = 'id,illustrations';
-      $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
-        'responseFields' => $fields,
-        'locales' => 'fr',
-      ]);
-      if (!$res['success']) {
-        WP_CLI::error('APIDAE error: ' . $res['message']);
-      }
-      $item = $res['data'] ?? null;
-      if (!$item) {
-        WP_CLI::error('Objet introuvable.');
+
+      $ok = 0;
+      $fail = 0;
+
+      WP_CLI::log('Traitement de ' . count($ids) . ' ID(s)...');
+
+      foreach ($ids as $id) {
+        try {
+          WP_CLI::log('> ID ' . $id . '...');
+
+          $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $id, [
+            'responseFields' => $fields,
+            'locales' => 'fr',
+          ]);
+
+          if (!$res['success']) {
+            throw new \Exception('APIDAE error: ' . ($res['message'] ?? 'unknown'));
+          }
+
+          $item = $res['data'] ?? null;
+          if (!$item) {
+            throw new \Exception('Objet introuvable.');
+          }
+
+          $r = APIDAE_Service::update_illustrations_apidae_camping($item, $acf);
+          if (empty($r['ok'])) {
+            throw new \Exception('MAJ images échouée: ' . ($r['error'] ?? $r['reason'] ?? 'unknown'));
+          }
+
+          $ok++;
+          WP_CLI::success('OK ID ' . $id . ' -> post_id ' . ($r['post_id'] ?? 'n/a'));
+        } catch (\Throwable $e) {
+          $fail++;
+          WP_CLI::warning('KO ID ' . $id . ' : ' . $e->getMessage());
+          if (!$continue) {
+            WP_CLI::error('Arrêt (utilise --continue-on-error pour ignorer les erreurs).');
+          }
+        }
       }
 
-      $r = APIDAE_Service::update_illustrations_apidae_camping($item, $acf);
-      if (!$r['ok']) {
-        WP_CLI::error('MAJ images échouée: ' . ($r['error'] ?? $r['reason'] ?? 'unknown'));
+      if ($fail === 0) {
+        WP_CLI::success("Terminé. OK=$ok / KO=$fail");
+      } else {
+        WP_CLI::warning("Terminé. OK=$ok / KO=$fail");
       }
-      WP_CLI::success('Images mises à jour pour post_id ' . $r['post_id']);
     }
+
+
+
 
     /**
      * Supprime tous les posts “camping” en lots.
@@ -1942,148 +2376,147 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
     /**
- * Met en brouillon tous les campings dont l'apidae_id n'est PAS dans une sélection APIDAE.
- *
- * ## OPTIONS
- * --selection-id=<id>      : ID de la sélection APIDAE (ex: 190549)
- * [--meta-key=<meta_key>]  : meta key qui stocke l'id APIDAE (défaut: apidae_id)
- * [--count=<n>]            : taille de page APIDAE (1–200, défaut 200)
- * [--sleep=<sec>]          : pause entre pages (défaut 0)
- * [--dry-run]              : n'écrit rien, log seulement
- *
- * ## EXAMPLE
- *   wp apidae draft-not-in-selection --selection-id=190549
- *
- * @subcommand draft-not-in-selection
- */
-public function draft_not_in_selection($args, $assoc_args)
-{
-  $selection_id = (int)($assoc_args['selection-id'] ?? 0);
-  if (!$selection_id) {
-    \WP_CLI::error('Paramètre --selection-id manquant.');
-  }
-
-  $meta_key = isset($assoc_args['meta-key']) ? sanitize_key($assoc_args['meta-key']) : 'apidae_id';
-  $count = isset($assoc_args['count']) ? (int)$assoc_args['count'] : 200;
-  if ($count <= 0 || $count > 200) $count = 200;
-
-  $sleep = isset($assoc_args['sleep']) ? (int)$assoc_args['sleep'] : 0;
-  $dry   = isset($assoc_args['dry-run']);
-
-  // 1) Récupérer tous les IDs APIDAE dans la sélection (pagination)
-  $allowed = [];
-  $first = 0;
-  $numFound = null;
-  $page = 0;
-
-  do {
-    $page++;
-    $params = [
-      'selectionIds' => [$selection_id],
-      'count' => $count,
-      'first' => $first,
-      // Pas besoin de responseFields lourds : id suffit
-    ];
-
-    $res = \APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
-    if (!$res['success']) {
-      \WP_CLI::error('APIDAE error: ' . ($res['message'] ?? 'unknown'));
-    }
-
-    $data = $res['data'] ?? [];
-    if ($numFound === null) {
-      $numFound = (int)($data['numFound'] ?? 0);
-      \WP_CLI::log("Sélection {$selection_id} — numFound={$numFound}");
-      if ($numFound === 0) break;
-    }
-
-    $items = $data['objetsTouristiques'] ?? [];
-    foreach ($items as $it) {
-      if (!empty($it['id'])) {
-        $allowed[(string)(int)$it['id']] = true;
+     * Met en brouillon tous les campings dont l'apidae_id n'est PAS dans une sélection APIDAE.
+     *
+     * ## OPTIONS
+     * --selection-id=<id>      : ID de la sélection APIDAE (ex: 190549)
+     * [--meta-key=<meta_key>]  : meta key qui stocke l'id APIDAE (défaut: apidae_id)
+     * [--count=<n>]            : taille de page APIDAE (1–200, défaut 200)
+     * [--sleep=<sec>]          : pause entre pages (défaut 0)
+     * [--dry-run]              : n'écrit rien, log seulement
+     *
+     * ## EXAMPLE
+     *   wp apidae draft-not-in-selection --selection-id=190549
+     *
+     * @subcommand draft-not-in-selection
+     */
+    public function draft_not_in_selection($args, $assoc_args)
+    {
+      $selection_id = (int)($assoc_args['selection-id'] ?? 0);
+      if (!$selection_id) {
+        \WP_CLI::error('Paramètre --selection-id manquant.');
       }
+
+      $meta_key = isset($assoc_args['meta-key']) ? sanitize_key($assoc_args['meta-key']) : 'apidae_id';
+      $count = isset($assoc_args['count']) ? (int)$assoc_args['count'] : 200;
+      if ($count <= 0 || $count > 200) $count = 200;
+
+      $sleep = isset($assoc_args['sleep']) ? (int)$assoc_args['sleep'] : 0;
+      $dry   = isset($assoc_args['dry-run']);
+
+      // 1) Récupérer tous les IDs APIDAE dans la sélection (pagination)
+      $allowed = [];
+      $first = 0;
+      $numFound = null;
+      $page = 0;
+
+      do {
+        $page++;
+        $params = [
+          'selectionIds' => [$selection_id],
+          'count' => $count,
+          'first' => $first,
+          // Pas besoin de responseFields lourds : id suffit
+        ];
+
+        $res = \APIDAE_Service::connect_to_apidae('/recherche/list-objets-touristiques', $params, 'GET', true);
+        if (!$res['success']) {
+          \WP_CLI::error('APIDAE error: ' . ($res['message'] ?? 'unknown'));
+        }
+
+        $data = $res['data'] ?? [];
+        if ($numFound === null) {
+          $numFound = (int)($data['numFound'] ?? 0);
+          \WP_CLI::log("Sélection {$selection_id} — numFound={$numFound}");
+          if ($numFound === 0) break;
+        }
+
+        $items = $data['objetsTouristiques'] ?? [];
+        foreach ($items as $it) {
+          if (!empty($it['id'])) {
+            $allowed[(string)(int)$it['id']] = true;
+          }
+        }
+
+        $first += $count;
+
+        if ($sleep) sleep($sleep);
+      } while ($numFound !== null && $first < $numFound);
+
+      $allowed_count = count($allowed);
+      if ($allowed_count === 0) {
+        \WP_CLI::warning("Aucun ID trouvé dans la sélection {$selection_id}. Rien ne sera modifié.");
+        return;
+      }
+      \WP_CLI::log("IDs autorisés (dans la sélection) : {$allowed_count}");
+
+      // 2) Charger tous les campings ayant un apidae_id
+      $camping_ids = get_posts([
+        'post_type' => 'camping',
+        'posts_per_page' => -1,
+        'post_status' => 'any',
+        'fields' => 'ids',
+        'suppress_filters' => true,
+        'no_found_rows' => true,
+        'meta_key' => $meta_key,
+        'meta_compare' => 'EXISTS',
+      ]);
+
+      \WP_CLI::log("Campings trouvés avec meta {$meta_key}: " . count($camping_ids));
+
+      // 3) Draft ceux qui ne sont pas dans la sélection
+      $done = 0;
+      $drafted = 0;
+      $already_draft = 0;
+      $kept = 0;
+      $noid = 0;
+      $errors = 0;
+
+      foreach ($camping_ids as $post_id) {
+        $done++;
+        $apidae_id = (int)get_post_meta($post_id, $meta_key, true);
+        if (!$apidae_id) {
+          $noid++;
+          continue;
+        }
+
+        $in_selection = isset($allowed[(string)$apidae_id]);
+
+        if ($in_selection) {
+          $kept++;
+          continue;
+        }
+
+        $current_status = get_post_status($post_id);
+        if ($current_status === 'draft') {
+          $already_draft++;
+          \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) déjà en brouillon");
+          continue;
+        }
+
+        if ($dry) {
+          \WP_CLI::log("[$done] [DRY-RUN] Mettre en brouillon post {$post_id} (APIDAE {$apidae_id}) status={$current_status}");
+          $drafted++;
+          continue;
+        }
+
+        $r = wp_update_post([
+          'ID' => $post_id,
+          'post_status' => 'draft',
+        ], true);
+
+        if (is_wp_error($r)) {
+          $errors++;
+          \WP_CLI::warning("[$done] post {$post_id} (APIDAE {$apidae_id}) => erreur: " . $r->get_error_message());
+          continue;
+        }
+
+        $drafted++;
+        \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) => mis en brouillon");
+      }
+
+      \WP_CLI::success("Terminé. kept={$kept} drafted={$drafted} already_draft={$already_draft} noid={$noid} errors={$errors} dry-run=" . ($dry ? 'oui' : 'non'));
     }
-
-    $first += $count;
-
-    if ($sleep) sleep($sleep);
-
-  } while ($numFound !== null && $first < $numFound);
-
-  $allowed_count = count($allowed);
-  if ($allowed_count === 0) {
-    \WP_CLI::warning("Aucun ID trouvé dans la sélection {$selection_id}. Rien ne sera modifié.");
-    return;
-  }
-  \WP_CLI::log("IDs autorisés (dans la sélection) : {$allowed_count}");
-
-  // 2) Charger tous les campings ayant un apidae_id
-  $camping_ids = get_posts([
-    'post_type' => 'camping',
-    'posts_per_page' => -1,
-    'post_status' => 'any',
-    'fields' => 'ids',
-    'suppress_filters' => true,
-    'no_found_rows' => true,
-    'meta_key' => $meta_key,
-    'meta_compare' => 'EXISTS',
-  ]);
-
-  \WP_CLI::log("Campings trouvés avec meta {$meta_key}: " . count($camping_ids));
-
-  // 3) Draft ceux qui ne sont pas dans la sélection
-  $done = 0;
-  $drafted = 0;
-  $already_draft = 0;
-  $kept = 0;
-  $noid = 0;
-  $errors = 0;
-
-  foreach ($camping_ids as $post_id) {
-    $done++;
-    $apidae_id = (int)get_post_meta($post_id, $meta_key, true);
-    if (!$apidae_id) {
-      $noid++;
-      continue;
-    }
-
-    $in_selection = isset($allowed[(string)$apidae_id]);
-
-    if ($in_selection) {
-      $kept++;
-      continue;
-    }
-
-    $current_status = get_post_status($post_id);
-    if ($current_status === 'draft') {
-      $already_draft++;
-      \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) déjà en brouillon");
-      continue;
-    }
-
-    if ($dry) {
-      \WP_CLI::log("[$done] [DRY-RUN] Mettre en brouillon post {$post_id} (APIDAE {$apidae_id}) status={$current_status}");
-      $drafted++;
-      continue;
-    }
-
-    $r = wp_update_post([
-      'ID' => $post_id,
-      'post_status' => 'draft',
-    ], true);
-
-    if (is_wp_error($r)) {
-      $errors++;
-      \WP_CLI::warning("[$done] post {$post_id} (APIDAE {$apidae_id}) => erreur: " . $r->get_error_message());
-      continue;
-    }
-
-    $drafted++;
-    \WP_CLI::log("[$done] post {$post_id} (APIDAE {$apidae_id}) => mis en brouillon");
-  }
-
-  \WP_CLI::success("Terminé. kept={$kept} drafted={$drafted} already_draft={$already_draft} noid={$noid} errors={$errors} dry-run=" . ($dry ? 'oui' : 'non'));
-}
 
 
     /**
@@ -2472,7 +2905,155 @@ public function draft_not_in_selection($args, $assoc_args)
         wp_mail($mail_to_list, $subject, $body);
       }
     }
+
+    /**
+     * Synchronise les images d'un ou plusieurs campings avec APIDAE
+     * en comparant le TITRE/NOM de l'image.
+     *
+     * Si un titre WP n'existe plus dans APIDAE => suppression
+     * Si un titre APIDAE n'existe pas encore dans WP => téléchargement
+     *
+     * ## OPTIONS
+     * [--id=<id>]
+     * [--ids=<ids>]
+     * [--ids-file=<path>]
+     * [--acf-field=<field>]
+     * [--continue-on-error]
+     * [--dry-run]
+     *
+     * ## EXAMPLES
+     *   wp apidae sync-images-by-title --id=5752595
+     *   wp apidae sync-images-by-title --ids=5752595,5752596
+     *   wp apidae sync-images-by-title --ids-file=/tmp/ids.txt --dry-run
+     *
+     * @subcommand sync-images-by-title
+     */
+    public function sync_images_by_title($args, $assoc_args)
+    {
+      $acf_field = $assoc_args['acf-field'] ?? 'gallery';
+      $continue = isset($assoc_args['continue-on-error']);
+      $dry_run = isset($assoc_args['dry-run']);
+
+      $ids = [];
+
+      if (!empty($assoc_args['id'])) {
+        $ids[] = (int) $assoc_args['id'];
+      }
+
+      if (!empty($assoc_args['ids'])) {
+        $parts = preg_split('/[,\s;]+/', (string) $assoc_args['ids']);
+        foreach ($parts as $p) {
+          $p = trim($p);
+          if ($p !== '') {
+            $ids[] = (int) $p;
+          }
+        }
+      }
+
+      if (!empty($assoc_args['ids-file'])) {
+        $path = (string) $assoc_args['ids-file'];
+        if (!is_readable($path)) {
+          WP_CLI::error('Fichier --ids-file illisible: ' . $path);
+        }
+
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+          $line = trim($line);
+          if ($line === '' || strpos($line, '#') === 0) {
+            continue;
+          }
+
+          $parts = preg_split('/[,\s;]+/', $line);
+          foreach ($parts as $p) {
+            $p = trim($p);
+            if ($p !== '') {
+              $ids[] = (int) $p;
+            }
+          }
+        }
+      }
+
+      $ids = array_values(array_unique(array_filter($ids, fn($v) => (int) $v > 0)));
+
+      if (empty($ids)) {
+        WP_CLI::error('Paramètre manquant: utilise --id, --ids ou --ids-file.');
+      }
+
+      $fields = 'id,illustrations';
+
+      $ok = 0;
+      $fail = 0;
+
+      WP_CLI::log('Traitement de ' . count($ids) . ' ID(s)...');
+
+      foreach ($ids as $apidae_id) {
+        try {
+          WP_CLI::log('> ID ' . $apidae_id . '...');
+
+          $post_id = APIDAE_Service::find_post_id_by_apidae_id($apidae_id);
+          if (!$post_id) {
+            throw new \Exception("Aucun post camping trouvé pour l'ID APIDAE {$apidae_id}");
+          }
+
+          $res = APIDAE_Service::connect_to_apidae('/objet-touristique/get-by-id/' . $apidae_id, [
+            'responseFields' => $fields,
+            'locales' => 'fr',
+          ]);
+
+          if (!$res['success']) {
+            throw new \Exception('APIDAE error: ' . ($res['message'] ?? 'unknown'));
+          }
+
+          $item = $res['data'] ?? null;
+          if (!$item) {
+            throw new \Exception('Objet introuvable.');
+          }
+
+          $r = APIDAE_Service::sync_apidae_images_for_post_by_title($post_id, $item, $acf_field, $dry_run);
+
+          if (empty($r['ok'])) {
+            throw new \Exception('Sync images échouée: ' . ($r['reason'] ?? 'unknown'));
+          }
+
+          $ok++;
+
+          if ($dry_run) {
+            WP_CLI::success(sprintf(
+              'DRY RUN ID %d -> post_id=%d | same=%d | add=%d | delete=%d',
+              $apidae_id,
+              $post_id,
+              (int) ($r['same'] ?? 0),
+              count($r['to_add_titles'] ?? []),
+              count($r['to_delete_titles'] ?? [])
+            ));
+          } else {
+            WP_CLI::success(sprintf(
+              'OK ID %d -> post_id=%d | same=%d | added=%d | deleted=%d',
+              $apidae_id,
+              $post_id,
+              (int) ($r['same'] ?? 0),
+              count($r['added_ids'] ?? []),
+              count($r['deleted_ids'] ?? [])
+            ));
+          }
+        } catch (\Throwable $e) {
+          $fail++;
+          WP_CLI::warning('KO ID ' . $apidae_id . ' : ' . $e->getMessage());
+
+          if (!$continue) {
+            WP_CLI::error('Arrêt (utilise --continue-on-error pour ignorer les erreurs).');
+          }
+        }
+      }
+
+      if ($fail === 0) {
+        WP_CLI::success("Terminé. OK=$ok / KO=$fail");
+      } else {
+        WP_CLI::warning("Terminé. OK=$ok / KO=$fail");
+      }
+    }
   }
+
 
   WP_CLI::add_command('apidae', 'APIDAE_CLI_Command');
 }
