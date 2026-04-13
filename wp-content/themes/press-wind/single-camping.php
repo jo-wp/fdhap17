@@ -148,7 +148,7 @@ if ($apidae_raw) {
         alt="Marker de la commune du camping <?= get_the_title(); ?>" />
       <p class="font-arial text-[20px] text-green">
         <?php if($url_destination): ?>
-          <a href="<?= $url_destination ?>"><?= $commune?></a>
+          <a class=" no-underline hover:no-underline" href="<?= $url_destination ?>"><?= $commune?></a>
         <?php else: ?>
         <?= $commune; ?>
         <?php endif; ?>

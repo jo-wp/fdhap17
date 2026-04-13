@@ -1126,13 +1126,12 @@ add_action('pre_get_posts', function($query) {
  * Retourne l'URL de la taxonomie destination liée à la commune d'un camping.
  *
  * Règles :
- * - récupère la meta "commune"
- * - slugifie la commune
+ * - récupère la commune du camping
  * - teste les slugs "commune" et "camping-commune"
- * - ne prend en compte que les termes "destination" avec "linked_term_page_id"
- * - si WPML est actif, retourne l'URL dans la langue courante
+ * - ne garde que les termes destination ayant une meta TP_META_KEY
+ * - gère WPML pour retourner l'URL dans la langue courante
  *
- * @param int|\WP_Post|null $post Post ID ou objet WP_Post
+ * @param int|\WP_Post|null $post
  * @return string|false
  */
 function get_destination_url_from_commune($post = null) {
@@ -1159,12 +1158,6 @@ function get_destination_url_from_commune($post = null) {
         'taxonomy'   => 'destination',
         'hide_empty' => false,
         'slug'       => $possible_slugs,
-        'meta_query' => array(
-            array(
-                'key'     => 'linked_term_page_id',
-                'compare' => 'EXISTS',
-            ),
-        ),
     ));
 
     if (empty($terms) || is_wp_error($terms)) {
@@ -1173,47 +1166,45 @@ function get_destination_url_from_commune($post = null) {
 
     foreach ($possible_slugs as $wanted_slug) {
         foreach ($terms as $term) {
-            if (!$term || is_wp_error($term)) {
+            if (!$term || is_wp_error($term) || $term->slug !== $wanted_slug) {
                 continue;
             }
 
-            if ($term->slug !== $wanted_slug) {
+            $linked_term_page_id = (int) get_term_meta($term->term_id, TP_META_KEY, true);
+
+            if ($linked_term_page_id <= 0) {
                 continue;
             }
 
-            $linked_term_page_id = get_term_meta($term->term_id, 'linked_term_page_id', true);
+            $final_term = $term;
 
-            if (empty($linked_term_page_id)) {
-                continue;
-            }
-
-            $term_id = $term->term_id;
-
-            // Compat WPML : on essaie de récupérer le terme traduit dans la langue courante
             if (has_filter('wpml_current_language') && has_filter('wpml_object_id')) {
                 $current_lang = apply_filters('wpml_current_language', null);
 
-                $translated_term_id = apply_filters(
-                    'wpml_object_id',
-                    $term_id,
-                    'destination',
-                    true,
-                    $current_lang
-                );
+                $translated_term_id = apply_filters('wpml_object_id', $term->term_id, 'destination', true, $current_lang);
 
-                if (!empty($translated_term_id)) {
+                if (empty($translated_term_id)) {
+                    $translated_term_id = apply_filters('wpml_object_id', $term->term_id, 'tax_destination', true, $current_lang);
+                }
+
+                if (!empty($translated_term_id) && (int) $translated_term_id !== (int) $term->term_id) {
                     $translated_term = get_term($translated_term_id, 'destination');
 
                     if ($translated_term && !is_wp_error($translated_term)) {
-                        $term = $translated_term;
+                        $translated_linked_term_page_id = (int) get_term_meta($translated_term->term_id, TP_META_KEY, true);
+
+                        // On préfère la traduction seulement si elle a aussi la meta attendue
+                        if ($translated_linked_term_page_id > 0) {
+                            $final_term = $translated_term;
+                        }
                     }
                 }
             }
 
-            $term_url = get_term_link($term, 'destination');
+            $url = get_term_link($final_term, 'destination');
 
-            if (!is_wp_error($term_url) && !empty($term_url)) {
-                return $term_url;
+            if (!is_wp_error($url) && !empty($url)) {
+                return $url;
             }
         }
     }
