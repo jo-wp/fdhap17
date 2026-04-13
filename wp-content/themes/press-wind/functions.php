@@ -1120,3 +1120,103 @@ add_action('pre_get_posts', function($query) {
 
     $query->set('tax_query', []);
 });
+
+
+/**
+ * Retourne l'URL de la taxonomie destination liée à la commune d'un camping.
+ *
+ * Règles :
+ * - récupère la meta "commune"
+ * - slugifie la commune
+ * - teste les slugs "commune" et "camping-commune"
+ * - ne prend en compte que les termes "destination" avec "linked_term_page_id"
+ * - si WPML est actif, retourne l'URL dans la langue courante
+ *
+ * @param int|\WP_Post|null $post Post ID ou objet WP_Post
+ * @return string|false
+ */
+function get_destination_url_from_commune($post = null) {
+    $post = get_post($post);
+
+    if (!$post || $post->post_type !== 'camping') {
+        return false;
+    }
+
+    $commune = get_post_meta($post->ID, 'commune', true);
+
+    if (empty($commune)) {
+        return false;
+    }
+
+    $commune_slug = sanitize_title($commune);
+
+    $possible_slugs = array(
+        $commune_slug,
+        'camping-' . $commune_slug,
+    );
+
+    $terms = get_terms(array(
+        'taxonomy'   => 'destination',
+        'hide_empty' => false,
+        'slug'       => $possible_slugs,
+        'meta_query' => array(
+            array(
+                'key'     => 'linked_term_page_id',
+                'compare' => 'EXISTS',
+            ),
+        ),
+    ));
+
+    if (empty($terms) || is_wp_error($terms)) {
+        return false;
+    }
+
+    foreach ($possible_slugs as $wanted_slug) {
+        foreach ($terms as $term) {
+            if (!$term || is_wp_error($term)) {
+                continue;
+            }
+
+            if ($term->slug !== $wanted_slug) {
+                continue;
+            }
+
+            $linked_term_page_id = get_term_meta($term->term_id, 'linked_term_page_id', true);
+
+            if (empty($linked_term_page_id)) {
+                continue;
+            }
+
+            $term_id = $term->term_id;
+
+            // Compat WPML : on essaie de récupérer le terme traduit dans la langue courante
+            if (has_filter('wpml_current_language') && has_filter('wpml_object_id')) {
+                $current_lang = apply_filters('wpml_current_language', null);
+
+                $translated_term_id = apply_filters(
+                    'wpml_object_id',
+                    $term_id,
+                    'destination',
+                    true,
+                    $current_lang
+                );
+
+                if (!empty($translated_term_id)) {
+                    $translated_term = get_term($translated_term_id, 'destination');
+
+                    if ($translated_term && !is_wp_error($translated_term)) {
+                        $term = $translated_term;
+                    }
+                }
+            }
+
+            $term_url = get_term_link($term, 'destination');
+
+            if (!is_wp_error($term_url) && !empty($term_url)) {
+                return $term_url;
+            }
+        }
+    }
+
+    return false;
+}

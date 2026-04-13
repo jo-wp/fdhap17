@@ -21,6 +21,8 @@ if ($star_term) {
 }
 
 $commune = get_post_meta($post->ID, 'commune', true);
+$url_destination = PressWindStarter\get_destination_url_from_commune($post);
+
 
 $image_featured_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
 $image_featured_caption = get_the_post_thumbnail_caption(get_the_ID());
@@ -144,7 +146,13 @@ if ($apidae_raw) {
     <div class="flex flex-row items-center max-md:justify-center md:justify-start gap-[12px]">
       <img src="<?= get_template_directory_uri() ?>/assets/media/marker.svg"
         alt="Marker de la commune du camping <?= get_the_title(); ?>" />
-      <p class="font-arial text-[20px] text-green"><?= $commune ?></p>
+      <p class="font-arial text-[20px] text-green">
+        <?php if($url_destination): ?>
+          <a href="<?= $url_destination ?>"><?= $commune?></a>
+        <?php else: ?>
+        <?= $commune; ?>
+        <?php endif; ?>
+      </p>
     </div>
     <div class="font-arial text-[14px] [&_a]:text-[14px] [&_span]:text-orange [&_span_span]:text-black">
       <?php
