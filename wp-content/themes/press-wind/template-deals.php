@@ -4,6 +4,7 @@ Template Name: Offres speciales
 */
 get_header();
 ?>
+<h1 class="text-orange text-[30px] text-center font-[700] mb-8"><?= __('Offres spéciales','fdhpa17'); ?></h1>
 <?= get_template_part('partials/search/bar','without'); ?>
 <div class="container-huge block-search flex flex-col md:flex-row gap-[45px] justify-center">
   <div data-button="filters" class="max-md:block md:hidden text-center">
