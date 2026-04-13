@@ -30,7 +30,7 @@ function rp_lead_form_cm_shortcode($atts)
         data-id="A61C50BEC994754B1D79C5819EC1255C06C50CF5C69C43EC2939C1C2B3E4194C320E85FEF56BC9E42C992C1D59E10516A191697525C0AADD4EAB1DE9A5F39C8D">
         <div class="flex flex-col md:flex-row flex-wrap gap-[20px] md:gap-[100px]">
           <div class="flex-1">
-            <h2 class="text-orange  max-md:text-center text-[24px] md:text-[36px] font-ivymode"><?= __('Petit guide du campeur', 'fdhpa17') ?></h2>
+            <h1 class="text-orange  max-md:text-center text-[24px] md:text-[36px] font-ivymode"><?= __('Petit guide du campeur', 'fdhpa17') ?></h1>
             <p class="text-black font-arial text-[14px] md:text-[16px]">
               <?= __('Conseils et astuces camping, activités de pleine nature, itinéraires et lieux à visiter de La Rochelle à Royan, en passant par la Saintonge et les îles : un guide réalisé et offert par la Fédération des Campings de Charente-Maritime à tous les amoureux de camping.', 'fdhpa17') ?>
             </p>
